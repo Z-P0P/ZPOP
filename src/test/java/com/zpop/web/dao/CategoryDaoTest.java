@@ -26,7 +26,7 @@ class CategoryDaoTest {
     @Test
     void get_list_테스트() {
         List<Category> categories = categoryDao.getList();
-        for(Category c : categories)
+        for (Category c : categories)
             System.out.println(c.getName());
     }
 }
