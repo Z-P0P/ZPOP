@@ -11,15 +11,23 @@
 		meetingId = #{query}
 		</if>
   </select>
-  <insert id="createComment" parameterType="java.util.Map">
+  <insert id="insertComment" parameterType="java.util.Map">
   	insert into comment 
 	  	(meetingId, writerId, content)
 	  	values (#{meetingId}, #{writerId}, #{content})
   </insert>
-  <insert id="createReply" parameterType="java.util.Map">
+  <insert id="insertReply" parameterType="java.util.Map">
   		insert into comment 
-		(meetingId, parentCommentId, writerId, content)
-		values (#{meetingId}, #{parentId}, #{writerId}, #{content})
+  		<choose>
+  			<when test="isReplyToReply == null">
+				(meetingId, parentCommentId, writerId, content)
+				values (#{meetingId}, #{parentCommentId}, #{writerId}, #{content})
+			</when>
+			<otherwise>
+				(meetingId, parentCommentId, isReplyToReply, writerId, content)
+				values (#{meetingId}, #{parentCommentId}, #{isReplyToReply}, #{writerId}, #{content})
+			</otherwise>
+		</choose>
   </insert>
   <update id="updateComment" parameterType="com.zpop.web.entity.Comment">
   	update comment
