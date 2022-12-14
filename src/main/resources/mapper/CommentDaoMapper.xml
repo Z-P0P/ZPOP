@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zpop.dao.CommentDao">
-  <select id="getList" resultType= "com.zpop.entity.Comment">
+<mapper namespace="com.zpop.web.dao.CommentDao">
+  <select id="getList" resultType= "com.zpop.web.entity.Comment">
 	select * 
 	from comment 
 	where 
@@ -21,7 +21,7 @@
 		(meetingId, parentCommentId, writerId, content)
 		values (#{meetingId}, #{parentId}, #{writerId}, #{content})
   </insert>
-  <update id="updateComment" parameterType="com.zpop.entity.Comment">
+  <update id="updateComment" parameterType="com.zpop.web.entity.Comment">
   	update comment
   	<set>
       <if test="content != null">content=#{content}</if>
