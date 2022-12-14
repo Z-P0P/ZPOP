@@ -1,16 +1,16 @@
-package com.zpop.entity;
+package com.zpop.web.entity;
 
 import java.util.Date;
 
 public class Notification {
-	
+
 	private int id;
 	private int memberId;
 	private String url;
 	private int type;
 	private Date readAt;
 	private Date createdAt;
-	
+
 	public Notification(int id, int memberId, String url, int type, Date readAt, Date createdAt) {
 		super();
 		this.id = id;
@@ -74,6 +74,5 @@ public class Notification {
 		return "Notification [id=" + id + ", memberId=" + memberId + ", url=" + url + ", type=" + type + ", readAt="
 				+ readAt + ", createdAt=" + createdAt + "]";
 	}
-	
-	
+
 }

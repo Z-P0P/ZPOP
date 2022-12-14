@@ -26,7 +26,7 @@ class RegionDaoTest {
     @Test
     void get_list_테스트() {
         List<Region> regions = regionDao.getList();
-        for(Region r : regions)
+        for (Region r : regions)
             System.out.println(r.getName());
     }
 }
