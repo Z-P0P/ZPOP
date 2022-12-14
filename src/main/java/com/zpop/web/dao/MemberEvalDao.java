@@ -5,6 +5,7 @@ import java.util.List;
 import com.zpop.web.entity.MemberEval;
 
 public interface MemberEvalDao {
+
 	List<MemberEval> getList(int size, int offset, String keyword, String option);
 	int insert (MemberEval memberEval);
 	int insertAll(MemberEval[] memberEvals);

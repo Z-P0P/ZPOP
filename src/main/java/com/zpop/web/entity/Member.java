@@ -1,6 +1,6 @@
 package com.zpop.web.entity;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class Member {
     private int id;
@@ -9,10 +9,11 @@ public class Member {
     private String nickname;
     private int fame;
     private String profileImagePath;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-    private Timestamp resignedAt;
-    private boolean isSuspended;
+    private Date createdAt;
+    private Date updatedAt;
+    private Date resignedAt;
+
+    private String isSuspended;
 
     public int getId() {
         return this.id;
@@ -62,35 +63,36 @@ public class Member {
         this.profileImagePath = profileImagePath;
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return this.createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public Date getUpdatedAt() {
         return this.updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public Timestamp getResignedAt() {
+    public Date getResignedAt() {
         return this.resignedAt;
     }
 
-    public void setResignedAt(Timestamp resignedAt) {
+    public void setResignedAt(Date resignedAt) {
         this.resignedAt = resignedAt;
     }
 
-    public boolean isIsSuspended() {
+    public String getIsSuspended() {
         return this.isSuspended;
     }
 
-    public void setIsSuspended(boolean isSuspended) {
+    public void setIsSuspended(String isSuspended) {
+  
         this.isSuspended = isSuspended;
     }
 

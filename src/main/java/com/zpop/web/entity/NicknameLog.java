@@ -1,11 +1,12 @@
 package com.zpop.web.entity;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class NicknameLog {
     private int id;
     private int memberId;
-    private Timestamp createdAt;
+    private Date createdAt;
+    private String nickname;
 
     public int getId() {
         return this.id;
@@ -23,12 +24,20 @@ public class NicknameLog {
         this.memberId = memberId;
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return this.createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 
 }
