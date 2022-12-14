@@ -8,8 +8,7 @@ public class Region {
     public Region() {
     }
 
-    public Region(int id, String name, boolean isActivated) {
-        this.id = id;
+    public Region(String name, boolean isActivated) {
         this.name = name;
         this.isActivated = isActivated;
     }

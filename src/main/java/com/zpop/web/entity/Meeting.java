@@ -24,26 +24,6 @@ public class Meeting {
     public Meeting() {
     }
 
-    public Meeting(int id, int regMemberId, int categoryId, int regionId, int ageRangeId, String title, String content, String detailRegion, int maxMember, Date startedAt, String contact, int viewCount, int commentCount, boolean isClosed, Date createdAt, Date updatedAt, Date deletedAt) {
-        this.id = id;
-        this.regMemberId = regMemberId;
-        this.categoryId = categoryId;
-        this.regionId = regionId;
-        this.ageRangeId = ageRangeId;
-        this.title = title;
-        this.content = content;
-        this.detailRegion = detailRegion;
-        this.maxMember = maxMember;
-        this.startedAt = startedAt;
-        this.contact = contact;
-        this.viewCount = viewCount;
-        this.commentCount = commentCount;
-        this.isClosed = isClosed;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
-    }
-
     public Meeting(int regMemberId, int categoryId, int regionId, int ageRangeId, String title, String content, String detailRegion, int maxMember, Date startedAt, String contact) {
         this.regMemberId = regMemberId;
         this.categoryId = categoryId;

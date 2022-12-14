@@ -8,8 +8,7 @@ public class Category {
     public Category() {
     }
 
-    public Category(int id, String name, boolean isActivated) {
-        this.id = id;
+    public Category(String name, boolean isActivated) {
         this.name = name;
         this.isActivated = isActivated;
     }

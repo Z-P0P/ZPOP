@@ -13,15 +13,6 @@ public class Participation {
     public Participation() {
     }
 
-    public Participation(int id, int meetingId, int participantId, Date createdAt, Date bannedAt, Date canceledAt) {
-        this.id = id;
-        this.meetingId = meetingId;
-        this.participantId = participantId;
-        this.createdAt = createdAt;
-        this.bannedAt = bannedAt;
-        this.canceledAt = canceledAt;
-    }
-
     public Participation(int meetingId, int participantId) {
         this.meetingId = meetingId;
         this.participantId = participantId;
