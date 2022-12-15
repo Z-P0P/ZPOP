@@ -6,13 +6,17 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.zpop.web.entity.Comment;
+import com.zpop.web.entity.CommentView;
 @Mapper
 public interface CommentDao {
 		
 		/* groupId : 1depth아이디 */
 		
-		List<Comment> getComment(int meetingId);
-		List<Comment> getReply(int parentCommentId);
+		List<CommentView> getComment(int meetingId);
+		List<CommentView> getReply(int groupId);
+		int getCountOfComment(int meetingId);
+		int getCountOfReply(int groupId);
+		
 		int insertComment(int meetingId, int writerId, String text); //댓글
 		int insertComment(Map map);
 		int insertReply(int meetingId, int parentId, int groupId, int writerId, String text); //대댓글

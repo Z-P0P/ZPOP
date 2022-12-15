@@ -3,21 +3,43 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.CommentDao">
-  <select id="getComment" resultType= "Comment">
+  <select id="getComment" resultType= "CommentView">
 	select * 
-	from comment 
+	from commentView 
 	where 
 		<if test=" query != null">
-		meetingId = #{query}
+			meetingId = #{query}
 		</if>
+		and parentCommentId is null
+	order by createdAt
   </select>
-  <select id="getReply" resultType= "Comment">
+  <select id="getReply" resultType= "CommentView">
 	select * 
-	from comment 
-	where 
+	from commentView
+	where
 		<if test=" query != null">
-		groupId = #{query}
+			groupId = #{query}
 		</if>
+	and parentCommentId is not null
+    order by createdAt
+  </select>
+  <select id="getCountOfComment" resultType="int">
+  	select count(id) 
+  	from comment
+  	where
+		<if test=" query != null">
+			meetingId = #{query}
+		</if>
+  	and parentCommentId is null
+  </select>
+  <select id="getCountOfReply" resultType="int">
+  	select count(id) 
+  	from comment
+  	where
+		<if test=" query != null">
+			groupId = #{query}
+		</if>
+  	
   </select>
   <insert id="insertComment" parameterType="java.util.Map">
   	insert into comment 
@@ -44,9 +66,6 @@
     </set>
   	where id = #{id}
   </update>
-  <delete id="deleteComment">
-  	delete from comment
-  	where id =#{id}
-  </delete>
+  
 </mapper>
 
