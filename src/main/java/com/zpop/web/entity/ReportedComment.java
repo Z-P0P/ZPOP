@@ -1,4 +1,4 @@
-package com.zpop.entity;
+package com.zpop.web.entity;
 
 import java.util.Date;
 
