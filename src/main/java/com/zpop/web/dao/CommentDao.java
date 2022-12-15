@@ -11,10 +11,11 @@ public interface CommentDao {
 		
 		/* groupId : 1depth아이디 */
 		
-		List<Comment> getList(int meetingId);
+		List<Comment> getComment(int meetingId);
+		List<Comment> getReply(int parentCommentId);
 		int insertComment(int meetingId, int writerId, String text); //댓글
 		int insertComment(Map map);
-		int insertReply(int meetingId, int parentId, int gropuId, int writerId, String text); //대댓글
+		int insertReply(int meetingId, int parentId, int groupId, int writerId, String text); //대댓글
 		int insertReply(Map map);
 		
 		/*

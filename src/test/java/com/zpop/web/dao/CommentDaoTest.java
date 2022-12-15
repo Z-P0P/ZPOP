@@ -18,8 +18,12 @@ class CommentDaoTest {
 private CommentDao cmDao;
 	@Test
 	void test() {
-		List<Comment> list = cmDao.getList(1);
-		System.out.println(list);
+		int meetingId = 1;
+		int groupId = 1;
+		List<Comment> list1 = cmDao.getComment(meetingId);
+		System.out.println(list1);
+		List<Comment> list2 = cmDao.getReply(groupId);
+		System.out.println(list2);
 		//댓글
 		Map<String,String> map = new HashMap<>();
 		map.put("meetingId", "1");
