@@ -14,7 +14,7 @@ public interface CommentDao {
 		List<Comment> getList(int meetingId);
 		int insertComment(int meetingId, int writerId, String text); //댓글
 		int insertComment(Map map);
-		int insertReply(int meetingId, int parentId, int writerId, String text); //대댓글
+		int insertReply(int meetingId, int parentId, int gropuId, int writerId, String text); //대댓글
 		int insertReply(Map map);
 		
 		/*

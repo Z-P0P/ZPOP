@@ -19,13 +19,13 @@
   <insert id="insertReply" parameterType="java.util.Map">
   		insert into comment 
   		<choose>
-  			<when test="isReplyToReply == null">
+  			<when test="groupId == null">
 				(meetingId, parentCommentId, writerId, content)
 				values (#{meetingId}, #{parentCommentId}, #{writerId}, #{content})
 			</when>
 			<otherwise>
-				(meetingId, parentCommentId, isReplyToReply, writerId, content)
-				values (#{meetingId}, #{parentCommentId}, #{isReplyToReply}, #{writerId}, #{content})
+				(meetingId, parentCommentId, groupId, writerId, content)
+				values (#{meetingId}, #{parentCommentId}, #{groupId}, #{writerId}, #{content})
 			</otherwise>
 		</choose>
   </insert>
