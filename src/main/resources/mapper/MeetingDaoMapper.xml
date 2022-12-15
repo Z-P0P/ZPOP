@@ -15,9 +15,9 @@
         where id=#{id}
     </select>
 
-    <select id="getList" resultType= "com.zpop.web.entity.Meeting">
+    <select id="getThumbList" resultType= "com.zpop.web.view.MeetingThumbView">
         select *
-        from meeting
+        from meetingThumb
     </select>
 
 <!--    <update id="update" parameterType="com.zpop.web.entity.Meeting">-->
