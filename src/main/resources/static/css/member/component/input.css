@@ -1,0 +1,32 @@
+/* 부모 클래스 명 : input-box */
+
+.input-box {
+    width: 17.750rem;
+    height: 3.125rem;
+    border: 0.125rem solid var(--light-grey2);
+    border-radius: 0.313rem;
+    font-size: 1rem;
+    color: var(--dark-grey2);
+    outline-color: var(--main-color);
+    padding-left: 0.938rem;
+}
+
+.input-box::placeholder{
+    padding-left: 0.938rem;
+    font-size: 1rem;
+    color: var(--grey2);
+}
+
+/* 오류발생 클래스 */
+
+.input-error{
+    border-color:  var(--error-red);
+    outline-color: var(--error-red);
+    background-image: url(/images/icon/warning.svg);
+    background-repeat: no-repeat;
+    background-position: 95% 50%;
+}
+
+.long-text-box{
+    width : 23.938rem;
+}

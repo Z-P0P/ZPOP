@@ -1,0 +1,146 @@
+@import url(/css/admin/style.css);
+
+
+/* 검색창 css */
+
+.admin-search-bar-div{
+    width : 25rem;
+    height : 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.admin-search-bar{
+    width: 25rem;
+    height: 3rem;
+    font-size: 1rem;
+    color:  var(--dark-grey2); 
+    outline-color:var(--light-grey2);
+    border: 0;
+    border-radius: 0.313rem;
+    background-color: var(--light-grey2);
+    background-image: url(/images/icon/search.svg);
+    background-repeat: no-repeat;
+    background-position: 4% 50%;
+    text-align: center;
+    padding:0;
+    margin:0;
+}
+
+.admin-search-bar-box{
+    width: 100%;
+    position: relative;
+}
+
+.admin-search-button{
+    position: absolute;
+    top: 0.750rem;
+    right: 0.750rem;
+    background-color: var(--light-grey2);
+    outline-color:var(--light-grey2);
+    border:none;
+    cursor: pointer;
+    background-image: url(/images/icon/slide-bar.svg);
+    height:1.500rem;
+    width:1.500rem;
+    background-repeat: no-repeat;
+
+
+}
+
+.admin-search-bar::placeholder{
+    padding-left: 0.313rem;
+    font-size: 1rem;
+    color: var(--grey2);
+    text-align : center;
+}
+
+.admin-search-bar-button{
+    width: 3rem;
+    height: 3rem;
+    background-color: var(--light-grey2);
+    border:0;
+    cursor: pointer;
+}
+
+/* 모달창 css */
+
+.filter-box{
+    width: 44.813rem;
+    height: 20rem;
+    border: 0.063rem solid var(--black);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.063rem solid var(--grey1);
+    box-shadow: 0 0.313rem 0.313rem rgba(0, 0, 0, 0.15);
+}
+
+.filter-box div {
+    width: 38.813rem;
+    height: 1.563rem;
+    margin: 1.250rem auto;
+}
+
+.filter-box span{
+    display: inline-block;
+    width: 5.8rem;
+}
+
+.filter-box input,select {
+    text-align: center;
+}
+
+.filter-box input{
+    border : 0.063rem solid var(--admin-grey);
+    border-right:0; 
+    border-top:0; 
+    border-left:0; 
+}
+
+.keyword-input{
+    width: 32.375rem;
+    outline-color: var(--dark-grey2);
+}
+
+.category-select,.result-amount {
+    width: 32.375rem;
+}
+
+.date-input{
+    width:12.500rem;
+}
+
+.date-input + span {
+    margin-left:1.250rem;
+    width: 4.375rem;
+}
+
+.period-select{
+    width:12.5rem;
+    margin-left:1.250rem;
+}
+
+select{
+    border: 0.063rem solid var(--admin-grey);
+    border-right:0; 
+    border-top:0; 
+    border-left:0; 
+}
+
+.filter-button{
+    width:5.750rem;
+    height:2.375rem;
+    border:none;
+    border-radius: 0.313rem;
+    color:var(--white);
+    background-color: var(--admin-loyal-blue);
+    cursor:pointer;
+}
+
+.search-button{
+    display: flex;
+    justify-content: flex-end;
+}
+

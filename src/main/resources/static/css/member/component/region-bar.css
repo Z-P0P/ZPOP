@@ -1,0 +1,24 @@
+.region--div{
+    min-width: 128px;
+    height:52px;
+    background-color: #177DD7; /* true blue*/
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.region--div > img{
+    width: 24px;
+    height: 24px;
+    margin-right: 24px;
+    margin-left: 16px;
+    cursor: pointer;
+}
+
+.region--div > span {
+    margin-left: 24px;
+}

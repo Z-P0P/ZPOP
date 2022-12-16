@@ -1,0 +1,25 @@
+@import url(/css/reset.css);
+@import url(/css/color.css);
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css");
+
+/* pretendard 폰트 import */
+* {
+  font-family: "Pretendard Variable";
+}
+
+body {
+  min-width: 21.875rem;
+}
+
+:root {
+  --font-large: 1.25rem;/* 20 */
+  --font-medium: 1.125rem;/* 18 */
+  --font-regular: 1rem;/* 16 */
+  --font-small: 0.875rem; /* 14 */
+
+  /* Font weight */
+  --bold: 700;
+  --semi-bold: 600;
+  --regular: 400;
+
+}

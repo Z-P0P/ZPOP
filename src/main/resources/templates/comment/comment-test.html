@@ -23,7 +23,7 @@
 	      <ul class="comment__list">
 	          <li th:each="comment:${comments}">
 	              <div class="profile"> 
-	                  <span class="profile__image" th:text="${comment.profileImgPath}"></span>
+	                  <span class="profile__image" th:text="${comment.profileImgPath}">전재민</span>
 	                  <span style="color:magenta" class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
 	                  <span class="profile__time">3분전</span>
 	                  <button></button>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/member/style.css" />
+    <link rel="stylesheet" href="/css/button.css" />
+    <link rel="stylesheet" href="/css/member/component/comment.css" />
+    <link rel="stylesheet" href="/css/member/component/profile-box.css">
+  </head>
+  <body>
+    <section class="comment">
+      <div>
+      <span class="comment__num">댓글 </span>	
+      <h2 class="comment__num" th:text="${countOfComment}">N</h2>
+      <span class="comment__num">개</span>
+      </div>
+      <div class="comment__input-container"> 
+          <textarea
+          class="comment__input"
+          name="댓글 입력"
+          placeholder="댓글을 입력하세요."
+          ></textarea>
+          <span class="comment__btn btn btn-round">등록하기</span>
+      </div>
+      <ul class="comment__list">
+          <li th:each="comment:${comments}">
+              <div class="profile"> 
+                  <span class="profile__image" th:text="${comment.profileImgPath}"></span>
+                  <span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
+                  <span class="profile__time">3분전</span>
+                  <button></button>
+              </div>
+              <span class="comment__content" th:text="${comment.content}">
+                  이 헌법에 의한 최초의 대통령의 임기는 이 헌법시행일로부터 개시한다. 모든 국민은 거주·이전의 자유를 가진다. 대통령은 제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다.
+              </span>
+              <div class="comment__replies">
+              		  <span>답글</span>		
+                      <span th:text="${countOfReply}">n개</span>
+                      <span>답글 달기</span>
+              </div>
+          </li>
+      </ul>
+  </section>
+  </body>
+</html>

@@ -1,0 +1,75 @@
+.profile {
+    min-width:17rem;
+    height: 2.250rem;
+    display: grid;
+    grid-template: 
+    "img nickname button" 1.125rem
+    "img time button" 1.125rem
+    / 2.250rem 12.500rem 1fr; 
+    column-gap: 1rem;
+}
+
+.profile span{
+    font-size: 0.875rem;
+}
+
+.profile__image{
+    width: 2.250rem;
+    height: 2.250rem;
+    background-image: url("/images/icon/user-profile-grey.svg");
+    background-size: contain;
+    display: inline-block;
+    grid-area: img;
+    cursor: pointer;
+}
+
+.profile__nickname{
+    grid-area: nickname;
+    font-weight: bold;
+}
+
+.profile__time{
+    color: var(--grey1);
+    grid-area: time;
+    padding-top: 0.188rem;
+
+}
+
+.profile > button {
+    width: 1.500rem;
+    height: 1.500rem;
+    background-image: url(/images/icon/kebab.svg);
+    background-repeat: no-repeat;
+    border: none;
+    background-color: var(--white);
+    grid-area: button;
+    justify-self: flex-end;
+    margin-top: 0.438rem;
+    cursor: pointer;
+}
+
+@media (min-width: 36rem) {
+    .profile{
+        min-width:17rem;
+        max-width: 49.5rem;
+        height: 2.5rem;
+    }
+
+    .profile span{
+        font-size: 1rem;
+    }
+
+    .profile__nickname{
+        padding-top: 0.063rem;
+    }
+    
+    .profile__time{
+        color: var(--grey1);
+        padding-top: 0.250rem;
+    }
+
+    .profile__image{
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}

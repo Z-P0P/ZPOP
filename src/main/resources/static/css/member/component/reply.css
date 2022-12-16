@@ -1,0 +1,77 @@
+.reply {
+  display: flex;
+  flex-direction: column;
+  margin: 50px auto 0 auto;
+}
+
+.reply__num {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.reply__input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.reply__input {
+  border: none;
+  resize: none;
+  width: 100%;
+  min-height: 4rem;
+  background: var(--light-grey1);
+  padding: 1.25rem;
+  margin: 1rem 0;
+  font-size: 1rem;
+}
+
+.reply__btn {
+  align-self: flex-end;
+}
+
+@media (min-width: 576px) {
+  .reply__input {
+    min-height: 9.375rem;
+  }
+
+  .reply__num {
+    font-weight: bold;
+    font-size: 18px;
+  }
+}
+
+.reply__list {
+  margin-top: 2rem;
+}
+
+.reply__replies span:last-child { 
+  padding-left: 0.75rem;
+  padding-right: 0.8rem;
+}
+
+/* ===== 답글 컨텐트 영역 ====== */
+.reply__content {
+  width: 100%;
+  min-width:15.5rem;
+  max-width: 45rem;
+  display: inline-block;
+  text-align: left;
+  /* 사용자 프로필 영역과 댓글 영역을 위해 padding-top 추가 */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* ====== 답글 남기기 ===========*/
+.reply__replies {
+  min-width:15.5rem;
+  max-width: 45rem;
+  display: flex;
+  justify-content: flex-end;
+  color: var(--main-color);
+  text-decoration: underline;
+}
+
+@media (min-width: 36rem) {
+  .reply__content{font-size: 1.125rem;}
+  .reply__replies{font-size: 1.125rem;}
+}
