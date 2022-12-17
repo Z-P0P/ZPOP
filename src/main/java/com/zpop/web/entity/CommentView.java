@@ -14,6 +14,8 @@ public class CommentView {
 	private int parentMemberId;
 	private String parentNickname;
 	private String parentImg;
+	private String elapsedTime;
+	private int countOfReply; //한 그룹내의 답글 수
 	
 	public CommentView() {
 	}
@@ -64,6 +66,22 @@ public class CommentView {
 
 	public String getParentImg() {
 		return parentImg;
+	}
+
+	public String getElapsedTime() {
+		return elapsedTime;
+	}
+
+	public void setElapsedTime(String elapsedTime) {
+		this.elapsedTime = elapsedTime;
+	}
+
+	public int getCountOfReply() {
+		return countOfReply;
+	}
+
+	public void setCountOfReply(int countOfReply) {
+		this.countOfReply = countOfReply;
 	}
 
 	@Override

@@ -22,6 +22,8 @@ public interface CommentDao {
 		int insertReply(int meetingId, int parentId, int groupId, int writerId, String text); //대댓글
 		int insertReply(Map map);
 		
+		int getPeerNumber(int groupId);//한 그룹아이디를 공유하는 답
+
 		/*
 		 * 대댓글에 대한 댓글의 경우 직계의 parentId를 통해 depth1의 조부모Id값을 얻을 수 있으므로 오버로딩 생략.
 		 */

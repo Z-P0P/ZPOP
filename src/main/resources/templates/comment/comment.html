@@ -12,11 +12,7 @@
   </head>
   <body>
     <section class="comment">
-      <div>
-      <span class="comment__num">댓글 </span>	
-      <h2 class="comment__num" th:text="${countOfComment}">N</h2>
-      <span class="comment__num">개</span>
-      </div>
+      <h2 class="comment__num" th:text="'댓글 ' + ${countOfComment}+' 개'">N</h2>
       <div class="comment__input-container"> 
           <textarea
           class="comment__input"
@@ -30,7 +26,7 @@
               <div class="profile"> 
                   <span class="profile__image" th:text="${comment.profileImgPath}"></span>
                   <span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
-                  <span class="profile__time">3분전</span>
+                  <span class="profile__time" th:text="${comment.elapsedTime}">3분전</span>
                   <button></button>
               </div>
               <span class="comment__content" th:text="${comment.content}">
@@ -38,7 +34,7 @@
               </span>
               <div class="comment__replies">
               		  <span>답글</span>		
-                      <span th:text="${countOfReply}">n개</span>
+                      <span th:text="${comment.countOfReply}">n개</span>
                       <span>답글 달기</span>
               </div>
           </li>
