@@ -20,9 +20,5 @@ class CommentServiceTest {
 		
 		System.out.println(service.getReply(4));
 	}
-	@Test
-	void testGetCount() {
-		System.out.println(service.getCountOfReply(1));
-	}
-
+	
 }
