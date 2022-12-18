@@ -3,26 +3,38 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.MeetingDao">
-    <insert id="insert" parameterType="com.zpop.web.entity.Meeting">
+    <insert id="insert" parameterType="com.zpop.web.entity.meeting.Meeting">
         insert into meeting
         (regMemberId, categoryId, regionId, ageRangeId, title, content, detailRegion, maxMember, startedAt, contact)
         values(#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId}, #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact})
     </insert>
 
-    <select id="get" resultType= "com.zpop.web.entity.Meeting">
-        select *
-        from meeting
-        where id=#{id}
+    <select id="get" resultType= "com.zpop.web.entity.meeting.Meeting">
+        SELECT *
+        FROM meeting
+        WHERE id=#{id}
     </select>
 
-    <select id="getThumbList" resultType= "com.zpop.web.view.MeetingThumbView">
-        select *
-        from meetingThumb
+    <select id="getThumbList" parameterType="com.zpop.web.dto.MeetingThumbPageable" resultType= "com.zpop.web.entity.meeting.MeetingThumbView">
+        SELECT *
+        FROM meetingThumb
+        <trim prefix="where" prefixOverrides="AND | OR">
+            <choose>
+                <when test="startId == 0">
+                    id >= #{startId}
+                </when>
+                <otherwise>
+                    <![CDATA[ id < #{startId} ]]>
+                </otherwise>
+            </choose>
+            <if test="isClosed != null">
+                AND isClosed = #{isClosed}
+            </if>
+            <if test="keyword !=null">
+                AND title LIKE '%${keyword}}'
+            </if>
+        </trim>
+        LIMIT 0, 9;
     </select>
-
-<!--    <update id="update" parameterType="com.zpop.web.entity.Meeting">-->
-<!--        update meeting-->
-<!--        SET readAt = '1999-07-19';-->
-<!--    </update>-->
 </mapper>
 

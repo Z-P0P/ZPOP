@@ -1,12 +1,14 @@
 package com.zpop.web.controller;
 
+import com.zpop.web.dto.MeetingThumbResponse;
 import com.zpop.web.service.MeetingService;
-import com.zpop.web.view.MeetingThumbView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -25,9 +27,28 @@ public class TempMeetingController {
     }
 
     @GetMapping("/list")
-    public String getListView(Model model){
-        List<MeetingThumbView> meetings = service.getList();
+    public String getListView(
+            Model model,
+            @RequestParam(required = false, defaultValue = "0") int startId,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Boolean isClosed
+            ){
+        List<MeetingThumbResponse> meetings = service.getList(startId, keyword, isClosed);
+
         model.addAttribute("meetings", meetings);
+
         return "meeting/list";
+    }
+
+    @GetMapping("/api/list")
+    @ResponseBody
+    public List<MeetingThumbResponse> getList(
+            @RequestParam(required = false, defaultValue = "0") int startId,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Boolean isClosed
+    ){
+        List<MeetingThumbResponse> meetings = service.getList(startId, keyword, isClosed);
+
+        return meetings;
     }
 }

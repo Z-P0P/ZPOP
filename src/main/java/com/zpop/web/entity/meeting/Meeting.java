@@ -1,4 +1,4 @@
-package com.zpop.web.entity;
+package com.zpop.web.entity.meeting;
 
 import java.util.Date;
 
