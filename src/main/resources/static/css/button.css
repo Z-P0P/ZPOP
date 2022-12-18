@@ -1,0 +1,83 @@
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    padding: 0.5rem 1rem;
+    background:var(--light-grey1);
+    cursor: pointer;
+    color: var(--white);
+    font-weight: bold;
+}
+
+.btn-round {
+    border-radius: 1.25rem;
+}
+
+.btn-semiround {
+    border-radius: 0.25rem;
+}
+
+.btn-action{
+    background-color: var(--main-color);
+}
+
+.btn-totop {
+    display: inline-flex;
+    background: url("/static/images/chevron.svg") no-repeat center;
+    background-color: var(--main-color);
+    background-size: 1.875rem;
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 1.875rem;
+}
+
+.toggle-switch {
+    /* radius 변수를 변경하면 크기가 알맞게 변화 됩니다. */
+    /* 1.313 = mobile & 1.875 = desktop */
+    --radius: 1.313rem;
+    --radius: 1.875rem;
+
+    width: calc(var(--radius) * 2.190476);
+    height: calc(var(--radius) * 1.33333);
+    display: block;
+    position: relative;
+    border-radius: 6.25rem;
+
+    background:var(--light-grey1);
+    cursor: pointer;
+}
+
+.toggle-switch .toggle-button {
+    width: calc(var(--radius) );
+    height: calc(var(--radius) );
+    position: absolute;
+    top: 50%;
+    left: 0.3125rem;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: -1px 0px 1px 0px #0000004A ,0px 2px 4px 0px #00000040;
+}
+
+#toggle:checked ~ .toggle-switch {
+    background: var(--main-color);
+}
+
+#toggle:checked ~ .toggle-switch .toggle-button {
+    left: calc(var(--radius) - 0.5px);
+    box-shadow: 1px 0px 1px 0px #504F4F4A , 0px 1px 4px 0px #00000040;
+    background: var(--white);
+
+}
+
+.toggle-switch,
+.toggle-button {
+    transition: all 0.2s ease-in;
+}
+
+@media (min-width: 576px) {
+    .btn {
+        padding: 0.5rem 2rem;
+    }
+}
