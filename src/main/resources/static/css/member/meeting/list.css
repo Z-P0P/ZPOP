@@ -1,63 +1,71 @@
 .main {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .banner {
-    background-color: aquamarine;
-    width: 100%;
-    height: 96px;
+  background-color: aquamarine;
+  width: 100%;
+  height: 96px;
 }
 
 .main__header {
-    max-width: 1200px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    margin-top: 40px;
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 40px;
 }
 
 .meeting__options {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 24px auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 24px auto;
 }
 
 .meeting-activate-option {
-    display: none;
+  display: flex;
+  align-items: center;
+}
+
+.meeting-activate-option > span {
+  margin-right: 1rem;
 }
 
 @media (min-width: 576px) {
-    .meeting-activate-option {
-        display: flex;
-        align-items: center;
-    }
+  .meeting-activate-option > span {
+    font-size: 24px;
+  }
 }
 
 .main__content {
-    max-width: 1200px;
-    margin: auto;
+  max-width: 1200px;
+  margin: auto;
 }
 
 @media (min-width: 576px) {
-    .banner {
-        height: 160px;
-    }
+  .banner {
+    height: 160px;
+  }
 }
 
 .region-category {
-    display: none;
-    width: 220px
+  display: none;
+  width: 220px;
 }
 
 @media (min-width: 576px) {
-    .region-category {
-        display: inline-block;
-    }
+  .region-category {
+    display: inline-block;
+  }
+}
+
+.lds-roller {
+  margin-top: 2rem;
 }

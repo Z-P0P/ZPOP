@@ -60,7 +60,12 @@ const getNextMeetings = async () => {
   const newMeetings = await fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      if (data.length === 0) return;
+      // 다음 데이터가 없을시 로딩 숨김
+      if (data.length === 0) {
+        const loading = document.querySelector(".lds-roller");
+        loading.style.visibility = "hidden";
+        return;
+      }
 
       // 받아온 모임 리스트 배열을 돌면서 새 모임 카드 화면에 출력
       for (const m of data) createMeetingCard(m);
@@ -75,13 +80,13 @@ const getNextMeetings = async () => {
 /**
  * 스크롤 위치로 다음 모임 리스트 요청 이벤트
  */
-let timer;
+let timer; // 쓰로틀링 타이머
 window.addEventListener("scroll", () => {
   const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
   if (!timer && scrollTop + clientHeight > scrollHeight - 5) {
     timer = setTimeout(() => {
       timer = null;
       getNextMeetings();
-    }, 1000);
+    }, 1300);
   }
 });
