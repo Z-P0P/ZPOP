@@ -1,4 +1,4 @@
-package com.zpop.web.view;
+package com.zpop.web.entity.meeting;
 
 import java.util.Date;
 
@@ -11,6 +11,8 @@ public class MeetingThumbView {
     private int ageRangeId;
     private String region;
     private int maxMember;
+    private int genderCategory;
+    private String exposedGender;
     private String title;
     private Date startedAt;
     private int viewCount;
@@ -20,7 +22,7 @@ public class MeetingThumbView {
     public MeetingThumbView() {
     }
 
-    public MeetingThumbView(int id, int categoryId, String category, int regionId, String ageRange, int ageRangeId, String region, int maxMember, String title, Date startedAt, int viewCount, int commentCount, boolean isClosed) {
+    public MeetingThumbView(int id, int categoryId, String category, int regionId, String ageRange, int ageRangeId, String region, int maxMember, int genderCategory, String exposedGender, String title, Date startedAt, int viewCount, int commentCount, boolean isClosed) {
         this.id = id;
         this.categoryId = categoryId;
         this.category = category;
@@ -29,6 +31,8 @@ public class MeetingThumbView {
         this.ageRangeId = ageRangeId;
         this.region = region;
         this.maxMember = maxMember;
+        this.genderCategory = genderCategory;
+        this.exposedGender = exposedGender;
         this.title = title;
         this.startedAt = startedAt;
         this.viewCount = viewCount;
@@ -68,6 +72,14 @@ public class MeetingThumbView {
         return maxMember;
     }
 
+    public int getGenderCategory() {
+        return genderCategory;
+    }
+
+    public String getExposedGender() {
+        return exposedGender;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -88,22 +100,4 @@ public class MeetingThumbView {
         return isClosed;
     }
 
-    @Override
-    public String toString() {
-        return "MeetingThumbView{" +
-                "id=" + id +
-                ", categoryId=" + categoryId +
-                ", category='" + category + '\'' +
-                ", regionId=" + regionId +
-                ", ageRange='" + ageRange + '\'' +
-                ", ageRangeId=" + ageRangeId +
-                ", region='" + region + '\'' +
-                ", maxMember=" + maxMember +
-                ", title='" + title + '\'' +
-                ", startedAt=" + startedAt +
-                ", viewCount=" + viewCount +
-                ", commentCount=" + commentCount +
-                ", isClosed=" + isClosed +
-                '}';
-    }
 }
