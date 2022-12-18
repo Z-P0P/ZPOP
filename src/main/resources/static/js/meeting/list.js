@@ -75,9 +75,13 @@ const getNextMeetings = async () => {
 /**
  * 스크롤 위치로 다음 모임 리스트 요청 이벤트
  */
+let timer;
 window.addEventListener("scroll", () => {
   const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
-  if (scrollTop + clientHeight > scrollHeight - 5) {
-    setTimeout(getNextMeetings, 1000);
+  if (!timer && scrollTop + clientHeight > scrollHeight - 5) {
+    timer = setTimeout(() => {
+      timer = null;
+      getNextMeetings();
+    }, 1000);
   }
 });
