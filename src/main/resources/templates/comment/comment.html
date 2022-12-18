@@ -16,10 +16,11 @@
       <div class="comment__input-container"> 
           <textarea
           class="comment__input"
-          name="댓글 입력"
+          name="comment-text"
+          id="comment-text"
           placeholder="댓글을 입력하세요."
           ></textarea>
-          <span class="comment__btn btn btn-round">등록하기</span>
+          <span class="comment__btn btn btn-round" id="register-btn">등록하기</span>
       </div>
       <ul class="comment__list">
           <li th:each="comment:${comments}">
@@ -41,4 +42,29 @@
       </ul>
   </section>
   </body>
+  <script>
+    window.addEventListener("load", (e) => {
+        const registerBtn = document.querySelector("#register-btn");
+
+        registerBtn.addEventListener("click",(e) => {
+            e.preventDefault();
+
+            const commentText = document.querySelector("#comment-text").value;
+
+            const data = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "content":commentText,
+                    "writerId":2,
+                    "meetingId":1
+                })
+            }
+
+            fetch("http://localhost:8080/comment", data);
+        });
+    });
+</script>
 </html>

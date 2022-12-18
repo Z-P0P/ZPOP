@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zpop.web.dao.CommentDao;
+import com.zpop.web.entity.Comment;
 import com.zpop.web.entity.CommentView;
 import com.zpop.web.util.TIME_CONST;
 @Service
@@ -51,6 +52,13 @@ public class DefaultCommentService implements CommentService {
 	public int getCountOfComment(int meetingId) {
 		int countOfComment= dao.getCountOfComment(meetingId);
 		return countOfComment;
+	}
+
+	@Override
+	public int registerComment(int meetingId, Comment comment) {
+		
+		int affectedRow = dao.insertComment(comment);
+		return affectedRow;
 	}
 	
 	

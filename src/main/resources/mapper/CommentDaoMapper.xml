@@ -41,11 +41,17 @@
 		</if>
   	
   </select>
-  <insert id="insertComment" parameterType="java.util.Map">
+  <!-- <insert id="insertComment" parameterType="java.util.Map">
+  	insert into comment 
+	  	(meetingId, writerId, content)
+	  	values (#{meetingId}, #{writerId}, #{content})
+  </insert> -->
+  <insert id="insertComment" parameterType="Comment">
   	insert into comment 
 	  	(meetingId, writerId, content)
 	  	values (#{meetingId}, #{writerId}, #{content})
   </insert>
+  
   <insert id="insertReply" parameterType="java.util.Map">
   		insert into comment 
   		<choose>
