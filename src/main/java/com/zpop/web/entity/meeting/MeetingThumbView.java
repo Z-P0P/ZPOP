@@ -12,7 +12,6 @@ public class MeetingThumbView {
     private String region;
     private int maxMember;
     private int genderCategory;
-    private String exposedGender;
     private String title;
     private Date startedAt;
     private int viewCount;
@@ -22,7 +21,7 @@ public class MeetingThumbView {
     public MeetingThumbView() {
     }
 
-    public MeetingThumbView(int id, int categoryId, String category, int regionId, String ageRange, int ageRangeId, String region, int maxMember, int genderCategory, String exposedGender, String title, Date startedAt, int viewCount, int commentCount, boolean isClosed) {
+    public MeetingThumbView(int id, int categoryId, String category, int regionId, String ageRange, int ageRangeId, String region, int maxMember, int genderCategory, String title, Date startedAt, int viewCount, int commentCount, boolean isClosed) {
         this.id = id;
         this.categoryId = categoryId;
         this.category = category;
@@ -32,7 +31,6 @@ public class MeetingThumbView {
         this.region = region;
         this.maxMember = maxMember;
         this.genderCategory = genderCategory;
-        this.exposedGender = exposedGender;
         this.title = title;
         this.startedAt = startedAt;
         this.viewCount = viewCount;
@@ -76,10 +74,6 @@ public class MeetingThumbView {
         return genderCategory;
     }
 
-    public String getExposedGender() {
-        return exposedGender;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -99,5 +93,4 @@ public class MeetingThumbView {
     public boolean isClosed() {
         return isClosed;
     }
-
 }
