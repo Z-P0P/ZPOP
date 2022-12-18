@@ -28,8 +28,6 @@ public final class TIME_CONST {
         else if ((diffTime /= TIME_CONST.SEC) < TIME_CONST.MIN)
         {
             // min
-            System.out.println(diffTime);
-           
             msg = diffTime + "분전";
         }
         else if ((diffTime /= TIME_CONST.MIN) < TIME_CONST.HOUR)
@@ -51,7 +49,6 @@ public final class TIME_CONST {
         {
             msg = (diffTime) + "년전";
         }
-       System.out.println();
         return msg;
     }
 }
