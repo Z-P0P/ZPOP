@@ -27,24 +27,13 @@ public class CommentController {
 		List<CommentView> comments = service.getComment(meetingId);
 		int countOfComment = service.getCountOfComment(meetingId);
 		
-		model.addAttribute("comments", comments);
+		//model.addAttribute("comments", comments);
 		model.addAttribute("countOfComment", countOfComment);
 		
 		return "comment/comment";
 		
 	}
-	@GetMapping("/comment2")
-	public String comment2(Model model) {
-		int meetingId = 1;
-		List<CommentView> comments = service.getComment(meetingId);
-		int countOfComment = service.getCountOfComment(meetingId);
-		
-		model.addAttribute("comments", comments);
-		model.addAttribute("countOfComment", countOfComment);
-		
-		return "comment/comment2";
-		
-	}
+	
 	@GetMapping("/reply")
 	public String reply(Model model) {
 		int groupId = 4;
@@ -55,13 +44,11 @@ public class CommentController {
 		return "comment/reply";
 	}
 	
-	@GetMapping("comment-p")
-	public Comment showComment(@RequestParam Comment comment) {
-		return comment;
-	}
+
 	
-	@PostMapping("/comment")
+	@PostMapping("comment")
 	public  String registerComment(@RequestBody Comment comment) {
-		return "";
+		//service.registerComment(1, comment);
+		return "redirect:/comment";
 	}
 }

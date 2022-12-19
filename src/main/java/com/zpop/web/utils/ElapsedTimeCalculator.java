@@ -1,8 +1,8 @@
-package com.zpop.web.util;
+package com.zpop.web.utils;
 
 import java.util.Date;
 
-public final class TIME_CONST {
+public final class ElapsedTimeCalculator {
 	
 
         public static final int SEC = 60;
@@ -20,27 +20,27 @@ public final class TIME_CONST {
 
         String msg = null;
 
-        if (diffTime < TIME_CONST.SEC)
+        if (diffTime < ElapsedTimeCalculator.SEC)
         {
             // sec
             msg = diffTime + "초전";
         }
-        else if ((diffTime /= TIME_CONST.SEC) < TIME_CONST.MIN)
+        else if ((diffTime /= ElapsedTimeCalculator.SEC) < ElapsedTimeCalculator.MIN)
         {
             // min
             msg = diffTime + "분전";
         }
-        else if ((diffTime /= TIME_CONST.MIN) < TIME_CONST.HOUR)
+        else if ((diffTime /= ElapsedTimeCalculator.MIN) < ElapsedTimeCalculator.HOUR)
         {
             // hour
             msg = (diffTime ) + "시간전";
         }
-        else if ((diffTime /= TIME_CONST.HOUR) < TIME_CONST.DAY)
+        else if ((diffTime /= ElapsedTimeCalculator.HOUR) < ElapsedTimeCalculator.DAY)
         {
             // day
             msg = (diffTime ) + "일전";
         }
-        else if ((diffTime /= TIME_CONST.DAY) < TIME_CONST.MONTH)
+        else if ((diffTime /= ElapsedTimeCalculator.DAY) < ElapsedTimeCalculator.MONTH)
         {
             // day
             msg = (diffTime ) + "달전";

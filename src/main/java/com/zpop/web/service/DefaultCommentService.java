@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.zpop.web.dao.CommentDao;
 import com.zpop.web.entity.Comment;
 import com.zpop.web.entity.CommentView;
-import com.zpop.web.util.TIME_CONST;
+import com.zpop.web.utils.ElapsedTimeCalculator;
 @Service
 public class DefaultCommentService implements CommentService {
 	
@@ -24,7 +24,7 @@ public class DefaultCommentService implements CommentService {
 		while (iterator.hasNext()) {
 		    CommentView element = iterator.next();
 		    //작성시간표시
-		    element.setElapsedTime(TIME_CONST.getElpasedTime(element.getCreatedAt()));
+		    element.setElapsedTime(ElapsedTimeCalculator.getElpasedTime(element.getCreatedAt()));
 		    // 답글 수에서 댓글 자신의 수는 제외
 		    element.setCountOfReply(dao.getCountOfReply(element.getGroupId()) - 1);
 		    
@@ -40,7 +40,7 @@ public class DefaultCommentService implements CommentService {
 		while (iterator.hasNext()) {
 		    CommentView element = iterator.next();
 		    //작성시간표시
-		    element.setElapsedTime(TIME_CONST.getElpasedTime(element.getCreatedAt()));
+		    element.setElapsedTime(ElapsedTimeCalculator.getElpasedTime(element.getCreatedAt()));
 		    // 답글 수에서 댓글 자신의 수는 제외
 		    element.setCountOfReply(dao.getCountOfReply(element.getGroupId()) - 1);
 		} 
