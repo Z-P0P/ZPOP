@@ -13,4 +13,9 @@ public class MeetingController {
 		// TODO: 인가처리
 		return "meeting/register";
 	}
+
+	@GetMapping("/{id}")
+	public String detailView() {
+		return "meeting/detail";
+	}
 }
