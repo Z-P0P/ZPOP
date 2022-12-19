@@ -1,18 +1,58 @@
-// 모임 <ul>
-const meetings = document.querySelector("#meetings");
+window.addEventListener("load", function () {
+  let timer; // 쓰로틀링 타이머
 
-/**
- * 받아온 모임 리스트를 모임 ul에 자식 li로 생성한다
- */
-const createMeetingCard = (meetingData) => {
-  const meeting = document.createElement("li");
-  meeting.setAttribute("data-id", meetingData.id);
+  // 스크롤 위치가 밑에 닿으면 다음 모임 리스트 요청
+  window.onscroll = function () {
+    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
 
-  const isClosed = meetingData.closed
-    ? '<div class="meeting__status meeting__status--off">모집완료</div>'
-    : '<div class="meeting__status meeting__status--on">모집중</div>';
+    if (!timer && scrollTop + clientHeight > scrollHeight - 5) {
+      timer = setTimeout(() => {
+        timer = null;
+        getNextMeetings();
+      }, 1300);
+    }
+  };
 
-  meeting.innerHTML = `
+  /**
+   * 받아온 모임 리스트를 html 모임 ul에 더한다.
+   */
+  function getNextMeetings() {
+    // 화면에 있는 모임 리스트 중 마지막 모임 id 얻기
+    const lastMeetingId = meetings.lastElementChild.dataset.id;
+
+    const url = `http://localhost:8080/meeting/api/list?startId=${lastMeetingId}`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        // 다음 데이터가 없을시 로딩 숨김
+        if (data.length === 0) {
+          const loadingElement = document.querySelector(".lds-roller");
+          loadingElement.style.visibility = "hidden";
+          return;
+        }
+
+        // 받아온 모임 리스트 배열을 돌면서 새 모임 카드 화면에 출력
+        for (const m of data) createMeetingCard(m);
+      })
+      .catch((e) => {
+        alert("잠시후에 시도해주세요"); //TODO: 처리
+      });
+  }
+
+  /**
+   * 받아온 모임 리스트를 모임 ul에 자식 li로 생성한다
+   */
+  function createMeetingCard(meetingData) {
+    const meetingElement = document.createElement("li");
+
+    meetingElement.setAttribute("data-id", meetingData.id);
+
+    const closedElement = meetingData.closed
+      ? '<div class="meeting__status meeting__status--off">모집완료</div>'
+      : '<div class="meeting__status meeting__status--on">모집중</div>';
+
+    meetingElement.innerHTML = `
   <a class="meeting" href="/meeting/${meetingData.id}">
     <div class="meeting__header">
       <div class="meeting__info-detail-more">
@@ -32,7 +72,7 @@ const createMeetingCard = (meetingData) => {
         <li>#${meetingData.genderCategory}</li>
       </ul>
       <div class="meeting__info-detail">
-        ${isClosed}
+        ${closedElement}
         <div class="meeting__info-detail-more">
           <div class="meeting__views add-deco-img-left deco-img-eyes">
             ${meetingData.viewCount}
@@ -45,48 +85,8 @@ const createMeetingCard = (meetingData) => {
     </div>
   </a>`;
 
-  meetings.appendChild(meeting);
-};
-
-/**
- * 받아온 모임 리스트를 html 모임 ul에 더한다.
- */
-const getNextMeetings = async () => {
-  // 화면에 있는 모임 리스트 중 마지막 모임 id 얻기
-  const lastMeetingId = meetings.lastElementChild.dataset.id;
-
-  const url = `http://localhost:8080/meeting/api/list?startId=${lastMeetingId}`;
-
-  const newMeetings = await fetch(url)
-    .then((res) => res.json())
-    .then((data) => {
-      // 다음 데이터가 없을시 로딩 숨김
-      if (data.length === 0) {
-        const loading = document.querySelector(".lds-roller");
-        loading.style.visibility = "hidden";
-        return;
-      }
-
-      // 받아온 모임 리스트 배열을 돌면서 새 모임 카드 화면에 출력
-      for (const m of data) createMeetingCard(m);
-    })
-    .catch((e) => {
-      alert("잠시후에 시도해주세요"); //TODO: 처리
-    });
-};
-
-// window.addEventListener("load", function () {});
-
-/**
- * 스크롤 위치로 다음 모임 리스트 요청 이벤트
- */
-let timer; // 쓰로틀링 타이머
-window.addEventListener("scroll", () => {
-  const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
-  if (!timer && scrollTop + clientHeight > scrollHeight - 5) {
-    timer = setTimeout(() => {
-      timer = null;
-      getNextMeetings();
-    }, 1300);
+    // 모임 <ul>에 meetingElement 추가
+    const meetingsElement = document.querySelector("#meetings");
+    meetingsElement.appendChild(meetingElement);
   }
 });

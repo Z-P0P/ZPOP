@@ -8,14 +8,15 @@
     <link rel="stylesheet" href="/css/icon.css" />
     <link rel="stylesheet" href="/css/button.css" />
     <link rel="stylesheet" href="/css/form.css" />
+    <link rel="stylesheet" href="/css/loading.css" />
     <link rel="stylesheet" href="/css/member/component/header.css" />
     <link rel="stylesheet" href="/css/member/component/select.css" />
     <link rel="stylesheet" href="/css/member/component/meeting.css" />
     <link rel="stylesheet" href="/css/member/component/search-bar.css" />
     <link rel="stylesheet" href="/css/member/component/meeting-category.css" />
     <link rel="stylesheet" href="/css/member/meeting/list.css" />
-    <script src="/js/member/select.js"></script>
-    <script type="module" src="/js/meeting/list.js"></script>
+    <script src="/js/member/select.js" defer></script>
+    <script src="/js/meeting/list.js" defer></script>
   </head>
   <body>
     <main class="main">
@@ -87,9 +88,7 @@
             <a class="meeting" th:href="@{/meeting/{id}(id = ${meeting.id})}">
               <div class="meeting__header">
                 <div class="meeting__info-detail-more">
-                  <span
-                    class="meeting__category"
-                    th:text="${meeting.category}"
+                  <span class="meeting__category" th:text="${meeting.category}"
                     >카테고리</span
                   >
                   <span
@@ -97,15 +96,11 @@
                     th:text="${meeting.region}"
                     >지역</span
                   >
-                  <span
-                    class="meeting__date"
-                    th:text="${meeting.startedAt}"
+                  <span class="meeting__date" th:text="${meeting.startedAt}"
                     >11.01(일)</span
                   >
                 </div>
-                <h3 class="meeting__title" th:text="${meeting.title}">
-                  제목
-                </h3>
+                <h3 class="meeting__title" th:text="${meeting.title}">제목</h3>
               </div>
 
               <div class="meeting__info">
@@ -147,6 +142,18 @@
           </li>
         </ul>
       </section>
+
+      <!--  loading   -->
+      <div class="lds-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </main>
   </body>
 </html>
