@@ -12,14 +12,13 @@ body {
 }
 
 :root {
-  --font-large: 1.25rem;/* 20 */
-  --font-medium: 1.125rem;/* 18 */
-  --font-regular: 1rem;/* 16 */
+  --font-large: 1.25rem; /* 20 */
+  --font-medium: 1.125rem; /* 18 */
+  --font-regular: 1rem; /* 16 */
   --font-small: 0.875rem; /* 14 */
 
   /* Font weight */
   --bold: 700;
   --semi-bold: 600;
   --regular: 400;
-
 }
