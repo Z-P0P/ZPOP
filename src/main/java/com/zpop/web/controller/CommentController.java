@@ -27,7 +27,7 @@ public class CommentController {
 		List<CommentView> comments = service.getComment(meetingId);
 		int countOfComment = service.getCountOfComment(meetingId);
 		
-		//model.addAttribute("comments", comments);
+		model.addAttribute("comments", comments);
 		model.addAttribute("countOfComment", countOfComment);
 		
 		return "comment/comment";
