@@ -33,6 +33,7 @@ public class LoginController {
 		this.loginServiceMap = loginServiceMap;
 	}
 	
+	
 	@GetMapping("")
 	public String loginPage(Model model, HttpSession session) {
 		Member member = (Member)session.getAttribute("member");
@@ -42,8 +43,9 @@ public class LoginController {
 		return "login";
 	}
 
+	// 소셜 로그인 시, kakao, naver를 공통적으로 처리함
 	@GetMapping("oauth/{loginType}")
-	public String login(@PathVariable("loginType") String loginType
+	public String OAuthlogin(@PathVariable("loginType") String loginType
 			,@RequestParam @Nullable String code 
 			, @RequestParam @Nullable String state
 			, HttpSession session)
@@ -63,19 +65,26 @@ public class LoginController {
 		loginService = loginServiceMap.get(loginType+"LoginService");
 		String accessToken = (loginService.getAccessToken(code,state));
 		String socialId = loginService.getSocialId(accessToken);
-		Member member = loginService.getUserInfo(socialId);
+		Member member = loginService.getMemberInfo(socialId);
 		
+		/* 
+		 * 소셜id를 받아와도, 기존에 멤버로 되어있지 않으면 지금 단계에서는 member 추가 X
+		 * 대신 socialId 와 loginType을 세션에 저장하여 register에서 닉네임을 설정할 때
+		 * member에 추가함
+		 */
 		if (member == null) {
 			session.setAttribute("socialId", socialId);
 			session.setAttribute("loginType", loginType);
 			return "redirect:/register";
 		}
 		
+		// 만약 member가 조회되면 세션에 정보를 저장하여 member정보를 view에 활용함
 		session.setAttribute("member", member);
 		return "redirect:/login";
 		
 	}
 /*
+ * naverLogin과 관련된 별도의 컨트롤러
 	@GetMapping("oauth/naver")
 	public String naverLogin(@RequestParam @Nullable String code
 			, @RequestParam @Nullable String state
