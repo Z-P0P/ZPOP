@@ -17,8 +17,9 @@ public class RegisterService {
 	private final int MAX_NICKNAME_LENGTH = 10;
 	
 	@Autowired
-	public RegisterService(MemberDao memberDao) {
+	public RegisterService(MemberDao memberDao, SocialTypeDao socialTypeDao) {
 		this.memberDao = memberDao;
+		this.socialTypeDao = socialTypeDao;
 	}
 	
 	public Member registerMember(String nickname, String socialId, String LoginType) {
@@ -47,7 +48,7 @@ public class RegisterService {
 	
 	public boolean checkNicknameRegisted (String nickname) {
 		Member member = memberDao.getByNickname(nickname);
-		return (member==null);
+		return (member!=null);
 	}
 	
 	
