@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/member/style.css">
+    <link rel="stylesheet" href="../../static/css/deco.css">
+    <link rel="stylesheet" href="../../static/css/icon.css">
+    <link rel="stylesheet" href="../../static/css/color.css">
+    <link rel="stylesheet" href="../../static/css/button.css">
+    <link rel="stylesheet" href="../../static/css/member/profile/my-profile.css">
+</head>
+<body>
+<!--------------------my-profile start -------------------->
+    <div class="my-profile-container">
+
+
+        <h2 class="profile__title">내 프로필</h2>
+        <div class="profile__image">
+            <div class="profile__image--no-photo .icon"></div>
+        </div>
+        <span class="profile__nickname" th:text="${member.nickname}">닉네임이에요오오호호</span>
+
+        <div class=" profile__fame">
+            <span th:text="${member.fame}">인기도: 99점</span>
+            <span class="deco-img-star "></span>
+        </div>
+       
+        <span class="btn-semiround profile__btn">프로필 수정</span>
+
+        <div class="profile__page-move">
+            <span>　내가 참여한 모임</span>
+            <span class="icon icon-arrow-right">오른쪽 화살표</span>
+        </div>
+        <div class="profile__page-move">
+            <span>　내가 모집한 모임</span>
+            <span class="icon icon-arrow-right">오른쪽 화살표</span>
+        </div>
+        <a class="profile__sign-out"href="">탈퇴하기</a>
+
+        
+    </div>
+<!--------------------my-profile end -------------------->
+</body>
+</html>
