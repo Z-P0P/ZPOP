@@ -4,23 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zpop.web.dao.MemberDao;
 import com.zpop.web.entity.Member;
+import com.zpop.web.service.RegisterService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/register")
 public class RegisterController {
-	private final int MAX_NICKNAME_LENGTH = 10;
 
 	@Autowired
-	private MemberDao memberDao;
+	private RegisterService registerService;
 
 	@GetMapping()
 	public String register(HttpSession session) {
@@ -36,18 +34,19 @@ public class RegisterController {
 	@ResponseBody
 	public String validateNickname(@RequestParam String nickname, HttpSession session) {
 
-		System.out.println(nickname);
-		if (nickname.isBlank() || nickname.isEmpty() || nickname.length() > MAX_NICKNAME_LENGTH) {
-			return "nickname_not_allowed";
-		}
-
 		String socialId = (String) session.getAttribute("socialId");
 		if (socialId == null) {
 			return "not_login_user";
 		}
-		System.out.println("유효성 요청 옴");
-		Member registeredMemberWithNickname = memberDao.getByNickname(nickname);
-		if (registeredMemberWithNickname != null) {
+		
+		boolean isValid = registerService.checkNicknameValid(nickname);
+		if (!isValid) {
+			return "nickname_not_allowed";
+		}
+
+		boolean hasRegistered = registerService.checkNicknameRegisted(nickname);
+		
+		if (hasRegistered) {
 			return "nickname_already_used";
 		}
 
@@ -58,35 +57,35 @@ public class RegisterController {
 	@ResponseBody
 	public String setNickname(@RequestParam String nickname, HttpSession session) {
 
-		if (nickname.isBlank() || nickname.isEmpty() || nickname.length() > MAX_NICKNAME_LENGTH) {
-			return "nickname_not_allowed";
-		}
-
 		String socialId = (String) session.getAttribute("socialId");
-		int socialIdType = (Integer) session.getAttribute("socialIdType");
 		if (socialId == null) {
 			return "not_login_user";
 		}
-
-		Member registeredMemberWithNickname = memberDao.getByNickname(nickname);
-		if (registeredMemberWithNickname != null) {
-			return "nickname_already_used";
+		
+		boolean isValid = registerService.checkNicknameValid(nickname);
+		if (!isValid) {
+			return "nickname_not_allowed";
 		}
 
-		Member member = new Member();
-		member.setNickname(nickname);
-		member.setSocialId(socialId);
-		member.setSocialTypeId(socialIdType);
-		int result = memberDao.insert(member);
-		if (result == 0) {
+		boolean hasNicknameRegistered = registerService.checkNicknameRegisted(nickname);
+		
+		if (hasNicknameRegistered) {
+			return "nickname_already_used";
+		}
+		
+		String loginType = (String) session.getAttribute("loginType");
+		
+		Member member = registerService.registerMember(nickname, socialId, loginType);
+		
+		if (member == null) {
 			System.out.println("회원 등록에 실패하였습니다.");
 		}
 
-		int memberId = memberDao.getBySocialId(socialId).getId();
-		session.setAttribute("memberId", memberId);
-		session.setAttribute("nickname", nickname);
+		// 회원 등록이 되었으므로 임시로 저장해둔 소셜id와 login타입은 제거하고, member객체를 추가
+		session.removeAttribute("socialId");
+		session.removeAttribute("loginType");
+		session.setAttribute("member", member);
 
 		return "nickname_created";
 	}
-	
 }
