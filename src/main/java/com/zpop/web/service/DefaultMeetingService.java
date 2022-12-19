@@ -1,8 +1,8 @@
 package com.zpop.web.service;
 
-import com.zpop.web.dto.MeetingThumbPageable;
 import com.zpop.web.dao.MeetingDao;
-import com.zpop.web.dto.MeetingThumbResponse;
+import com.zpop.web.dto.MeetingThumbnailPagination;
+import com.zpop.web.dto.MeetingThumbnailResponse;
 import com.zpop.web.entity.meeting.MeetingThumbView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,15 +24,15 @@ public class DefaultMeetingService implements MeetingService{
     }
 
     @Override
-    public List<MeetingThumbResponse> getList(int startId, String keyword, Boolean isClosed) {
+    public List<MeetingThumbnailResponse> getList(int startId, String keyword, Boolean isClosed) {
         // 페이징옵션이 없을 때 ex:모임 리스트 조회 첫 화면
-        MeetingThumbPageable pageable = new MeetingThumbPageable(startId, keyword, isClosed);
+        MeetingThumbnailPagination pageable = new MeetingThumbnailPagination(startId, keyword, isClosed);
         List<MeetingThumbView> meetingViews = dao.getThumbList(pageable);
 
         // 응답에 맞게 데이터 변환
-        List<MeetingThumbResponse> list = new ArrayList<>();
+        List<MeetingThumbnailResponse> list = new ArrayList<>();
         for(MeetingThumbView m : meetingViews) {
-            list.add(MeetingThumbResponse.of(m));
+            list.add(MeetingThumbnailResponse.of(m));
         }
 
         return list;

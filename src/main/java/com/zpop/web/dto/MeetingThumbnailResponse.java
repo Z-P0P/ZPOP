@@ -4,7 +4,7 @@ import com.zpop.web.entity.meeting.MeetingThumbView;
 
 import java.util.Date;
 
-public class MeetingThumbResponse {
+public class MeetingThumbnailResponse {
     private int id;
     private String category;
     private String region;
@@ -17,10 +17,10 @@ public class MeetingThumbResponse {
     private int commentCount;
     private boolean isClosed;
 
-    public MeetingThumbResponse() {
+    public MeetingThumbnailResponse() {
     }
 
-    public MeetingThumbResponse(int id, String category, String region, String ageRange, String genderCategory, int maxMember, String title, Date startedAt, int viewCount, int commentCount, boolean isClosed) {
+    public MeetingThumbnailResponse(int id, String category, String region, String ageRange, String genderCategory, int maxMember, String title, Date startedAt, int viewCount, int commentCount, boolean isClosed) {
         this.id = id;
         this.category = category;
         this.region = region;
@@ -78,7 +78,7 @@ public class MeetingThumbResponse {
         return isClosed;
     }
 
-    public static MeetingThumbResponse of (MeetingThumbView entity) {
+    public static MeetingThumbnailResponse of (MeetingThumbView entity) {
         String genderCategory = "누구나";
         switch (entity.getGenderCategory()) {
             case 1:
@@ -89,7 +89,7 @@ public class MeetingThumbResponse {
                 break;
         }
 
-        return new MeetingThumbResponse(
+        return new MeetingThumbnailResponse(
                 entity.getId(),
                 entity.getCategory(),
                 entity.getRegion(),

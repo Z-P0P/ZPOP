@@ -1,14 +1,14 @@
 package com.zpop.web.dto;
 
-public class MeetingThumbPageable {
+public class MeetingThumbnailPagination {
     private Integer startId; // 요청 시작 id
     private String keyword; // 검색어
     private Boolean isClosed;
 
-    public MeetingThumbPageable() {
+    public MeetingThumbnailPagination() {
     }
 
-    public MeetingThumbPageable(int startId, String keyword, Boolean isClosed) {
+    public MeetingThumbnailPagination(int startId, String keyword, Boolean isClosed) {
         this.startId = startId;
         this.keyword = keyword;
         this.isClosed = isClosed;

@@ -1,6 +1,6 @@
 package com.zpop.web.controller;
 
-import com.zpop.web.dto.MeetingThumbResponse;
+import com.zpop.web.dto.MeetingThumbnailResponse;
 import com.zpop.web.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class TempMeetingController {
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Boolean isClosed
             ){
-        List<MeetingThumbResponse> meetings = service.getList(startId, keyword, isClosed);
+        List<MeetingThumbnailResponse> meetings = service.getList(startId, keyword, isClosed);
 
         model.addAttribute("meetings", meetings);
 
@@ -42,12 +42,12 @@ public class TempMeetingController {
 
     @GetMapping("/api/list")
     @ResponseBody
-    public List<MeetingThumbResponse> getList(
+    public List<MeetingThumbnailResponse> getList(
             @RequestParam(required = false, defaultValue = "0") int startId,
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Boolean isClosed
     ){
-        List<MeetingThumbResponse> meetings = service.getList(startId, keyword, isClosed);
+        List<MeetingThumbnailResponse> meetings = service.getList(startId, keyword, isClosed);
 
         return meetings;
     }
