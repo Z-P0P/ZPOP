@@ -2,6 +2,7 @@ package com.zpop.web.entity.meeting;
 
 import java.util.Date;
 
+
 public class Meeting {
     private int id;
     private int regMemberId;
@@ -25,6 +26,7 @@ public class Meeting {
     public Meeting() {
     }
 
+
     public Meeting(int regMemberId, int categoryId, int regionId, int ageRangeId, int genderCategory, String title, String content, String detailRegion, int maxMember, Date startedAt, String contact) {
         this.regMemberId = regMemberId;
         this.categoryId = categoryId;
@@ -39,7 +41,18 @@ public class Meeting {
         this.contact = contact;
     }
 
-    public int getId() {
+
+
+    @Override
+	public String toString() {
+		return "Meeting [id=" + id + ", regMemberId=" + regMemberId + ", categoryId=" + categoryId + ", regionId="
+				+ regionId + ", ageRangeId=" + ageRangeId + ", title=" + title + ", content=" + content
+				+ ", detailRegion=" + detailRegion + ", maxMember=" + maxMember + ", startedAt=" + startedAt
+				+ ", contact=" + contact + ", viewCount=" + viewCount + ", commentCount=" + commentCount + ", isClosed="
+				+ isClosed + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+	}
+
+	public int getId() {
         return id;
     }
 
@@ -109,5 +122,18 @@ public class Meeting {
 
     public Date getDeletedAt() {
         return deletedAt;
+    }
+    
+    public Meeting(int regMemberId, int categoryId, int regionId, int ageRangeId, String title, String content, String detailRegion, int maxMember, Date startedAt, String contact) {
+        this.regMemberId = regMemberId;
+        this.categoryId = categoryId;
+        this.regionId = regionId;
+        this.ageRangeId = ageRangeId;
+        this.title = title;
+        this.content = content;
+        this.detailRegion = detailRegion;
+        this.maxMember = maxMember;
+        this.startedAt = startedAt;
+        this.contact = contact;
     }
 }

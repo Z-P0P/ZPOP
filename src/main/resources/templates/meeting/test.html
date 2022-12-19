@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="meeting/participation" method="post">
+    	<div class="meeting-form__buttons">
+            <button id="participation-btn" class="btn btn-round btn-action"
+                type="submit">참여하기</button>
+        </div>
+    </form>
+</body>
+
+<script>
+window.addEventListener("load", function () {
+    const participation = document.querySelector("#participation-btn");
+
+    participation.onclick = function (e) {
+
+        e.preventDefault();
+	
+        const data = { 
+			method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+       	},
+          body: JSON.stringify({
+        	  	meetingId:164,
+      			testMemberId:3
+        	  })
+		}
+
+        fetch("http://localhost:8080/meeting/test",data)
+        .then((response) => {
+          console.log('성공:', data);
+		  alert("참여했습니다");
+        })
+        .catch((error) => {
+			console.error('실패:', error);
+			alert("참여에 실패했습니다");
+        });
+        // method
+    }
+})
+</script>
+</html>

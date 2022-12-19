@@ -9,6 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface MeetingDao {
+
     int insert(Meeting meeting);
     Meeting get(int id);
     List<MeetingThumbnailView> getThumbnailViewList(MeetingThumbnailPagination pagination);
