@@ -1,0 +1,195 @@
+@import url(/static/css/member/style.css);
+.align-center{
+    display: flex;
+    align-items: center;
+}
+.meeting-list{
+    display: grid;
+    grid-auto-rows: 188px;
+    row-gap: 20px;
+}
+.meeting-list__item--meeting{
+    display: grid;
+    width:350px;
+    height: 188px;
+    grid-template:
+        "a b c . . " 17px
+        "d d d d d" 79px
+        "f . . g h" 24px 
+        /62px 75px 59px 58px 56px;
+        row-gap: 14px;
+        padding: 20px 20px;
+        border: 2px solid var(--light-grey1);
+        border-radius: 15px;
+}
+.meeting__category{
+    grid-area: a;
+    font-size: var(--font-small);
+    border-right: 3px solid var(--main-color);
+}
+.meeting__region-wrap{
+    grid-area: b;
+}
+.meeting__region{
+    display: flex;
+    align-items: center;
+    font-size: var(--font-small);
+    color: var(--grey4);
+    padding-left: 5px;
+}
+.meeting__region::before{
+    content:"";
+    width:7px;
+    height: 12px;
+    background-image: url(/static/images/icon/location.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center left;
+    padding-right: 5px;
+}
+.meeting__date{
+    grid-area: c;
+    font-size: var(--font-small);
+    color: var(--grey4);
+}
+.meeting__content-container{
+    grid-area: d;
+}
+.meeting__content{
+    font-size: var(--font-regular);
+    margin-bottom: 14px;
+}
+.meeting__hashtag{
+    grid-area: e;
+    display: flex;
+    gap: 6px;
+    font-size: var(--font-regular);
+    color: var(--grey1)
+}
+.meeting__status{
+    grid-area:f;
+    width: 61px;
+    height: 19px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--main-color);
+    border: 2px solid var(--main-color);
+    border-radius: 5px;
+}
+.closed{
+    color:var(--white);
+    background-color: var(--main-color);
+    border-radius: 5px;
+}
+.meeting__views-wrap{
+    grid-area: g;
+}
+.meeting__views{
+    display: flex;
+    font-size: var(--font-regular);
+    color:var(--admin-icon-theme);
+}
+.meeting__views::before{
+    content: "";
+    width:24px;
+    height: 24px;
+    background-image: url(/static/images/icon/eyes.svg);
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center left;
+    padding-right: 4px;
+}
+.meeting__comments-wrap{
+    grid-area:h;
+}
+.meeting__comments{
+    display:flex;
+    font-size: var(--font-regular);
+    color:var(--admin-icon-theme);
+}
+.meeting__comments::before{
+    content: "";
+    width:24px;
+    height: 24px;
+    background-image: url(/static/images/icon/speech-bubble.svg);
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center left;
+    padding-right: 4px;
+}
+
+/**************** Desk Top ******************/
+
+@media (min-width:576px){
+    .meeting-list{
+        grid-auto-rows: 320px;
+        grid-template-columns: repeat(2, 382px);
+        row-gap: 32px;
+        column-gap: 24px;
+    }
+    .meeting-list__item--meeting{
+        width:382px;
+        height: 320px;
+        grid-template:
+            "a b c c . . " 24px
+            "d d d d d d" auto
+            "f . . g g h" 24px 
+            /70px 95px 30px 46px 21px 60px;
+            row-gap: 20px;
+            padding: 40px 20px 30px 25px;
+    }
+    .meeting__category{
+        font-size: var(--font-medium);
+        font-weight: bold;
+    }
+   
+    .meeting__region{
+        font-size: var(--font-medium);
+        padding-left: 10px;
+    }
+    .meeting__region::before{
+        width:10px;
+        height: 17px;
+        padding-right: 10px;
+    }
+    .meeting__date{
+        font-size: var(--font-medium);
+        padding-left: 5px;
+    }
+    .meeting__content{
+        font-size: var(--font-large);
+        margin-bottom: 25px;
+    }
+    .meeting__hashtag{
+        color: var(--grey1);
+        gap:20px
+    }
+    .meeting__status{
+        grid-area:f;
+        font-size: var(--font-medium);
+        border:none;
+    }
+    .closed{
+        width: 70px;
+    }
+    .meeting__views{
+        font-size: var(--font-medium);
+    }
+    .meeting__views::before{
+        padding-right: 8px;
+    }
+    .meeting__comments{
+        font-size: var(--font-medium);
+    }
+    .meeting__comments::before{
+        padding-right: 8px;
+    }
+}
+    @media (min-width:792px){
+        .meeting-list{
+          grid-template-columns: repeat(3, 382px);
+        }
+}

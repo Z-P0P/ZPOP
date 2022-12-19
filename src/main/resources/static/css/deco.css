@@ -1,0 +1,124 @@
+.margin-1 {
+  margin: 0.25rem;
+}
+
+.margin-2 {
+  margin: 0.5rem;
+}
+
+.text-hidden {
+  font-size: 0 !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.add-deco-img-left::before,
+.add-deco-img-right::after {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 50%;
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 3rem;
+  content: "";
+}
+
+.add-deco-img-left,
+.add-deco-img-right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.add-deco-img-right {
+  flex-direction: row-reverse;
+}
+
+.deco-img-star {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 50%;
+  width: 24px;
+  height: 24px;
+  content: "";
+  background-image: url(/static/images/icon/star.svg);
+}
+.deco-img-big-logo::before {
+  display: inline-block;
+  width: fit-content;
+  flex: 0 0 147.68px;
+  background-size: contain;
+  background-image: url(/static/images/logo/logo-with-text.svg);
+}
+
+.deco-img-home::before {
+  background-image: url(/static/images/icon/home.svg);
+}
+
+.deco-img-notification::before {
+  background-image: url(/static/images/icon/megaphone.svg);
+}
+
+.deco-img-meeting::before {
+  background-image: url(/static/images/icon/meeting.svg);
+}
+
+.deco-img-user::before {
+  background-image: url(/static/images/icon/user-icon.svg);
+}
+
+.deco-img-comment::before {
+  background-image: url(/static/images/icon/comment.svg);
+}
+
+.deco-img-report::before {
+  background-image: url(/static/images/icon/siren.svg);
+}
+
+.deco-img-logout::before {
+  background-image: url(/static/images/icon/logout.svg);
+}
+
+.deco-img-home-white::before {
+  background-image: url(/static/images/icon/home-white.svg);
+}
+
+.deco-img-notification-white::before {
+  background-image: url(/static/images/icon/megaphone-white.svg);
+}
+
+.deco-img-meeting-white::before {
+  background-image: url(/static/images/icon/meeting-white.svg);
+}
+
+.deco-img-user-white::before {
+  background-image: url(/static/images/icon/user-icon-white.svg);
+}
+
+.deco-img-comment-white::before {
+  background-image: url(/static/images/icon/comment-white.svg);
+}
+
+.deco-img-report-white::before {
+  background-image: url(/static/images/icon/siren-white.svg);
+}
+
+.deco-img-logout-white::before {
+  background-image: url(/static/images/icon/logout-white.svg);
+}
+
+.deco-img-hamburger::before {
+  background-image: url(/static/images/icon/hamburger.svg);
+}
+
+.deco-img-search::before {
+  background-image: url(/static/images/icon/search.svg);
+}
+
+@media (max-width: 576px) {
+  .hide {
+    display: none;
+  }
+}
