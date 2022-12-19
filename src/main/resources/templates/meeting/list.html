@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/member/style.css" />
+    <link rel="stylesheet" href="/css/deco.css" />
+    <link rel="stylesheet" href="/css/icon.css" />
+    <link rel="stylesheet" href="/css/button.css" />
+    <link rel="stylesheet" href="/css/form.css" />
+    <link rel="stylesheet" href="/css/loading.css" />
+    <link rel="stylesheet" href="/css/member/component/header.css" />
+    <link rel="stylesheet" href="/css/member/component/select.css" />
+    <link rel="stylesheet" href="/css/member/component/meeting.css" />
+    <link rel="stylesheet" href="/css/member/component/search-bar.css" />
+    <link rel="stylesheet" href="/css/member/component/meeting-category.css" />
+    <link rel="stylesheet" href="/css/member/meeting/list.css" />
+    <script src="/js/member/select.js" defer></script>
+    <script src="/js/meeting/list.js" defer></script>
+  </head>
+  <body>
+    <main class="main">
+      <div class="banner"></div>
+
+      <header class="main__header">
+        <div class="search-bar">
+          <span class="icon icon-search">돋보기</span>
+          <input
+            class="search-content"
+            type="text"
+            placeholder="원하는 집합을 찾아보세요!"
+          />
+        </div>
+
+        <div class="category-container">
+          <nav class="category-nav">
+            <ul class="category-subcontainer">
+              <li class="category selected">전체</li>
+              <li class="category">밥/카페</li>
+              <li class="category">운동</li>
+              <li class="category">스터디</li>
+              <li class="category">방탈출</li>
+              <li class="category">보드게임</li>
+              <li class="category">펫</li>
+              <li class="category">육아</li>
+              <li class="category">기타</li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="meeting__options">
+          <div class="region-category">
+            <label for="category"></label>
+            <div class="select-box select-box--input select-box--round">
+              <input
+                placeholder="지역"
+                type="text"
+                name="category"
+                id=""
+                readonly
+              />
+              <ul class="select-box__options">
+                <li>밥/카페</li>
+                <li>운동</li>
+                <li>스터디</li>
+                <li>방탈출</li>
+                <li>보드게임</li>
+                <li>문화</li>
+                <li>펫</li>
+                <li>기타</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="meeting-activate-option">
+            <span>모집 중인 모임만 보기</span>
+            <input type="checkbox" id="toggle" checked="checked" hidden />
+            <label for="toggle" class="toggle-switch">
+              <span class="toggle-button"></span>
+            </label>
+          </div>
+        </div>
+      </header>
+
+      <section class="main__content">
+        <ul id="meetings" class="meetings">
+          <li th:each="meeting : ${meetings}" th:attr="data-id=${meeting.id}">
+            <a class="meeting" th:href="@{/meeting/{id}(id = ${meeting.id})}">
+              <div class="meeting__header">
+                <div class="meeting__info-detail-more">
+                  <span class="meeting__category" th:text="${meeting.category}"
+                    >카테고리</span
+                  >
+                  <span
+                    class="meeting__region add-deco-img-left deco-img-location"
+                    th:text="${meeting.region}"
+                    >지역</span
+                  >
+                  <span class="meeting__date" th:text="${meeting.startedAt}"
+                    >11.01(일)</span
+                  >
+                </div>
+                <h3 class="meeting__title" th:text="${meeting.title}">제목</h3>
+              </div>
+
+              <div class="meeting__info">
+                <ul class="meeting__tags">
+                  <li th:text='${"#" + meeting.ageRange}'>연령대</li>
+                  <li th:text='${"#" + meeting.maxMember + "명"}'>인원</li>
+                  <li th:text='${"#" + meeting.genderCategory}'>성별</li>
+                </ul>
+                <div class="meeting__info-detail">
+                  <div
+                    class="meeting__status meeting__status--on"
+                    th:if="${!meeting.isClosed}"
+                  >
+                    모집중
+                  </div>
+                  <div
+                    class="meeting__status meeting__status--off"
+                    th:if="${meeting.isClosed}"
+                  >
+                    모집완료
+                  </div>
+                  <div class="meeting__info-detail-more">
+                    <div
+                      class="meeting__views add-deco-img-left deco-img-eyes"
+                      th:text="${meeting.viewCount}"
+                    >
+                      조회수
+                    </div>
+                    <div
+                      class="meeting__comments add-deco-img-left deco-img-speech-bubble"
+                      th:text="${meeting.commentCount}"
+                    >
+                      댓글수
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!--  loading   -->
+      <div class="lds-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </main>
+  </body>
+</html>

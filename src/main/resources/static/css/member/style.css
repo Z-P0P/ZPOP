@@ -5,6 +5,7 @@
 /* pretendard 폰트 import */
 * {
   font-family: "Pretendard Variable";
+  font-weight: var(--medium);
 }
 
 body {
@@ -12,27 +13,14 @@ body {
 }
 
 :root {
-  --font-large: 1.25rem;/* 20 */
-  --font-medium: 1.125rem;/* 18 */
-  --font-regular: 1rem;/* 16 */
+  --font-large: 1.25rem; /* 20 */
+  --font-medium: 1.125rem; /* 18 */
+  --font-regular: 1rem; /* 16 */
   --font-small: 0.875rem; /* 14 */
 
   /* Font weight */
   --bold: 700;
   --semi-bold: 600;
+  --medium: 500;
   --regular: 400;
-}
-
-.background{
-  opacity: 1;
-  position: fixed;
-  height:100vh;
-  width: 100vw;
-  background-color: grey;
-  z-index: -1;
-}
-
-.darkened-background{
-  opacity: 1;
-  z-index: 1;
 }
