@@ -113,6 +113,8 @@ public class KakaoLoginService implements LoginService{
 	public String getSocialId(String accessToken) {
 		String domainUrl="https://kapi.kakao.com/";
 		String uri = "v2/user/me";
+		
+		// 띄어쓰기 주의
 		String tokenType = "Bearer ";
 		
 		
@@ -120,6 +122,7 @@ public class KakaoLoginService implements LoginService{
 				.baseUrl(domainUrl)
 				.build();
 		
+		//GET,POST 요청 둘다 가능하지만, 편의상 GET으로 요청함
 		KakaoProfileResponse response = client.get()
 				.uri(uri)
 				.header("Authorization", tokenType + accessToken)
