@@ -2,7 +2,7 @@ package com.zpop.web.entity.meeting;
 
 import java.util.Date;
 
-public class MeetingThumbView {
+public class MeetingThumbnailView {
     private int id;
     private int categoryId;
     private String category;
@@ -18,10 +18,10 @@ public class MeetingThumbView {
     private int commentCount;
     private boolean isClosed;
 
-    public MeetingThumbView() {
+    public MeetingThumbnailView() {
     }
 
-    public MeetingThumbView(int id, int categoryId, String category, int regionId, String ageRange, int ageRangeId, String region, int maxMember, int genderCategory, String title, Date startedAt, int viewCount, int commentCount, boolean isClosed) {
+    public MeetingThumbnailView(int id, int categoryId, String category, int regionId, String ageRange, int ageRangeId, String region, int maxMember, int genderCategory, String title, Date startedAt, int viewCount, int commentCount, boolean isClosed) {
         this.id = id;
         this.categoryId = categoryId;
         this.category = category;

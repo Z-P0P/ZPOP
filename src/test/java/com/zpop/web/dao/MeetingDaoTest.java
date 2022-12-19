@@ -1,6 +1,8 @@
 package com.zpop.web.dao;
 
-import com.zpop.web.entity.Meeting;
+import com.zpop.web.dto.MeetingThumbnailPagination;
+import com.zpop.web.entity.meeting.Meeting;
+import com.zpop.web.entity.meeting.MeetingThumbnailView;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -26,6 +27,7 @@ class MeetingDaoTest {
                 1,
                 1,
                 1,
+                0,
                 "모임 테스트 제목",
                 "모임 테스트 내용",
                 "뉴렉처 강의실",
@@ -45,8 +47,10 @@ class MeetingDaoTest {
 
     @Test
     void get_list_테스트() {
-        List<Meeting> meetings = meetingDao.getList();
-        for(Meeting m : meetings)
+        MeetingThumbnailPagination pagination = new MeetingThumbnailPagination(0, null, null);
+
+        List<MeetingThumbnailView> meetings = meetingDao.getThumbnailViewList(pagination);
+        for(MeetingThumbnailView m : meetings)
             System.out.println(m.getTitle());
     }
 }

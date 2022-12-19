@@ -1,9 +1,9 @@
 package com.zpop.web.service;
 
-import com.zpop.web.dto.MeetingThumbResponse;
+import com.zpop.web.dto.MeetingThumbnailResponse;
 
 import java.util.List;
 
 public interface MeetingService {
-    List<MeetingThumbResponse> getList(int startId, String keyword, Boolean isClosed);
+    List<MeetingThumbnailResponse> getList(int startId, String keyword, Boolean isClosed);
 }

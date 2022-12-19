@@ -15,7 +15,7 @@
         WHERE id=#{id}
     </select>
 
-    <select id="getThumbList" parameterType="com.zpop.web.dto.MeetingThumbPageable" resultType= "com.zpop.web.entity.meeting.MeetingThumbView">
+    <select id="getThumbnailViewList" parameterType="com.zpop.web.dto.MeetingThumbnailPagination" resultType= "com.zpop.web.entity.meeting.MeetingThumbnailView">
         SELECT *
         FROM meetingThumb
         <trim prefix="where" prefixOverrides="AND | OR">

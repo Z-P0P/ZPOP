@@ -1,6 +1,6 @@
 package com.zpop.web.dto;
 
-import com.zpop.web.entity.meeting.MeetingThumbView;
+import com.zpop.web.entity.meeting.MeetingThumbnailView;
 
 import java.util.Date;
 
@@ -78,7 +78,7 @@ public class MeetingThumbnailResponse {
         return isClosed;
     }
 
-    public static MeetingThumbnailResponse of (MeetingThumbView entity) {
+    public static MeetingThumbnailResponse of (MeetingThumbnailView entity) {
         String genderCategory = "누구나";
         switch (entity.getGenderCategory()) {
             case 1:
