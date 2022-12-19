@@ -128,5 +128,7 @@ public class ReportedMeeting {
 	public void setReleasedAt(Date releasedAt) {
 		this.releasedAt = releasedAt;
 	}
+
+
 	
 }
