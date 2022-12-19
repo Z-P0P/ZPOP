@@ -65,7 +65,7 @@ public class LoginController {
 		loginService = loginServiceMap.get(loginType+"LoginService");
 		String accessToken = (loginService.getAccessToken(code,state));
 		String socialId = loginService.getSocialId(accessToken);
-		Member member = loginService.getUserInfo(socialId);
+		Member member = loginService.getMemberInfo(socialId);
 		
 		/* 
 		 * 소셜id를 받아와도, 기존에 멤버로 되어있지 않으면 지금 단계에서는 member 추가 X

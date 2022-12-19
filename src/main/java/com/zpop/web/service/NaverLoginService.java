@@ -62,7 +62,7 @@ public class NaverLoginService implements LoginService{
 			System.out.println("토큰 요청 중 에러가 발생하였음");
 		}
 		
-		return response.getAccess_token();
+		return response.getAccessToken();
 	}
 
 	@Override

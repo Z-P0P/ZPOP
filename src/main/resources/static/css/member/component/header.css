@@ -44,8 +44,6 @@
 
 .header button {
   cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
 }
 
 .header__main {
@@ -70,7 +68,7 @@
   width: var(--logo-mobile-width);
   height: var(--logo-mobile-height);
   content: "";
-  background-image: url(/images/logo/logo-with-text.svg);
+  background-image: url(/static/images/logo/logo-with-text.svg);
   background-repeat: no-repeat;
   background-size: contain;
   flex: 0 0 var(--logo-mobile-width);
