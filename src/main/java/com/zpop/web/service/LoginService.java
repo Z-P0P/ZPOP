@@ -13,6 +13,6 @@ public interface LoginService {
 
 	String getSocialId(String accessToken);
 
-	Member getUserInfo(String socialId);
+	Member getMemberInfo(String socialId);
 
 }
