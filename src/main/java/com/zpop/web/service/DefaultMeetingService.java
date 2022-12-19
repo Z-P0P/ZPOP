@@ -28,8 +28,9 @@ public class DefaultMeetingService implements MeetingService{
     public DefaultMeetingService() {
     }
 
-    public DefaultMeetingService(MeetingDao dao){
+    public DefaultMeetingService(MeetingDao dao, ParticipationDao participationDao){
         this.dao = dao;
+        this.participationDao = participationDao;
     }
 
     @Override
