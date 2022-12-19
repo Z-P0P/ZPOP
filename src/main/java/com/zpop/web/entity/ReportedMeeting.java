@@ -17,9 +17,9 @@ public class ReportedMeeting {
 	private Date blockedAt;
 	private Date releasedAt;
 	
-	public ReportedMeeting(int id, int meetingId, int reporterId, int typeId, int adminId, String reason,
+	public ReportedMeeting(int meetingId, int reporterId, int typeId, int adminId, String reason,
 			String original, String field, Date createdAt, Date processedAt, Date blockedAt, Date releasedAt) {
-		this.id = id;
+	
 		this.meetingId = meetingId;
 		this.reporterId = reporterId;
 		this.typeId = typeId;
@@ -128,5 +128,7 @@ public class ReportedMeeting {
 	public void setReleasedAt(Date releasedAt) {
 		this.releasedAt = releasedAt;
 	}
+
+
 	
 }
