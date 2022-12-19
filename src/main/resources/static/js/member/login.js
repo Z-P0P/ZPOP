@@ -17,6 +17,7 @@ window.addEventListener('load', function(){
 
 });
 
+// naver 로그인에 필요한 state 파라미터를 생성하는 함수. 예시를 위해 위에서는 10개의 랜덤 문자열을 사용함
 generateRandomString = (num) => {
   const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let result = '';
