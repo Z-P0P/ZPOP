@@ -3,5 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.ReportedMemberDao">
-	
+	<insert id="insert" parameterType="ReportedMeeting">
+		insert into reportedMember (reportedId,reporterId,typeId,adminId,reason,createdAt,processedAt,blockedAt,releasedAt) 
+		values(#{reportedId},#{reporterId},#{typeId},#{adminId},#{reason},#{createdAt},#{processedAt},#{blockedAt},#{releasedAt});
+	</insert>
 </mapper>
