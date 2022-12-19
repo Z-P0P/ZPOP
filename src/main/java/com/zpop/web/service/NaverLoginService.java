@@ -25,6 +25,7 @@ public class NaverLoginService implements LoginService{
 	
 	public String getAccessToken(String code, String state) throws IOException, InterruptedException {
 
+		//네이버 소셜 로그인의 개발test용 어플은 해당 계정으로만 로그인 가능함
 		String domainUrl="https://nid.naver.com";
 		String uri = "/oauth2.0/token";
 		String grantType = "authorization_code";
