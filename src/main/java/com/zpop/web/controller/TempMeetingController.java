@@ -52,7 +52,7 @@ public class TempMeetingController {
 
     @DeleteMapping("/{id}")
     @ResponseBody
-    public boolean delte(
+    public boolean delete(
             @PathVariable(name = "id") int id
     ) {
         Member testMember = new Member();
