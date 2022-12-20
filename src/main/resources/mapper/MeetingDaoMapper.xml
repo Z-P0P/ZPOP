@@ -31,7 +31,7 @@
                 AND isClosed = #{isClosed}
             </if>
             <if test="keyword !=null">
-                AND title LIKE '%${keyword}}'
+                AND title LIKE '%${keyword}%'
             </if>
         </trim>
         LIMIT 0, 9;
