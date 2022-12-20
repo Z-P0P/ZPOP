@@ -12,5 +12,5 @@ public interface MeetingDao {
     int insert(Meeting meeting);
     Meeting get(int id);
     List<MeetingThumbnailView> getThumbnailViewList(MeetingThumbnailPagination pagination);
-//    int update(Meeting meeting);
+    int updateDeletedAt(Meeting meeting);
 }

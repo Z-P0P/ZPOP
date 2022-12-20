@@ -36,5 +36,11 @@
         </trim>
         LIMIT 0, 9;
     </select>
+
+    <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting">
+        update meeting
+        deletedAt=CURRENT_TIMESTAMP()
+        where id = #{id}
+    </update>
 </mapper>
 
