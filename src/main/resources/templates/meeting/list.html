@@ -1,25 +1,14 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{inc/layout}">
   <head>
-    <meta charset="UTF-8" />
-    <title>Title</title>
-    <link rel="stylesheet" href="/css/member/style.css" />
-    <link rel="stylesheet" href="/css/deco.css" />
-    <link rel="stylesheet" href="/css/icon.css" />
-    <link rel="stylesheet" href="/css/button.css" />
-    <link rel="stylesheet" href="/css/form.css" />
     <link rel="stylesheet" href="/css/loading.css" />
-    <link rel="stylesheet" href="/css/member/component/header.css" />
-    <link rel="stylesheet" href="/css/member/component/select.css" />
     <link rel="stylesheet" href="/css/member/component/meeting.css" />
     <link rel="stylesheet" href="/css/member/component/search-bar.css" />
     <link rel="stylesheet" href="/css/member/component/meeting-category.css" />
     <link rel="stylesheet" href="/css/member/meeting/list.css" />
-    <script src="/js/member/select.js" defer></script>
     <script src="/js/meeting/list.js" defer></script>
   </head>
   <body>
-    <main class="main">
+    <main layout:fragment="content" class="main" >
       <div class="banner"></div>
 
       <header class="main__header">

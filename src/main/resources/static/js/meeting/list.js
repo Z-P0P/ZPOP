@@ -84,7 +84,7 @@ window.addEventListener("load", function () {
       </div>
     </div>
   </a>`;
-
+    //TODO: meetingsElement.insertAdjacentHTML("beforeend", template);
     // 모임 <ul>에 meetingElement 추가
     const meetingsElement = document.querySelector("#meetings");
     meetingsElement.appendChild(meetingElement);
