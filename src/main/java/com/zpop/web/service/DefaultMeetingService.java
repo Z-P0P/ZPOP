@@ -35,10 +35,9 @@ public class DefaultMeetingService implements MeetingService{
 
     @Override
     public List<MeetingThumbnailResponse> getList(int startId, String keyword, Boolean isClosed) {
-        // 페이징옵션이 없을 때 ex:모임 리스트 조회 첫 화면
         MeetingThumbnailPagination pagination = new MeetingThumbnailPagination(startId, keyword, isClosed);
         List<MeetingThumbnailView> meetingThumbnailViews = dao.getThumbnailViewList(pagination);
-
+        
         // 응답에 맞게 데이터 변환
         List<MeetingThumbnailResponse> list = new ArrayList<>();
         for(MeetingThumbnailView m : meetingThumbnailViews) {
