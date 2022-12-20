@@ -1,49 +1,123 @@
 window.addEventListener("load", function () {
-  let timer; // 쓰로틀링 타이머
+  // 상태 관리
+  const state = {
+    searchKeyword: null, // 검색어
+    isToggleOn: document.querySelector("#toggle").checked, // 토글 ON OFF 유무
+    regionOption: null, // 지역 옵션
+  };
 
-  // 스크롤 위치가 밑에 닿으면 다음 모임 리스트 요청
+  // --------------------------------------------------- 사용자 검색 --------------------------------------------------------------
+  const searchBar = document.querySelector("#search-bar-input");
+  searchBar.onkeyup = function (e) {
+    const ENTER_KEY_CODE = 13;
+
+    if (window.event.keyCode == ENTER_KEY_CODE) {
+      state.searchKeyword = document.querySelector("#search-bar-input").value;
+      searchBar.value = ""; // 화면 검색어 비우기
+
+      const data = {};
+      // 토글 checked === true -> 모집 중인 모임만 보기
+      if (state.isToggleOn) data.isClosed = false;
+      data.keyword = state.searchKeyword;
+
+      const url = generateUrl(data);
+
+      requestMeetings(url).then((meetings) => {
+        removeMeetingElements();
+        insertMeetingsElements(meetings);
+      });
+    }
+  };
+
+  // ------------------------------------------ 모집 중인 모임만 보기 토글 ON/OFF ------------------------------------------------
+  const toggleElement = document.querySelector("#toggle");
+  toggleElement.onclick = function (e) {
+    state.isToggleOn = e.target.checked;
+
+    const data = {};
+    // 토글 checked === true -> 모집 중인 모임만 보기
+    if (state.isToggleOn) data.isClosed = false;
+    // 사용자가 검색한 검색어가 있을경우
+    if (state.searchKeyword) data.keyword = state.searchKeyword;
+
+    const url = generateUrl(data);
+
+    requestMeetings(url).then((meetings) => {
+      removeMeetingElements();
+      insertMeetingsElements(meetings);
+    });
+  };
+
+  // ------------------------------------------ infinite scroll 다음 모임 리스트 요청 ------------------------------------------
+  let timer; // 쓰로틀링 타이머
   window.onscroll = function () {
     const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
 
     if (!timer && scrollTop + clientHeight > scrollHeight - 5) {
       timer = setTimeout(() => {
         timer = null;
-        getNextMeetings();
+
+        const data = {};
+        // 토글 checked === true -> 모집 중인 모임만 보기
+        if (state.isToggleOn) data.isClosed = false;
+        // 사용자가 검색한 검색어가 있을경우
+        if (state.searchKeyword) data.keyword = state.searchKeyword;
+        // 마지막 meeting id
+        const lastMeetingId = meetings.lastElementChild.dataset.id;
+        data.startId = lastMeetingId;
+
+        const url = generateUrl(data);
+
+        requestMeetings(url).then((meetings) => {
+          insertMeetingsElements(meetings);
+        });
       }, 1300);
     }
   };
 
   /**
-   * 받아온 모임 리스트를 html 모임 ul에 더한다.
+   * data 객체를 기반으로 페이징 요청 url을 리턴한다
    */
-  function getNextMeetings() {
-    // 화면에 있는 모임 리스트 중 마지막 모임 id 얻기
-    const lastMeetingId = meetings.lastElementChild.dataset.id;
+  function generateUrl(data) {
+    const searchParams = new URLSearchParams(data).toString();
+    return `/meeting/api/list?${searchParams}`;
+  }
 
-    const url = `http://localhost:8080/meeting/api/list?startId=${lastMeetingId}`;
+  /**
+   * 모임 리스트 내의 li 모두 삭제
+   */
+  function removeMeetingElements() {
+    const meetingsElement = document.querySelector("#meetings");
+    meetingsElement.innerHTML = "";
+  }
 
-    fetch(url)
+  /**
+   * 서버에 모임 리스트를 요청한다
+   */
+  function requestMeetings(url) {
+    return fetch(url)
       .then((res) => res.json())
-      .then((data) => {
-        // 다음 데이터가 없을시 로딩 숨김
-        if (data.length === 0) {
-          const loadingElement = document.querySelector(".lds-roller");
-          loadingElement.style.visibility = "hidden";
-          return;
-        }
-
-        // 받아온 모임 리스트 배열을 돌면서 새 모임 카드 화면에 출력
-        for (const m of data) createMeetingCard(m);
-      })
       .catch((e) => {
         alert("잠시후에 시도해주세요"); //TODO: 처리
       });
   }
 
+  function insertMeetingsElements(meetingData) {
+    // 다음 데이터가 없을시 로딩 숨김
+    if (meetingData.length === 0) {
+      const loadingElement = document.querySelector(".lds-roller");
+      loadingElement.style.visibility = "hidden";
+      return;
+    }
+
+    // 받아온 모임 리스트 배열을 돌면서 새 모임 카드 화면에 출력
+    for (const m of meetingData) insertMeeting(m);
+  }
+
   /**
    * 받아온 모임 리스트를 모임 ul에 자식 li로 생성한다
    */
-  function createMeetingCard(meetingData) {
+  function insertMeeting(meetingData) {
     const meetingElement = document.createElement("li");
 
     meetingElement.setAttribute("data-id", meetingData.id);
