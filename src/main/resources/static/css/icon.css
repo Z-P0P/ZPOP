@@ -10,6 +10,14 @@
   cursor: pointer;
 }
 
+.icon-edit {
+  background-image: url(/images/icon/edit.svg);
+}
+
+.icon-trash {
+  background-image: url(/images/icon/trash.svg);
+}
+
 .icon-search {
   background-image: url(/images/icon/search.svg);
 }

@@ -24,7 +24,7 @@
 
 .btn-totop {
   display: inline-flex;
-  background: url("/static/images/chevron.svg") no-repeat center;
+  background: url("/images/chevron.svg") no-repeat center;
   background-color: var(--main-color);
   background-size: 1.875rem;
   width: 3.75rem;
