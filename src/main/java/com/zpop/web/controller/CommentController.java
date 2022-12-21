@@ -48,7 +48,7 @@ public class CommentController {
 	
 	@PostMapping("comment")
 	public  String registerComment(@RequestBody Comment comment) {
-		//service.registerComment(1, comment);
+		service.registerComment(1, comment);
 		return "redirect:/comment";
 	}
 }
