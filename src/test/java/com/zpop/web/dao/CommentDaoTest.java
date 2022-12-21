@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
 import com.zpop.web.entity.Comment;
+import com.zpop.web.entity.CommentView;
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @MybatisTest
 class CommentDaoTest {
@@ -20,11 +21,12 @@ private CommentDao cmDao;
 	void test() {
 		int meetingId = 1;
 		int groupId = 1;
-		List<Comment> list1 = cmDao.getComment(meetingId);
-		System.out.println(list1);
-		List<Comment> list2 = cmDao.getReply(groupId);
-		System.out.println(list2);
 		//댓글
+		List<CommentView> list1 = cmDao.getComment(meetingId);
+		//답글
+		List<CommentView> list2 = cmDao.getReply(groupId);
+		//답글 갯수
+		int count = cmDao.getCountOfReply(groupId);
 		Map<String,String> map = new HashMap<>();
 		map.put("meetingId", "1");
 		map.put("writerId", "1");
