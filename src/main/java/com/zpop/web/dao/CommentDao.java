@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.zpop.web.entity.Comment;
-import com.zpop.web.entity.CommentView;
+import com.zpop.web.entity.comment.Comment;
+import com.zpop.web.entity.comment.CommentView;
 @Mapper
 public interface CommentDao {
 		

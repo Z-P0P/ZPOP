@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="/css/button.css" />
     <link rel="stylesheet" href="/css/member/component/reply.css" />
     <link rel="stylesheet" href="/css/member/component/profile-box.css">
+    <link rel="stylesheet" href="/css/deco.css" />
+    <script src="/js/comment/reply.js"></script>
   </head>
   <body>
     <section class="reply">
@@ -28,19 +30,21 @@
               </span>
               </div>
               <div class="reply__replies">
+		              <span class="hidden" th:text="${reply.parentCommentId}"></span>
                       <span>답글 달기</span>
+		              <span class="hidden" th:text="${reply.groupId}"></span>
               </div>
           </li>
           <template id="template">
           	<li >
               <div class="profile"> 
                   <span class="profile__image"></span>
-                  <span class="profile__nickname profile__nickname" ></span>
-                  <span class="profile__time" ></span>
+                  <span class="profile__nickname profile__nickname" >쿤님</span>
+                  <span class="profile__time" >방금</span>
                   <button></button>
               </div>
               <div class="reply-container">
-              <span class="reply__at-symbol" ></span><!--span사이 공백없애기 
+              <span class="reply__at-symbol" >@</span><!--span사이 공백없애기 
                --><span class="reply__to" ></span>
               <span class="reply__content" ></span>
               </div>
@@ -53,75 +57,4 @@
       
   </section>
   </body>
-  <script type="text/javascript">
-  
-	
-  	 window.addEventListener("load", (e) => {
-        const addReplyLinkList = document.querySelectorAll(".reply__replies");
-		const replySection = document.querySelector(".reply");
-		for(addReplyLink of addReplyLinkList)
-	        addReplyLink.addEventListener("click",(e) => {
-	            e.preventDefault();
-	        	let template = `
-		        	<div class="reply__input-container"> 
-				        <textarea
-				        id="reply-text"
-				        class="reply__input"
-				        name="reply-input"
-				        placeholder="답글을 입력하세요."
-				        ></textarea>
-				        <span id="register-btn" class="reply__btn btn btn-round">등록하기</span>
-		    		</div>
-	        		`;
-	        	e.target.parentElement.insertAdjacentHTML("afterend",template);//클릭된 특정 답글링크의 위치아래에 element추가.
-	        	
-	        	const registerBtn = document.querySelector("#register-btn");
-	        	registerBtn.addEventListener("click",(e) => {
-	                e.preventDefault();
-	
-	                const replyText = document.querySelector("#reply-text").value;
-	
-	                const data = {
-	                    method: "POST",
-	                    headers: {
-	                        "Content-Type": "application/json",
-	                    },
-	                    body: JSON.stringify({
-	                        "content":replyText,
-	                        "writerId":2,
-	                        "meetingId":1
-	                    })
-	                }
-	
-	                fetch("http://localhost:8080/reply", data)
-	                .then(response => {
-	    		        const newReplyText = document.getElementById("reply-text").value;
-	                	if(newReplyText){
-	    	            	if(response.ok){
-	    		            	addNewReplyElement(newReplyText);
-	    	            	}
-	    	            	else alert("시스템 장애로 등록이 안되고 있습니다.");
-	    	            }
-	    	            else alert("댓글을 입력해주세요.");
-	                });
-	            });//end of registerBtn event handler
-	  		}); //end of for-loop & end of addReplyLink.addEventListener
-  	});//end of window.load
-  	 
-  	function addNewReplyElement(newText){
-	    if(newText != ""){
-	        const template = document.querySelector("#template");
-	        const sourceNode = window.template.content.querySelector("li");
-	        const newNode = sourceNode.cloneNode(true);
-	        const textSpan = newNode.querySelector('.reply__content');
-	        const newContent = document.createTextNode(newText);
-	        textSpan.appendChild(newContent);
-	        const targetNode = document.querySelector(".reply__list").lastElementChild;
-	        targetNode.after(newNode);
-	        document.querySelector(".reply__input-container").remove();
-	    }
-	}	
-  
-  
-  </script>
 </html>

@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.CommentDao">
-  <select id="getComment" resultType= "CommentView">
+  <select id="getComment" resultType= "com.zpop.web.entity.comment.CommentView">
 	select * 
 	from commentView 
 	where 
@@ -13,7 +13,7 @@
 		and parentCommentId is null
 	order by createdAt
   </select>
-  <select id="getReply" resultType= "CommentView">
+  <select id="getReply" resultType= "com.zpop.web.entity.comment.CommentView">
 	select * 
 	from commentView
 	where
@@ -46,7 +46,7 @@
 	  	(meetingId, writerId, content)
 	  	values (#{meetingId}, #{writerId}, #{content})
   </insert> -->
-  <insert id="insertComment" parameterType="Comment">
+  <insert id="insertComment" parameterType="com.zpop.web.entity.comment.Comment">
   	insert into comment 
 	  	(meetingId, writerId, content)
 	  	values (#{meetingId}, #{writerId}, #{content})
@@ -65,7 +65,7 @@
 			</otherwise>
 		</choose>
   </insert>
-  <update id="updateComment" parameterType="com.zpop.web.entity.Comment">
+  <update id="updateComment" parameterType="com.zpop.web.entity.comment.Comment">
   	update comment
   	<set>
       <if test="content != null">content=#{content}</if>

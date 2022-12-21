@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zpop.web.dao.CommentDao;
-import com.zpop.web.entity.Comment;
-import com.zpop.web.entity.CommentView;
+import com.zpop.web.entity.comment.Comment;
+import com.zpop.web.entity.comment.CommentView;
 import com.zpop.web.utils.ElapsedTimeCalculator;
 @Service
 public class DefaultCommentService implements CommentService {

@@ -46,11 +46,11 @@
 .reply__list li{
 	margin-bottom:1.5rem;
 }
-.reply__replies span:last-child { 
+/*.reply__replies span:last-child { 
   padding-left: 0.75rem;
   padding-right: 0.8rem;
 }
-
+*/
 /* ===== 답글 컨텐트 영역 ====== */
 .reply-container{
   /* 사용자 프로필 영역과 댓글 영역을 위해 padding-top 추가 */
@@ -80,6 +80,9 @@
   justify-content: flex-end;
   color: var(--main-color);
   text-decoration: underline;
+}
+.reply__replies > span{
+	cursor:pointer;
 }
 
 @media (min-width: 36rem) {

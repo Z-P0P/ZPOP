@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
-import com.zpop.web.entity.Comment;
-import com.zpop.web.entity.CommentView;
+import com.zpop.web.entity.comment.Comment;
+import com.zpop.web.entity.comment.CommentView;
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @MybatisTest
 class CommentDaoTest {

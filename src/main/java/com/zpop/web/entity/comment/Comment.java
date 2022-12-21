@@ -1,4 +1,4 @@
-package com.zpop.web.entity;
+package com.zpop.web.entity.comment;
 
 import java.util.Date;
 
@@ -8,6 +8,7 @@ public class Comment {
 	private int meetingId;
 	private int writerId;
 	private int parentCommentId;
+	private int groupId;
 	private String content;
 	private Date createdAt;
 	private Date updatedAt;
@@ -33,6 +34,12 @@ public class Comment {
 	}
 	public void setParentCommentId(int parentCommentId) {
 		this.parentCommentId = parentCommentId;
+	}
+	public int getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
 	}
 	public String getContent() {
 		return content;

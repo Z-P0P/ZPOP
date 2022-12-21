@@ -8,12 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.zpop.web.entity.Comment;
-import com.zpop.web.entity.CommentView;
+import com.zpop.web.entity.comment.Comment;
+import com.zpop.web.entity.comment.CommentView;
 import com.zpop.web.service.CommentService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 //@RequestMapping("/")
