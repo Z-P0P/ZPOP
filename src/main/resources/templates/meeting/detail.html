@@ -12,12 +12,14 @@
     <link rel="stylesheet" href="/css/icon.css">
     <!-- component css -->
     <link rel="stylesheet" href="/css/member/component/header.css">
+    <link rel="stylesheet" href="/css/member/component/select.css">
     <link rel="stylesheet" href="/css/member/component/profile-box.css">
     <link rel="stylesheet" href="/css/member/component/meeting-info.css">
     <link rel="stylesheet" href="/css/member/component/participant.css" type="text/css" >
     <link rel="stylesheet" href="/css/member/component/comment.css" />
     <!-- detail page css -->
     <link rel="stylesheet" href="/css/member/meeting/detail.css">
+
 </head>
 <body>
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
@@ -33,6 +35,7 @@
         </ul>
     </nav>
 </header>
+
 
 <main class="main">
     <section class="meeting">
@@ -133,5 +136,67 @@
         </ul>
     </section>
     </div>
+
+    <!--------------------------  케밥 모달 추가 --------------------------->
+    <!--💛글상세보기, 참여자-->
+
+
+    <div class="modal-select">
+        <div class="modal-select__contents">복사하기
+            <span class="icon icon-copy"></span>
+        </div>
+        <div class="modal-select__contents">참여링크
+            <span class="icon icon-link"></span>
+        </div>
+        <div class="modal-select__contents">글 신고
+            <span class="icon icon-siren-red"></span>
+        </div>
+    </div>
+    <!--💛글상세보기, 주최자-->
+
+
+    <div class="modal-select">
+        <div class="modal-select__contents">복사 하기
+            <span class="icon icon-copy"></span>
+        </div>
+        <div class="modal-select__contents">수정
+            <span class="icon icon-edit"></span>
+        </div>
+        <div class="modal-select__contents">삭제
+            <span class="icon icon-trash"></span>
+        </div>
+    </div>
+
+    <!--💛글상세보기, 기본유저-->
+    <div class="modal-select">
+        <div class="modal-select__contents">복사 하기
+            <span class="icon icon-copy"></span>
+        </div>
+        <div class="modal-select__contents">글 신고
+            <span class="icon icon-siren-red"></span>
+        </div>
+    </div>
+
+
+    <!-- 💚 댓글 (작성자)-->
+    <div class="modal-select">
+        <div class="modal-select__contents">수정
+            <span class="icon icon-edit"></span>
+        </div>
+        <div class="modal-select__contents">삭제
+            <span class="icon icon-trash"></span>
+        </div>
+    </div>
+
+    <!-- 💚 댓글 (기본유저)-->
+    <div class="modal-select">
+
+        <div class="modal-select__contents">댓글 신고
+            <span class="icon icon-siren-red"></span>
+        </div>
+    </div>
+
+
+    <!--------------------------  케밥 모달 추가 --------------------------->
 </body>
 </html>
