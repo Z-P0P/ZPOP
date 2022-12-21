@@ -5,6 +5,7 @@
 /* pretendard 폰트 import */
 * {
   font-family: "Pretendard Variable";
+  font-weight: var(--medium);
 }
 
 body {
@@ -20,5 +21,6 @@ body {
   /* Font weight */
   --bold: 700;
   --semi-bold: 600;
+  --medium: 500;
   --regular: 400;
 }

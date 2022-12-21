@@ -44,8 +44,6 @@
 
 .header button {
   cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
 }
 
 .header__main {
@@ -89,7 +87,7 @@
   width: 24px;
   height: 24px;
   content: "";
-  background-image: url(/static/images/icon/arrow-left.svg);
+  background-image: url(/images/icon/arrow-left.svg);
   background-repeat: no-repeat;
   background-size: contain;
   flex: 0 0 24px;
@@ -99,7 +97,7 @@
   .header--list .header__main > a::before {
     width: var(--logo-width);
     height: var(--logo-height);
-    background-image: url(/static/images/logo/logo-with-text.svg);
+    background-image: url(/images/logo/logo-with-text.svg);
     flex: 0 0 var(--logo-width);
   }
 }
@@ -124,7 +122,7 @@
   height: 24px;
   display: inline-block;
   content: "";
-  background-image: url(/static/images/icon/search.svg);
+  background-image: url(/images/icon/search.svg);
 }
 
 @media (min-width: 576px) {
@@ -138,7 +136,7 @@
   height: 24px;
   display: inline-block;
   content: "";
-  background: url(/static/images/icon/notification.svg) center/contain no-repeat;
+  background: url(/images/icon/notification.svg) center/contain no-repeat;
 }
 
 .header__notification {
