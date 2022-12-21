@@ -27,7 +27,7 @@
                   이 헌법에 의한 최초의 대통령의 임기는 이 헌법시행일로부터 개시한다. 모든 국민은 거주·이전의 자유를 가진다. 대통령은 제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다.
               </span>
               </div>
-              <div id="add-reply" class="reply__replies">
+              <div class="reply__replies">
                       <span>답글 달기</span>
               </div>
           </li>
@@ -54,79 +54,74 @@
   </section>
   </body>
   <script type="text/javascript">
-  function addNewReplyElement(newText){
-  		
-    if(newText != ""){
-        const template = document.querySelector("#template");
-        const sourceNode = window.template.content.querySelector("li");
-        const newNode = sourceNode.cloneNode(true);
-        const textSpan = newNode.querySelector('.reply__content');
-        const newContent = document.createTextNode(newText);
-        textSpan.appendChild(newContent);
-        const targetNode = document.querySelector(".reply__list li:last-child");
-        if(targetNode ==null)
-            template.after(newNode);
-        else
-            targetNode.after(newNode);
-    }
-    
-}	
+  
+	
   	 window.addEventListener("load", (e) => {
-        const addReply = document.querySelector("#add-reply");
+        const addReplyLinkList = document.querySelectorAll(".reply__replies");
 		const replySection = document.querySelector(".reply");
-		let registerBtn;
-		
-		 registerBtn.addEventListener("click",(e) => {
-            e.preventDefault();
-
-            const replyText = document.querySelector("#reply-text").value;
-
-            const data = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    "content":replyText,
-                    "writerId":2,
-                    "meetingId":1
-                })
-            }
-
-            fetch("http://localhost:8080/reply", data)
-            .then(response => {
-		        const newReplyText = document.getElementById("reply-text").value;
-            	if(newReplyText){
-	            	if(response.ok){
-		            	addNewReplyElement(newReplyText);
-	            	}
-	            	else alert("시스템 장애로 등록이 안되고 있습니다.");
-	            }
-	            else alert("댓글을 입력해주세요.");
-            });
-            
-        });
-		
-        addReply.addEventListener("click",(e) => {
-            e.preventDefault();
-            console.log(addReply);
-        	let template = `
-        	<div class="reply__input-container"> 
-		        <textarea
-		        id="reply-text"
-		        class="reply__input"
-		        name="reply-input"
-		        placeholder="답글을 입력하세요."
-		        ></textarea>
-		        <span id="register-btn" class="reply__btn btn btn-round">등록하기</span>
-    		</div>
-        	`;
-        	replySection.insertAdjacentHTML("beforeend",template);
-        	registerBtn = document.querySelector("#register-btn");
-  		});
-  		
-  		
-  	});
+		for(addReplyLink of addReplyLinkList)
+	        addReplyLink.addEventListener("click",(e) => {
+	            e.preventDefault();
+	        	let template = `
+		        	<div class="reply__input-container"> 
+				        <textarea
+				        id="reply-text"
+				        class="reply__input"
+				        name="reply-input"
+				        placeholder="답글을 입력하세요."
+				        ></textarea>
+				        <span id="register-btn" class="reply__btn btn btn-round">등록하기</span>
+		    		</div>
+	        		`;
+	        	e.target.parentElement.insertAdjacentHTML("afterend",template);//클릭된 특정 답글링크의 위치아래에 element추가.
+	        	
+	        	const registerBtn = document.querySelector("#register-btn");
+	        	registerBtn.addEventListener("click",(e) => {
+	                e.preventDefault();
+	
+	                const replyText = document.querySelector("#reply-text").value;
+	
+	                const data = {
+	                    method: "POST",
+	                    headers: {
+	                        "Content-Type": "application/json",
+	                    },
+	                    body: JSON.stringify({
+	                        "content":replyText,
+	                        "writerId":2,
+	                        "meetingId":1
+	                    })
+	                }
+	
+	                fetch("http://localhost:8080/reply", data)
+	                .then(response => {
+	    		        const newReplyText = document.getElementById("reply-text").value;
+	                	if(newReplyText){
+	    	            	if(response.ok){
+	    		            	addNewReplyElement(newReplyText);
+	    	            	}
+	    	            	else alert("시스템 장애로 등록이 안되고 있습니다.");
+	    	            }
+	    	            else alert("댓글을 입력해주세요.");
+	                });
+	            });//end of registerBtn event handler
+	  		}); //end of for-loop & end of addReplyLink.addEventListener
+  	});//end of window.load
+  	 
+  	function addNewReplyElement(newText){
+	    if(newText != ""){
+	        const template = document.querySelector("#template");
+	        const sourceNode = window.template.content.querySelector("li");
+	        const newNode = sourceNode.cloneNode(true);
+	        const textSpan = newNode.querySelector('.reply__content');
+	        const newContent = document.createTextNode(newText);
+	        textSpan.appendChild(newContent);
+	        const targetNode = document.querySelector(".reply__list").lastElementChild;
+	        targetNode.after(newNode);
+	        document.querySelector(".reply__input-container").remove();
+	    }
+	}	
+  
   
   </script>
 </html>
