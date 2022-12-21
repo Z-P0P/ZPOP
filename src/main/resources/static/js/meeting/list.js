@@ -13,7 +13,6 @@ window.addEventListener("load", function () {
 
     if (window.event.keyCode == ENTER_KEY_CODE) {
       state.searchKeyword = document.querySelector("#search-bar-input").value;
-      searchBar.value = ""; // 화면 검색어 비우기
 
       const data = {};
       // 토글 checked === true -> 모집 중인 모임만 보기
@@ -24,6 +23,23 @@ window.addEventListener("load", function () {
 
       requestMeetings(url).then((meetings) => {
         removeMeetingElements();
+        // 검색결과가 없을 때
+        if(meetings.length === 0) {
+          const searchKeyword = document.querySelector(".search-keyword");
+          searchKeyword.innerText = state.searchKeyword;
+
+          const resultNoneElement = document.querySelector(".result-none");
+          if (resultNoneElement.classList.contains("hidden"))
+            resultNoneElement.classList.remove("hidden");
+
+          return;
+        }
+        // 검색결과가 있을 때
+        else {
+          const resultNoneElement = document.querySelector(".result-none");
+          if (!resultNoneElement.classList.contains("hidden"))
+            resultNoneElement.classList.add("hidden");
+        }
         insertMeetingsElements(meetings);
       });
     }
@@ -122,7 +138,7 @@ window.addEventListener("load", function () {
 
     meetingElement.setAttribute("data-id", meetingData.id);
 
-    const closedElement = meetingData.closed
+    const closedElement = meetingData.isClosed
       ? '<div class="meeting__status meeting__status--off">모집완료</div>'
       : '<div class="meeting__status meeting__status--on">모집중</div>';
 
