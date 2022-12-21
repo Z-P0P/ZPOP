@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내가 참여한 모임</title>
+    <link rel="stylesheet" th:href="@{/css/member/style.css}">
+    <link rel="stylesheet" th:href="@{/css/deco.css}">
+    <link rel="stylesheet" th:href="@{/css/icon.css}">
+    <link rel="stylesheet" th:href="@{/css/color.css}">
+    <link rel="stylesheet" th:href="@{/css/button.css}">
+    <link rel="stylesheet" th:href="@{/css/form-fixed.css}">
+
+    <link rel="stylesheet" th:href="@{/css/member/component/header.css}">
+    <link rel="stylesheet" th:href="@{/css/member/component/select.css}">
+    <link rel="stylesheet" th:href="@{/css/member/component/meeting.css}">
+    <link rel="stylesheet" th:href="@{/css/member/meeting/list.css}">
+                  <!--추가된 css 파일 my-meeting -->
+    <link rel="stylesheet" th:href="@{/css/member/profile/my-meeting.css}">
+    <script src="/js/member/select.js"></script>
+  </head>
+  <body>
+
+
+    <main class="main">
+
+      <header class="header header--list">
+        <h1 class="text-hidden">ZPOP</h1>
+        <nav>
+            <ul>
+                <li class="header__main"><a class="text-hidden" href="#">홈으로 이동</a></li>
+                <li class="header__create-meeting"><a href="">모임 등록</a></li>
+                <li class="header__search"><button class="text-hidden">검색</button></li>
+                <li class="header__notification"><button class="text-hidden">알림확인</button></li>
+                <li class="header__profile"><button class="text-hidden"><img src="/images/icon/user-profile.svg">
+        </nav>
+    </header>
+
+
+      <section class="main__content">
+        
+        <!--  my-meeting added: (아이콘) + 내가 참여한 모임 & 내가 모집한 모임 -->
+        <div class="my-meeting">
+          <span class="icon icon-hands-up">i</span>
+          <h3 class="my-meeting__title"> 내가 참여한 모임</h2>
+          </div>
+
+        <!-- 메인 컨텐츠 ul 시작 -->
+        <!-- 참여한 모임에서는 border 스타일 변경 필요 →  
+          meeting 이라는 클래스 이름에서 meeting-participated 로 변경 -->
+          <ul class="meetings">
+              <li>
+                <a class="meeting-participated" href="">
+                  <div class="meeting__header">
+                    <span class="meeting__category" >카테고리</span>
+                      <span class="meeting__region add-deco-img-left deco-img-location">지역</span>
+                      <span class="meeting__date">11.01(일)</span>
+                  </div>
+                  <div class="meeting__title">dddddddddddddddㅁㄴㄴㅁㄹㅇㄻㅇㄴㅁㄹㅇㄴddddddddddddddddddddddddddddddddddddd</div>
+
+
+            
+                  <div class="meeting__info">
+                    <ul class="meeting__tags">
+                      <li>#20대</li>
+                      <li>#5명</li>
+                      <li>#남자 모임</li>
+                    </ul>
+                    <div class="meeting__info-detail">
+                      <div class="meeting__status meeting__status--on">모집 중</div>
+                      <div class="meeting__info-more">
+                        <div class="meeting__views add-deco-img-left deco-img-eyes">11</div>
+                        <div class="meeting__comments add-deco-img-left deco-img-speech-bubble">11</div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+
+              <li>
+                <a class="meeting-participated" href="">
+                  <div class="meeting__header">
+                    <span class="meeting__category">카테고리</span>
+                      <span class="meeting__region add-deco-img-left deco-img-location">지역</span>
+                      <span class="meeting__date">11.01(일)</span>
+                  </div>
+                  <div class="meeting__title">dddddddddddddddㅁㄴㄴㅁㄹㅇㄻㅇㄴㅁㄹㅇㄴddddddddddddddddddddddddddddddddddddd</div>
+                  
+                  <!-- meeting__info 내에서 
+                    1. meeting__tags 2. meeting__info-detail 3. meeting__info-more 영역은
+                    기본으로 유지하되, 평가를 해야하는 모임과 평가한 모임에 대해서만 버튼을 적용--> -->
+                  <div class="meeting__info">
+                    <!-- 버튼 적용을 위한 클래스 rate = 평가하기 -->
+                    <div class="btn btn-semiround rate">평가하기</div>
+                  </div>
+                    
+                  
+
+
+                  <!-- -------------------- -->
+                </a>
+              </li>
+
+              <li>
+                <a class="meeting-participated" href="">
+                  <div class="meeting__header">
+                    <span class="meeting__category">카테고리</span>
+                      <span class="meeting__region add-deco-img-left deco-img-location">지역</span>
+                      <span class="meeting__date">11.01(일)</span>
+                  </div>
+                  <div class="meeting__title">dddddddddddddddㅁㄴㄴㅁㄹㅇㄻㅇㄴㅁㄹㅇㄴddddddddddddddddddddddddddddddddddddd</div>
+                  
+                  <!-- -------------------- -->
+                  <div class="meeting__info">
+                    <!-- 버튼 적용을 위한 클래스 rated = 평가완료 -->
+                    <!-- to do : 평가 완료 왼쪽에 체크 아이콘 달기 -->
+                    <div class="btn btn-semiround rated">평가완료</div>
+                  </div>
+                    
+                  
+
+
+                  <!-- -------------------- -->
+                </a>
+              </li>
+          </ul>
+      </section>
+    </main>
+  </body>
+</html>

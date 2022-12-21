@@ -12,5 +12,12 @@ public interface MeetingDao {
     int insert(Meeting meeting);
     Meeting get(int id);
     List<MeetingThumbView> getThumbList(MeetingThumbPageable pageable);
+
+
+    //내가 참여한 모임을 받아올 함수
+    List<MeetingThumbView> getMeetingList(int memberId);
+    
 //    int update(Meeting meeting);
 }
+
+

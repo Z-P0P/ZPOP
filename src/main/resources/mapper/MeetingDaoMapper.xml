@@ -15,6 +15,16 @@
         WHERE id=#{id}
     </select>
 
+    <select id="getMeetingList" resultType="com.zpop.web.entity.meeting.MeetingThumbView">
+        SELECT *
+        FROM meetingThumb AS mt
+        JOIN participation p ON mt.id = p.meetingId
+        JOIN member m ON p.participantId = m.id
+        where m.id =#{id}
+
+
+    </select>
+
     <select id="getThumbList" parameterType="com.zpop.web.dto.MeetingThumbPageable" resultType= "com.zpop.web.entity.meeting.MeetingThumbView">
         SELECT *
         FROM meetingThumb
