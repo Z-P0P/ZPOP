@@ -9,6 +9,7 @@ import java.util.List;
 public interface ParticipationDao {
     int insert(Participation participation);
     Participation get(int id);
+    List<Participation> getListByMeetingId(int meetingId);
     List<Participation> getList();
     //update(Participation participation);
 }

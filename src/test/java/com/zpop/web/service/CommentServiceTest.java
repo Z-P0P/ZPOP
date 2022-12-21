@@ -3,6 +3,8 @@ package com.zpop.web.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.zpop.web.entity.CommentView;
 @SpringBootTest
 class CommentServiceTest {
 	@Autowired
@@ -14,7 +16,9 @@ class CommentServiceTest {
 
 	@Test
 	void testGetReply() {
-		System.out.println(service.getReply(1));
+		CommentView cmt = new CommentView(1);
+		
+		System.out.println(service.getReply(4));
 	}
-
+	
 }
