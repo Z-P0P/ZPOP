@@ -13,7 +13,7 @@ public class Member {
     private Date updatedAt;
     private Date resignedAt;
 
-    private String isSuspended;
+    private boolean isSuspended;
 
     public int getId() {
         return this.id;
@@ -87,11 +87,11 @@ public class Member {
         this.resignedAt = resignedAt;
     }
 
-    public String getIsSuspended() {
+    public boolean getIsSuspended() {
         return this.isSuspended;
     }
 
-    public void setIsSuspended(String isSuspended) {
+    public void setIsSuspended(boolean isSuspended) {
   
         this.isSuspended = isSuspended;
     }

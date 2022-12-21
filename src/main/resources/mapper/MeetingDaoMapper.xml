@@ -15,6 +15,7 @@
         WHERE id=#{id}
     </select>
 
+
     <select id="getMeetingList" resultType="com.zpop.web.entity.meeting.MeetingThumbView">
         SELECT *
         FROM meetingThumb AS mt
