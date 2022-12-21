@@ -1,0 +1,51 @@
+:root{
+    --positive-status: #B6E2C4;
+    --positive-status-text: #25A664;
+    --neutral-status: #FFE199;
+    --neutral-status-text: #B28826;
+    --negative-status-text: var(--dark-grey1);
+    --negative-status: #fcbdbd; 
+    --negative-status-text: #C9484E; 
+    --incomplete-status: #CFD0D3;
+    --incomplete-status-text: #53555A;
+    --height: 2rem;
+    --font-size: calc(var(--height)/2);
+    --width: calc(2 * var(--height));
+}
+
+.status{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width:var(--width);
+    width:fit-content;
+    padding: calc(var(--font-size)/2) var(--font-size);
+    border-radius: calc(var(--height)/5);
+    font-size: var(--font-size);
+    font-weight: bold;
+    position: relative;
+}
+
+.status--round{
+    border-radius: var(--height);
+}
+
+.status--positive{
+    background-color: var(--positive-status);
+    color: var(--positive-status-text);
+}
+
+.status--neutral{
+    background-color: var(--neutral-status);
+    color: var(--neutral-status-text);
+}
+
+.status--negative{
+    background-color: var(--negative-status);
+    color: var(--negative-status-text);
+}
+
+.status--incomplete{
+    background-color: var(--incomplete-status);
+    color: var(--incomplete-status-text);
+}

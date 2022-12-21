@@ -49,6 +49,10 @@
   background-image: url(/images/icon/home.svg);
 }
 
+.deco-img-comment::before {
+  background-image: url(/images/icon/comment.svg);
+}
+
 .deco-img-notification::before {
   background-image: url(/images/icon/megaphone.svg);
 }

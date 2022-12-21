@@ -1,4 +1,4 @@
-@import url(/static/css/admin/style.css);
+@import url(/css/admin/style.css);
 
 
 /* 검색창 css */
@@ -20,7 +20,7 @@
     border: 0;
     border-radius: 0.313rem;
     background-color: var(--light-grey2);
-    background-image: url(/static/images/icon/search.svg);
+    background-image: url(/images/icon/search.svg);
     background-repeat: no-repeat;
     background-position: 4% 50%;
     text-align: center;
@@ -41,7 +41,7 @@
     outline-color:var(--light-grey2);
     border:none;
     cursor: pointer;
-    background-image: url(/static/images/icon/slide-bar.svg);
+    background-image: url(/images/icon/slide-bar.svg);
     height:1.500rem;
     width:1.500rem;
     background-repeat: no-repeat;
@@ -67,12 +67,14 @@
 /* 모달창 css */
 
 .filter-box{
+    position:absolute;
     width: 44.813rem;
     height: 20rem;
     border: 0.063rem solid var(--black);
     display:flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--white);
     border: 0.063rem solid var(--grey1);
     box-shadow: 0 0.313rem 0.313rem rgba(0, 0, 0, 0.15);
 }

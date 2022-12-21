@@ -7,6 +7,11 @@
         insert into member(socialTypeId, socialId, nickname)
         values(#{socialTypeId}, #{socialId}, #{nickname})
     </insert>
+    <select id="getList" resultType= "Member">
+    	SELECT *
+    	FROM member
+    	LIMIT #{offset},#{size};
+    </select>
     <select id="getById" resultType= "Member">
         select *
         from member
@@ -21,6 +26,15 @@
         select *
         from member
 		where nickname=#{nickname}
+    </select>
+    <select id="countBySearch" resultType= "java.lang.Integer">
+      	SELECT COUNT(id) 
+      	FROM member
+      	<where>
+      		<if test="keyword==null">
+      			nickname LIKE '%${keyword}%'
+      		</if>
+      	</where>
     </select>
 </mapper>
 

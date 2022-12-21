@@ -15,6 +15,7 @@ public interface MemberDao {
 	Member getByNickname(String nickname);
 	int insert(Member member);
 	int update(Member member);
+	int countBySearch(String keyword, String option);
 	int count(int socialTypeId);
 	
 }
