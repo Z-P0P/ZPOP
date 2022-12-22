@@ -26,4 +26,12 @@
 
     <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> update meeting
         deletedAt=CURRENT_TIMESTAMP() where id = #{id} </update>
+
+    <select id="getMeetingList" resultType="com.zpop.web.entity.meeting.MeetingThumbnailView">
+        SELECT *
+        FROM meetingThumb AS mt
+        JOIN participation p ON mt.id = p.meetingId
+        JOIN member m ON p.participantId = m.id
+        where m.id =#{id}
+    </select>
 </mapper>

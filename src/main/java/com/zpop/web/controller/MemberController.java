@@ -1,7 +1,7 @@
 package com.zpop.web.controller;
 
 import com.zpop.web.entity.Member;
-import com.zpop.web.entity.meeting.MeetingThumbView;
+import com.zpop.web.entity.meeting.MeetingThumbnailView;
 import com.zpop.web.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,7 +55,7 @@ public class MemberController {
     @GetMapping("/me/meeting")
     public String getMeeting(@RequestParam(defaultValue="2")  int id, Model model) {
 
-        List<MeetingThumbView> me = service.getMyMeeting(7);
+        List<MeetingThumbnailView> me = service.getMyMeeting(7);
         model.addAttribute("me", me);
         return "/member/my-meeting";
     }
