@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+    <link rel="stylesheet" href="/css/member/style.css" />
+    <link rel="stylesheet" href="/css/deco.css">
+    <link rel="stylesheet" href="/css/button.css">
+    <link rel="stylesheet" href="/css/icon.css">
+    <link rel="stylesheet" href="/css/member/component/header.css">
+    <link rel="stylesheet" href="/css/member/component/notification-modal.css">
+    <script src="/js/member/modal.js"></script>
+
+
+    <title>Document</title>
+</head>
+<body>
+        <header class="header">
+        <h1 class="text-hidden">ZPOP</h1>
+        <nav>
+            <ul>
+                <li class="header__main"><a class="text-hidden" href="#">홈으로 이동</a></li>
+                <li class="header__create-meeting"><a href="">모임 등록</a></li>
+                <li class="header__search"><button class="text-hidden">검색</button></li>
+                <li class="header__notification">
+                    <button id="notification-btn" class="text-hidden modal__on-btn" data-modal="#notification-modal">
+                        알림확인
+                    </button> 
+                    <div id="notification-modal" class="hidden">
+                        <div class="button-div"><input type="button"></div>
+                    </div>
+                </li>
+                <li class="header__profile"><button class="text-hidden"><img src="/images/icon/user-profile.svg" alt="">프로필로 이동</a></li>
+            </ul>
+        </nav>
+    </header>
+</html>
+</body>
+
+<script>
+    window.addEventListener("load", (e) => {
+        const notificationBtn = document.querySelector("#notification-btn");
+		const notificationCancelBtn = document.querySelector(".button-div");
+
+        notificationBtn.addEventListener("click",(e) => {
+            e.preventDefault();
+
+            fetch("http://localhost:8080/notification")
+            .then((response) => {
+				return response.json();
+			})
+			.then((notifications)=>{
+				console.log("notification is ",notifications);
+				for(const n of notifications){
+					switch(n.type){
+						case 1: typeStatement = "😃평가하지 않은 모임이 있어요 !";
+							break;
+						case 2: typeStatement = "😃 닉네임 " + n.memberId +" 이/가 모임에 참여했어요  !";
+							break;
+						case 3: typeStatement = "💬 내 모임에 댓글이 달렸어요 !";
+							break;
+						case 4: typeStatement = "💬 내 댓글에 답글이 달렸어요 ! ";
+							break;
+					}
+					let template = `
+			        <div class="notification"><a href="${n.url}"> ${typeStatement} </a><p>n분전</p></div>
+					`;
+					notificationCancelBtn.insertAdjacentHTML("afterend",template);
+				}
+			})
+  			.catch((error) => console.log(error));
+            
+        })
+    });
+</script>
+</html>
