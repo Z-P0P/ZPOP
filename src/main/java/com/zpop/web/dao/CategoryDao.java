@@ -9,4 +9,6 @@ import java.util.List;
 public interface CategoryDao {
     Category get(int id);
     List<Category> getList();
+    
+    Category getByName(String name);
 }

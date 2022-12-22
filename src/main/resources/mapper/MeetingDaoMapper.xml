@@ -5,8 +5,8 @@
 <mapper namespace="com.zpop.web.dao.MeetingDao">
     <insert id="insert" parameterType="com.zpop.web.entity.meeting.Meeting">
         insert into meeting
-        (regMemberId, categoryId, regionId, ageRangeId, title, content, detailRegion, maxMember, startedAt, contact)
-        values(#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId}, #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact})
+        (regMemberId, categoryId, regionId, ageRangeId, title, content, detailRegion, maxMember, startedAt, contact, genderCategory)
+        values(#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId}, #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact} ,#{genderCategory})
     </insert>
 
     <select id="get" resultType= "com.zpop.web.entity.meeting.Meeting">

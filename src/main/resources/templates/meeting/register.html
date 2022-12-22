@@ -1,50 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{inc/layout}">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
 	rel="stylesheet">
+	
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<script src="../../static/js/meeting/register.js"></script>
-<link rel="stylesheet" href="/static/css/member/style.css">
-<link rel="stylesheet" href="/static/css/deco.css">
-<link rel="stylesheet" href="/static/css/button.css">
-<link rel="stylesheet" href="/static/css/form-fixed.css">
-<link rel="stylesheet" href="/static/css/member/component/header.css">
-<link rel="stylesheet" href="/static/css/member/component/select.css">
-<link rel="stylesheet" href="/static/css/member/meeting/create.css">
+<script src="/js/meeting/register.js"></script>
+
 </head>
 <body>
-	<header class="header">
-		<h1 class="text-hidden">ZPOP</h1>
-		<nav>
-			<ul>
-				<li class="header__main"><a class="text-hidden" href="#">홈으로
-						이동</a></li>
-				<li class="header__create-meeting"><a href="">모임 등록</a></li>
-				<li class="header__search"><button class="text-hidden">검색</button></li>
-				<li class="header__notification"><button class="text-hidden">알림확인</button></li>
-				<li class="header__profile select-box">
-					<button>
-						<img src="/static/images/girl.svg" alt="프로필">
-					</button>
-					<ul
-						class="select-box__options select-box__options--right select-box__options--header">
-						<li><a href="">내 프로필</a></li>
-						<li><a href="">내가 모집한 모임</a></li>
-						<li><a href="">내가 참여한 모임</a></li>
-						<li><a href="">모임 평가하기</a></li>
-						<li><a href="">로그아웃</a></li>
-					</ul>
-				</li>
-			</ul>
-		</nav>
-	</header>
-	<main>
+	<main layout:fragment="content">
 		<div class="meeting-form-container">
 			<form class="meeting-form" action="meeting/register">
 				<h1 class="meeting-form__title">모임 등록하기</h1>
@@ -71,25 +38,25 @@
 					<div class="meeting-form__input">
 						<label class="input__label" for="category">날짜/시간</label>
 						<div class="input-text__content-wrapper">
-							<input type="datetime-local" class="input-text__content">
+							<input type="datetime-local" class="input-text__content"  id="startedAt" name="startedAt">
 						</div>
 						<span class="input__message"></span>
 					</div>
 					<div class="meeting-form__input">
 						<label class="input__label" for="category">지역</label>
 						<div class="select-box select-box--input">
-							<input placeholder="카테고리를 선택하세요" type="text" name="category"
-								id="" readonly>
-							<ul class="select-box__options">
-								<li>서울</li>
-								<li>인천/경기</li>
-								<li>충청/대전/세종</li>
-								<li>강원</li>
-								<li>경북/대구</li>
-								<li>전라/광주</li>
-								<li>경남/부산/울산</li>
-								<li>제주</li>
-								<li>온라인</li>
+							<input placeholder="지역을 선택하세요" type="text" name="regionId"
+								id="regionId" readonly>
+							<ul class="select-box__options"  id="select-box">
+								<li data-id="1">서울</li>
+								<li data-id="2">인천/경기</li>
+								<li data-id="3">충청/대전/세종</li>
+								<li data-id="4">강원</li>
+								<li data-id="5">경북/대구</li>
+								<li data-id="6">전라/광주</li>
+								<li data-id="7">경남/부산/울산</li>
+								<li data-id="8">제주</li>
+								<li data-id="9">온라인</li>
 							</ul>
 						</div>
 						<span class="input__message"></span>
@@ -99,7 +66,8 @@
 							<label class="input-text__label" for="">상세장소</label>
 							<div class="input-text__content-wrapper">
 								<input class="input-text__content" type="text"
-									placeholder="상세장소를 입력해주세요">
+									placeholder="상세장소를 입력해주세요"  
+									id="detailRegion" name="detailRegion">
 							</div>
 							<span class="input__message"></span>
 						</div>
@@ -108,13 +76,13 @@
 						<label class="input__label" for="category">연령대</label>
 						<div class="select-box select-box--input">
 							<input placeholder="연령대를 선택해주세요." value="상관 없음" type="text"
-								name="category" id="" readonly>
+								name=ageRangeId id="ageRangeId" readonly>
 							<ul class="select-box__options">
-								<li>10 대</li>
-								<li>20 대</li>
-								<li>30 대</li>
-								<li>40 대</li>
-								<li>50 대 이상</li>
+								<li data-id="1">10 대</li>
+								<li data-id="2">20 대</li>
+								<li data-id="3">30 대</li>
+								<li data-id="4">40 대</li>
+								<li data-id="5">50 대 이상</li>
 							</ul>
 						</div>
 						<span class="input__message"></span>
@@ -123,11 +91,11 @@
 						<label class="input__label" for="category">성별</label>
 						<div class="select-box select-box--input">
 							<input placeholder="성별을 선택하세요." value="남녀 모두" type="text"
-								name="category" id="" readonly>
+								name="genderCategory" id="genderCategory" readonly>
 							<ul class="select-box__options">
-								<li>남녀 모두</li>
-								<li>남자만</li>
-								<li>여자만</li>
+								<li data-id="1">남녀 모두</li>
+								<li data-id="2">남자만</li>
+								<li data-id="3">여자만</li>
 							</ul>
 						</div>
 						<span class="input__message"></span>
@@ -135,14 +103,14 @@
 					<div class="meeting-form__input">
 						<label class="input__label" for="category">모집 인원</label>
 						<div class="select-box select-box--input">
-							<input placeholder="모집인원을 선택하세요" type="text" name="category"
-								id="" readonly>
+							<input placeholder="모집인원을 선택하세요" type="text" name="maxMember"
+								id="maxMember" readonly>
 							<ul class="select-box__options">
-								<li>2 명</li>
-								<li>3 명</li>
-								<li>4 명</li>
-								<li>5 명</li>
-								<li>6 명</li>
+								<li data-id="1">2 명</li>
+								<li data-id="2">3 명</li>
+								<li data-id="3">4 명</li>
+								<li data-id="4">5 명</li>
+								<li data-id="5">6 명</li>
 							</ul>
 						</div>
 						<span class="input__message"></span>
@@ -150,8 +118,8 @@
 					<div class="meeting-form__input">
 						<label class="input__label" for="category">연락방법</label>
 						<div class="select-box select-box--input">
-							<input placeholder="연락 방법을 선택해주세요." type="text" name="category"
-								id="" readonly>
+							<input placeholder="연락 방법을 선택해주세요." type="text" name="contact"
+								id="contact" readonly>
 							<ul class="select-box__options">
 								<li>카카오톡 오픈 채팅</li>
 								<li>디스코드</li>
@@ -159,7 +127,7 @@
 						</div>
 						<div class="input-text__content-wrapper">
 							<input id="meeting-openchat-link" class="input-text__content"
-								type="text" placeholder="오픈채팅방 링크" name="contact">
+								type="text" placeholder="오픈채팅방 링크" name="contactLink" >
 						</div>
 						<span class="input__message"></span>
 					</div>
@@ -199,39 +167,7 @@
 </body>
 <script>
 
-window.addEventListener("load", function () {
-    const registerBtn = document.querySelector("#register-btn");
 
-    registerBtn.onclick = function (e) {
-
-        e.preventDefault();
-
-        const title = document.querySelector("#meeting-title").value;
-  
-        const data = { 
-			method: "POST", // 또는 'PUT'
-          headers: {
-            "Content-Type": "application/json",
-       	},
-          body: JSON.stringify({title:title})
-		}
-
-        fetch("http://localhost:8080/meeting/test",data)
-        .then((response) => {
-          console.log('성공:', data);
-		  alert("주문에 성공했어요!");
-        })
-        .catch((error) => {
-			console.error('실패:', error);
-			alert("주문에 실패했어요!");
-        });
-        // method
-
-
-
-
-    }
-})
 
     let toolbarOptions = ['bold', 'italic', 'underline', 'strike', 'link', 'image'];
     var quill = new Quill('#editor', {

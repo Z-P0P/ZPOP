@@ -34,29 +34,51 @@ window.addEventListener("load", function () {
 
   registerBtn.onclick = function (e) {
 
-      e.preventDefault();
-
-      const meetingTitle = document.querySelector("#meeting-title").value;
-      const link = document.querySelector("#meeting-openchat-link").value;
-      const data = { 
-    method: 'POST', // 또는 'PUT'
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({meetingTitle:meetingTitle,
-                              link : link})
-  };
-
-      fetch('//http://localhost:8080/meeting/test',data)
-      .then((response) => {
+    e.preventDefault();
+	
+	const startedAt = document.querySelector("#startedAt").value;
+    const categoryId = document.querySelector("#categoryId").dataset.id;
+    const regionId = document.querySelector("#regionId").dataset.id;
+    const ageRangeId = document.querySelector("#ageRangeId").dataset.id;
+    const maxMember = document.querySelector("#maxMember").dataset.id;
+	const genderCategory = document.querySelector("#genderCategory").dataset.id;
+    const title = document.querySelector("#meeting-title").value;
+    const content = document.querySelector("#editor").value;
+    const detailRegion = document.querySelector("#detailRegion").value;
+    const contact = document.querySelector("#contact").value;
+    const contactLink = document.querySelector("#meeting-openchat-link").value;
+    const option = {
+      method: "POST", // 또는 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        regMemberId: 3,
+        categoryId: categoryId,
+        regionId: regionId,
+        ageRangeId: ageRangeId,
+        detailRegion: detailRegion,
+        contact: contact,
+        contactLink: contactLink,
+        title:title,
+        maxMember: maxMember,
+        startedAt:startedAt,
+        content:"테스트용 컨텐트",
+        genderCategory:genderCategory
+      })
+    }
+      fetch("register",option)
+      .then((response) => response.text())
+      .then((data) => {
         console.log('성공:', data);
-        alert("등록에 성공했습니다!!");
+        alert("성공");
+        if(data=="성공")
+        	location.href = "/login";
       })
       .catch((error) => {
         console.error('실패:', error);
-        alert("주문에 실패했습니다!");
+        alert("실패");
       });
-      // method
 
 
 

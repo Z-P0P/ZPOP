@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface ParticipationDao {
-    boolean insert(Participation participation);
+    int insert(Participation participation);
     Participation get(int id);
     List<Participation> getList();
     //update(Participation participation);

@@ -22,7 +22,6 @@ public class Meeting {
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
-
     public Meeting() {
     }
 
@@ -56,7 +55,97 @@ public class Meeting {
         return id;
     }
 
-    public int getRegMemberId() {
+    public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public void setRegMemberId(int regMemberId) {
+		this.regMemberId = regMemberId;
+	}
+
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+
+	public void setRegionId(int regionId) {
+		this.regionId = regionId;
+	}
+
+
+	public void setAgeRangeId(int ageRangeId) {
+		this.ageRangeId = ageRangeId;
+	}
+
+
+	public void setGenderCategory(int genderCategory) {
+		this.genderCategory = genderCategory;
+	}
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+
+	public void setDetailRegion(String detailRegion) {
+		this.detailRegion = detailRegion;
+	}
+
+
+	public void setMaxMember(int maxMember) {
+		this.maxMember = maxMember;
+	}
+
+
+	public void setStartedAt(Date startedAt) {
+		this.startedAt = startedAt;
+	}
+
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
+
+
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
+
+
+	public void setClosed(boolean isClosed) {
+		this.isClosed = isClosed;
+	}
+
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+
+	public void setDeletedAt(Date deletedAt) {
+		this.deletedAt = deletedAt;
+	}
+
+
+	public int getRegMemberId() {
         return regMemberId;
     }
 

@@ -29,7 +29,7 @@
             <li class="header__create-meeting"><a href="">모임 등록</a></li>
             <li class="header__search"><button class="text-hidden">검색</button></li>
             <li class="header__notification"><button class="text-hidden">알림확인</button></li>
-            <li class="header__profile"><button class="text-hidden"><img src="/images/girl.svg" alt="">프로필로 이동</a></li>
+            <li class="header__profile"><button class="text-hidden"><img src="/images/girl.svg" alt=""><a>프로필로 이동</a></li>>
         </ul>
     </nav>
 </header>
@@ -73,9 +73,8 @@
             </div>
             <div class="meeting__views">조회수 999회</div>
             <div class="meeting__btn">
-                <span class="btn btn-round btn-join">참여하기</span>
+                <span class="btn btn-round btn-join" id="participation-btn">참여하기</span>
             </div>
-        </div>
         </div>
     </section>
 
@@ -132,6 +131,38 @@
             </li>
         </ul>
     </section>
-    </div>
+    </main>
 </body>
+
+<script>
+    window.addEventListener("load",function(){
+        const participationBtn = document.querySelector("#participation-btn");
+		console.log("load");
+        participationBtn.onclick = function(e){
+            e.preventDefault();
+            
+            console.log("참여하기 버튼 클릭")
+            const data = { 
+        			method: "POST", // 또는 'PUT'
+                  headers: {
+                    "Content-Type": "application/json",
+               	},
+                  body: JSON.stringify({
+                	  meetingId:280,
+                	  participantId:2
+                  })
+        		}
+
+                fetch("http://localhost:8080/meeting/participate",data)
+                .then((response) => {
+                  console.log('성공:', data);
+        		  alert("성공적으로 참여했습니다");
+                })
+                .catch((error) => {
+        			console.error('실패:', error);
+        			alert("참여에 실패했습니다");
+                });
+        }
+    })
+</script>
 </html>

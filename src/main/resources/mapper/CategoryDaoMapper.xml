@@ -8,7 +8,12 @@
         from category
         where id=#{id}
     </select>
-
+	
+	<select id="getByName"  resultType="Category">
+			select * from category
+			where name=#{name}
+	</select>
+	
     <select id="getList" resultType= "com.zpop.web.entity.Category">
         select *
         from category
