@@ -19,15 +19,11 @@ public class DefaultCommentService implements CommentService {
 	@Override
 	public List<CommentView> getComment(int meetingId) {
 		List<CommentView> list = dao.getComment(meetingId);
-
-		Iterator<CommentView> iterator = list.iterator();
-		while (iterator.hasNext()) {
-		    CommentView element = iterator.next();
+		for(CommentView element:list) {
 		    //작성시간표시
 		    element.setElapsedTime(ElapsedTimeCalculator.getElpasedTime(element.getCreatedAt()));
-		    // 답글 수에서 댓글 자신의 수는 제외
-		    element.setCountOfReply(dao.getCountOfReply(element.getGroupId()) - 1);
-		    
+		    // 답글 수
+		    element.setCountOfReply(dao.getCountOfReply(element.getId()));
 		} 
 		return list;
 	}
@@ -35,16 +31,12 @@ public class DefaultCommentService implements CommentService {
 	@Override
 	public List<CommentView> getReply(int groupId) {
 		List<CommentView> list = dao.getReply(groupId);
-		
-		Iterator<CommentView> iterator = list.iterator();
-		while (iterator.hasNext()) {
-		    CommentView element = iterator.next();
+		for(CommentView element:list) {
 		    //작성시간표시
 		    element.setElapsedTime(ElapsedTimeCalculator.getElpasedTime(element.getCreatedAt()));
-		    // 답글 수에서 댓글 자신의 수는 제외
-		    element.setCountOfReply(dao.getCountOfReply(element.getGroupId()) - 1);
+		    //답글수
+		    element.setCountOfReply(dao.getCountOfReply(element.getGroupId()));
 		} 
-				
 		return list;
 	}
 
@@ -55,7 +47,7 @@ public class DefaultCommentService implements CommentService {
 	}
 
 	@Override
-	public int registerComment(int meetingId, Comment comment) {
+	public int registerComment(Comment comment) {
 		
 		int affectedRow = dao.insertComment(comment);
 		return affectedRow;

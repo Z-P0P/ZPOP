@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<link rel="stylesheet" href="/css/member/style.css" />
+<link rel="stylesheet" href="/css/deco.css">
+<link rel="stylesheet" href="/css/button.css">
+<link rel="stylesheet" href="/css/icon.css">
+<!-- component css -->
+<link rel="stylesheet" href="/css/member/component/header.css">
+<link rel="stylesheet" href="/css/member/component/profile-box.css">
+<link rel="stylesheet" href="/css/member/component/meeting-info.css">
+<link rel="stylesheet" href="/css/member/component/participant.css"
+	type="text/css">
+<link rel="stylesheet" href="/css/member/component/comment.css" />
+<!-- detail page css -->
+<link rel="stylesheet" href="/css/member/meeting/detail.css">
+<!-- comment componet css & js -->
+<link rel="stylesheet" href="/css/member/component/comment.css" />
+<link rel="stylesheet" href="/css/member/component/profile-box.css">
+<script src="/js/comment/comment.js"></script>
+</head>
+<body>
+	<!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
+
+
+	<main class="main">
+		<section class="meeting">
+			<div class="meeting__info">
+				<div class="meeting__category-wrap">
+					<span class="meeting__category">문화생활</span>
+				</div>
+				<div class="meeting__header">
+					<div class="meeting__title-container">
+						<span id="meeting-id" class="hidden" th:text="${id}">미팅번호</span> <span
+							class="meeting__title">한강공원에서 러닝하실 분~🙂</span> <img
+							class="meeting__title-hambuger-icon"
+							src="/images/icon/hambuger.svg">
+					</div>
+					<div class="meeting__date-container">
+						<img class="meeting__small-calander"
+							src="/images/icon/small-calander.svg"> <span
+							class="meeting__date">11.01(일) 13:00</span>
+					</div>
+					<div class="meeting__region-container">
+						<img class="meeting__small-location"
+							src="/images/icon/small-location.svg" alt=""> <span
+							class="meeting__region">경남/부산/울산</span>
+					</div>
+					<div class="meeting__detail-region-wrap">
+						<span class="meeting__detail-region">서면역 9와 3/4 이번에도 수정하면
+							꿀밤 날리겠습니다^^</span>
+					</div>
+				</div>
+			</div>
+			<div class="meeting__conetent-container">
+				<span class="meeting__content"> 한강에서 우리 함께 뛰어요~! 왜냐면은 제가
+					달리기를너무너무 조아하하하하해하기때문이에용 목표는 10km! 완주하실 분만 모집합니다~!! 날씨는 좋을 예정이네요~
+					그래도 물을 충분히 가져오시는게 좋옹아아아요~! </span>
+				<div class="meeting__tags">#20대 선호 #+10명 #남자만</div>
+				<div class="meeting__views">조회수 999회</div>
+				<div class="meeting__btn">
+					<span class="btn btn-round btn-join">참여하기</span>
+				</div>
+			</div>
+		</section>
+
+		<section class="participant">
+			<div class="participant__num">
+				<span>참가자</span> <span>15/56</span> <span class="icon icon-arrow-up"></span>
+			</div>
+			<ul class="participant__list">
+				<li><span class="participant__info"><img
+						src="/images/girl.svg">일이삼사오육칠팔구십</span></li>
+				<li><span class="participant__info"><img
+						src="/images/girl.svg">일이삼사오육칠팔구십</span></li>
+				<li><span class="participant__info"><img
+						src="/images/girl.svg">일이삼사오육칠팔구십</span></li>
+				<li><span class="participant__info"><img
+						src="/images/girl.svg">일이삼사오육칠팔구십</span></li>
+				<li><span class="participant__info"><img
+						src="/images/girl.svg">일이삼사오육칠팔구십</span></li>
+			</ul>
+		</section>
+		<section class="comment">
+			<h2 class="comment__num" th:text="'댓글 ' + ${countOfComment}+' 개'">N</h2>
+			<div class="comment__input-container">
+				<textarea class="comment__input" name="comment-text"
+					id="comment-text" placeholder="댓글을 입력하세요."></textarea>
+				<span class="comment__btn btn btn-round" id="register-btn">등록하기</span>
+			</div>
+			<ul class="comment__list">
+
+				<li th:each="comment:${comments}">
+					<div class="profile">
+						<span id="comment-id" class="hidden" th:text="${comment.id}">댓글아이디</span> <span
+							class="profile__image" th:text="${comment.profileImgPath}"></span>
+						<span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
+						<span class="profile__time" th:text="${comment.elapsedTime}">3분전</span>
+						<button></button>
+					</div> <span class="comment__content" th:text="${comment.content}">
+						이 헌법에 의한 최초의 대통령의 임기는 이 헌법시행일로부터 개시한다. 모든 국민은 거주·이전의 자유를 가진다. 대통령은
+						제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다. </span>
+					<div class="comment__replies">
+						<span th:classappend="(${comment.countOfReply}==0)? 'hidden'"
+							th:text="'답글 ' + ${comment.countOfReply}+'개'"></span> <span>답글
+							달기</span>
+					</div>
+					<section class="reply">
+						<ul class="reply__list">
+							<li th:each="reply:${replies}">
+								<div class="profile">
+									<span class="profile__image" th:text="${reply.profileImgPath}"></span>
+									<span class="profile__nickname profile__nickname"
+										th:text="${reply.nickname}">찬우몬</span> <span
+										class="profile__time" th:text="${reply.elapsedTime}">3분전</span>
+									<button></button>
+								</div>
+								<div class="reply-container">
+									<span class="reply__at-symbol"
+										th:if="${not #strings.isEmpty(reply.parentNickname)}">@</span>
+									<!--span사이 공백없애기 
+               -->
+									<span class="reply__to" th:text="${reply.parentNickname}?:''">채누</span>
+									<span class="reply__content" th:text="${reply.content}">
+										이 헌법에 의한 최초의 대통령의 임기는 이 헌법시행일로부터 개시한다. 모든 국민은 거주·이전의 자유를 가진다.
+										대통령은 제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다. </span>
+								</div>
+								<div class="reply__replies">
+									<span class="hidden" th:text="${reply.parentCommentId}"></span>
+									<span>답글 달기</span> <span class="hidden"
+										th:text="${reply.groupId}"></span>
+								</div>
+							</li>
+							<template id="template">
+								<li>
+									<div class="profile">
+										<span class="profile__image"></span> <span
+											class="profile__nickname profile__nickname">쿤님</span> <span
+											class="profile__time">방금</span>
+										<button></button>
+									</div>
+									<div class="reply-container">
+										<span class="reply__at-symbol">@</span>
+										<!--span사이 공백없애기 
+               -->
+										<span class="reply__to"></span> <span class="reply__content"></span>
+									</div>
+									<div id="add-reply" class="reply__replies">
+										<span>답글 달기</span>
+									</div>
+								</li>
+							</template>
+						</ul>
+
+					</section>
+				</li>
+				<template id="template">
+					<li>
+						<div class="profile">
+							<span class="profile__image"></span> <span
+								class="profile__nickname"></span> <span class="profile__time"></span>
+							<button></button>
+						</div> <span class="comment__content"></span>
+						<div class="comment__replies">
+							<span>답글 달기</span>
+						</div>
+					</li>
+				</template>
+			</ul>
+		</section>
+	</main>
+</body>
+</html>

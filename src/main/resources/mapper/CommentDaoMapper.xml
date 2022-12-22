@@ -52,18 +52,10 @@
 	  	values (#{meetingId}, #{writerId}, #{content})
   </insert>
   
-  <insert id="insertReply" parameterType="java.util.Map">
+  <insert id="insertReply" parameterType="com.zpop.web.entity.comment.Comment">
   		insert into comment 
-  		<choose>
-  			<when test="groupId == null">
-				(meetingId, parentCommentId, writerId, content)
-				values (#{meetingId}, #{parentCommentId}, #{writerId}, #{content})
-			</when>
-			<otherwise>
 				(meetingId, parentCommentId, groupId, writerId, content)
 				values (#{meetingId}, #{parentCommentId}, #{groupId}, #{writerId}, #{content})
-			</otherwise>
-		</choose>
   </insert>
   <update id="updateComment" parameterType="com.zpop.web.entity.comment.Comment">
   	update comment

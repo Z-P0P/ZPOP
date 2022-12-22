@@ -48,12 +48,14 @@ public class CommentController {
 	
 	@PostMapping("comment")
 	public  String registerComment(@RequestBody Comment comment) {
-		service.registerComment(1, comment);
+		comment.setMeetingId(1);
+		service.registerComment(comment);
 		return "redirect:/comment";
 	}
 	@PostMapping("reply")
 	public  String registerReply(@RequestBody Comment comment) {
-		//service.registerComment(1, comment);
+		comment.setMeetingId(0);
+		//service.registerComment(comment);
 		return "redirect:/reply";
 	}
 }

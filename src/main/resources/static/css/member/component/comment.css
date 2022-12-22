@@ -45,7 +45,9 @@
 .comment__list {
   margin-top: 2rem;
 }
-
+.comment__replies > span {
+	cursor:pointer;
+}
 .comment__replies span:last-child {
   padding-left: 0.75rem;
   padding-right: 0.8rem;
