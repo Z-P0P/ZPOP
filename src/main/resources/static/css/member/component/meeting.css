@@ -1,4 +1,7 @@
-/* 모임 ul */
+.main__content {
+    margin: 2rem auto;
+}
+
 .meetings {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -17,7 +20,6 @@
   }
 }
 
-/* 모임 wrap */
 .meeting {
   display: flex;
   flex-direction: column;
