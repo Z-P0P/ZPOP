@@ -99,7 +99,7 @@ public class DefaultReportService implements ReportService {
 				typeId, 
 				1, 
 				reason, 
-				"messi is the goat", 
+				"Messi is the goat", 
 				today, 
 				null,
 				null,
