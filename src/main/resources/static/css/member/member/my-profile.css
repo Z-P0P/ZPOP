@@ -1,10 +1,17 @@
 /* -------마이프로필 공통 컨테이너 ------- */
 
+.my-profile{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 30px;
+}
+
 .my-profile-container{
     display: inline-flex;
     flex-direction: column;
     width: 21.875rem;
     color:var(--dark-grey2);
+    justify-content: center;
 }
 
 .my-profile-container> h2{
@@ -36,7 +43,7 @@
 
 .profile__image--no-photo{
     align-self: center;
-    background-image: url(/static/images/icon/user-profile-grey.svg);
+    background-image: url(/images/icon/user-profile-grey.svg);
     background-size: cover;
     width: 8.75rem;
     height: 8.75rem;
@@ -89,6 +96,7 @@
     padding: 13px 0px;
     margin-bottom: 2.375rem;
     cursor: pointer;
+    background-color: var(--main-color);
 }
 
 .profile__btn--save{
@@ -100,6 +108,7 @@
     font-weight: var(--bold);
     text-align: center;
     cursor: pointer;
+    background-color: var(--main-color);
 }
 
 
