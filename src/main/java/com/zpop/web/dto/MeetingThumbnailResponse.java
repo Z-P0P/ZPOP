@@ -12,7 +12,7 @@ public class MeetingThumbnailResponse {
     private String genderCategory;
     private int maxMember;
     private String title;
-    private Date startedAt;
+    private String startedAt;
     private int viewCount;
     private int commentCount;
     private boolean isClosed;
@@ -20,7 +20,8 @@ public class MeetingThumbnailResponse {
     public MeetingThumbnailResponse() {
     }
 
-    public MeetingThumbnailResponse(int id, String category, String region, String ageRange, String genderCategory, int maxMember, String title, Date startedAt, int viewCount, int commentCount, boolean isClosed) {
+
+    public MeetingThumbnailResponse(int id, String category, String region, String ageRange, String genderCategory, int maxMember, String title, String startedAt, int viewCount, int commentCount, boolean isClosed) {
         this.id = id;
         this.category = category;
         this.region = region;
@@ -34,73 +35,97 @@ public class MeetingThumbnailResponse {
         this.isClosed = isClosed;
     }
 
+
     public int getId() {
-        return id;
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCategory() {
-        return category;
+        return this.category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getRegion() {
-        return region;
+        return this.region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String getAgeRange() {
-        return ageRange;
+        return this.ageRange;
+    }
+
+    public void setAgeRange(String ageRange) {
+        this.ageRange = ageRange;
     }
 
     public String getGenderCategory() {
-        return genderCategory;
+        return this.genderCategory;
+    }
+
+    public void setGenderCategory(String genderCategory) {
+        this.genderCategory = genderCategory;
     }
 
     public int getMaxMember() {
-        return maxMember;
+        return this.maxMember;
+    }
+
+    public void setMaxMember(int maxMember) {
+        this.maxMember = maxMember;
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
-    public Date getStartedAt() {
-        return startedAt;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getStartedAt() {
+        return this.startedAt;
+    }
+
+    public void setStartedAt(String startedAt) {
+        this.startedAt = startedAt;
     }
 
     public int getViewCount() {
-        return viewCount;
+        return this.viewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
     }
 
     public int getCommentCount() {
-        return commentCount;
+        return this.commentCount;
     }
 
-    public boolean isClosed() {
-        return isClosed;
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 
-    public static MeetingThumbnailResponse of (MeetingThumbnailView entity) {
-        String genderCategory = "누구나";
-        switch (entity.getGenderCategory()) {
-            case 1:
-                genderCategory = "남자 모임";
-                break;
-            case 2:
-                genderCategory = "여자 모임";
-                break;
-        }
-
-        return new MeetingThumbnailResponse(
-                entity.getId(),
-                entity.getCategory(),
-                entity.getRegion(),
-                entity.getAgeRange(),
-                genderCategory,
-                entity.getMaxMember(),
-                entity.getTitle(),
-                entity.getStartedAt(),
-                entity.getViewCount(),
-                entity.getCommentCount(),
-                entity.isClosed()
-        );
+    public boolean isIsClosed() {
+        return this.isClosed;
     }
+
+    public boolean getIsClosed() {
+        return this.isClosed;
+    }
+
+    public void setIsClosed(boolean isClosed) {
+        this.isClosed = isClosed;
+    }
+
 }

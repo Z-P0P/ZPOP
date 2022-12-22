@@ -44,9 +44,9 @@
 }
 
 .header button {
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: bold;
+  cursor: pointer;
+  font-weight:var(--bold);
+  font-size:18px;
 }
 
 .header__main {
@@ -164,4 +164,8 @@
     width: 40px;
     flex: 0 0 40px;
   }
+}
+
+.header__profile .select-box__options--header a{
+	width:100%;
 }

@@ -3,7 +3,7 @@
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .add-deco-img-left::before,

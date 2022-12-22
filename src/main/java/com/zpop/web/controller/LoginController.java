@@ -32,16 +32,6 @@ public class LoginController {
 			, SocialTypeDao socialTypeDao) {
 		this.loginServiceMap = loginServiceMap;
 	}
-	
-	
-	@GetMapping("")
-	public String loginPage(Model model, HttpSession session) {
-		Member member = (Member)session.getAttribute("member");
-		if (member != null) {
-			model.addAttribute(member);			
-		}
-		return "login";
-	}
 
 	// 소셜 로그인 시, kakao, naver를 공통적으로 처리함
 	@GetMapping("oauth/{loginType}")
@@ -54,12 +44,12 @@ public class LoginController {
 		
 		if (session.getAttribute("memberId") != null) {
 			System.out.println("이미 로그인한 사용자임");
-			return "redirect:/login";
+			return "redirect:/";
 		}
 
 		if (code == null) {
 			System.out.println("로그인에 실패하였음");
-			return "redirect:/login";
+			return "redirect:/";
 		}
 		
 		loginService = loginServiceMap.get(loginType+"LoginService");
@@ -80,7 +70,7 @@ public class LoginController {
 		
 		// 만약 member가 조회되면 세션에 정보를 저장하여 member정보를 view에 활용함
 		session.setAttribute("member", member);
-		return "redirect:/login";
+		return "redirect:/";
 		
 	}
 /*
