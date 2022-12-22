@@ -5,14 +5,53 @@
   flex-direction: column;
 }
 
-.banner {
+
+.banner{
   width: 100%;
   height: 96px;
-  background-image: url("/images/banner.png");
+  padding:none;
+  margin:auto;
+  display:flex;
+  justify-content:center;
+}
+
+@media (min-width: 576px) {
+  .banner{
+
+  }
+}
+
+.banner > img{
+	width: 100%;
+	height: 96px;
+	object-fit: contain;
+	object-position: 50% 50%;
+}
+
+
+@media (min-width: 576px) {
+  .banner > img{
+	object-fit: cover;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  .banner > img {
+    object-fit: cover;
+  }
+}
+
+
+
+@media (min-width: 576px) {
+  .banner, .banner > img{
+    height: 160px;
+  }
 }
 
 @media (min-width: 1200px) {
-  .banner {
+  .banner, .banner > img {
     height: 255px;
   }
 }
@@ -51,41 +90,37 @@
   justify-content: end;
   align-items: center;
   margin: 1rem auto;
+  column-gap: 10px;
 }
 
 @media (min-width: 1200px) {
   .meeting__options {
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 }
 
 .meeting-activate-option {
   display: flex;
   align-items: center;
+  margin-left:auto;
 }
 
 .meeting-activate-option > span {
   margin-right: 1rem;
-  font-weight: 600;
+  font-weight: var(--bold);
   color: var(--main-color);
 }
 
 @media (min-width: 768px) {
   .meeting-activate-option > span {
-    font-size: 24px;
-    color: var(--black);
+    font-size: 18px;
+    color: var(--main-color);
   }
 }
 
 .main__content {
   max-width: 1200px;
   margin: auto;
-}
-
-@media (min-width: 576px) {
-  .banner {
-    height: 160px;
-  }
 }
 
 .region-category {

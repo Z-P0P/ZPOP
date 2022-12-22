@@ -10,14 +10,19 @@
     <link rel="stylesheet" href="/css/member/component/meeting.css" />
     <link rel="stylesheet" href="/css/member/component/search-bar.css" />
     <link rel="stylesheet" href="/css/member/component/select.css">
+        <link rel="stylesheet" href="/css/member/component/region-bar.css">
     <link rel="stylesheet" href="/css/member/component/meeting-category.css" />
     <link rel="stylesheet" href="/css/member/meeting/list.css" />
     <link rel="stylesheet" href="/css/member/meeting/list.css" />
     <script src="/js/meeting/list.js" defer></script>
+    <script src="/js/meeting/region.js"></script>
+    <script src="/js/meeting/category.js"></script>
   </head>
   <body>
     <main layout:fragment="content" class="main">
-      <div class="banner"></div>
+      <div class="banner">
+      	<img alt="" src="/images/banner.png">
+      </div>
 
       <!-----------------------modal 추가--------------------------->
       <!--👩🏻 메인화면-->
@@ -39,15 +44,15 @@
         <div class="category-container">
           <nav class="category-nav">
             <ul class="category-subcontainer">
-              <li class="category selected">전체</li>
-              <li class="category">밥/카페</li>
-              <li class="category">운동</li>
-              <li class="category">스터디</li>
-              <li class="category">방탈출</li>
-              <li class="category">보드게임</li>
-              <li class="category">펫</li>
-              <li class="category">육아</li>
-              <li class="category">기타</li>
+              <li data-id=0 class="category selected">전체</li>
+              <li data-id=1 class="category">밥/카페</li>
+              <li data-id=2 class="category">운동</li>
+              <li data-id=3 class="category">스터디</li>
+              <li data-id=4 class="category">방탈출</li>
+              <li data-id=5 class="category">보드게임</li>
+              <li data-id=6 class="category">펫</li>
+              <li data-id=7 class="category">육아</li>
+              <li data-id=8 class="category">기타</li>
             </ul>
           </nav>
         </div>
@@ -64,18 +69,18 @@
                 readonly
               />
               <ul class="select-box__options">
-                <li>밥/카페</li>
-                <li>운동</li>
-                <li>스터디</li>
-                <li>방탈출</li>
-                <li>보드게임</li>
-                <li>문화</li>
-                <li>펫</li>
-                <li>기타</li>
+                 <li data-id=1>서울</li>
+                 <li data-id=2>인천/경기</li>
+                 <li data-id=3>충청/대전/세종</li>
+                 <li data-id=4>강원</li>
+                 <li data-id=5>경북/대구</li>
+                 <li data-id=6>전라/광주</li>
+                 <li data-id=7>경남/부산/울산</li>
+                 <li data-id=8>제주</li>
+                 <li data-id=9>온라인</li>
               </ul>
             </div>
           </div>
-
           <div class="meeting-activate-option">
             <span>모집 중만 보기</span>
             <input type="checkbox" id="toggle" checked hidden />

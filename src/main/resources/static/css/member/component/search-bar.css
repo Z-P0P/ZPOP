@@ -38,6 +38,8 @@
     align-items: center;
     border-radius: 62rem;
     border: 0.125rem solid #ebebeb;
-    margin: 32px auto;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:32px;
   }
 }
