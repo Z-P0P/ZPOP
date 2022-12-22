@@ -3,7 +3,7 @@ package com.zpop.web.service;
 import com.zpop.web.dao.MeetingDao;
 import com.zpop.web.dao.MemberDao;
 import com.zpop.web.entity.Member;
-import com.zpop.web.entity.meeting.MeetingThumbView;
+import com.zpop.web.entity.meeting.MeetingThumbnailView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +31,8 @@ public class DefalutMemberService implements MemberService{
     //getMyMeeting 아직 미완성 -> meetingdaoMapper xml 파일에서 
     //수정필요
     @Override
-    public List<MeetingThumbView> getMyMeeting(int id) {
-       List<MeetingThumbView> result = mtDao.getMeetingList(7);
+    public List<MeetingThumbnailView> getMyMeeting(int id) {
+       List<MeetingThumbnailView> result = mtDao.getMeetingList(7);
         return result;
 
     }

@@ -1,7 +1,7 @@
 package com.zpop.web.service;
 
 import com.zpop.web.entity.Member;
-import com.zpop.web.entity.meeting.MeetingThumbView;
+import com.zpop.web.entity.meeting.MeetingThumbnailView;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface MemberService {
 
         //1. 회원 아이디를 파라미터에 넣어주고 회원 정보를 받아온다.
         Member getById(int id);
-        List<MeetingThumbView> getMyMeeting(int memberId);
+        List<MeetingThumbnailView> getMyMeeting(int memberId);
 
         //2. 회원이 참가한 모임을 보여준다.
         //3. 회원이 모집한 모임을 보여준다.
