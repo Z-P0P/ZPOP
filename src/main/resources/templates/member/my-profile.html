@@ -1,6 +1,8 @@
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{inc/layout}">
+
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,10 +13,14 @@
     <link rel="stylesheet" th:href="@{/css/icon.css}">
     <link rel="stylesheet" th:href="@{/css/color.css}">
     <link rel="stylesheet" th:href="@{/css/button.css}">
-    <link rel="stylesheet" th:href="@{/css/member/profile/my-profile.css}">
+    <link rel="stylesheet" th:href="@{/css/member/member/my-profile.css}">
 </head>
-<body>
-<!--------------------my-profile start -------------------->
+
+<main layout:fragment="content">
+    <body>
+    <!--------------------my-profile start -------------------->
+
+   <div class="my-profile">
     <div class="my-profile-container">
 
 
@@ -22,13 +28,13 @@
         <div class="profile__image">
             <div class="profile__image--no-photo .icon"></div>
         </div>
-        <span class="profile__nickname" th:text="${member.nickname}">닉네임이에요오오호호</span>
+        <span class="profile__nickname" th:text="${member.nickname}">닉네임</span>
 
         <div class="profile__fame">
             <span th:text="'인기도: '+${member.fame}+' 점'">인기도: 99점</span>
             <span class="deco-img-star "></span>
         </div>
-       
+
         <span class="btn-semiround profile__btn">프로필 수정</span>
 
         <div class="profile__page-move">
@@ -41,8 +47,9 @@
         </div>
         <a class="profile__sign-out"href="">탈퇴하기</a>
 
-        
+
     </div>
-<!--------------------my-profile end -------------------->
-</body>
+   </div>
+    <!--------------------my-profile end -------------------->
+</main>
 </html>

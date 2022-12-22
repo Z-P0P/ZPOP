@@ -1,42 +1,21 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{inc/layout}">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>내가 참여한 모임</title>
-    <link rel="stylesheet" th:href="@{/css/member/style.css}">
-    <link rel="stylesheet" th:href="@{/css/deco.css}">
-    <link rel="stylesheet" th:href="@{/css/icon.css}">
-    <link rel="stylesheet" th:href="@{/css/color.css}">
-    <link rel="stylesheet" th:href="@{/css/button.css}">
-    <link rel="stylesheet" th:href="@{/css/form-fixed.css}">
 
-    <link rel="stylesheet" th:href="@{/css/member/component/header.css}">
-    <link rel="stylesheet" th:href="@{/css/member/component/select.css}">
+    <title>내가 참여한 모임</title>
+
     <link rel="stylesheet" th:href="@{/css/member/component/meeting.css}">
     <link rel="stylesheet" th:href="@{/css/member/meeting/list.css}">
                   <!--추가된 css 파일 my-meeting -->
-    <link rel="stylesheet" th:href="@{/css/member/profile/my-meeting.css}">
+    <link rel="stylesheet" th:href="@{/css/member/member/my-meeting.css}">
+
     <script src="/js/member/select.js"></script>
+    <script src="/js/member/modal.js"></script>
+      <script src="/js/member/my-meeting.js"></script>
   </head>
   <body>
 
 
-    <main class="main">
-
-      <header class="header header--list">
-        <h1 class="text-hidden">ZPOP</h1>
-        <nav>
-            <ul>
-                <li class="header__main"><a class="text-hidden" href="#">홈으로 이동</a></li>
-                <li class="header__create-meeting"><a href="">모임 등록</a></li>
-                <li class="header__search"><button class="text-hidden">검색</button></li>
-                <li class="header__notification"><button class="text-hidden">알림확인</button></li>
-                <li class="header__profile"><button class="text-hidden"><img src="/images/icon/user-profile.svg">
-        </nav>
-    </header>
-
+  <main layout:fragment="content" class="main" >
 
       <section class="main__content">
         
@@ -92,7 +71,8 @@
                     기본으로 유지하되, 평가를 해야하는 모임과 평가한 모임에 대해서만 버튼을 적용--> -->
                   <div class="meeting__info">
                     <!-- 버튼 적용을 위한 클래스 rate = 평가하기 -->
-                    <div class="btn btn-semiround rate">평가하기</div>
+
+                    <div class="btn btn-semiround rate modal__on-btn"  data-modal="#modal-eval-notification">평가하기</div>
                   </div>
                     
                   
@@ -118,7 +98,29 @@
                     <div class="btn btn-semiround rated">평가완료</div>
                   </div>
                     
-                  
+
+                  <!--모달 여는 버튼
+                  class = modal__on-btn
+                  data-modal="#모달id"
+
+                  모달요소
+                  class =.modal-wrapper.modal
+                  id="모달id"
+
+                  모달 닫기요소
+                  class= modal__close-btn
+                  data-modal="#모다량"-->
+
+<!--                  <div class="modal-wrapper hidden" id="modal-eval">-->
+<!--                    <div>-->
+<!--                      <div class="modal__header">-->
+<!--                        <span class="modal__close-btn icon icon-x" data-modal="#modal-eval-notification">닫기</span>-->
+<!--                      </div>-->
+<!--                      <div class="modal__body"></div>-->
+<!--                    </div>-->
+<!--                    </div>-->
+
+
 
 
                   <!-- -------------------- -->
@@ -126,6 +128,23 @@
               </li>
           </ul>
       </section>
+
+    <!----------------------------modal ----------------------------->
+
+    <section>
+          <div id="modal-eval-notification" class="modal-wrapper hidden">
+            <div class="modal">
+              <div class="modal__header">
+                <span class="modal__close-btn icon icon-x" data-modal="#modal-eval-notification">닫기</span>
+              </div>
+              <div class="modal__body">
+                <input type="range">
+              </div>
+            </div>
+          </div>
+
+        </section>
+    <!----------------------------modal ----------------------------->
     </main>
   </body>
 </html>
