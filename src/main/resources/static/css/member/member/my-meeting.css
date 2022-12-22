@@ -1,6 +1,12 @@
 /* --------------my-meeting start ------------------- */
 /*  내가 참여한 모임 & 내가 모집한 모임 페이지의
    타이틀과 아이콘을 묶어주는 영역 */
+.my-meeting-container{
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
 
 .my-meeting {
     display: flex;
@@ -8,6 +14,7 @@
     align-items: baseline;
     padding-bottom: 15px;
     border-bottom: 0.7px solid var(--light-grey1);
+    margin-top: 30px;
 }
 
 .my-meeting__title{
@@ -22,7 +29,7 @@
 .my-meeting span {
     display: flex;
     margin-right: 3.5px;
-    align-content: center;
+    align-items: flex-end;
 }
 
 /* --------------my-meeting end--------------------- */
