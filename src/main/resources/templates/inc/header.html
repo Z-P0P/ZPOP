@@ -49,7 +49,7 @@
                 <li class="header__notification"><button class="text-hidden">알림확인</button></li>
                 <li class="header__profile select-box">
                     <button><img src="/static/images/girl.svg" alt="프로필" 
-                    th:src="@{(${member.profileImagePath}?${member.profileImagePath}:'/images/icon/user-profile.svg')}"></button>
+                    th:src="@{(${session.member.profileImagePath}?${session.member.profileImagePath}:'/images/icon/user-profile.svg')}"></button>
                     <ul class="select-box__options select-box__options--right select-box__options--header">
                         <li><a href="">내 프로필</a></li>
                         <li><a href="">내가 모집한 모임</a></li>
@@ -110,7 +110,8 @@
                 <li class="header__search"><button class="text-hidden">검색</button></li>
                 <li class="header__notification"><button class="text-hidden">알림확인</button></li>
                 <li class="header__profile select-box">
-                    <button><img src="/static/images/girl.svg" alt="프로필"></button>
+                    <button><img src="/static/images/girl.svg" alt="프로필" 
+                        th:src="@{(${session.member.profileImagePath}?${session.member.profileImagePath}:'/images/icon/user-profile.svg')}"></button>
                     <ul class="select-box__options select-box__options--right select-box__options--header">
                         <li><a href="">내 프로필</a></li>
                         <li><a href="">내가 모집한 모임</a></li>
