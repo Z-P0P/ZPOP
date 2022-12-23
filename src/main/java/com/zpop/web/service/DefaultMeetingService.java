@@ -2,6 +2,7 @@ package com.zpop.web.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,14 @@ import org.springframework.stereotype.Service;
 import com.zpop.web.dao.CategoryDao;
 import com.zpop.web.dao.MeetingDao;
 import com.zpop.web.dao.ParticipationDao;
+import com.zpop.web.dao.RegionDao;
+import com.zpop.web.dto.MeetingDetailDto;
+import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.dto.MeetingThumbnailPagination;
 import com.zpop.web.dto.MeetingThumbnailResponse;
+import com.zpop.web.entity.Category;
 import com.zpop.web.entity.Participation;
+import com.zpop.web.entity.Region;
 import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.entity.meeting.MeetingThumbnailView;
 
@@ -53,25 +59,29 @@ public class DefaultMeetingService implements MeetingService{
     
 	@Override
 	public int register(Meeting meeting) {
-		
-		
-	
-		
-		
 		return dao.insert(meeting);
 	}
 
 	public int participate(Participation participation) {
-		
 		// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
 		// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
 		// 강퇴당한 사용자일 경우
 		// 마감된 모임일 경우
-		
-		
 //		Participation participation = new Participation(participation);
 		return participationDao.insert(participation);
-		
-		
 	}
+
+	@Override
+	public MeetingDetailDto getById(int id) {
+		return dao.get(id);
+	}
+
+	@Override
+	public List<MeetingParticipantsDto> getParticipants(int meetingId) {
+		
+		return participationDao.getByMeetingId(meetingId);
+	}
+
 }
+
+

@@ -1,9 +1,12 @@
 package com.zpop.web.dao;
 
-import com.zpop.web.entity.Participation;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
+import com.zpop.web.dto.MeetingParticipantsDto;
+import com.zpop.web.entity.Participation;
 
 @Mapper
 public interface ParticipationDao {
@@ -11,6 +14,6 @@ public interface ParticipationDao {
     Participation get(int id);
     List<Participation> getList();
     //update(Participation participation);
-    
+    List<MeetingParticipantsDto>getByMeetingId(int meetingId);
     
 }

@@ -9,12 +9,14 @@
         values(#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId}, #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact} ,#{genderCategory})
     </insert>
 
-    <select id="get" resultType= "com.zpop.web.entity.meeting.Meeting">
-        SELECT *
-        FROM meeting
-        WHERE id=#{id}
-    </select>
-
+	<select id="get"  resultType= "com.zpop.web.dto.MeetingDetailDto">
+				select m.title, m.startedAt, m.detailRegion, m.content, m.maxMember,
+							 m.viewCount,c.name categoryName, r.name regionName
+							from meeting m 
+							join category c on m.categoryId = c.id 
+							join region r on m.regionId = r.id 
+							where m.id = #{id};
+	</select>
     <select id="getThumbnailViewList" parameterType="com.zpop.web.dto.MeetingThumbnailPagination" resultType= "com.zpop.web.entity.meeting.MeetingThumbnailView">
         SELECT *
         FROM meetingThumb

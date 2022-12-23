@@ -1,5 +1,6 @@
 package com.zpop.web.dao;
 
+import com.zpop.web.dto.MeetingDetailDto;
 import com.zpop.web.dto.MeetingThumbnailPagination;
 import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.entity.meeting.MeetingThumbnailView;
@@ -11,7 +12,11 @@ import java.util.List;
 public interface MeetingDao {
 
     int insert(Meeting meeting);
-    Meeting get(int id);
+    
+    MeetingDetailDto get(int id); 
+    
     List<MeetingThumbnailView> getThumbnailViewList(MeetingThumbnailPagination pagination);
 //    int update(Meeting meeting);
+    
+    
 }

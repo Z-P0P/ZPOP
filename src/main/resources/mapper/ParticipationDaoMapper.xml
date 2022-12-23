@@ -9,7 +9,7 @@
         (meetingId, participantId)
         values(#{meetingId}, #{participantId})
     </insert>
-
+	
     <select id="get" resultType= "com.zpop.web.entity.Participation">
         select *
         from participation
@@ -20,5 +20,12 @@
         select *
         from participation
     </select>
+    	<select id="getByMeetingId" resultType="MeetingParticipantsDto">
+				SELECT p.id, p.participantId, m.nickname 
+				from participation p
+				join member m on p.participantId = m.id
+				WHERE meetingId = #{meetingId};
+	    </select>
+    
 </mapper>
 
