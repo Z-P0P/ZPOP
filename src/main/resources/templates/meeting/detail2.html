@@ -22,8 +22,10 @@
 <link rel="stylesheet" href="/css/member/meeting/detail.css">
 <!-- comment componet css & js -->
 <link rel="stylesheet" href="/css/member/component/comment.css" />
+<link rel="stylesheet" href="/css/member/component/reply.css" />
 <link rel="stylesheet" href="/css/member/component/profile-box.css">
 <script src="/js/comment/comment.js"></script>
+<script src="/js/comment/reply.js"></script>
 </head>
 <body>
 	<!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
@@ -98,8 +100,7 @@
 
 				<li th:each="comment:${comments}">
 					<div class="profile">
-						<span id="comment-id" class="hidden" th:text="${comment.id}">댓글아이디</span> <span
-							class="profile__image" th:text="${comment.profileImgPath}"></span>
+						<span class="profile__image" th:text="${comment.profileImgPath}"></span>
 						<span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
 						<span class="profile__time" th:text="${comment.elapsedTime}">3분전</span>
 						<button></button>
@@ -107,58 +108,12 @@
 						이 헌법에 의한 최초의 대통령의 임기는 이 헌법시행일로부터 개시한다. 모든 국민은 거주·이전의 자유를 가진다. 대통령은
 						제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다. </span>
 					<div class="comment__replies">
-						<span th:classappend="(${comment.countOfReply}==0)? 'hidden'"
+						<span class="hidden" th:text="${comment.id}">댓글아이디</span> 
+						<span class="reply-cnt" th:classappend="(${comment.countOfReply}==0)? 'hidden'"
 							th:text="'답글 ' + ${comment.countOfReply}+'개'"></span> <span>답글
 							달기</span>
 					</div>
-					<section class="reply">
-						<ul class="reply__list">
-							<li th:each="reply:${replies}">
-								<div class="profile">
-									<span class="profile__image" th:text="${reply.profileImgPath}"></span>
-									<span class="profile__nickname profile__nickname"
-										th:text="${reply.nickname}">찬우몬</span> <span
-										class="profile__time" th:text="${reply.elapsedTime}">3분전</span>
-									<button></button>
-								</div>
-								<div class="reply-container">
-									<span class="reply__at-symbol"
-										th:if="${not #strings.isEmpty(reply.parentNickname)}">@</span>
-									<!--span사이 공백없애기 
-               -->
-									<span class="reply__to" th:text="${reply.parentNickname}?:''">채누</span>
-									<span class="reply__content" th:text="${reply.content}">
-										이 헌법에 의한 최초의 대통령의 임기는 이 헌법시행일로부터 개시한다. 모든 국민은 거주·이전의 자유를 가진다.
-										대통령은 제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다. </span>
-								</div>
-								<div class="reply__replies">
-									<span class="hidden" th:text="${reply.parentCommentId}"></span>
-									<span>답글 달기</span> <span class="hidden"
-										th:text="${reply.groupId}"></span>
-								</div>
-							</li>
-							<template id="template">
-								<li>
-									<div class="profile">
-										<span class="profile__image"></span> <span
-											class="profile__nickname profile__nickname">쿤님</span> <span
-											class="profile__time">방금</span>
-										<button></button>
-									</div>
-									<div class="reply-container">
-										<span class="reply__at-symbol">@</span>
-										<!--span사이 공백없애기 
-               -->
-										<span class="reply__to"></span> <span class="reply__content"></span>
-									</div>
-									<div id="add-reply" class="reply__replies">
-										<span>답글 달기</span>
-									</div>
-								</li>
-							</template>
-						</ul>
-
-					</section>
+					
 				</li>
 				<template id="template">
 					<li>

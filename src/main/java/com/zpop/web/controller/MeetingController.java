@@ -1,6 +1,8 @@
 package com.zpop.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +35,6 @@ public class MeetingController {
 		
 		List<CommentView> comments = service.getComment(id);
 		int countOfComment = service.getCountOfComment(id);
-		System.out.println(comments);
 		model.addAttribute("meetingId", id);
 		model.addAttribute("comments", comments);
 		model.addAttribute("countOfComment", countOfComment);
@@ -50,9 +51,17 @@ public class MeetingController {
 	}
 	
 	@PostMapping("reply")
-	public  String getReply(@RequestBody Comment comment, Model model) {
+	@ResponseBody
+	public  Map<String, Object> getReply(@RequestBody Comment comment, Model model) {
+
 		List<CommentView> replies = service.getReply(comment.getParentCommentId());
+		
+		Map<String,Object> dto = new HashMap<>();
+		dto.put("status",200);
+		dto.put("resultObject",replies);
+		
 		model.addAttribute("replies", replies);
-		return "meeting/detail2";
+		System.out.println(replies);
+		return dto;
 	}
 }
