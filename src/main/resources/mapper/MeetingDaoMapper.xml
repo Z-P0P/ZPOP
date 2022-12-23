@@ -1,28 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.MeetingDao">
-    <insert id="insert" parameterType="com.zpop.web.entity.meeting.Meeting">
-        insert into meeting
-        (regMemberId, categoryId, regionId, ageRangeId, title, content, detailRegion, maxMember, startedAt, contact)
-        values(#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId}, #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact})
-    </insert>
+    <insert id="insert" parameterType="com.zpop.web.entity.meeting.Meeting"> insert into meeting
+        (regMemberId, categoryId, regionId, ageRangeId, title, content, detailRegion, maxMember,
+        startedAt, contact) values(#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId},
+        #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact}) </insert>
 
-    <select id="get" resultType= "com.zpop.web.entity.meeting.Meeting">
-        SELECT *
-        FROM meeting
-        WHERE id=#{id}
-    </select>
+    <select id="get" resultType="com.zpop.web.entity.meeting.Meeting"> SELECT * FROM meeting WHERE
+        id=#{id} </select>
 
-    <select id="getThumbnailViewList" parameterType="com.zpop.web.dto.MeetingThumbnailPagination" resultType= "com.zpop.web.entity.meeting.MeetingThumbnailView">
-        SELECT *
-        FROM meetingThumb
-        <trim prefix="where" prefixOverrides="AND | OR">
+    <select id="getThumbnailViewList" parameterType="com.zpop.web.dto.MeetingThumbnailPagination"
+        resultType="com.zpop.web.entity.meeting.MeetingThumbnailView"> SELECT * FROM meetingThumb <trim
+            prefix="where" prefixOverrides="AND | OR">
             <choose>
-                <when test="startId == 0">
-                    id >= #{startId}
-                </when>
+                <when test="startId == 0"> id >= #{startId} </when>
                 <otherwise>
                     <![CDATA[ id < #{startId} ]]>
                 </otherwise>
@@ -34,13 +25,16 @@
                 AND title LIKE '%${keyword}%'
             </if>
         </trim>
-        LIMIT 0, 9;
+        LIMIT 0, 9; </select>
+
+    <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> update meeting
+        deletedAt=CURRENT_TIMESTAMP() where id = #{id} </update>
+
+    <select id="getMeetingList" resultType="com.zpop.web.entity.meeting.MeetingThumbnailView">
+        SELECT *
+        FROM meetingThumb AS mt
+        JOIN participation p ON mt.id = p.meetingId
+        JOIN member m ON p.participantId = m.id
+        where m.id =#{id}
     </select>
-
-    <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting">
-        update meeting
-        deletedAt=CURRENT_TIMESTAMP()
-        where id = #{id}
-    </update>
 </mapper>
-
