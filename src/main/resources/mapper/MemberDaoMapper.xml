@@ -1,32 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.MemberDao">
-    <insert id="insert" parameterType="Member">
-        insert into member(socialTypeId, socialId, nickname)
-        values(#{socialTypeId}, #{socialId}, #{nickname})
-    </insert>
+    <insert id="insert" parameterType="Member"> insert into member(socialTypeId, socialId, nickname)
+        values(#{socialTypeId}, #{socialId}, #{nickname}) </insert>
     <select id="getList" resultType= "Member">
     	SELECT *
     	FROM member
     	LIMIT #{offset},#{size};
     </select>
-    <select id="getById" resultType= "Member">
-        select *
-        from member
-        where id=#{id}
-    </select>
-    <select id="getBySocialId" resultType= "Member">
-        select *
-        from member
-        where socialId=#{socialId}
-    </select>
-    <select id="getByNickname" resultType= "Member">
-        select *
-        from member
-		where nickname=#{nickname}
-    </select>
+    <select id="getById" resultType="Member"> select * from member where id=#{id} </select>
+    <select id="getBySocialId" resultType="Member"> select * from member where socialId=#{socialId} </select>
+    <select id="getByNickname" resultType="Member"> select * from member where nickname=#{nickname} </select>
     <select id="countBySearch" resultType= "java.lang.Integer">
       	SELECT COUNT(id) 
       	FROM member
@@ -37,4 +21,3 @@
       	</where>
     </select>
 </mapper>
-
