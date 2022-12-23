@@ -12,6 +12,7 @@ import com.zpop.web.entity.Participation;
 public interface ParticipationDao {
     int insert(Participation participation);
     Participation get(int id);
+    List<Participation> getListByMeetingId(int meetingId);
     List<Participation> getList();
     //update(Participation participation);
     List<MeetingParticipantsDto>getByMeetingId(int meetingId);

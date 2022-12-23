@@ -10,6 +10,15 @@
   cursor: pointer;
 }
 
+
+.icon-edit {
+  background-image: url(/images/icon/edit.svg);
+}
+
+.icon-trash {
+  background-image: url(/images/icon/trash.svg);
+}
+
 .icon-search {
   background-image: url(/images/icon/search.svg);
 }
@@ -107,9 +116,12 @@
 }
 
 .icon-link {
-  background-image: url(//images/icon/link.svg);
+  background-image: url(/images/icon/link.svg);
 }
 
 .icon-siren-red {
   background-image: url(/images/icon/siren-red.svg);
+}
+.icon-handshake {
+  background-image: url(/images/icon/handshake.svg);
 }

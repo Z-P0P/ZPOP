@@ -7,6 +7,7 @@
 .comment__num {
   font-weight: bold;
   font-size: 16px;
+  display: inline;
 }
 
 .comment__input-container {
@@ -37,6 +38,7 @@
   .comment__num {
     font-weight: bold;
     font-size: 18px;
+    display: inline;
   }
 }
 
@@ -44,7 +46,7 @@
   margin-top: 2rem;
 }
 
-.comment__replies span:last-child { 
+.comment__replies span:last-child {
   padding-left: 0.75rem;
   padding-right: 0.8rem;
 }
@@ -52,7 +54,7 @@
 /* ===== 댓글 리스트 영역 ====== */
 .comment__content {
   width: 100%;
-  min-width:17rem;
+  min-width: 17rem;
   max-width: 49.5rem;
   display: inline-block;
   text-align: left;
@@ -63,7 +65,7 @@
 
 /* ======댓글 갯수 & 댓글 남기기 */
 .comment__replies {
-  min-width:17rem;
+  min-width: 17rem;
   max-width: 49.5rem;
   display: flex;
   justify-content: flex-end;
@@ -72,6 +74,10 @@
 }
 
 @media (min-width: 36rem) {
-  .comment__content{font-size: 1.125rem;}
-  .comment__replies{font-size: 1.125rem;}
+  .comment__content {
+    font-size: 1.125rem;
+  }
+  .comment__replies {
+    font-size: 1.125rem;
+  }
 }

@@ -12,11 +12,22 @@ import java.util.List;
 public interface MeetingDao {
 
     int insert(Meeting meeting);
+
+
+    MeetingDetailDto getDetailView(int id); 
     
-    MeetingDetailDto get(int id); 
-    
-    List<MeetingThumbnailView> getThumbnailViewList(MeetingThumbnailPagination pagination);
+   
 //    int update(Meeting meeting);
     
     
+
+
+    Meeting get(int id);
+
+    List<MeetingThumbnailView> getThumbnailViewList(MeetingThumbnailPagination pagination);
+
+    int updateDeletedAt(Meeting meeting);
+
+    List<MeetingThumbnailView> getMeetingList(int id);
+
 }

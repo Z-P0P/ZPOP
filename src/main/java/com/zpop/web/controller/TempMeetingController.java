@@ -1,14 +1,12 @@
 package com.zpop.web.controller;
 
 import com.zpop.web.dto.MeetingThumbnailResponse;
+import com.zpop.web.entity.Member;
 import com.zpop.web.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class TempMeetingController {
             Model model,
             @RequestParam(required = false, defaultValue = "0") int startId,
             @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Boolean isClosed
+            @RequestParam(required = false, defaultValue = "false") Boolean isClosed
             ){
         List<MeetingThumbnailResponse> meetings = service.getList(startId, keyword, isClosed);
 
@@ -50,5 +48,15 @@ public class TempMeetingController {
         List<MeetingThumbnailResponse> meetings = service.getList(startId, keyword, isClosed);
 
         return meetings;
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public boolean delete(
+            @PathVariable(name = "id") int id
+    ) {
+        Member testMember = new Member();
+        boolean result = service.delete(id, testMember);
+        return true;
     }
 }

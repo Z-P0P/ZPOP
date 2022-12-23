@@ -1,4 +1,4 @@
-.region--div{
+.meeting-region{
     min-width: 128px;
     height:52px;
     background-color: #177DD7; /* true blue*/
@@ -7,18 +7,14 @@
     font-weight: bold;
     font-size: 18px;
     display: inline-flex;
-    justify-content: center;
+    padding:0 24px;
+    justify-content: space-between;
     align-items: center;
 }
 
-.region--div > img{
+.meeting-region > img{
     width: 24px;
     height: 24px;
-    margin-right: 24px;
     margin-left: 16px;
     cursor: pointer;
-}
-
-.region--div > span {
-    margin-left: 24px;
 }

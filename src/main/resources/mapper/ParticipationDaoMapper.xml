@@ -16,6 +16,12 @@
         where id=#{id}
     </select>
 
+    <select id="getListByMeetingId" resultType= "com.zpop.web.entity.Participation">
+        select *
+        from participation
+        where meetingId=#{id}
+    </select>
+
     <select id="getList" resultType= "com.zpop.web.entity.Participation">
         select *
         from participation

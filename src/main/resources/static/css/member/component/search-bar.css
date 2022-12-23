@@ -27,7 +27,7 @@
   outline: none;
 }
 
-@media (min-width: 576px) {
+@media (min-width: 768px) {
   .search-bar {
     width: 100%;
     min-width: 18.75rem;
@@ -38,5 +38,8 @@
     align-items: center;
     border-radius: 62rem;
     border: 0.125rem solid #ebebeb;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:32px;
   }
 }
