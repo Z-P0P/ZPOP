@@ -10,7 +10,12 @@ import java.util.List;
 @Mapper
 public interface MeetingDao {
     int insert(Meeting meeting);
+
     Meeting get(int id);
+
     List<MeetingThumbnailView> getThumbnailViewList(MeetingThumbnailPagination pagination);
+
     int updateDeletedAt(Meeting meeting);
+
+    List<MeetingThumbnailView> getMeetingList(int id);
 }

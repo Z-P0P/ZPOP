@@ -8,6 +8,8 @@ import com.zpop.web.entity.Member;
 import com.zpop.web.entity.Participation;
 import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.entity.meeting.MeetingThumbnailView;
+import com.zpop.web.utils.TextDateTimeCalculator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -35,14 +37,38 @@ public class DefaultMeetingService implements MeetingService{
 
     @Override
     public List<MeetingThumbnailResponse> getList(int startId, String keyword, Boolean isClosed) {
-        // 페이징옵션이 없을 때 ex:모임 리스트 조회 첫 화면
         MeetingThumbnailPagination pagination = new MeetingThumbnailPagination(startId, keyword, isClosed);
         List<MeetingThumbnailView> meetingThumbnailViews = dao.getThumbnailViewList(pagination);
-
+        
         // 응답에 맞게 데이터 변환
         List<MeetingThumbnailResponse> list = new ArrayList<>();
         for(MeetingThumbnailView m : meetingThumbnailViews) {
-            list.add(MeetingThumbnailResponse.of(m));
+            String genderCategory = "누구나";
+            switch (m.getGenderCategory()) {
+                case 1:
+                    genderCategory = "남자 모임";
+                    break;
+                case 2:
+                    genderCategory = "여자 모임";
+                    break;
+            }
+
+            String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
+
+            MeetingThumbnailResponse meetingThumbnail = new MeetingThumbnailResponse(
+                m.getId(),
+                m.getCategory(),
+                m.getRegion(),
+                m.getAgeRange(),
+                genderCategory,
+                m.getMaxMember(),
+                m.getTitle(),
+                dateTime,
+                m.getViewCount(),
+                m.getCommentCount(),
+                m.isClosed()
+            );
+            list.add(meetingThumbnail);
         }
 
         return list;

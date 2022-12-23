@@ -31,7 +31,7 @@
 
 </head>
 <body>
-	<div th:replace="~{inc/header::${member}==null?'anonymous-header':'member-header'}"></div>
+	<div th:replace="~{inc/header::${session.member}==null?'anonymous-header':'member-header'}"></div>
 	<div layout:fragment="content"></div>
 </body>
 </html>

@@ -29,7 +29,7 @@ public class TempMeetingController {
             Model model,
             @RequestParam(required = false, defaultValue = "0") int startId,
             @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Boolean isClosed
+            @RequestParam(required = false, defaultValue = "false") Boolean isClosed
             ){
         List<MeetingThumbnailResponse> meetings = service.getList(startId, keyword, isClosed);
 
