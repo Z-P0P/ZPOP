@@ -15,7 +15,12 @@ public class MeetingController {
 	}
 
 	@GetMapping("/{id}")
-	public String detailView() {
+	public String detailView() { // Model model
+		// 개발 테스트용 
+		// model.addAttribute("tempMember", 1);
+		// model.addAttribute("isMine", false);
+
+		// return "meeting/detail-imple";
 		return "meeting/detail";
 	}
 }
