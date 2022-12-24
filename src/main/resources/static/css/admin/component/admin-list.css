@@ -40,11 +40,10 @@
 }
 
 .admin-list__content{
-    transition: transform 0.05s 0.05s, box-shadow 0.05s 0.05s;
+    transition:box-shadow 0.05s 0.05s;
 }
 
 .admin-list__content:hover{
-    transform:scale(1.005);
     box-shadow:1px 1px 13px var(--light-grey1);
 }
 
