@@ -43,10 +43,10 @@
               
                     <div class="table-bar__right-container">
                       <span class="table-bar__page" 
-                      th:text="|${count}개 중 1-${count}|"> 
+                      th:text="|${count}개 중 ${(page-1)*10+1}-${#lists.size(members)}|"> 
                       9,999개 중 1-10 </span>
-                      <span class="table-bar__icon table-bar__icon-arrow-left hide"></span>
-                      <span class="table-bar__icon table-bar__icon-arrow-right hide"></span>
+                      <a th:href="${page-1}==0?'#': |?p=${page-1}|"class="table-bar__icon table-bar__icon-arrow-left hide"></a>
+                      <a th:href="|?p=${page+1}|" class="table-bar__icon table-bar__icon-arrow-right hide"></a>
                     </div>
                   </div>
                 <ul class="admin-list">
@@ -92,11 +92,11 @@
         <nav>
             <ul>
                 <li><a class="add-deco-img-left deco-img-home" href="index.html">대시보드</a></li>
-                <li><a class="add-deco-img-left deco-img-notification" href="../banner/list.html">공지 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-meeting" href="../meeting/list.html">모임 관리</a></li>
-                <li class="selected"><a class="add-deco-img-left deco-img-user-white" href="../member/list.html">회원 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-comment" href="../comment/list.html">댓글 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-report" href="../report/list.html">신고 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-notification" href="/admin/banner/list">공지 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-meeting" href="/admin/meeting/list">모임 관리</a></li>
+                <li class="selected"><a class="add-deco-img-left deco-img-user-white" href="/admin/member/list">회원 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-comment" href="/admin/comment/list">댓글 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-report" href="/admin/report/list">신고 관리</a></li>
                 <li><a class="add-deco-img-left deco-img-logout" href="logout.html">로그아웃</a></li>
             </ul>
         </nav>

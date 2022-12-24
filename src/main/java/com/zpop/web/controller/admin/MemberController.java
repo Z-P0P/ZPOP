@@ -12,27 +12,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zpop.web.entity.Member;
 import com.zpop.web.service.MemberService;
+import com.zpop.web.service.admin.AdminMemberService;
 
-@Controller
+@Controller("adminMemberController")
 @RequestMapping("/admin/member")
 public class MemberController {
 
-	private final MemberService memberService;
+	private final AdminMemberService adminMemberService;
 	
 	@Autowired
-	public MemberController (MemberService memberService) {
-		this.memberService = memberService;
+	public MemberController (AdminMemberService adminMemberService) {
+		this.adminMemberService = adminMemberService;
 	}
 	
 	@GetMapping()
-	public String member(Model model
+	public String member() {
+		return "redirect:member/list?p=1";
+	}
+	
+	
+	@GetMapping("list")
+	public String getList(Model model
+			,@RequestParam(name="p", defaultValue="1") int page
 			,@RequestParam @Nullable String keyword
 			,@RequestParam @Nullable String option) {
 		
-		List<Member> members = memberService.getList(1);
-		int count = memberService.getSearchCount(keyword, option);
+		List<Member> members = adminMemberService.getList(page,keyword,option);
+		int count = adminMemberService.count(keyword, option);
 		model.addAttribute("members", members);
 		model.addAttribute("count",count);
+		model.addAttribute("page",page);
 		
 		return "admin/member/list";
 	}

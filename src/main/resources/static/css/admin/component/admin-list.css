@@ -44,7 +44,6 @@
 }
 
 .admin-list__content:hover{
-    transform:scale(1.005);
     box-shadow:1px 1px 13px var(--light-grey1);
 }
 
