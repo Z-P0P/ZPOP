@@ -19,8 +19,8 @@ export function generateUrl(isScrollEvent) {
   if (state.regions.length !== 0) parameter.regions = regions;
 
   // 특정 카테고리가 선택되었다면
-  if (category && category !== 0) parameter.category = category;
-
+  if (category && category != 0) parameter.category = category;
+  
   // 무한 스크롤 이벤트라면
   if (isScrollEvent) {
     lastMeetingId =
