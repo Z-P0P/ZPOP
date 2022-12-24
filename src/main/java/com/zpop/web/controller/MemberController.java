@@ -1,15 +1,15 @@
 package com.zpop.web.controller;
 
 import com.zpop.web.entity.Member;
-import com.zpop.web.entity.meeting.MeetingThumbnailView;
+import com.zpop.web.entity.member.MyMeetingView;
 import com.zpop.web.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -39,26 +39,44 @@ public class MemberController {
         Member member = service.getById(id);
         model.addAttribute("member", member);
         return "member/my-profile";
+
     }
 
     //마이페이지 진입
     @GetMapping("/me")
         //user id는 세션에서 받아와야함
-    public String getMyPage(@RequestParam(defaultValue="2")  int id, Model model) {
-        Member member = service.getById(2);
-        model.addAttribute("member", member);
-        return "/member/my-profile";
+    public String getMyPage(HttpSession session , Model model) {
+        Member member = (Member) session.getAttribute("member");
+
+        return "member/my-profile";
+        //member 없을때 처리
+        //만약 로그인한 사람이 아닌데 들어올 경우 -> 처리 (멤버가져오기)
     }
 
 
-    /* getMyMeeting은 수정 필요*/
     @GetMapping("/me/meeting")
-    public String getMeeting(@RequestParam(defaultValue="2")  int id, Model model) {
+    public String getMeeting(HttpSession session , Model model) {
+        Member member = (Member) session.getAttribute("member");
 
-        List<MeetingThumbnailView> me = service.getMyMeeting(7);
-        model.addAttribute("me", me);
-        return "/member/my-meeting";
+        List<MyMeetingView> meetings = service.getMyMeeting(member.getId());
+        model.addAttribute("meetings", meetings);
+
+        System.out.println(meetings.size());
+        for (MyMeetingView m: meetings
+             ) {
+            System.out.println(m.getMaxMember());
+            System.out.println(m.getMeetingId());
+            System.out.println(m.getGenderCategory());
+        }
+
+        return "member/my-meeting";
     }
     // 권한 확인
+
+    @GetMapping("/me/gathering")
+    public String getGathering(HttpSession session, Model model){
+        return "member/my-gathering";
+
+    }
 
 }
