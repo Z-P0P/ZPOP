@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zpop.web.dao.MemberEvalDao">
+    <insert id ="insert" parameterType ="com.zpop.web.dao.MemberEvalDao">
+        insert into memberEval
+        (meetingId,evaluatorId,evaluateeId,result)
+        values
+        (#{meetingId} , #{evaluatorId}, #{evaluateeId} , #{result})
+    </insert>
+
+
+    <insert id="insertAll" parameterType="java.util.List">
+        INSERT INTO memberEval (
+        meetingId,
+        evaluatorId,
+        evaluateeId,
+        result)
+        VALUES
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+            #{element.meetingId},
+            #{element.evaluatorId},
+            #{element.evaluateeId},
+            #{element.result}
+        </foreach>
+    </insert>
+</mapper>

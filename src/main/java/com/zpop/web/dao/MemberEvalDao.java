@@ -1,12 +1,11 @@
 package com.zpop.web.dao;
 
-import java.util.List;
-
 import com.zpop.web.entity.MemberEval;
 
 public interface MemberEvalDao {
 
-	List<MemberEval> getList(int size, int offset, String keyword, String option);
+	//member평가
+
 	int insert (MemberEval memberEval);
 	int insertAll(MemberEval[] memberEvals);
 	
