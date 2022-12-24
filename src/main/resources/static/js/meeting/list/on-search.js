@@ -10,12 +10,7 @@ export default function (e) {
     const searchKeyword = document.querySelector("#search-bar-input").value;
     state.searchKeyword = searchKeyword;
 
-    const parameter = {};
-    parameter.keyword = searchKeyword;
-    // 토글 checked === true -> 모집 중인 모임만 보기
-    if (state.isToggleOn) parameter.isClosed = false;
-
-    const url = generateUrl(parameter);
+    const url = generateUrl();
 
     requestMeetings(url).then((meetings) => {
       removeMeetings();

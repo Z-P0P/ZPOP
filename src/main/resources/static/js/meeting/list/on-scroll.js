@@ -10,20 +10,9 @@ export default function () {
   if (!state.timer && scrollTop + clientHeight > scrollHeight - 5) {
     state.timer = setTimeout(() => {
       state.timer = null;
-
-      const parameter = {};
-      // 토글 checked === true -> 모집 중인 모임만 보기
-      if (state.isToggleOn)
-        parameter.isClosed = false;
-      // 사용자가 검색한 검색어가 있을경우
-      if (state.searchKeyword)
-        parameter.keyword = state.searchKeyword;
-
-      const lastMeetingId =
-        document.querySelector("#meetings").lastElementChild.dataset.id;
-      parameter.start = lastMeetingId;
-
-      const url = generateUrl(parameter);
+      
+      const isScrollEvent = true;
+      const url = generateUrl(isScrollEvent);
 
       requestMeetings(url).then((meetings) => {
         insertMeetings(meetings);

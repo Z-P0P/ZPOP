@@ -1,4 +1,7 @@
 import state from "./state.js";
+import requestMeetings from "./request-meetings.js";
+import { insertMeetings, removeMeetings } from "./view.js";
+import { generateUrl } from "./util.js";
 
 export default function(e) {
   const categoryId = e.target.dataset.id;
@@ -12,5 +15,11 @@ export default function(e) {
   e.target.classList.add("selected");
 
   state.category = categoryId;
-  // TODO: 재요청
+
+  const url = generateUrl();
+
+  requestMeetings(url).then((meetings) => {
+    removeMeetings();
+    insertMeetings(meetings);
+  });
 }
