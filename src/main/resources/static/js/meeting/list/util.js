@@ -6,6 +6,7 @@ import state from "./state.js";
  */
 export function generateUrl(isScrollEvent) {
   const { isToggleOn, searchKeyword, regions, category } = state;
+  const meetings = document.querySelector("#meetings");
   const parameter = {};
   let lastMeetingId;
 
@@ -22,9 +23,8 @@ export function generateUrl(isScrollEvent) {
   if (category && category != 0) parameter.category = category;
   
   // 무한 스크롤 이벤트라면
-  if (isScrollEvent) {
-    lastMeetingId =
-      document.querySelector("#meetings").lastElementChild.dataset.id;
+  if (isScrollEvent && meetings.lastElementChild) {
+    lastMeetingId = meetings.lastElementChild.dataset.id;
     parameter.start = lastMeetingId;
   }
   

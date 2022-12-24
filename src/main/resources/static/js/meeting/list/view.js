@@ -2,18 +2,21 @@
  * 모임 카드 요소 모두 제거
  */
 export const removeMeetings = function () {
+  hideResultNone();
   const meetingsElement = document.querySelector("#meetings");
   meetingsElement.innerHTML = "";
 };
 
+/**
+ * 모임 정보를 view에 출력한다
+ */
 export const insertMeetings = function (meetingsData) {
-  // 다음 데이터가 없을시 로딩 숨김
   if (meetingsData.length === 0) {
     hideLoading();
     return;
   }
 
-  // 받아온 모임 리스트 배열을 돌면서 새 모임 카드 화면에 출력
+  // 받아온 모임 리스트 배열을 돌면서 새 모임 카드 view에 출력
   for (const m of meetingsData) insertMeeting(m);
 };
 
@@ -64,22 +67,24 @@ export const insertMeeting = function (meetingData) {
 
 export const hideLoading = function () {
   const loading = document.querySelector(".lds-roller");
+  if (loading.style.visibility === "hidden") return;
   loading.style.visibility = "hidden";
 };
 
 export const showLoading = function () {
   const loading = document.querySelector(".lds-roller");
+  if (loading.style.visibility === "visible") return;
   loading.style.visibility = "visible";
 };
 
-export const hideResultNone = function () {
-  const resultNoneElement = document.querySelector(".result-none");
-  if (!resultNoneElement.classList.contains("hidden"))
-    resultNoneElement.classList.add("hidden");
+export const showResultNone = function () {
+  const resultNone = document.querySelector(".result-none");
+  if (!resultNone.classList.contains("hidden")) return;
+  resultNone.classList.remove("hidden");
 }
 
-export const showResultNone = function () {
-  const resultNoneElement = document.querySelector(".result-none");
-  if (resultNoneElement.classList.contains("hidden"))
-    resultNoneElement.classList.remove("hidden");
+export const hideResultNone = function () {
+  const resultNone = document.querySelector(".result-none");
+  if (resultNone.classList.contains("hidden")) return;
+  resultNone.classList.add("hidden");
 }
