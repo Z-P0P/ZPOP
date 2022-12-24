@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.MeetingDao">
-    <insert id="insert" parameterType="com.zpop.web.entity.meeting.Meeting"> insert into meeting
-        (regMemberId, categoryId, regionId, ageRangeId, title, content, detailRegion, maxMember,
-        startedAt, contact) values(#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId},
-        #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact}) </insert>
+    <insert id="insert" parameterType="com.zpop.web.entity.meeting.Meeting">
+        INSERT INTO meeting
+        (regMemberId, categoryId, regionId, ageRangeId, contactTypeId,
+        genderCategory, title, content, detailRegion, maxMember,
+        startedAt, contact)
+        VALUES
+        (#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId}, #{contactTypeId},
+        #{genderCategory}, #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact})
+    </insert>
 
     <select id="get" resultType="com.zpop.web.entity.meeting.Meeting"> SELECT * FROM meeting WHERE
         id=#{id} </select>
@@ -28,6 +33,6 @@
         LIMIT 0, 9; </select>
 
     <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> update meeting
-        deletedAt=CURRENT_TIMESTAMP() where id = #{id} </update>
+        deletedAt=CURRENT_TIMESTAMP() WHERE id = #{id} </update>
 
 </mapper>

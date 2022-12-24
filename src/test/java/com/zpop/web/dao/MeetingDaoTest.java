@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import java.util.Date;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class MeetingDaoTest {
@@ -21,17 +23,19 @@ class MeetingDaoTest {
         @Test
         void insert_테스트() {
                 Meeting testMeeting = new Meeting(
-                                1,
-                                1,
-                                1,
-                                1,
-                                0,
-                                "모임 테스트 제목",
-                                "모임 테스트 내용",
-                                "뉴렉처 강의실",
-                                5,
-                                new Date(),
-                                "뉴렉처 카카오톡");
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        0,
+                        "제목",
+                        "내용",
+                        "상세장소",
+                        5,
+                        new Date(),
+                        "연락처"
+                );
                 int result = meetingDao.insert(testMeeting);
                 assertThat(result).isEqualTo(1);
         }
