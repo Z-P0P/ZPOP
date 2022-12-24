@@ -6,14 +6,26 @@
     justify-content: space-evenly;
 
 }
+.meetings{
+    gap:2px;
+}
+.meeting__info-more {
+    display: flex;
 
+}
+.meeting__header{
+    flex-direction: row;
+}
 
+div.meeting__views.add-deco-img-left.deco-img-eyes{
+    padding-right: 10px;
+}
 .my-meeting {
     display: flex;
     align-content: center;
     align-items: baseline;
     padding-bottom: 15px;
-    border-bottom: 0.7px solid var(--light-grey1);
+    border-bottom: 1px solid var(--light-grey1);
     margin-top: 30px;
 }
 
@@ -61,6 +73,16 @@ div.btn.btn-semiround.rate {
     width: 100%;
 }
 
+div.range-slider {
+    width: 265px;
+    padding-right: 10px;
+}
+
+div.modal__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 /* 평가완료 버튼 */
 div.btn.btn-semiround.rated {
     background-color:var(--light-grey1);
@@ -73,6 +95,11 @@ div.btn.btn-semiround.rated {
     width: 100%;
 }
 
+/*div.modal__body {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*}*/
 
 @media (min-width: 768px) {
 

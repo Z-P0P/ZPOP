@@ -28,21 +28,22 @@
         <div class="profile__image">
             <div class="profile__image--no-photo .icon"></div>
         </div>
-        <span class="profile__nickname" th:text="${member.nickname}">닉네임</span>
+        <span class="profile__nickname" th:text="${session.member.nickname}">닉네임</span>
 
         <div class="profile__fame">
-            <span th:text="'인기도: '+${member.fame}+' 점'">인기도: 99점</span>
+            <span th:text="'인기도: '+${session.member.fame}+' 점'">인기도: 99점</span>
             <span class="deco-img-star "></span>
         </div>
 
         <span class="btn-semiround profile__btn">프로필 수정</span>
+<!--a태그로 수정하기-->
 
         <div class="profile__page-move">
-            <span>　내가 참여한 모임</span>
+            <a th:href="@{/member/me/meeting}">　내가 참여한 모임</a>
             <span class="icon icon-arrow-right">오른쪽 화살표</span>
         </div>
         <div class="profile__page-move">
-            <span>　내가 모집한 모임</span>
+            <a th:href="@{/member/me/gathering}">　내가 모집한 모임</a>
             <span class="icon icon-arrow-right">오른쪽 화살표</span>
         </div>
         <a class="profile__sign-out"href="">탈퇴하기</a>
