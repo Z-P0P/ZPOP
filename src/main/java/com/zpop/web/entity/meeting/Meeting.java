@@ -8,6 +8,7 @@ public class Meeting {
     private int categoryId;
     private int regionId;
     private int ageRangeId;
+    private int contactTypeId;
     private int genderCategory;
     private String title;
     private String content;
@@ -25,11 +26,12 @@ public class Meeting {
     public Meeting() {
     }
 
-    public Meeting(int regMemberId, int categoryId, int regionId, int ageRangeId, int genderCategory, String title, String content, String detailRegion, int maxMember, Date startedAt, String contact) {
+    public Meeting(int regMemberId, int categoryId, int regionId, int ageRangeId, int contactTypeId, int genderCategory, String title, String content, String detailRegion, int maxMember, Date startedAt, String contact) {
         this.regMemberId = regMemberId;
         this.categoryId = categoryId;
         this.regionId = regionId;
         this.ageRangeId = ageRangeId;
+        this.contactTypeId = contactTypeId;
         this.genderCategory = genderCategory;
         this.title = title;
         this.content = content;
@@ -57,6 +59,10 @@ public class Meeting {
 
     public int getAgeRangeId() {
         return ageRangeId;
+    }
+
+    public int getContactTypeId() {
+        return contactTypeId;
     }
 
     public int getGenderCategory() {
