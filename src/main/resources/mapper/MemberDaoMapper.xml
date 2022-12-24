@@ -12,7 +12,7 @@
     <select id="getBySocialId" resultType="Member"> select * from member where socialId=#{socialId} </select>
     <select id="getByNickname" resultType="Member"> select * from member where nickname=#{nickname} </select>
     
-     <!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 닉네임만 함 -->
+    <!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 닉네임만 함 -->
     <select id="countBySearch" resultType= "java.lang.Integer">
       	SELECT COUNT(id) 
       	FROM member
@@ -41,6 +41,5 @@
       			nickname LIKE '%${keyword}%'
       		</if>
       	</where>
-    		
     </select>
 </mapper>
