@@ -21,7 +21,7 @@ export default function () {
 
       const lastMeetingId =
         document.querySelector("#meetings").lastElementChild.dataset.id;
-      parameter.startId = lastMeetingId;
+      parameter.start = lastMeetingId;
 
       const url = generateUrl(parameter);
 

@@ -3,7 +3,7 @@ import onClickCategory from "./on-click-category.js";
 import onClickRegion from "./on-click-region.js";
 import onClickToggle from "./on-click-toggle.js";
 import onSearch from "./on-search.js";
-import infiniteScroll from "./infinite-scroll.js";
+import onScroll from "./on-scroll.js";
 
 window.addEventListener("load", function () {
   // 사용자 검색 
@@ -27,5 +27,5 @@ window.addEventListener("load", function () {
   toggle.onclick = onClickToggle;
 
   // 무한스크롤 다음 모임 리스트 요청
-  window.onscroll = infiniteScroll;
+  window.onscroll = onScroll;
 });
