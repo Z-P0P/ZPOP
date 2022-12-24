@@ -26,6 +26,9 @@
             <if test="isClosed != null">
                 AND isClosed = #{isClosed}
             </if>
+            <if test="categoryId != null">
+                AND categoryId = #{categoryId}
+            </if>
             <if test="keyword !=null">
                 AND title LIKE '%${keyword}%'
             </if>
