@@ -17,5 +17,4 @@ public interface MeetingDao {
 
     int updateDeletedAt(Meeting meeting);
 
-    List<MeetingThumbnailView> getMeetingList(int id);
 }
