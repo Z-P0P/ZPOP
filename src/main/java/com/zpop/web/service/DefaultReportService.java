@@ -96,8 +96,8 @@ public class DefaultReportService implements ReportService {
 		ReportedComment commentReport = new ReportedComment(
 				1, 
 				1, 
-				typeId, 
 				1, 
+				typeId, 
 				reason, 
 				"Messi is the goat", 
 				today, 

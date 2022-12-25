@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.ReportedMeetingDao">
 	<insert id="insert" parameterType="ReportedMeeting">
-		insert into reportedMeeting (meetingId,reporterId,typeId,adminId,reason,original,field,createdAt,processedAt,blockedAt,releasedAt) 
-		values(#{meetingId},#{reporterId},#{typeId},#{adminId},#{reason},#{original},#{field},#{createdAt},#{processedAt},#{blockedAt},#{releasedAt});
+		insert into reportedMeeting (meetingId,reporterId,typeId,adminId,reason,originalTitle,field,createdAt,processedAt,blockedAt,releasedAt) 
+		values(#{meetingId},#{reporterId},#{typeId},#{adminId},#{reason},#{originalTitle},#{field},#{createdAt},#{processedAt},#{blockedAt},#{releasedAt});
 	</insert>
 </mapper>
