@@ -4,15 +4,17 @@ public class MeetingThumbnailPagination {
     private Integer startId; // 요청 시작 id
     private String keyword; // 검색어
     private Integer categoryId; 
+    private String[] regionIds;
     private Boolean isClosed;
 
     public MeetingThumbnailPagination() {
     }
 
-    public MeetingThumbnailPagination(int startId, String keyword, Integer categoryId, Boolean isClosed) {
+    public MeetingThumbnailPagination(int startId, String keyword, Integer categoryId, String[] regionIds, Boolean isClosed) {
         this.startId = startId;
         this.keyword = keyword;
         this.categoryId = categoryId;
+        this.regionIds = regionIds;
         this.isClosed = isClosed;
     }
 
@@ -25,7 +27,11 @@ public class MeetingThumbnailPagination {
     }
 
     public Integer getCategoryId() {
-        return this.categoryId;
+        return categoryId;
+    }
+
+    public String[] getRegionIds() {
+        return regionIds;
     }
     
 

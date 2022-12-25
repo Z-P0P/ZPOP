@@ -1,4 +1,7 @@
 import state from "./state.js";
+import requestMeetings from "./request-meetings.js";
+import { generateUrl } from "./util.js";
+import { insertMeetings, removeMeetings } from "./view.js";
 
 export default function (e) {
   const MAX_REGION_COUNT = 3;
@@ -14,7 +17,7 @@ export default function (e) {
     );
     selectedRegion.remove();
     removeRegionInState(regionId);
-    // TODO: 재요청
+    requestMeetingsIncludeRegions();
     return;
   }
 
@@ -38,14 +41,14 @@ export default function (e) {
   const closeBtn = newRegion.querySelector("img");
   closeBtn.onclick = removeRegion;
 
-  // TODO: 재요청
+  requestMeetingsIncludeRegions();
 
   function removeRegion(e) {
     const selectedRegion = e.target.parentElement;
     const regionId = selectedRegion.dataset.regionId;
     document.querySelector(".meeting__options").removeChild(selectedRegion);
     removeRegionInState(regionId);
-    // TODO: 재요청
+    requestMeetingsIncludeRegions();
   }
 
   /**
@@ -53,5 +56,16 @@ export default function (e) {
    */
   function removeRegionInState(regionId) {
     state.regions = state.regions.filter((r) => r !== regionId);
+  }
+
+  /**
+   * regions을 포함하여 모임 요청
+   */
+  function requestMeetingsIncludeRegions() {
+    const url = generateUrl();
+    requestMeetings(url).then((meetings) => {
+      removeMeetings();
+      insertMeetings(meetings);
+    });
   }
 }

@@ -26,12 +26,9 @@ public class TempMeetingController {
 
     @GetMapping("/list")
     public String getListView(
-            Model model,
-            @RequestParam(required = false, defaultValue = "0") int startId,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false, defaultValue = "false") Boolean isClosed
+            Model model
             ){
-        List<MeetingThumbnailResponse> meetings = service.getList(startId, keyword, isClosed);
+        List<MeetingThumbnailResponse> meetings = service.getList();
 
         model.addAttribute("meetings", meetings);
 
@@ -41,11 +38,13 @@ public class TempMeetingController {
     @GetMapping("/api/list")
     @ResponseBody
     public List<MeetingThumbnailResponse> getList(
-            @RequestParam(required = false, defaultValue = "0") int startId,
+            @RequestParam(required = false, defaultValue = "0") int start,
             @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Integer category,
+            @RequestParam(required = false) String regions,
             @RequestParam(required = false) Boolean isClosed
-    ){
-        List<MeetingThumbnailResponse> meetings = service.getList(startId, keyword, isClosed);
+    ){  
+        List<MeetingThumbnailResponse> meetings = service.getList(start, keyword, category, regions, isClosed);
 
         return meetings;
     }
