@@ -1,86 +1,214 @@
- window.addEventListener("load", (e) => {
-        document.querySelectorAll(".reply__replies").forEach((addReply)=>{
-	        addReply.addEventListener("click",(e) => {
-	            e.preventDefault();
-	            const parent = e.target.parentElement; //답글링크 컨테이너 객체
-            	restoreAddLink();
-	            parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
-	            document.querySelectorAll(".reply__input-container").forEach((item)=>item.remove());//답글입력창 삭제
-	        	let template =  // text input box를 동적으로 추가 
-	        		`
-					<div class="reply__input-container"> 
-				        <textarea
-				        id="reply-text"
-				        class="reply__input"
-				        name="reply-input"
-				        placeholder="답글을 입력하세요."
-				        ></textarea>
-				        <span id="register-btn" class="reply__btn btn btn-round">등록하기</span>
-		    		 </div> 
-		    		 `;
-	        	const parentId = e.target.previousElementSibling.innerHTML;
-	        	const groupId = e.target.nextElementSibling.innerHTML;
-	        	const parentNickname = parent.previousElementSibling.previousElementSibling.children[1].innerHTML;
-	        	
-	        	parent.insertAdjacentHTML("afterend",template);//클릭된 특정 답글링크의 위치아래에 inputbox추가.
-	        	const registerBtn = document.querySelector("#register-btn");
-	        	
-	        	registerBtn.addEventListener("click",(e) => {
-	                e.preventDefault();
-					restoreAddLink();
-	                const replyText = document.querySelector("#reply-text").value;
-	
-	                const data = {
-	                    method: "POST",
-	                    headers: {
-	                        "Content-Type": "application/json",
-	                    },
-	                    body: JSON.stringify({
-	                        "content":replyText,
-	                        "writerId":2,
-	                        "meetingId":1,
-	                        "perentCommentId":parentId,
-	                        "groupId":groupId
-	                    })
-	                }
-	
-	                fetch("http://localhost:8080/reply", data)
-	                .then(response => {
-	    		        const newReplyText = document.getElementById("reply-text").value;
-	                	if(newReplyText){
-	    	            	if(response.ok){
-	    		            	addNewReplyElement(newReplyText, parentNickname);
-	    	            	}
-	    	            	else alert("시스템 장애로 등록이 안되고 있습니다.");
-	    	            }
-	    	            else alert("댓글을 입력해주세요.");
-	                });
-	            });//end of registerBtn event handler
-	  		}); //end of addReply.addEventListener
-	  	}); //end of foreach of addReply
-  	});//end of window.load
-  	
-  	//새 답글 추가
-  	function addNewReplyElement(newText,parentNickname){
-	    if(newText != ""){
-	        const sourceNode = window.template.content.querySelector("li");
-	        const newNode = sourceNode.cloneNode(true);
-	        const textSpan = newNode.querySelector('.reply__content');
-	        const nicknameSpan = newNode.querySelector('.reply__to');
-	        const textNode = document.createTextNode(newText);
-	        const nicknameNode = document.createTextNode(parentNickname);
-	        textSpan.appendChild(textNode);
-	        nicknameSpan.appendChild(nicknameNode);
-	        const targetNode = document.querySelector(".reply__list").lastElementChild;
-	        targetNode.after(newNode);
-	        document.querySelector(".reply__input-container").remove();
-	    }
+
+export function getReply(meetingId, groupId, replyUl) {
+	const data = {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			"meetingId": meetingId,
+			"groupId": groupId
+		})
 	}
-	// 감춰진 답글링크 복구
-	function restoreAddLink(){
-		document.querySelectorAll(".reply__replies").forEach((item)=>{
-					item.classList.remove("hidden"); 
-				});
-	}	
-  
-  
+	fetch("http://localhost:8080/meeting/reply", data)
+		.then(response => {
+			if (response.ok) {
+				return response;
+			}
+		})
+		.then(data => data.json())
+		.then(json => {
+			let replies = json.resultObject;
+			let count = json.countOfReply;
+			refreshReplyCount(replyUl, count);
+			for (const r of replies) {
+				let parentNickname = "";
+				if (r.parentNickname != null)
+					parentNickname = '@' + r.parentNickname;
+				let template = `
+					<li> 
+						<div class="profile">
+							<span class="profile__image"></span>
+							<span class="profile__nickname profile__nickname">${r.nickname}</span>
+							<span class="profile__time">${r.elapsedTime}</span>
+							<button></button>
+						</div>
+						<div class="reply-container">
+							<span class="reply__to">${parentNickname}</span>
+							<span class="reply__content">${r.content}</span>
+						</div>
+						<div class="reply__replies">
+							<span class="hidden">${r.id}</span>
+							<span class="pointer underline reply-to-reply" >답글 달기</span> 
+							<span class="hidden">${r.groupId}</span>
+						</div>
+					</li>
+				`
+				replyUl.insertAdjacentHTML("beforeend", template);
+			}
+		});
+}
+
+
+export function writeReplyToComment(meetingId, writerId, parentId, replyUl, linkContainer ) {
+	console.log(replyUl)
+			//답글입력창 삭제하고 상단 링크 되살림 
+			document.querySelectorAll(".reply__input-container").forEach((item) => {
+				item.previousElementSibling.classList.remove("hidden");
+				item.remove();
+		});
+			let template =  // text input box를 동적으로 추가 
+				`
+                  <div class="reply__input-container"> 
+                      <textarea
+	                      id="reply-text"
+	                      class="reply__input"
+	                      name="reply-input"
+	                      placeholder="답글을 입력하세요."></textarea>
+                      <div class="reply__btn-container">
+	                      <span class="reply__btn btn btn-round cancel-btn">취소하기</span>
+	                      <span class="reply__btn btn btn-round register-btn">등록하기</span>
+                      </div>
+                   </div> 
+                   `;
+			linkContainer.insertAdjacentHTML("afterend", template);//클릭된 특정 답글링크의 위치아래에 inputbox추가.
+
+			document.querySelector(".register-btn").addEventListener("click", () => {
+				const replyText = document.querySelector("#reply-text").value;
+				if(replyText==""){
+				 	alert("댓글을 입력해주세요.");
+				 	return;
+				}
+				const data = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						"content": replyText,
+						"writerId": writerId,
+						"meetingId": meetingId,
+						"parentCommentId": parentId,
+						"groupId": parentId
+					})
+				}
+				fetch("http://localhost:8080/reply", data)
+					.then(response => {
+							if (response.ok) {
+								//replyUl.parentElement.previousElementSibling.remove();
+								removeInputBox();
+								restoreReplyLink()
+								while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제
+									replyUl.removeChild(replyUl.firstChild);
+								getReply(meetingId, parentId, replyUl); //AJAX로 새로 렌더링
+								refreshReplyCount(replyUl,)
+								
+							}
+							else alert("시스템 장애로 등록이 안되고 있습니다.");
+					});
+			});
+			document.querySelector(".cancel-btn").addEventListener("click",(e)=>{
+				document.querySelector(".reply__input-container").remove();
+				linkContainer.classList.remove("hidden");
+				//replyUl.parentElement.classList.add("hidden");//replySection 감추기
+				
+			});
+};
+
+
+
+
+export function writeReplyToReply(meetingId, writerId, groupId, parentId, replyUl, linkContainer) {
+		
+		let template =  // text input box를 동적으로 추가 
+			`
+              <div class="reply__input-container"> 
+                  <textarea
+                      id="reply-text"
+                      class="reply__input"
+                      name="reply-input"
+                      placeholder="답글을 입력하세요."></textarea>
+                  <div class="reply__btn-container">
+                      <span class="reply__btn btn btn-round cancel-btn">취소하기</span>
+                      <span class="reply__btn btn btn-round register-btn">등록하기</span>
+                  </div>
+              </div> 
+                   `;
+                 
+		linkContainer.insertAdjacentHTML("afterend", template);//클릭된 특정 답글링크의 위치아래에 inputbox추가.
+
+		document.querySelector(".register-btn").addEventListener("click", () => {
+			const replyText = document.querySelector("#reply-text").value;
+			
+			if(replyText==""){
+			 alert("댓글을 입력해주세요.");
+			 return;
+			}
+			const data = {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					"content": replyText,
+					"writerId": writerId,
+					"meetingId": meetingId,
+					"parentCommentId": parentId,
+					"groupId": groupId
+				})
+			}
+
+				fetch("http://localhost:8080/reply", data)
+					.then(response => {
+							if (response.ok) {
+								
+								while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제
+									replyUl.removeChild(replyUl.firstChild);
+								getReply(meetingId, groupId, replyUl); //AJAX로 새로 렌더링
+							}
+							else alert("시스템 장애로 등록이 안되고 있습니다.");
+					});
+		});//end of registerBtn event handler
+		//취소버튼에 이벤트핸들러 부착 
+		document.querySelector(".cancel-btn").addEventListener("click",()=>{
+			document.querySelector(".reply__input-container").remove();
+			linkContainer.classList.remove("hidden");
+		});
+}//end of function
+//답글 갯수 갱신
+function refreshReplyCount(replyUl, count){
+	replyUl.parentElement.previousElementSibling.children[1].innerHTML = "답글 " + count + "개";
+}
+function removeInputBox (){
+	//답글입력창 삭제하고 상단 링크 되살림 
+		document.querySelectorAll(".reply__input-container").forEach((item) => {
+			console.log("여기")
+			item.previousElementSibling.classList.remove("hidden");
+			item.remove();
+		});
+}
+// 감춰진 답글 보기/작성 링크 복구
+function restoreReplyLink() {
+	document.querySelectorAll(".reply__replies, .comment__replies").forEach((item) => {
+		item.classList.remove("hidden");
+	});
+}
+
+//DOM추가기법으로 새 답글을 리스트 하단에 표시 (사용x)
+//function addNewReplyElement(newText, parentNickname) {
+//	if (newText != "") {
+		//   const template = document.querySelector("#template-reply");
+		//   const sourceNode = template.content.querySelector("li");
+		//   const newNode = sourceNode.cloneNode(true);
+		//   const textSpan = newNode.querySelector('.reply__content');
+		//   const nicknameSpan = newNode.querySelector('.reply__to');
+		//   const textNode = document.createTextNode(newText);
+		//   const nicknameNode = document.createTextNode(parentNickname);
+		//   textSpan.appendChild(textNode);
+		//   nicknameSpan.appendChild(nicknameNode);
+		//   const targetNode = document.querySelector(".reply__list").lastElementChild;
+		//   targetNode.after(newNode);
+		//   document.querySelector(".reply__input-container").remove();
+
+//	}
+//}

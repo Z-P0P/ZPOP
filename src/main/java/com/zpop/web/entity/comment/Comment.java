@@ -20,6 +20,9 @@ public class Comment {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public int getMeetingId() {
+		return meetingId;
+	}
 	public void setMeetingId(int meetingId) {
 		this.meetingId = meetingId;
 	}

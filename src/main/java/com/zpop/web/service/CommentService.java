@@ -9,8 +9,11 @@ public interface CommentService {
 	
 	List<CommentView> getComment(int meetingId);
 	List<CommentView> getReply(int grouopId);
-	int getCountOfComment(int meetingId);
 	
 	int registerComment(Comment comment);
+	int registerReply(Comment comment);
+	
+	int getCountOfComment(int meetingId);
+	int getCountOfReply(int groupId);
 
 }

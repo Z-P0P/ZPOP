@@ -8,12 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zpop.web.entity.comment.Comment;
 import com.zpop.web.entity.comment.CommentView;
 import com.zpop.web.service.CommentService;
-
-import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 //@RequestMapping("/")
@@ -23,6 +22,7 @@ public class CommentController {
 	
 	@GetMapping("/comment")
 	public String comment(Model model) {
+		//개발시 임시로 하드코딩한 값
 		int meetingId = 1;
 		List<CommentView> comments = service.getComment(meetingId);
 		int countOfComment = service.getCountOfComment(meetingId);
@@ -36,11 +36,10 @@ public class CommentController {
 	
 	@GetMapping("/reply")
 	public String reply(Model model) {
+		//개발시 임시로 하드코딩한 값
 		int groupId = 4;
 		List<CommentView> replies = service.getReply(groupId);
-		
 		model.addAttribute("replies", replies);
-		
 		return "comment/reply";
 	}
 	
@@ -48,14 +47,12 @@ public class CommentController {
 	
 	@PostMapping("comment")
 	public  String registerComment(@RequestBody Comment comment) {
-		comment.setMeetingId(1);
 		service.registerComment(comment);
-		return "redirect:/comment";
+		return "comment/comment";
 	}
 	@PostMapping("reply")
 	public  String registerReply(@RequestBody Comment comment) {
-		comment.setMeetingId(0);
-		//service.registerComment(comment);
-		return "redirect:/reply";
+		service.registerReply(comment);
+		return "comment/reply";
 	}
 }

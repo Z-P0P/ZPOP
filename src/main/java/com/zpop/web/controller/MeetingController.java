@@ -38,30 +38,38 @@ public class MeetingController {
 		model.addAttribute("meetingId", id);
 		model.addAttribute("comments", comments);
 		model.addAttribute("countOfComment", countOfComment);
-		
-		
-		
+
 		return "meeting/detail2";
 	}
+	
 	@PostMapping("comment")
 	@ResponseBody
-	public  String registerComment(@RequestBody Comment comment) {
-		service.registerComment(comment);
-		return "";
+	public  Map<String, Object> getComment(@RequestBody Comment comment) {
+		
+		List<CommentView> comments = service.getComment(comment.getMeetingId());
+		int countOfComment = service.getCountOfComment(comment.getMeetingId());
+		
+		Map<String,Object> dto = new HashMap<>();
+		dto.put("status",200);
+		dto.put("resultObject",comments);
+		dto.put("countOfComment",countOfComment);
+		
+		return dto;
 	}
 	
 	@PostMapping("reply")
 	@ResponseBody
-	public  Map<String, Object> getReply(@RequestBody Comment comment, Model model) {
+	public  Map<String, Object> getReply(@RequestBody Comment comment) {
 
-		List<CommentView> replies = service.getReply(comment.getParentCommentId());
+		List<CommentView> replies = service.getReply(comment.getGroupId());
+		int countOfReply = service.getCountOfReply(comment.getGroupId());
 		
 		Map<String,Object> dto = new HashMap<>();
 		dto.put("status",200);
 		dto.put("resultObject",replies);
+		dto.put("countOfReply",countOfReply);
 		
-		model.addAttribute("replies", replies);
-		System.out.println(replies);
 		return dto;
 	}
+	
 }

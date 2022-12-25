@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/button.css" />
     <link rel="stylesheet" href="/css/member/component/comment.css" />
     <link rel="stylesheet" href="/css/member/component/profile-box.css">
-    <script src="/js/comment/comment.js"></script>
+    
   </head>
   <body>
     <section class="comment">
@@ -40,7 +40,7 @@
                       <span>답글 달기</span>
               </div>
           </li>
-          	<template id="template">
+          <template id="template">
           <li>
               <div class="profile"> 
                   <span class="profile__image" ></span>
@@ -57,5 +57,58 @@
       </ul>
   </section>
   </body>
- 
+ <script>
+  
+  	function addNewCommentElement(newText){
+  		
+  		if(newText != ""){
+	  		const template = document.querySelector("#template");
+	  		const sourceNode = window.template.content.querySelector("li");
+	  		const newNode = sourceNode.cloneNode(true);
+	  		const textSpan = newNode.querySelector('.comment__content');
+	  		const newContent = document.createTextNode(newText);
+	  		textSpan.appendChild(newContent);
+	  		const targetNode = document.querySelector(".comment__list li:last-child");
+	  		if(targetNode ==null)
+	  			template.after(newNode);
+	  		else
+	  			targetNode.after(newNode);
+	  		document.getElementById("comment-text").value = "";//플레이스홀더 되살림.
+  		}
+  	}	
+  
+    window.addEventListener("load", (e) => {
+        const registerBtn = document.querySelector("#register-btn");
+
+         registerBtn.addEventListener("click",(e) => {
+            e.preventDefault();
+
+            const commentText = document.querySelector("#comment-text").value;
+            const data = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+					"meetingId":1,
+                    "content":commentText,
+                    "writerId":3,
+                })
+            }
+
+            fetch("http://localhost:8080/meeting/comment", data)
+            .then(response => {
+		        const newCommentText = document.getElementById("comment-text").value;
+            	if(newCommentText){
+	            	if(response.ok){
+		            	addNewCommentElement(newCommentText);
+	            	}
+	            	else alert("시스템 장애로 등록이 안되고 있습니다.");
+	            }
+	            else alert("댓글을 입력해주세요.");
+            });
+            
+        });
+    });
+</script>
 </html>

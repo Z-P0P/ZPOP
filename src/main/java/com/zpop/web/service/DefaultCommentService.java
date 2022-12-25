@@ -40,17 +40,29 @@ public class DefaultCommentService implements CommentService {
 		return list;
 	}
 
-	@Override
-	public int getCountOfComment(int meetingId) {
-		int countOfComment= dao.getCountOfComment(meetingId);
-		return countOfComment;
-	}
-
+	
 	@Override
 	public int registerComment(Comment comment) {
 		
 		int affectedRow = dao.insertComment(comment);
 		return affectedRow;
+	}
+
+	@Override
+	public int registerReply(Comment comment) {
+		int affectedRow = dao.insertReply(comment);
+		return affectedRow;
+	}
+	
+	@Override
+	public int getCountOfComment(int meetingId) {
+		int countOfComment= dao.getCountOfComment(meetingId);
+		return countOfComment;
+	}
+	@Override
+	public int getCountOfReply(int groupId) {
+		int countOfReply = dao.getCountOfReply(groupId);
+		return countOfReply;
 	}
 	
 	
