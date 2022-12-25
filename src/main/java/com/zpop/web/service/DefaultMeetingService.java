@@ -42,7 +42,7 @@ public class DefaultMeetingService implements MeetingService{
             null,
             null,
             null,
-            null
+            false
         );
     }
 
