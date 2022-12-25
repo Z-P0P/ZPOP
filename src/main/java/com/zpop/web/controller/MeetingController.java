@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zpop.web.entity.comment.Comment;
 import com.zpop.web.entity.comment.CommentView;
 import com.zpop.web.service.CommentService;
-
+/*
+ * 작성자: 임형미 & 
+ */
 @Controller
 @RequestMapping("/meeting")
 public class MeetingController {

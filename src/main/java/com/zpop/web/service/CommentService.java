@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.zpop.web.entity.comment.Comment;
 import com.zpop.web.entity.comment.CommentView;
-
+/*
+ * 작성자:임형미
+ */
 public interface CommentService {
 	
 	List<CommentView> getComment(int meetingId);

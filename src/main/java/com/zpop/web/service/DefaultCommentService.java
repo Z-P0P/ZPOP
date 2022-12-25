@@ -1,15 +1,15 @@
 package com.zpop.web.service;
 
-import java.util.Iterator;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.zpop.web.dao.CommentDao;
 import com.zpop.web.entity.comment.Comment;
 import com.zpop.web.entity.comment.CommentView;
 import com.zpop.web.utils.ElapsedTimeCalculator;
+/*
+ * 작성자:임형미
+ */
 @Service
 public class DefaultCommentService implements CommentService {
 	

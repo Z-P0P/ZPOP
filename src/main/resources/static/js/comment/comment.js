@@ -31,8 +31,8 @@ window.addEventListener("load", () => {
 				const parentId = e.target.previousElementSibling.innerText.trim();
 				const parent = e.target.parentElement;
 				parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
-				Reply.writeReplyToReply(meetingId, writerId, commentId, parentId, replyUl, parent);
-				}
+				Reply.writeReply(meetingId, writerId, commentId, parentId, replyUl, parent);
+				} //groupId = commentId
 			});
 			//AJAX로 완성된 답글 리스트 보여주기
 			replySection.classList.remove("hidden");//<section class="reply hidden">
@@ -50,8 +50,8 @@ window.addEventListener("load", () => {
 			const parent = e.target.parentElement;
 			parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
 			const parentId = parent.children[0].innerText.trim();
-			console.log(parentId)
-			Reply.writeReplyToComment(meetingId, writerId, parentId, replyUl, parent);
+			const groupId = parentId; //원댓글에 대한 답글은 groupId와 parentId가 동일
+			Reply.writeReply(meetingId, writerId, groupId, parentId, replyUl, parent);
 			replySection.classList.remove("hidden");//<section class="reply hidden">
 		}
 	};
@@ -136,7 +136,7 @@ function getComment(meetingId, commentUl) {
 						<div class="profile">
 							<span class="profile__image"></span> 
 							<span class="profile__nickname">${c.nickname}</span> 
-							<span class="profile__time">5분전</span>
+							<span class="profile__time">${c.elapsedTime}</span>
 							<button></button>
 						</div> <span class="comment__content">${c.content}</span>
 						<div class="comment__replies underline pointer">

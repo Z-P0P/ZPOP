@@ -77,7 +77,7 @@
 /* ====== 답글 남기기 ===========*/
 .reply__replies {
   min-width:15.5rem;
-  max-width: 728rem;
+  max-width: 728px;
   display: flex;
   justify-content: flex-end;
   color: var(--main-color);
