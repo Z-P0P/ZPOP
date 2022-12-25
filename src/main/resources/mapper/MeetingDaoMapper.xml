@@ -26,6 +26,15 @@
             <if test="isClosed != null">
                 AND isClosed = #{isClosed}
             </if>
+            <if test="categoryId != null">
+                AND categoryId = #{categoryId}
+            </if>
+            <if test="regionIds != null">
+                AND regionId IN 
+                <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">
+                    #{regionId}
+                </foreach>
+            </if>
             <if test="keyword !=null">
                 AND title LIKE '%${keyword}%'
             </if>
@@ -40,6 +49,6 @@
         FROM meetingThumb AS mt
         JOIN participation p ON mt.id = p.meetingId
         JOIN member m ON p.participantId = m.id
-        where m.id =#{id}
+        WHERE m.id =#{id}
     </select>
 </mapper>
