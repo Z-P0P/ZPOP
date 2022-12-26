@@ -51,7 +51,9 @@
 	JOIN member
 	ON meeting.regMemberId = member.id
 	LEFT OUTER JOIN(
-		SELECT meetingId, count(id) as num
+		SELECT 
+			meetingId, 
+            COUNT(IF(bannedAt IS NULL AND canceledAt IS NULL,1, NULL)) as num
 	    FROM participation
 	    GROUP BY meetingId
 	    ) AS pNum
