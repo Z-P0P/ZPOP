@@ -1,19 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/member/style.css" />
-    <link rel="stylesheet" href="/css/button.css" />
-    <link rel="stylesheet" href="/css/member/component/reply.css" />
-    <link rel="stylesheet" href="/css/member/component/profile-box.css">
-    <link rel="stylesheet" href="/css/deco.css" />
-    <script src="/js/comment/reply.js"></script>
-  </head>
-  <body>
-    <section class="reply">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+ 
+    <section class="reply" th:fragment="reply">
       <ul class="reply__list">
           <li th:each="reply:${replies}">
               <div class="profile"> 
@@ -31,7 +20,7 @@
               </div>
               <div class="reply__replies">
 		              <span class="hidden" th:text="${reply.parentCommentId}"></span>
-                      <span class="pointer">답글 달기</span>
+                      <span>답글 달기</span>
 		              <span class="hidden" th:text="${reply.groupId}"></span>
               </div>
           </li>
@@ -56,5 +45,4 @@
       </ul>
       
   </section>
-  </body>
-</html>
+  

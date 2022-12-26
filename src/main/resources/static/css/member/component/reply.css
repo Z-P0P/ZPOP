@@ -1,7 +1,7 @@
 .reply {
   display: flex;
   flex-direction: column;
-  margin: 50px auto 0 auto;
+  margin: 31px auto 31px 24px;
 }
 
 .reply__num {
@@ -13,7 +13,10 @@
   display: flex;
   flex-direction: column;
 }
-
+.reply__btn-container{
+	display:inline-flex;
+	align-self:flex-end;
+}
 .reply__input {
   border: none;
   resize: none;
@@ -26,9 +29,8 @@
 }
 
 .reply__btn {
-  align-self: flex-end;
+  margin-left:5px;
 }
-
 @media (min-width: 576px) {
   .reply__input {
     min-height: 9.375rem;
@@ -41,10 +43,12 @@
 }
 
 .reply__list {
-  margin-top: 2rem;
+  /*margin-top: 2rem;*/
 }
-
-.reply__replies span:last-child { 
+.reply__list li{
+	/*margin-bottom:1.5rem;*/
+}
+.reply__replies span:nth-child(2) { 
   padding-left: 0.75rem;
   padding-right: 0.8rem;
 }
@@ -65,7 +69,7 @@
 .reply__content {
   width: 100%;
   min-width:15.5rem;
-  max-width: 45rem;
+  max-width: 728px;
   text-align: left;
   word-break:keep-all;
 }
@@ -73,11 +77,10 @@
 /* ====== 답글 남기기 ===========*/
 .reply__replies {
   min-width:15.5rem;
-  max-width: 45rem;
+  max-width: 728px;
   display: flex;
   justify-content: flex-end;
   color: var(--main-color);
-  text-decoration: underline;
 }
 
 @media (min-width: 36rem) {

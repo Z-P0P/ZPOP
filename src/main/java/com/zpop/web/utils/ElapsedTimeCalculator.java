@@ -1,7 +1,9 @@
 package com.zpop.web.utils;
 
 import java.util.Date;
-
+/*
+ * 작성자:임형미
+ */
 public final class ElapsedTimeCalculator {
 	
 
