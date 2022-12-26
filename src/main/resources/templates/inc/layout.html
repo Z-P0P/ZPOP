@@ -22,6 +22,7 @@
 <script src="/js/member/select.js"></script>
 <script src="/js/member/modal.js"></script>
 <script src="/js/member/login.js"></script>
+<script src="/js/header.js" defer></script>
 <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
 	integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx"
@@ -34,5 +35,6 @@
 <body>
 	<div th:replace="~{inc/header::${session.member}==null?'anonymous-header':'member-header'}"></div>
 	<div layout:fragment="content"></div>
+	<th:block th:replace="~{inc/mobile-search-modal::mobile-search-modal}"></th:block>
 </body>
 </html>

@@ -196,3 +196,9 @@
 .header__profile .select-box__options--header a{
 	width:100%;
 }
+
+@media (min-width: 576px){
+  #modal-search {
+    display: none;
+  }
+}
