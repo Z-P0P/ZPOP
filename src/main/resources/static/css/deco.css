@@ -5,6 +5,12 @@
 .hidden {
   display: none !important;
 }
+.pointer{
+	cursor:pointer
+}
+.underline{
+	text-decoration:underline;
+}
 
 .add-deco-img-left::before,
 .add-deco-img-right::after {

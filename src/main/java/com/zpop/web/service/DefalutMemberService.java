@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+/*
+ * 작성자: 임형미
+ */
 @Service
 public class DefalutMemberService implements MemberService{
 
