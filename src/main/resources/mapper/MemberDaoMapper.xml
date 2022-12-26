@@ -33,7 +33,7 @@
     		resignedAt
    		FROM
    			member
-   		ORDER BY id DESC;
+   		ORDER BY id DESC
    		LIMIT #{offset},#{size};
    		<!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 닉네임만 함 -->
   		<where>
