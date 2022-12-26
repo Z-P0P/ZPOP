@@ -134,7 +134,7 @@
   }
 }
 
-.result-none {
+.search-result-none {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -142,8 +142,18 @@
   padding: 80px 0;
 }
 
-.result-none strong {
+.search-result-none strong {
   font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .search-result-none {
+    font-size: 20px;
+  }
+}
+
+.result-none {
+  padding: 80px 0;
 }
 
 @media (min-width: 768px) {

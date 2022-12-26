@@ -70,7 +70,6 @@
   display: flex;
   justify-content: flex-end;
   color: var(--main-color);
-  text-decoration: underline;
 }
 
 @media (min-width: 36rem) {

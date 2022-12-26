@@ -1,4 +1,4 @@
-package com.zpop.web.entity;
+package com.zpop.web.entity.comment;
 
 import java.util.Date;
 
