@@ -1,6 +1,6 @@
 import state from "./state.js";
 import requestMeetings from "./request-meetings.js";
-import { generateUrl } from "./util.js";
+import generateUrl from "./generate-url.js";
 import { insertMeetings, removeMeetings } from "./view.js";
 
 export default function (e) {
