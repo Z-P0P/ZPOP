@@ -32,7 +32,7 @@ public class DeafultAdminMemberService implements AdminMemberService{
 	public List<Member> getList(int page, String keyword, String option) {
 		int size = 10;
 		int offset=(page-1)*size;
-		List<Member> list = memberDao.getList(size, offset, keyword, option);
+		List<Member> list = memberDao.getListBySearch(size, offset, keyword, option);
 		return list;
 	}
 
