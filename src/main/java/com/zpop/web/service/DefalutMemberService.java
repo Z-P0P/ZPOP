@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,24 +48,7 @@ public class DefalutMemberService implements MemberService {
 
 
         List<MyMeetingView> mmv = dao.getMyMeeting(memberId);
-        for (MyMeetingView m : mmv) {
-            Date date = new Date();
-            date = m.getStartedAt();
-            LocalDate ldate = new java.sql.Date(date.getTime()).toLocalDate();
-            System.out.println("변환용"+ldate);
-            LocalDate now =LocalDate.now();
-            System.out.println("현재날짜는"+now);
 
-            System.out.println("시작날짜는"+date);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            cal.add(Calendar.DATE,1);
-            System.out.println("캘린더"+cal);
-            System.out.println("현재날짜가 시작날짜보다 크니?");
-
-            boolean canRate = now.isAfter(ldate);
-
-        }
 
         List<MyMeetingResponse> list = new ArrayList<>();
 
@@ -80,10 +62,14 @@ public class DefalutMemberService implements MemberService {
                     genderCategory = "여자 모임";
                     break;
             }
-            System.out.println(m.toString());
 
             String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
-            System.out.println(m.getRegionName());
+
+            Date date = m.getStartedAt();
+            LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
+            LocalDate now =LocalDate.now();
+            boolean canRate = now.isAfter(localDate);
+
             MyMeetingResponse mt = new MyMeetingResponse(
                     m.getCategoryName(),
                     m.getRegionName(),
@@ -97,7 +83,8 @@ public class DefalutMemberService implements MemberService {
                     m.getCommentCount(),
                     m.getMeetingId(),
                     m.getParticipantId(),
-                    m.getRegMemberId()
+                    m.getRegMemberId(),
+                    canRate
 
             );
             System.out.println(mt);
@@ -127,10 +114,14 @@ public class DefalutMemberService implements MemberService {
                     genderCategory = "여자 모임";
                     break;
             }
-            System.out.println(m.toString());
 
             String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
-            System.out.println(m.getRegionName());
+
+            Date date = m.getStartedAt();
+            LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
+            LocalDate now =LocalDate.now();
+            boolean canRate = now.isAfter(localDate);
+
             MyMeetingResponse mt = new MyMeetingResponse(
                     m.getCategoryName(),
                     m.getRegionName(),
@@ -144,7 +135,8 @@ public class DefalutMemberService implements MemberService {
                     m.getCommentCount(),
                     m.getMeetingId(),
                     m.getParticipantId(),
-                    m.getRegMemberId()
+                    m.getRegMemberId(),
+                    canRate
 
             );
             System.out.println(mt);

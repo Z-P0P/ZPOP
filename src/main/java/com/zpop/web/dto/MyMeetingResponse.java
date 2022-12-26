@@ -12,6 +12,8 @@ public class MyMeetingResponse {
     private boolean isClosed;
     private int viewCount;
     private int commentCount;
+
+
     private int meetingId;
     private int participantId;
     private int regMemberId;
@@ -20,7 +22,7 @@ public class MyMeetingResponse {
     public MyMeetingResponse() {
     }
 
-    public MyMeetingResponse(String categoryName, String regionName, String startedAt, String title, String age, int maxMember, String genderCategory, boolean isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId) {
+    public MyMeetingResponse(String categoryName, String regionName, String startedAt, String title, String age, int maxMember, String genderCategory, boolean isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId,boolean canRate) {
         this.categoryName = categoryName;
         this.regionName = regionName;
         this.startedAt = startedAt;
@@ -34,6 +36,7 @@ public class MyMeetingResponse {
         this.meetingId = meetingId;
         this.participantId = participantId;
         this.regMemberId = regMemberId;
+        this.canRate =canRate;
     }
 
     public MyMeetingResponse(String categoryName, String regionName, String dateTime, String title, String age, int maxMember, String genderCategory, int isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId) {
@@ -141,6 +144,14 @@ public class MyMeetingResponse {
 
     public void setRegMemberId(int regMemberId) {
         this.regMemberId = regMemberId;
+    }
+
+    public boolean isCanRate() {
+        return canRate;
+    }
+
+    public void setCanRate(boolean canRate) {
+        this.canRate = canRate;
     }
 
     @Override
