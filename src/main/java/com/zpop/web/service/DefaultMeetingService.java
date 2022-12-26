@@ -47,6 +47,17 @@ public class DefaultMeetingService implements MeetingService{
     }
 
     @Override
+    public List<MeetingThumbnailResponse> getList(String keyword) {
+        return getList(
+            0,
+            keyword,
+            null,
+            null,
+            false
+        );
+    }
+
+    @Override
     public List<MeetingThumbnailResponse> getList(
             int startId, String keyword, Integer categoryId, String strRegionIds, Boolean isClosed
             ) {
