@@ -4,7 +4,7 @@
    
 
 	<select id="getDetailView"  resultType= "com.zpop.web.dto.MeetingDetailDto">
-				select m.title, m.startedAt, m.detailRegion, m.content, m.maxMember,
+				select m.title, m.startedAt, m.detailRegion, m.content, m.maxMember, m.regMemberId,m.id,
 							 m.viewCount,c.name categoryName, r.name regionName
 							from meeting m 
 							join category c on m.categoryId = c.id 
@@ -14,8 +14,8 @@
 
     <insert id="insert" parameterType="com.zpop.web.entity.meeting.Meeting"> insert into meeting
         (regMemberId, categoryId, regionId, ageRangeId, title, content, detailRegion, maxMember,
-        startedAt, contact) values(#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId},
-        #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact}) </insert>
+        startedAt, contact, contactTypeId , genderCategory) values(#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId},
+        #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact}, #{contactTypeId}, #{genderCategory}) </insert>
 
     <select id="get" resultType="com.zpop.web.entity.meeting.Meeting"> SELECT * FROM meeting WHERE
         id=#{id} </select>
@@ -40,7 +40,13 @@
 
     <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> update meeting
         deletedAt=CURRENT_TIMESTAMP() where id = #{id} </update>
-
+	
+	<update id="updateViewCount" parameterType="com.zpop.web.dto.MeetingDetailDto">
+			update meeting
+			set viewCount = viewCount + 1
+			where id = #{id}
+	</update>
+		
     <select id="getMeetingList" resultType="com.zpop.web.entity.meeting.MeetingThumbnailView">
         SELECT *
         FROM meetingThumb AS mt

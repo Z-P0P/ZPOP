@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+	
+	
     <link rel="stylesheet" href="/css/member/style.css" />
     <link rel="stylesheet" href="/css/deco.css">
     <link rel="stylesheet" href="/css/button.css">
@@ -20,8 +21,10 @@
     <link rel="stylesheet" href="/css/member/component/participant.css" type="text/css" >
     <link rel="stylesheet" href="/css/member/component/comment.css" />
     <link rel="stylesheet" href="/css/member/popup.css">
+    <link rel="stylesheet" href="/css/member/component/modal-2.css">
     <!-- detail page css -->
     <link rel="stylesheet" href="/css/member/meeting/detail.css">
+    <script src="/js/meeting/detail.js"></script>
 
 </head>
 <body>
@@ -35,8 +38,18 @@
             </div>
             <div class="meeting__header">
                 <div class="meeting__title-container">
+                <span class="hidden meeting-Id" th:text="${dto.id}"></span>
                     <span class="meeting__title"  th:text="${dto.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
+                    <th:block th:if="${session.member != null && memberType == 'host'}">
+                    		<div th:replace="~{inc/meeting-detail-modal::member-host}"></div>
+                    </th:block>
+                    <th:block th:if="${session.member != null && memberType == 'participant'}">
+                    		<div th:replace="~{inc/meeting-detail-modal::member-participant}"></div>
+                    </th:block>
+                       <th:block th:if="${session.member != null && memberType == 'member'}">
+                    		<div th:replace="~{inc/meeting-detail-modal::member}"></div>
+                    </th:block>
                 </div>
                 <div class="meeting__date-container">
                     <img class="meeting__small-calander" src="/images/icon/small-calander.svg">
@@ -64,9 +77,9 @@
                 #+10명
                 #남자만
             </div>
-            <div class="meeting__views"  th:text="${dto.viewCount}">조회수 999회</div>
+            <div class="meeting__views"  th:text=' ${"조회수 " + dto.viewCount}'>조회수 999회</div>
             <div class="meeting__btn">
-                <span class="btn btn-round btn-join" id="participation-btn">참여하기</span>
+                <span class="btn btn-round btn-join" id="participation-btn"  data-modal="#modal-wrapper-participation">참여하기</span>
             </div>
         </div>
     </section>
@@ -74,61 +87,55 @@
     <section class="participant">
         <div class="participant__num">
             <span>참가자</span>
-            <span th:text="${dto.maxMember}">15/56</span>
+            <span th:text="|${#lists.size(participants)}/${dto.maxMember}|">15/56</span>
             <span class="icon icon-arrow-up"></span>
         </div>
         <ul class="participant__list">
-            <li>
-                <span class="participant__info"><img src="/images/girl.svg">일이삼사오육칠팔구십</span>
-            </li>
-            <li>
-                <span class="participant__info"><img src="/images/girl.svg">일이삼사오육칠팔구십</span>
-            </li>
-            <li>
-                <span class="participant__info"><img src="/images/girl.svg">일이삼사오육칠팔구십</span>
-            </li>
-            <li>
-                <span class="participant__info"><img src="/images/girl.svg">일이삼사오육칠팔구십</span>
-            </li>
-            <li>
-                <span class="participant__info"><img src="/images/girl.svg">일이삼사오육칠팔구십</span>
+            <li th:each="participant:${participants}">
+            <span class="participant-Id"  >8</span>
+                <span class="participant__info" 
+                	th:text="${participant.nickname}"></span>
+                	<img src="/images/girl.svg"  
+                	th:src="@{${participant.profileImagePath}?${participant.profileImagePath}:'/images/icon/user-profile.svg'}">
+                
             </li>
         </ul>
     </section>
-
-    
+			
+    	
+    <div class="modal-container"></div>
     </main>
 </body>
 
 <script>
-    window.addEventListener("load",function(){
-        const participationBtn = document.querySelector("#participation-btn");
-		console.log("load");
-        participationBtn.onclick = function(e){
-            e.preventDefault();
+//     window.addEventListener("load",function(){
+//         const participationBtn = document.querySelector("#participation-btn");
+// 		console.log("load");
+//         participationBtn.onclick = function(e){
+//             e.preventDefault();
             
-            console.log("참여하기 버튼 클릭")
-            const data = { 
-        			method: "POST", // 또는 'PUT'
-                  headers: {
-                    "Content-Type": "application/json",
-               	},
-                  body: JSON.stringify({
-                	  meetingId:280,
-                	  participantId:2
-                  })
-        		}
+//             console.log("참여하기 버튼 클릭")
+//             const data = { 
+//         			method: "POST", // 또는 'PUT'
+//                   headers: {
+//                     "Content-Type": "application/json",
+//                	},
+//                   body: JSON.stringify({
+//                 	  meetingId:280,
+//                 	  participantId:2
+//                   })
+//         		}
 
-                fetch("http://localhost:8080/meeting/participate",data)
-                .then((response) => {
-                  console.log('성공:', data);
-        		  alert("성공적으로 참여했습니다");
-                })
-                .catch((error) => {
-        			console.error('실패:', error);
-        			alert("참여에 실패했습니다");
-                });
-        }
-    })
+//                 fetch("http://localhost:8080/meeting/participate",data)
+//                 .then((response) => {
+//                   console.log('성공:', data);
+//         		  alert("성공적으로 참여했습니다");
+//                 })
+//                 .catch((error) => {
+//         			console.error('실패:', error);
+//         			alert("참여에 실패했습니다");
+//                 });
+//         }
+//     })
 </script>
 </html>

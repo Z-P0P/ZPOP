@@ -18,4 +18,5 @@ public interface MeetingService {
 	MeetingDetailDto getById(int id);
 	List<MeetingParticipantsDto> getParticipants(int meetingId);
     boolean delete(int id, Member member);
+	void updateViewCount(int id);
 }

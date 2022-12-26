@@ -7,8 +7,7 @@
 	rel="stylesheet">
 	
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<script src="/js/meeting/register.js"></script>
-
+<script type="module" src="/js/meeting/register.js"></script>
 </head>
 <body>
 	<main layout:fragment="content">
@@ -20,17 +19,17 @@
 					<div class="meeting-form__input">
 						<label class="input__label" for="category">카테고리</label>
 						<div class="select-box select-box--input">
-							<input placeholder="카테고리를 선택하세요" type="text" name="category"
-								id="" readonly>
+							<input placeholder="카테고리를 선택하세요" type="text" name="categoryId"
+								id="categoryId" readonly>
 							<ul class="select-box__options">
-								<li>밥/카페</li>
-								<li>운동</li>
-								<li>스터디</li>
-								<li>방탈출</li>
-								<li>보드게임</li>
-								<li>문화</li>
-								<li>펫</li>
-								<li>기타</li>
+								<li data-id="1">밥/카페</li>
+								<li data-id="2">운동</li>
+								<li data-id="3">스터디</li>
+								<li data-id="4">방탈출</li>
+								<li data-id="5">보드게임</li>
+								<li data-id="6">문화</li>
+								<li data-id="7">펫</li>
+								<li data-id="8">기타</li>
 							</ul>
 						</div>
 						<span class="input__message"></span>
@@ -50,11 +49,11 @@
 							<ul class="select-box__options"  id="select-box">
 								<li data-id="1">서울</li>
 								<li data-id="2">인천/경기</li>
-								<li data-id="3">충청/대전/세종</li>
-								<li data-id="4">강원</li>
-								<li data-id="5">경북/대구</li>
-								<li data-id="6">전라/광주</li>
-								<li data-id="7">경남/부산/울산</li>
+								<li data-id="3">경남/부산/울산</li>
+								<li data-id="4">충청/대전/세종</li>
+								<li data-id="5">전라/광주</li>
+								<li data-id="6">강원</li>
+								<li data-id="7">경북/대구</li>
 								<li data-id="8">제주</li>
 								<li data-id="9">온라인</li>
 							</ul>
@@ -118,16 +117,16 @@
 					<div class="meeting-form__input">
 						<label class="input__label" for="category">연락방법</label>
 						<div class="select-box select-box--input">
-							<input placeholder="연락 방법을 선택해주세요." type="text" name="contact"
-								id="contact" readonly>
-							<ul class="select-box__options">
-								<li>카카오톡 오픈 채팅</li>
-								<li>디스코드</li>
+							<input placeholder="연락 방법을 선택해주세요." type="text" name="contactTypeId" 
+								id="contactTypeId" readonly>
+							<ul class="select-box__options" >
+								<li data-id="1">카카오톡 오픈 채팅</li>
+								<li data-id="2">디스코드</li>
 							</ul>
 						</div>
 						<div class="input-text__content-wrapper">
-							<input id="meeting-openchat-link" class="input-text__content"
-								type="text" placeholder="오픈채팅방 링크" name="contactLink" >
+							<input class="input-text__content"
+								type="text" placeholder="오픈채팅방 링크" name="contact"  id="contact">
 						</div>
 						<span class="input__message"></span>
 					</div>
@@ -169,19 +168,19 @@
 
 
 
-    let toolbarOptions = ['bold', 'italic', 'underline', 'strike', 'link', 'image'];
-    var quill = new Quill('#editor', {
-      theme: 'snow',
-      modules: {
-        toolbar: toolbarOptions,
-      },
-    });
-    var form = document.querySelector("form");
-    var hiddenInput = document.querySelector('#hiddenInput');
+//     let toolbarOptions = ['bold', 'italic', 'underline', 'strike', 'link', 'image'];
+//     var quill = new Quill('#editor', {
+//       theme: 'snow',
+//       modules: {
+//         toolbar: toolbarOptions,
+//       },
+//     });
+//     var form = document.querySelector("form");
+//     var hiddenInput = document.querySelector('#hiddenInput');
 
-    form.addEventListener('submit', function(e){
-        hiddenInput.value = quill.root.innerHTML;
-    });
+//     form.addEventListener('submit', function(e){
+//         hiddenInput.value = quill.root.innerHTML;
+//     });
 
 </script>
 <script src="/static/js/member/select.js"></script>

@@ -12,15 +12,12 @@ import java.util.List;
 @Service
 public class DefalutMemberService implements MemberService{
 
-    private final MemberDao dao;
-    private final MeetingDao mtDao;
+	@Autowired
+    private MemberDao dao;
+	@Autowired
+	private MeetingDao mtDao;
 
     //mtDao가 아닌 view를 이용한 dao로 수정 필요함
-    @Autowired
-    public DefalutMemberService(MemberDao dao, MeetingDao mtDao) {
-        this.dao = dao;
-        this.mtDao = mtDao;
-    }
 
     @Override
     public Member getById(int id) {

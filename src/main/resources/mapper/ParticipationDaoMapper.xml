@@ -27,7 +27,7 @@
         from participation
     </select>
     	<select id="getByMeetingId" resultType="MeetingParticipantsDto">
-				SELECT p.id, p.participantId, m.nickname 
+				SELECT p.id, p.participantId as memberId, m.nickname, m.profileImagePath
 				from participation p
 				join member m on p.participantId = m.id
 				WHERE meetingId = #{meetingId};

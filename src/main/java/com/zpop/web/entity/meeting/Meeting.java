@@ -16,6 +16,7 @@ public class Meeting {
     private int maxMember;
     private Date startedAt;
     private String contact;
+    private int contactTypeId;
     private int viewCount;
     private int commentCount;
     private boolean isClosed;
@@ -26,11 +27,13 @@ public class Meeting {
     }
 
 
-    public Meeting(int regMemberId, int categoryId, int regionId, int ageRangeId, int genderCategory, String title, String content, String detailRegion, int maxMember, Date startedAt, String contact) {
+    public Meeting(int regMemberId, int categoryId, int regionId, int ageRangeId, int contactTypeId , int genderCategory, String title, String content, String detailRegion, int maxMember, Date startedAt, String contact
+    		, int viewCount) {
         this.regMemberId = regMemberId;
         this.categoryId = categoryId;
         this.regionId = regionId;
         this.ageRangeId = ageRangeId;
+        this.contactTypeId = contactTypeId;
         this.genderCategory = genderCategory;
         this.title = title;
         this.content = content;
@@ -38,24 +41,38 @@ public class Meeting {
         this.maxMember = maxMember;
         this.startedAt = startedAt;
         this.contact = contact;
+        this.viewCount = viewCount;
     }
 
 
 
-    @Override
-	public String toString() {
-		return "Meeting [id=" + id + ", regMemberId=" + regMemberId + ", categoryId=" + categoryId + ", regionId="
-				+ regionId + ", ageRangeId=" + ageRangeId + ", title=" + title + ", content=" + content
-				+ ", detailRegion=" + detailRegion + ", maxMember=" + maxMember + ", startedAt=" + startedAt
-				+ ", contact=" + contact + ", viewCount=" + viewCount + ", commentCount=" + commentCount + ", isClosed="
-				+ isClosed + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
-	}
 
 	public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public int getContactTypeId() {
+		return contactTypeId;
+	}
+
+
+	public void setContactTypeId(int contactTypeId) {
+		this.contactTypeId = contactTypeId;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Meeting [id=" + id + ", regMemberId=" + regMemberId + ", categoryId=" + categoryId + ", regionId="
+				+ regionId + ", ageRangeId=" + ageRangeId + ", genderCategory=" + genderCategory + ", title=" + title
+				+ ", content=" + content + ", detailRegion=" + detailRegion + ", maxMember=" + maxMember
+				+ ", startedAt=" + startedAt + ", contact=" + contact + ", contactTypeId=" + contactTypeId
+				+ ", viewCount=" + viewCount + ", commentCount=" + commentCount + ", isClosed=" + isClosed
+				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+	}
+
+
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -213,11 +230,12 @@ public class Meeting {
         return deletedAt;
     }
     
-    public Meeting(int regMemberId, int categoryId, int regionId, int ageRangeId, String title, String content, String detailRegion, int maxMember, Date startedAt, String contact) {
+    public Meeting(int regMemberId, int categoryId, int regionId, int ageRangeId, int contactTypeId,  String title, String content, String detailRegion, int maxMember, Date startedAt, String contact) {
         this.regMemberId = regMemberId;
         this.categoryId = categoryId;
         this.regionId = regionId;
         this.ageRangeId = ageRangeId;
+        this.contactTypeId = contactTypeId;
         this.title = title;
         this.content = content;
         this.detailRegion = detailRegion;

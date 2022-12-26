@@ -13,16 +13,18 @@ public class MeetingRegisterDto {
 	private int categoryId;
 	private int regionId;
 	private int ageRangeId;
+	private int contactTypeId;
+	private int genderCategory;
 	private String title;
 	private String content;
 	private String detailRegion;
 	private int maxMember;
 	private Date startedAt;
 	private String contact;
-
+	private int viewCount;
 	public Meeting toEntity() {// DTO -> ENTITY HH:MM -> HH:MM:SS
-		return new Meeting(getRegMemberId(), getCategoryId(), getRegionId(), getAgeRangeId(), getTitle(), getContent(),
-				getDetailRegion(), getMaxMember(), getStartedAt(), getContact());
+		return new Meeting(getRegMemberId(), getCategoryId(), getRegionId(), getAgeRangeId(),getContactTypeId(),getGenderCategory(),getTitle(), getContent(),
+				getDetailRegion(), getMaxMember(), getStartedAt(), getContact(), getviewCount());
 	}
 
 	public int getRegMemberId() {
@@ -82,11 +84,25 @@ public class MeetingRegisterDto {
 	}
 
 
+
+
 	@Override
 	public String toString() {
 		return "MeetingRegisterDto [regMemberId=" + regMemberId + ", categoryId=" + categoryId + ", regionId="
-				+ regionId + ", ageRangeId=" + ageRangeId + ", title=" + title + ", content=" + content
-				+ ", detailRegion=" + detailRegion + ", maxMember=" + maxMember + ", startedAt=" + startedAt
-				+ ", contact=" + contact + "]";
+				+ regionId + ", ageRangeId=" + ageRangeId + ", contactTypeId=" + contactTypeId + ", genderCategory="
+				+ genderCategory + ", title=" + title + ", content=" + content + ", detailRegion=" + detailRegion
+				+ ", maxMember=" + maxMember + ", startedAt=" + startedAt + ", contact=" + contact + "]";
+	}
+
+	public int getContactTypeId() {
+		return contactTypeId;
+	}
+
+	public int getGenderCategory() {
+		return genderCategory;
+	}
+
+	public int getviewCount() {
+		return viewCount;
 	}
 }

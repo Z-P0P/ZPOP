@@ -12,16 +12,9 @@ import java.util.List;
 public interface MeetingDao {
 
     int insert(Meeting meeting);
-
-
+    
     MeetingDetailDto getDetailView(int id); 
     
-   
-//    int update(Meeting meeting);
-    
-    
-
-
     Meeting get(int id);
 
     List<MeetingThumbnailView> getThumbnailViewList(MeetingThumbnailPagination pagination);
@@ -29,5 +22,7 @@ public interface MeetingDao {
     int updateDeletedAt(Meeting meeting);
 
     List<MeetingThumbnailView> getMeetingList(int id);
+    
+    void updateViewCount(int id);
 
 }

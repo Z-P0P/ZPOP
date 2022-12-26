@@ -42,11 +42,6 @@ public class DefaultMeetingService implements MeetingService{
     public DefaultMeetingService() {
     }
 
- 
-
-  
-  
-
     public DefaultMeetingService(MeetingDao dao, ParticipationDao participationDao){
         this.dao = dao;
         this.participationDao = participationDao;
@@ -151,6 +146,11 @@ public class DefaultMeetingService implements MeetingService{
 
         return true;
     }
+	@Override
+	public void updateViewCount(int id) {
+		dao.updateViewCount(id);
+		
+	}
 }
 
 

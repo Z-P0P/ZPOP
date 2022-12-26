@@ -27,26 +27,35 @@
 // console.log(meetingOpenNum);
 // console.log(meetingContatc);
 // console.log(meetingOpenChatLink);
+import quillGenerator from "../utils/quill-generator.js";
 
 
 window.addEventListener("load", function () {
+  const toolbarOptions = ['bold', 'italic', 'underline', 'strike', 'link', 'image'];
+  const quill = quillGenerator("#editor", {
+      theme: 'snow',
+      modules: {
+        toolbar: toolbarOptions,
+      },
+  });
+  
   const registerBtn = document.querySelector("#register-btn");
 
   registerBtn.onclick = function (e) {
 
     e.preventDefault();
 	
-	const startedAt = document.querySelector("#startedAt").value;
     const categoryId = document.querySelector("#categoryId").dataset.id;
     const regionId = document.querySelector("#regionId").dataset.id;
     const ageRangeId = document.querySelector("#ageRangeId").dataset.id;
     const maxMember = document.querySelector("#maxMember").dataset.id;
 	const genderCategory = document.querySelector("#genderCategory").dataset.id;
+    const contactTypeId = document.querySelector("#contactTypeId").dataset.id;
+	const startedAt = document.querySelector("#startedAt").value;
     const title = document.querySelector("#meeting-title").value;
     const content = document.querySelector("#editor").value;
     const detailRegion = document.querySelector("#detailRegion").value;
     const contact = document.querySelector("#contact").value;
-    const contactLink = document.querySelector("#meeting-openchat-link").value;
     const option = {
       method: "POST", // 또는 'PUT'
       headers: {
@@ -59,11 +68,11 @@ window.addEventListener("load", function () {
         ageRangeId: ageRangeId,
         detailRegion: detailRegion,
         contact: contact,
-        contactLink: contactLink,
+        contactTypeId: contactTypeId,
         title:title,
         maxMember: maxMember,
         startedAt:startedAt,
-        content:"테스트용 컨텐트",
+        content:"메리크리스마스",
         genderCategory:genderCategory
       })
     }

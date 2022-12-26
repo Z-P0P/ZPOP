@@ -1,8 +1,7 @@
 package com.zpop.web.controller;
 
-import com.zpop.web.entity.Member;
-import com.zpop.web.entity.meeting.MeetingThumbnailView;
-import com.zpop.web.service.MemberService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import com.zpop.web.entity.Member;
+import com.zpop.web.entity.meeting.MeetingThumbnailView;
+import com.zpop.web.service.MemberService;
 
 /*****
  * 1. 다른 사용자 프로필 조회              --> 모달 url 불필요
