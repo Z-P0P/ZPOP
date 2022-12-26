@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/static/css/admin/style.css" type="text/css"/>
-    <link rel="stylesheet" href="/static/css/admin/component/button.css">
-    <link rel="stylesheet" href="/static/css/admin/component/status.css">
-    <link rel="stylesheet" href="/static/css/admin/component/header.css">
-    <link rel="stylesheet" href="/static/css/admin/component/admin-nav.css">
-    <link rel="stylesheet" href="/static/css/admin/component/admin-search-bar.css">
-    <link rel="stylesheet" href="/static/css/admin/component/table-bar.css">
-    <link rel="stylesheet" href="/static/css/admin/component/admin-list.css">
-    <link rel="stylesheet" href="/static/css/deco.css">
-    <script src="/static/js/member/modal.js"></script>
-    <script src="/static/js/admin/admin.js"></script>
+    <link rel="stylesheet" href="/css/admin/style.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/admin/component/button.css">
+    <link rel="stylesheet" href="/css/admin/component/status.css">
+    <link rel="stylesheet" href="/css/admin/component/header.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-nav.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-search-bar.css">
+    <link rel="stylesheet" href="/css/admin/component/table-bar.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-list.css">
+    <link rel="stylesheet" href="/css/deco.css">
+    <script src="/js/member/modal.js"></script>
+    <script src="/js/admin/admin.js"></script>
 </head>
 <body>
     <div class="main-wrapper">
@@ -85,9 +85,11 @@
                     </div>
               
                     <div class="table-bar__right-container">
-                      <span class="table-bar__page"> 9,999개 중 1-10 </span>
-                      <span class="table-bar__icon table-bar__icon-arrow-left hide"></span>
-                      <span class="table-bar__icon table-bar__icon-arrow-right hide"></span>
+                      <span class="table-bar__page" 
+                      th:text="|${count}개 중 ${(page-1)*10+1}-${(page)*10}|"> 
+                      9,999개 중 1-10 </span>
+                      <a th:href="${page-1}==0?'#': |?p=${page-1}|"class="table-bar__icon table-bar__icon-arrow-left hide"></a>
+                      <a th:href="|?p=${page+1}|" class="table-bar__icon table-bar__icon-arrow-right hide"></a>
                     </div>
                   </div>
                 <ul class="admin-list">
@@ -95,7 +97,7 @@
                         <ul>
                             <li>
                                 <span>ID</span>
-                                <button><img src="/static/images/icon/up-down.svg" alt=""></button>
+                                <button><img src="/images/icon/up-down.svg" alt=""></button>
                             </li>
                             <li>제목/방장</li>
                             <li>참여자</li>
@@ -104,68 +106,26 @@
                             <li>삭제 여부</li>
                         </ul>
                     </li>
-                    <li class="admin-list__content">
+                    <li class="admin-list__content" th:each="meeting: ${meetings}">
                         <ul class="list-content">
                             <li class="list-content__id">
                                 <input type="checkbox" class="checkbox">
-                                <span>1</span>
+                                <span th:text="${meeting.id}">1</span>
                             </li>
                             <li class="list-content__title">
-                                <span class="bold">크리스마스날 맨유 응원하실분 구합니다. 제발요</span>
-                                <span>우빈쿤</span>    
+                                <span class="bold" th:text="${meeting.title}">크리스마스날 맨유 응원하실분 구합니다. 제발요</span>
+                                <span th:text="${meeting.hostNickname}">우빈쿤</span>    
                             </li>
-                            <li>1/5</li>
-                            <li class="list-content_date">2022-02-22</li>
-                            <li class="list-content__status"><span class="status status--round status--neutral">False</span></li>
-                            <li><span class="status status--round status--neutral">False</span></li>
-                        </ul>
-                    </li>
-                    <li class="admin-list__content">
-                        <ul>
-                            <li>
-                                <input type="checkbox" class="checkbox">
-                                <span>1</span>
-                            </li>
-                            <li class="list-content__title">
-                                <span class="bold">크리스마스날 맨유 응원하실분 구합니다. 제발요</span>
-                                <span>우빈쿤</span>    
-                            </li>
-                            <li>1/5</li>
-                            <li>2022-02-22</li>
-                            <li><span class="status status--round status--neutral">False</span></li>
-                            <li><span class="status status--round status--neutral">False</span></li>
-                        </ul>
-                    </li>
-                    <li class="admin-list__content">
-                        <ul>
-                            <li>
-                                <input type="checkbox" class="checkbox">
-                                <span>1</span>
-                            </li>
-                            <li class="list-content__title">
-                                <span class="bold">크리스마스날 맨유 응원하실분 구합니다. 제발요</span>
-                                <span>우빈쿤</span>    
-                            </li>
-                            <li>1/5</li>
-                            <li>2022-02-22</li>
-                            <li><span class="status status--round status--neutral">False</span></li>
-                            <li><span class="status status--round status--neutral">False</span></li>
-                        </ul>
-                    </li>
-                    <li class="admin-list__content">
-                        <ul>
-                            <li>
-                                <input type="checkbox" class="checkbox">
-                                <span>1</span>
-                            </li>
-                            <li class="list-content__title">
-                                <span class="bold">크리스마스날 맨유 응원하실분 구합니다. 제발요크리스마스날 맨유 응원하실분 구합니다. 제발요크리스마스날 맨유 응원하실분 구합니다. 제발요</span>
-                                <span>우빈쿤</span>    
-                            </li>
-                            <li>1/5</li>
-                            <li>2022-02-22</li>
-                            <li><span class="status status--round status--neutral">False</span></li>
-                            <li><span class="status status--round status--neutral">False</span></li>
+                            <li th:text="|${meeting.participantsNum}/${meeting.maxMember}|">1/5</li>
+                            <li class="list-content_date" th:text="${meeting.createdAt}">2022-02-22</li>
+                            <li class="list-content__status">
+                            	<span class="status status--round" th:classappend="${meeting.isClosed}? 'status--negative':'status--positive'"
+                            	th:text="${meeting.isClosed} ? 'TRUE':'FALSE'">False</span>
+                           	</li>
+                            <li class="list-content__status">
+                            	<span class="status status--round" th:classappend="${meeting.deletedAt} != null ? 'status--negative':'status--positive'"
+                            	th:text="${meeting.deletedAt} != null ? 'TRUE':'FALSE'">False</span>
+                           	</li>
                         </ul>
                     </li>
                 </ul>
@@ -174,15 +134,15 @@
         </main>
     </div>
     <aside class="left-side-bar">
-        <img src="/static/images/logo/logo-with-text.svg" alt="로고">
+        <img src="/images/logo/logo-with-text.svg" alt="로고">
         <nav>
             <ul>
                 <li><a class="add-deco-img-left deco-img-home" href="index.html">대시보드</a></li>
-                <li><a class="add-deco-img-left deco-img-notification" href="../banner/list.html">공지 관리</a></li>
-                <li class="selected"><a class="add-deco-img-left deco-img-meeting-white" href="../meeting/list.html">모임 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-user" href="../member/list.html">회원 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-comment" href="../comment/list.html">댓글 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-report" href="../report/list.html">신고 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-notification" href="/admin/banner/list">공지 관리</a></li>
+                <li class="selected"><a class="add-deco-img-left deco-img-meeting-white" href="/admin/meeting/list">모임 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-user" href="/admin/member/list">회원 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-comment" href="/admin/comment/list">댓글 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-report" href="/admin/report/list">신고 관리</a></li>
                 <li><a class="add-deco-img-left deco-img-logout" href="logout.html">로그아웃</a></li>
             </ul>
         </nav>
