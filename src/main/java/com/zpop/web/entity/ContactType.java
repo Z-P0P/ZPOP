@@ -2,21 +2,17 @@ package com.zpop.web.entity;
 
 import java.util.Date;
 
-public class Region {
+public class ContactType {
     private int id;
     private String name;
     private Date createdAt;
     private Date deletedAt;
 
-    public Region() {
+    public ContactType() {
     }
 
-    public Region(String name) {
+    public ContactType(String name) {
         this.name = name;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {

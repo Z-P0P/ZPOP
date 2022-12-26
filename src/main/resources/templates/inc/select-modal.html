@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <!--💛글상세보기, 주최자-->
+    <div th:fragment="meeting-host" class="modal-select" id="meeting__article-tool">
+        <div class="modal-select__contents">복사 하기
+            <span class="icon icon-copy"></span>
+        </div>
+        <div class="modal-select__contents">수정
+            <span class="icon icon-edit"></span>
+        </div>
+        <div class="modal-select__contents">삭제
+            <span class="icon icon-trash"></span>
+        </div>
+    </div>
+
+    <!--💛글상세보기, 참여자-->
+    <div th:fragment="meeting-participant" class="modal-select" id="meeting__article-tool">
+        <div class="modal-select__contents">복사하기
+            <span class="icon icon-copy"></span>
+        </div>
+        <div class="modal-select__contents">참여링크
+            <span class="icon icon-link"></span>
+        </div>
+        <div class="modal-select__contents">글 신고
+            <span class="icon icon-siren-red"></span>
+        </div>
+    </div>
+
+    
+    <!--💛글상세보기, 기본유저-->
+    <div th:fragment="meeting-anonymous" class="modal-select" id="meeting__article-tool">
+        <div class="modal-select__contents">복사 하기
+            <span class="icon icon-copy"></span>
+        </div>
+        <div class="modal-select__contents">글 신고
+            <span class="icon icon-siren-red"></span>
+        </div>
+    </div>
+</html>
