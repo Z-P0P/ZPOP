@@ -27,7 +27,7 @@ public class DefaultAdminMeetingService implements AdminMeetingService {
 		// TODO Auto-generated method stub
 		int size = 10;
 		int offset=(page-1)*size;
-		List<AdminMeetingDto> list = meetingDao.getAdminViewList(size, offset, null, null);
+		List<AdminMeetingDto> list = meetingDao.getAdminViewList(size, offset, keyword, option);
 		
 		return list;
 	}

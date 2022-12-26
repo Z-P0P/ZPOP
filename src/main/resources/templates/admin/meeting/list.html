@@ -85,13 +85,13 @@
                     </div>
               
                     <div class="table-bar__right-container">
-                      <span class="table-bar__page" 
-                      th:text="|${count}개 중 ${(page-1)*10+1}-${(page)*10}|"> 
+                    <span class="table-bar__page" 
+                      th:text="|${count}개 중 ${(page-1)*10+1}-${(page-1)*10+#lists.size(meetings)}|"> 
                       9,999개 중 1-10 </span>
                       <a th:href="${page-1}==0?'#': |?p=${page-1}|"class="table-bar__icon table-bar__icon-arrow-left hide"></a>
-                      <a th:href="|?p=${page+1}|" class="table-bar__icon table-bar__icon-arrow-right hide"></a>
+                      <a th:href="${@adminViewUtils.hasNextPage(page,10,#lists.size(meetings),count)}?|?p=${page+1}|:'#'" class="table-bar__icon table-bar__icon-arrow-right hide"></a>
                     </div>
-                  </div>
+                  </div>  
                 <ul class="admin-list">
                     <li class="admin-list__header">
                         <ul>
