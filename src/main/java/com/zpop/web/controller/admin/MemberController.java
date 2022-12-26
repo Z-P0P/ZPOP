@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.zpop.web.entity.Member;
 import com.zpop.web.service.MemberService;
 
-@Controller
+@Controller("adminMemberController")
 @RequestMapping("/admin/member")
 public class MemberController {
 
