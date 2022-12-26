@@ -1,32 +1,178 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{inc/layout}">
-  <head>
+<head>
 
-    <title>내가 참여한 모임</title>
-    <link rel="stylesheet" href="">
-    <link rel="stylesheet" href="/css/loading.css">
+  <title>내가 참여한 모임</title>
+  <link rel="stylesheet" href="">
+  <link rel="stylesheet" href="/css/loading.css">
 
 
-    <link rel="stylesheet" href="/css/member/component/meeting.css" >
-    <link rel="stylesheet" href="/css/member/meeting/list.css" >
-    <link rel="stylesheet" href="/css/member/member/my-meeting.css">
-    <link rel="stylesheet" href="/css/member/member/slider.css">
+  <link rel="stylesheet" href="/css/member/component/meeting.css" >
+  <link rel="stylesheet" href="/css/member/meeting/list.css" >
+  <link rel="stylesheet" href="/css/member/member/my-meeting.css">
+  <link rel="stylesheet" href="/css/member/member/slider.css">
+  <link rel="stylesheet" href="/css/member/member/rate.css">
 
-<!--    <link rel="stylesheet" th:href="@{/css/member/component/meeting.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/css/member/meeting/list.css}">-->
-                  <!--추가된 css 파일 my-meeting -->
-<!--    <link rel="stylesheet" th:href="@{/css/member/member/my-meeting.css}">-->
 
-    <script src="/js/member/select.js"></script>
-    <script src="/js/member/modal.js"></script>
-      <script src="/js/member/my-meeting.js"></script>
-  </head>
-  <body>
-  <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="/js/member/select.js"></script>
+  <script src="/js/member/modal.js"></script>
+  <script src="/js/member/my-meeting.js"></script>
+</head>
+<body>
+<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
+<main layout:fragment="content" class="main" >
+
+
+  <section class="main__content">
+    <div class="title-container">
+      <span class="icon icon-handshake">icon</span>
+      <h3 class="my-meeting__title"> 내가 참여한 모임</h3>
+    </div>
+    <ul id="meetings" class="meetings">
+      <li th:each="meeting : ${meetings}">
+        <a class="meeting" >
+          <div class="meeting__header">
+            <div class="meeting__info-detail-more">
+                  <span class="meeting__category" th:text="${meeting.categoryName}"
+                  >카테고리</span
+                  >
+              <span
+                      class="meeting__region add-deco-img-left deco-img-location"
+                      th:text="${meeting.regionName}"
+              >지역</span
+              >
+              <span class="meeting__date" th:text="${meeting.startedAt}"
+              >11.01(일)</span
+              >
+            </div>
+            <h3 class="meeting__title" th:text="${meeting.title}">제목</h3>
+          </div>
+
+
+
+          <!-------------------------평가하기 조건x--------------------------------------->
+
+          <div class="meeting__info" th:if="${!meeting.canRate}">
+
+            <ul class="meeting__tags">
+              <li th:text='${"#" + meeting.age}'>연령대</li>
+              <li th:text='${"#" + meeting.maxMember + "명"}'>인원</li>
+              <li th:text='${"#" + meeting.genderCategory}'>성별</li>
+            </ul>
+            <div class="meeting__info-detail">
+              <div
+                      class="meeting__status meeting__status--on"
+                      th:if="${!meeting.isClosed}"
+              >
+                모집중
+              </div>
+              <div
+                      class="meeting__status meeting__status--off"
+                      th:if="${meeting.isClosed}"
+              >
+                모집완료
+              </div>
+              <div class="meeting__info-detail-more">
+                <div
+                        class="meeting__views add-deco-img-left deco-img-eyes"
+                        th:text="${meeting.viewCount}"
+                >
+                  조회수
+                </div>
+                <div
+                        class="meeting__comments add-deco-img-left deco-img-speech-bubble"
+                        th:text="${meeting.commentCount}"
+                >
+                  댓글수
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-------------------------평가하기 조건O--------------------------------------->
+            <!--📌to do: 평가 완료되었을 때, 평가 완료로 버튼 변경하기-->
+          <div class="meeting__info-rate" th:if="${meeting.canRate}">
+          <div class="btn btn-semiround rate modal__on-btn" data-modal="#modal-eval-notification">평가하기</div>
+          </div>
+
+        </a>
+      </li>
+    </ul>
+  </section>
+
+
+
+  <!----------------------------modal ----------------------------->
+  <!--📌to do: 데이터 심어주기 방장이면 방장 아이콘 표시해주기-->
+
+
+
+  <div id="modal-eval-notification" class="modal-wrapper hidden">
+    <div class="modal">
+
+      <div class="modal__header">
+        <span class="modal__close-btn icon icon-x" data-modal="#modal-eval-notification">닫기</span>
+      </div>
+
+      <div class="modal__body">
+        <div class="rate-container">
+
+            <h1 class="rate__title">
+              영등포 풋살 어쩌꾸..
+            </h1>
+
+            <div class="rate__emoji-list">
+
+
+              <div class="rate__emoji">
+                <span class="icon icon-bad"> bad</span>
+                <p>인기도 -1</p>
+              </div>
+
+              <div class="rate__emoji">
+                <span class="icon icon-good"> good</span>
+                <p>인기도 +1</p>
+              </div>
+
+              <div class="rate__emoji">
+                <span class="icon icon-excellent"> excellent</span>
+                <p>인기도 +3</p>
+              </div>
+
+            </div>
+
+         
+
+
+          <div class =rate__slider>
+            <span>닉네임</span>
+            <input  type="range" step="50" value="50" min="0" max="100">
+          </div>
+          <div class =rate__slider>
+            <span>닉네임</span>
+            <input  type="range" step="50" value="50" min="0" max="100">
+          </div>
+          <div class =rate__slider>
+            <span>닉네임</span>
+            <input  type="range" step="50" value="50" min="0" max="100">
+          </div>
+
+
+          <div class="btn btn-semiround">
+            완료
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+
+    <!--📌to do: jquery로 background 조작하는 코드 js로 변경하기-->
   <script type="text/javascript">
     $(document).ready(function() {
       //웹페이지가 로드가 완료 후에 해당 함수를 실행합니다.
-      alert('1');
+      'background', 'linear-gradient(to right, dodgerblue 0%, dodgerblue '+ val +'%, #d5d4d3 ' + val + '%, #d5d4d3 100%)'
       var val = 50;
       $('input[type=range]').css('background', 'linear-gradient(to right, #62B3B9 0%, #62B3B9 '+ val +'%, #ebebeb ' + val + '%, #ebebeb 100%)');
       $('input[type=range]').on('input', function(){
@@ -36,206 +182,9 @@
     });
 
   </script>
+  <!----------------------------modal ----------------------------->
+  </div>
 
-  <main layout:fragment="content" class="main" >
-
-
-        <!--  my-meeting added: (아이콘) + 내가 참여한 모임 & 내가 모집한 모임 -->
-
-
-
-        <section class="main__content">
-          <div class="title-container">
-            <span class="icon icon-handshake">i</span>
-            <h3 class="my-meeting__title"> 내가 참여한 모임</h3>
-          </div>
-          <ul id="meetings" class="meetings">
-            <li th:each="meeting : ${meetings}">
-              <a class="meeting" >
-                <div class="meeting__header">
-                  <div class="meeting__info-detail-more">
-                  <span class="meeting__category" th:text="${meeting.categoryName}"
-                  >카테고리</span
-                  >
-                    <span
-                            class="meeting__region add-deco-img-left deco-img-location"
-                            th:text="${meeting.regionName}"
-                    >지역</span
-                    >
-                    <span class="meeting__date" th:text="${meeting.startedAt}"
-                    >11.01(일)</span
-                    >
-                  </div>
-                  <h3 class="meeting__title" th:text="${meeting.title}">제목</h3>
-                </div>
-
-                <div class="meeting__info-rate">
-                  <!-- 버튼 적용을 위한 클래스 rated = 평가완료 -->
-                  <!-- to do : 평가 완료 왼쪽에 체크 아이콘 달기 -->
-                  <div class="btn btn-semiround rated">평가하기</div>
-                </div>
-
-                <div class="meeting__info">
-                  <ul class="meeting__tags">
-                    <li th:text='${"#" + meeting.age}'>연령대</li>
-                    <li th:text='${"#" + meeting.maxMember + "명"}'>인원</li>
-                    <li th:text='${"#" + meeting.genderCategory}'>성별</li>
-                  </ul>
-                  <div class="meeting__info-detail">
-                    <div
-                            class="meeting__status meeting__status--on"
-                            th:if="${!meeting.isClosed}"
-                    >
-                      모집중
-                    </div>
-                    <div
-                            class="meeting__status meeting__status--off"
-                            th:if="${meeting.isClosed}"
-                    >
-                      모집완료
-                    </div>
-                    <div class="meeting__info-detail-more">
-                      <div
-                              class="meeting__views add-deco-img-left deco-img-eyes"
-                              th:text="${meeting.viewCount}"
-                      >
-                        조회수
-                      </div>
-                      <div
-                              class="meeting__comments add-deco-img-left deco-img-speech-bubble"
-                              th:text="${meeting.commentCount}"
-                      >
-                        댓글수
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </li>
-          </ul>
-        </section>
-
-
-
-          <ul  class="meetings" >
-              <li>
-                <a class="meeting-participated" href="">
-                  <div class="meeting__header">
-                    <span class="meeting__category">카테고리</span>
-                      <span class="meeting__region add-deco-img-left deco-img-location">지역</span>
-                      <span class="meeting__date">11.01(일)</span>
-                  </div>
-                  <div class="meeting__title">dddddddddddddddㅁㄴㄴㅁㄹㅇㄻㅇㄴㅁㄹㅇㄴddddddddddddddddddddddddddddddddddddd</div>
-
-
-            
-                  <div class="meeting__info">
-                    <ul class="meeting__tags">
-                      <li>#20대</li>
-                      <li>#5명</li>
-                      <li>#남자 모임</li>
-                    </ul>
-                    <div class="meeting__info-detail">
-                      <div class="meeting__status meeting__status--on">모집 중</div>
-                      <div class="meeting__info-more">
-                        <div class="meeting__views add-deco-img-left deco-img-eyes">11</div>
-                        <div class="meeting__comments add-deco-img-left deco-img-speech-bubble">11</div>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </li>
-
-              <li>
-                <a class="meeting-participated" href="">
-                  <div class="meeting__header">
-                    <span class="meeting__category">카테고리</span>
-                      <span class="meeting__region add-deco-img-left deco-img-location">지역</span>
-                      <span class="meeting__date">11.01(일)</span>
-                  </div>
-                  <div class="meeting__title">dddddddddddddddㅁㄴㄴㅁㄹㅇㄻㅇㄴㅁㄹㅇㄴddddddddddddddddddddddddddddddddddddd</div>
-                  
-                  <!-- meeting__info 내에서 
-                    1. meeting__tags 2. meeting__info-detail 3. meeting__info-more 영역은
-                    기본으로 유지하되, 평가를 해야하는 모임과 평가한 모임에 대해서만 버튼을 적용--> -->
-                  <div class="meeting__info">
-                    <!-- 버튼 적용을 위한 클래스 rate = 평가하기 -->
-
-                    <div class="btn btn-semiround rate modal__on-btn"  data-modal="#modal-eval-notification">평가하기</div>
-                  </div>
-                    
-                  
-
-
-                  <!-- -------------------- -->
-                </a>
-              </li>
-
-              <li>
-                <a class="meeting-participated" href="">
-                  <div class="meeting__header">
-                    <span class="meeting__category">카테고리</span>
-                      <span class="meeting__region add-deco-img-left deco-img-location">지역</span>
-                      <span class="meeting__date">11.01(일)</span>
-                  </div>
-                  <div class="meeting__title">dddddddddddddddㅁㄴㄴㅁㄹㅇㄻㅇㄴㅁㄹㅇㄴddddddddddddddddddddddddddddddddddddd</div>
-                  
-                  <!-- -------------------- -->
-                  <div class="meeting__info-rate">
-                    <!-- 버튼 적용을 위한 클래스 rated = 평가완료 -->
-                    <!-- to do : 평가 완료 왼쪽에 체크 아이콘 달기 -->
-                    <div class="btn btn-semiround rated">평가완료</div>
-                  </div>
-                    
-
-                  <!--모달 여는 버튼
-                  class = modal__on-btn
-                  data-modal="#모달id"
-
-                  모달요소
-                  class =.modal-wrapper.modal
-                  id="모달id"
-
-                  모달 닫기요소
-                  class= modal__close-btn
-                  data-modal="#모다량"-->
-
-<!--                  <div class="modal-wrapper hidden" id="modal-eval">-->
-<!--                    <div>-->
-<!--                      <div class="modal__header">-->
-<!--                        <span class="modal__close-btn icon icon-x" data-modal="#modal-eval-notification">닫기</span>-->
-<!--                      </div>-->
-<!--                      <div class="modal__body"></div>-->
-<!--                    </div>-->
-<!--                    </div>-->
-
-
-
-
-                  <!-- -------------------- -->
-                </a>
-              </li>
-          </ul>
-
-
-    <!----------------------------modal ----------------------------->
-
-
-          <div id="modal-eval-notification" class="modal-wrapper hidden">
-            <div class="modal">
-              <div class="modal__header">
-                <span class="modal__close-btn icon icon-x" data-modal="#modal-eval-notification">닫기</span>
-              </div>
-              <div class="modal__body">
-                <input id="range" type="range" value="50" min="0" max="100">
-                </div>
-              </div>
-            </div>
-
-
-    <!----------------------------modal ----------------------------->
-
-
-    </main>
-  </body>
+</main>
+</body>
 </html>
