@@ -3,5 +3,29 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.ReportedCommentDao">
-	
+	<select id="getAdminViewList" resultType="AdminReportedCommentDto">
+		SELECT
+			rc.id,
+			m1.nickname AS reporterNickname,
+			m1.id AS reporterId,
+			rc.original,
+			m2.nickname AS writerNickname,
+			m2.id AS writerId,
+			crt.type as reportType,
+			rc.processedAt
+		FROM reportedComment as rc
+		JOIN member as m1
+		ON rc.reporterId = m1.id
+		JOIN comment
+		ON rc.commentId = comment.id
+		JOIN member as m2
+		ON comment.writerId = m2.id
+		JOIN commentReportType AS crt
+		ON rc.typeId = crt.id
+		LIMIT #{offset},#{size}
+	</select>
+	<select id="count" resultType="Integer">
+		SELECT count(id)
+		FROM reportedComment;
+	</select>
 </mapper>
