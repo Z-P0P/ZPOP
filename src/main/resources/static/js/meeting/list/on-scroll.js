@@ -19,7 +19,7 @@ export default function () {
       state.timer = null;
 
       const isScrollEvent = true;
-      const url = generateUrl(isScrollEvent);
+      const url = generateUrl(state, isScrollEvent);
 
       requestMeetings(url).then((meetings) => {
         hideResultNone();

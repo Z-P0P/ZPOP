@@ -16,7 +16,7 @@ export default function(e) {
 
   state.category = categoryId;
 
-  const url = generateUrl();
+  const url = generateUrl(state);
 
   requestMeetings(url).then((meetings) => {
     removeMeetings();

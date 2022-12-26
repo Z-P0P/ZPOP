@@ -1,11 +1,10 @@
-import state from "./state.js";
-
 /**
  * 페이징 요청 url을 리턴
+ * @param {object} state 상태 객체
  * @param {boolean} isScrollEvent 스크롤 이벤트 여부
  */
-export default function (isScrollEvent) {
-  const { isToggleOn, regions, category } = state;
+export default function (state, isScrollEvent) {
+  const { isToggleOn, regions, category, searchKeyword } = state;
   const meetings = document.querySelector("#meetings");
   const parameter = {};
   let lastMeetingId;
@@ -13,8 +12,10 @@ export default function (isScrollEvent) {
   // 토글 checked === true -> 모집 중인 모임만 보기
   if (isToggleOn) parameter.isClosed = false;
 
+  if (searchKeyword) parameter.keyword = searchKeyword;
+
   // 지역 옵션이 선택되었다면
-  if (state.regions.length !== 0) parameter.regions = regions;
+  if (state.regions && state.regions.length !== 0) parameter.regions = regions;
 
   // 특정 카테고리가 선택되었다면
   if (category && category != 0) parameter.category = category;
@@ -26,7 +27,7 @@ export default function (isScrollEvent) {
   }
   
   const searchParams = new URLSearchParams(parameter).toString();
-  console.log(`/meeting/api/list?${searchParams}`);
+
   return `/meeting/api/list?${searchParams}`;
 }
 

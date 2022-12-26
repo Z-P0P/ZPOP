@@ -6,7 +6,7 @@ import generateUrl from "./generate-url.js";
 export default function (e) {
   state.isToggleOn = e.target.checked;
 
-  const url = generateUrl();
+  const url = generateUrl(state);
 
   requestMeetings(url).then((meetings) => {
     removeMeetings();

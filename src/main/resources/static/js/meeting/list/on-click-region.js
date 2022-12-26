@@ -62,7 +62,7 @@ export default function (e) {
    * regions을 포함하여 모임 요청
    */
   function requestMeetingsIncludeRegions() {
-    const url = generateUrl();
+    const url = generateUrl(state);
     requestMeetings(url).then((meetings) => {
       removeMeetings();
       insertMeetings(meetings);
