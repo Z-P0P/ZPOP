@@ -11,7 +11,7 @@ export default function (e) {
 
   if (window.event.keyCode == ENTER_KEY_CODE) {
     const searchKeyword = document.querySelector("#search-bar-input").value;
-    if(!searchKeyword) {
+    if(!searchKeyword.replace(/ /g, '')) {
       alert("검색어를 입력해주세요.");
       return;
     }

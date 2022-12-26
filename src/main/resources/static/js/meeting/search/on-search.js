@@ -6,7 +6,7 @@ export default function (e) {
       ".header__search-content--pc"
     ).value;
 
-    if (!searchKeyword) {
+    if (!searchKeyword.replace(/ /g, "")) {
       alert("검색어를 입력해주세요.");
       return;
     }

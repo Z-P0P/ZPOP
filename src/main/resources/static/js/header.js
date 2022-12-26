@@ -7,7 +7,7 @@ window.addEventListener(("load"), function () {
 
   // 검색 페이지가 아니라면 searchBar에 hidden 추가
   handleDesktopSearchBar();
-
+  //TODO: 중복 코드
   searchBarModal.onkeyup = function(e) {
     if(window.event.keyCode !== ENTER_KEY_CODE) 
       return;
