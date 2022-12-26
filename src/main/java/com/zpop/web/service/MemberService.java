@@ -1,7 +1,7 @@
 package com.zpop.web.service;
 
+import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.entity.Member;
-import com.zpop.web.entity.member.MyMeetingView;
 
 import java.util.List;
 
@@ -16,9 +16,11 @@ public interface MemberService {
 
         //2. 회원이 참가한 모임을 보여준다.
 
-        List<MyMeetingView> getMyMeeting(int memberId);
+//        List<MyMeetingView> getMyMeeting(int memberId);
 
-        List<MyMeetingView> getMyGathering(int memberId);
+        List<MyMeetingResponse> getMyMeeting(int memberId);
+
+        List<MyMeetingResponse> getMyGathering(int memberId);
     //3. 회원이 모집한 모임을 보여준다.
 
         //4. 회원 탈퇴

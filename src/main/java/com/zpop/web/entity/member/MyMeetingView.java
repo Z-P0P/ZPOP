@@ -10,19 +10,17 @@ public class MyMeetingView {
     private String age;
     private int maxMember;
     private int genderCategory;
-    private int isClosed;
+    private boolean isClosed;
     private int viewCount;
     private int commentCount;
     private int meetingId;
     private int participantId;
     private int regMemberId;
 
-
-
     public MyMeetingView() {
     }
 
-    public MyMeetingView(String categoryName, String regionName, Date startedAt, String title, String age, int maxMember, int genderCategory, int isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId) {
+    public MyMeetingView(String categoryName, String regionName, Date startedAt, String title, String age, int maxMember, int genderCategory, boolean isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId) {
         this.categoryName = categoryName;
         this.regionName = regionName;
         this.startedAt = startedAt;
@@ -94,12 +92,12 @@ public class MyMeetingView {
         this.genderCategory = genderCategory;
     }
 
-    public int getIsClosed() {
+    public boolean isClosed() {
         return isClosed;
     }
 
-    public void setIsClosed(int isClosed) {
-        this.isClosed = isClosed;
+    public void setClosed(boolean closed) {
+        isClosed = closed;
     }
 
     public int getViewCount() {

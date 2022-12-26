@@ -15,6 +15,7 @@ public class MyMeetingResponse {
     private int meetingId;
     private int participantId;
     private int regMemberId;
+    private boolean canRate;
 
     public MyMeetingResponse() {
     }

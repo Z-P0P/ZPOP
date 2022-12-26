@@ -15,9 +15,10 @@
     <link rel="stylesheet" th:href="@{/css/button.css}">
     <link rel="stylesheet" th:href="@{/css/member/member/my-profile.css}">
 </head>
-
+<body>
+<!--헤더적용필요  < 뒤로가기 로고 x-->
 <main layout:fragment="content">
-    <body>
+
     <!--------------------my-profile start -------------------->
 
    <div class="my-profile">
@@ -26,6 +27,7 @@
 
         <h2 class="profile__title" >내 프로필</h2>
         <div class="profile__image">
+           <!-- <input type="file"> 추가해야함 -->
             <div class="profile__image--no-photo .icon"></div>
         </div>
         <span class="profile__nickname" th:text="${session.member.nickname}">닉네임</span>
@@ -35,7 +37,7 @@
             <span class="deco-img-star "></span>
         </div>
 
-        <span class="btn-semiround profile__btn">프로필 수정</span>
+        <a class="btn-semiround profile__btn" th:href="@{/member/me/edit}">프로필 수정</a>
 <!--a태그로 수정하기-->
 
         <div class="profile__page-move">
@@ -51,6 +53,7 @@
 
     </div>
    </div>
-    <!--------------------my-profile end -------------------->
 </main>
+    <!--------------------my-profile end -------------------->
+</body>
 </html>

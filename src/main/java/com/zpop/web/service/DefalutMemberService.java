@@ -10,7 +10,10 @@ import com.zpop.web.utils.TextDateTimeCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,11 +42,77 @@ public class DefalutMemberService implements MemberService {
         return dao.getById(id);
     }
 
+
+
     @Override
-    public List<MyMeetingResponse> getTest(int memberId) {
+    public List<MyMeetingResponse> getMyMeeting(int memberId) {
 
 
         List<MyMeetingView> mmv = dao.getMyMeeting(memberId);
+        for (MyMeetingView m : mmv) {
+            Date date = new Date();
+            date = m.getStartedAt();
+            LocalDate ldate = new java.sql.Date(date.getTime()).toLocalDate();
+            System.out.println("변환용"+ldate);
+            LocalDate now =LocalDate.now();
+            System.out.println("현재날짜는"+now);
+
+            System.out.println("시작날짜는"+date);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.add(Calendar.DATE,1);
+            System.out.println("캘린더"+cal);
+            System.out.println("현재날짜가 시작날짜보다 크니?");
+
+            boolean canRate = now.isAfter(ldate);
+
+        }
+
+        List<MyMeetingResponse> list = new ArrayList<>();
+
+        for (MyMeetingView m : mmv) {
+            String genderCategory = "누구나";
+            switch (m.getGenderCategory()) {
+                case 1:
+                    genderCategory = "남자 모임";
+                    break;
+                case 2:
+                    genderCategory = "여자 모임";
+                    break;
+            }
+            System.out.println(m.toString());
+
+            String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
+            System.out.println(m.getRegionName());
+            MyMeetingResponse mt = new MyMeetingResponse(
+                    m.getCategoryName(),
+                    m.getRegionName(),
+                    dateTime,
+                    m.getTitle(),
+                    m.getAge(),
+                    m.getMaxMember(),
+                    genderCategory,
+                    m.isClosed(),
+                    m.getViewCount(),
+                    m.getCommentCount(),
+                    m.getMeetingId(),
+                    m.getParticipantId(),
+                    m.getRegMemberId()
+
+            );
+            System.out.println(mt);
+            list.add(mt);
+
+        }
+
+        return list;
+
+    }
+    @Override
+    public List<MyMeetingResponse> getMyGathering(int memberId) {
+
+
+        List<MyMeetingView> mmv = dao.getMyGathering(memberId);
 
 
         List<MyMeetingResponse> list = new ArrayList<>();
@@ -61,7 +130,7 @@ public class DefalutMemberService implements MemberService {
             System.out.println(m.toString());
 
             String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
-
+            System.out.println(m.getRegionName());
             MyMeetingResponse mt = new MyMeetingResponse(
                     m.getCategoryName(),
                     m.getRegionName(),
@@ -70,86 +139,21 @@ public class DefalutMemberService implements MemberService {
                     m.getAge(),
                     m.getMaxMember(),
                     genderCategory,
-                    m.getIsClosed(),
+                    m.isClosed(),
                     m.getViewCount(),
                     m.getCommentCount(),
                     m.getMeetingId(),
                     m.getParticipantId(),
                     m.getRegMemberId()
+
             );
             System.out.println(mt);
             list.add(mt);
 
         }
 
-        for (MyMeetingResponse mt: list
-        ) {
-            System.out.println("test");
-            System.out.println(mt.getAge());
-            System.out.println(mt.getCategoryName());
-        }
         return list;
 
     }
-
-    @Override
-    public List<MyMeetingView> getMyGathering(int memberId) {
-        return null;
-    }
 }
-//    @Override
-//    public List<MyMeetingResponse> getList(int memberId) {
-//
-//        List<MyMeetingView> myMeetingViews = dao.getMyMeeting(id);
-//
-//    }
 
-//    public List<MyMeetingView> getMyMeeting(int memberId) {
-//
-//        List<MyMeeting> list1 = dao.getMyMeeting(memberId);
-//        for(MyMeetingView m : list1) {
-//            String genderCategory = "누구나";
-//            switch (m.getGenderCategory()){
-//                case 1:
-//                    genderCategory = "남자 모임";
-//                    break;
-//                case 2:
-//                    genderCategory = "여자 모임";
-//                    break;
-//            }
-//
-//            String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
-//
-//            MyMeetingResponse list2 = new MyMeetingResponse(
-//                    m.getCategoryName(),
-//                    m.getRegionName(),
-//                    dateTime,
-//                    m.getTitle(),
-//                    m.getAge(),
-//                    m.getMaxMember(),
-//                    genderCategory,
-//                    m.getIsClosed(),
-//                    m.getViewCount(),
-//                    m.getCommentCount(),
-//                    m.getMeetingId(),
-//                    m.getParticipantId(),
-//                    m.getRegMemberId()
-//            );
-//            list1.add(list2);
-            //        }
-//
-//        MyMeetingView
-//
-//
-//    }
-//
-//        return list1;
-//    }
-
-//    @Override
-//    public List<MyMeetingView> getMyGathering(int memberId) {
-//        return null;
-//    }
-//
-//
-//}

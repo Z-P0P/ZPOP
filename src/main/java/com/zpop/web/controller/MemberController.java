@@ -1,7 +1,7 @@
 package com.zpop.web.controller;
 
+import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.entity.Member;
-import com.zpop.web.entity.member.MyMeetingView;
 import com.zpop.web.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,22 +52,17 @@ public class MemberController {
         //member 없을때 처리
         //만약 로그인한 사람이 아닌데 들어올 경우 -> 처리 (멤버가져오기)
     }
-
+    @GetMapping("me/edit")
+    public String getEditPage(HttpSession session, Model model){
+        Member member = (Member) session.getAttribute("member");
+        return "member/profile-edit";
+    }
 
     @GetMapping("/me/meeting")
     public String getMeeting(HttpSession session , Model model) {
         Member member = (Member) session.getAttribute("member");
-
-        List<MyMeetingView> meetings = service.getMyMeeting(member.getId());
+        List<MyMeetingResponse> meetings = service.getMyMeeting(member.getId());
         model.addAttribute("meetings", meetings);
-
-        System.out.println(meetings.size());
-        for (MyMeetingView m: meetings
-             ) {
-            System.out.println(m.getMaxMember());
-            System.out.println(m.getMeetingId());
-            System.out.println(m.getGenderCategory());
-        }
 
         return "member/my-meeting";
     }
@@ -75,8 +70,12 @@ public class MemberController {
 
     @GetMapping("/me/gathering")
     public String getGathering(HttpSession session, Model model){
+        Member member = (Member) session.getAttribute("member");
+        List<MyMeetingResponse> meetings = service.getMyGathering(member.getId());
+        model.addAttribute("meetings", meetings);
         return "member/my-gathering";
 
     }
+
 
 }

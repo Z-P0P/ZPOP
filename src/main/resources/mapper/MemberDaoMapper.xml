@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.MemberDao">
-    <insert id="insert" parameterType="Member"> insert into member(socialTypeId, socialId, nickname)
-        values(#{socialTypeId}, #{socialId}, #{nickname}) </insert>
-    <select id="getById" resultType="Member"> select * from member where id=#{id} </select>
-    <select id="getBySocialId" resultType="Member"> select * from member where socialId=#{socialId} </select>
-    <select id="getByNickname" resultType="Member"> select * from member where nickname=#{nickname} </select>
-<!--    <select id="getMyMeeting" resultType="com.zpop.web.entity.member.MyMeetingView">
-        select * from myMeetingView
-        where participantId = #{id}
-    </select>-->
+    <insert id="insert" parameterType="Member">
+        INSERT INTO member(socialTypeId, socialId, nickname)
+        VALUES (#{socialTypeId}, #{socialId}, #{nickname}) </insert>
+    <select id="getById" resultType="Member">
+        SELECT * FROM member
+        WHERE id=#{id} </select>
+    <select id="getBySocialId" resultType="Member">
+        SELECT * FROM member
+        WHERE socialId=#{socialId} </select>
+    <select id="getByNickname" resultType="Member">
+        SELECT * FROM member
+        WHERE nickname=#{nickname} </select>
 
     <select id="getMyMeeting" parameterType="com.zpop.web.entity.Member"
             resultType="com.zpop.web.entity.member.MyMeetingView">
-        select * from myMeetingView
-        where participantId = #{id} </select>
+        SELECT * FROM myMeetingView
+        WHERE participantId = #{id} </select>
+    <select id="getMyGathering" parameterType="com.zpop.web.entity.Member"
+            resultType="com.zpop.web.entity.member.MyMeetingView">
+        SELECT * FROM myMeetingView
+        WHERE regMemberId = #{id} </select>
 </mapper>
