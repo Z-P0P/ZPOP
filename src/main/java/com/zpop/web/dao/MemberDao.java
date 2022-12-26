@@ -24,5 +24,6 @@ public interface MemberDao {
 
 	int count(int socialTypeId);
 
-	List<MyMeetingView> getMyMeeting(int id);
+	List<MyMeetingView> getMyMeeting(int memberId);
+//	List<MyMeetingView> getMyMeeting(int id);
 }
