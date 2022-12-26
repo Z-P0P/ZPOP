@@ -135,3 +135,21 @@
   cursor:none;
   background-image: url(/images/icon/hands-up.svg);
 }
+
+.icon-bad {
+  width: 46px;
+  height: 41px;
+  background-image: url(/images/icon/bad.svg);
+}
+
+.icon-good {
+  width: 46px;
+  height: 41px;
+  background-image: url(/images/icon/good.svg);
+}
+
+.icon-excellent {
+  width: 46px;
+  height: 41px;
+  background-image: url(/images/icon/excellent.svg);
+}
