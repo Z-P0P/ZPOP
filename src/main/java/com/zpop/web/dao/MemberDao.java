@@ -26,4 +26,6 @@ public interface MemberDao {
 	int update(Member member);
 	int countBySearch(String keyword, String option);
 	int count(int socialTypeId);
+
+	List<Member> getListBySearch(int size, int offset, String keyword, String option);
 }

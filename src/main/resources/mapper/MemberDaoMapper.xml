@@ -11,11 +11,33 @@
     <select id="getById" resultType="Member"> select * from member where id=#{id} </select>
     <select id="getBySocialId" resultType="Member"> select * from member where socialId=#{socialId} </select>
     <select id="getByNickname" resultType="Member"> select * from member where nickname=#{nickname} </select>
+    
+    <!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 닉네임만 함 -->
     <select id="countBySearch" resultType= "java.lang.Integer">
       	SELECT COUNT(id) 
       	FROM member
       	<where>
-      		<if test="keyword==null">
+      		<if test="keyword!=null">
+      			nickname LIKE '%${keyword}%'
+      		</if>
+      	</where>
+    </select>
+    <select id="getListBySearch" resultType="Member">
+    	SELECT 
+    		id,
+    		profileImagePath,
+    		nickname,
+    		fame,
+    		isSuspended,
+    		createdAt,
+    		resignedAt
+   		FROM
+   			member
+   		ORDER BY id DESC
+   		LIMIT #{offset},#{size};
+   		<!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 닉네임만 함 -->
+  		<where>
+      		<if test="keyword!=null">
       			nickname LIKE '%${keyword}%'
       		</if>
       	</where>

@@ -23,7 +23,7 @@ public interface MemberService {
 
 
         
-	public List<Member> getList(int page);
+	public List<Member> getList(int page, String keyword, String option);
 
 	public int getSearchCount(String keyword, String option);
 	
