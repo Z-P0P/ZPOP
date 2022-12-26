@@ -83,16 +83,16 @@
             </div>
         </div>
     </section>
-
+	<span class="hidden member-Id" th:text="${memberId}"></span>
     <section class="participant">
         <div class="participant__num">
             <span>참가자</span>
             <span th:text="|${#lists.size(participants)}/${dto.maxMember}|">15/56</span>
             <span class="icon icon-arrow-up"></span>
         </div>
+            <span class="participant-Id"  >8</span>
         <ul class="participant__list">
             <li th:each="participant:${participants}">
-            <span class="participant-Id"  >8</span>
                 <span class="participant__info" 
                 	th:text="${participant.nickname}"></span>
                 	<img src="/images/girl.svg"  
@@ -103,7 +103,31 @@
     </section>
 			
     	
-    <div class="modal-container"></div>
+     <div class="modal-2 hidden" id="modal-wrapper-participation">
+
+        <div class="modal-participation">
+            <div class="modal__header">
+                <span class="modal__x-icon pointer modal__close-btn" data-modal="#modal-wrapper-participation"></span>
+            </div>
+            <div class="modal__body">
+                <div class="modal-participation-content">
+                    <div class="modal-icon">
+                        <img src="/images/icon/handshake24.svg">
+                    </div>
+                    <div class="modal-text">
+                        <strong th:text="${dto.title}">
+                            찬우와 월드컵 응원할 사람
+                        </strong>
+                        <div class="next-line">이 모임에 참여하시겠어요?</div>
+                    </div>
+                </div>
+                <div class="btn-modal">
+                    <div class="btn-modal-left  modal__close-btn pointer" data-modal="#modal-wrapper-participation">다음에 할래요</div>
+                    <div class="btn-modal-right modal__close-btn pointer" data-modal="#modal-wrapper-participation">참여하기</div>
+                </div>
+            </div>
+        </div>
+    </div>
     </main>
 </body>
 

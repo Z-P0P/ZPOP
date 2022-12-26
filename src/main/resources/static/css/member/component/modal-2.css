@@ -9,10 +9,13 @@
 
 
 .modal-2 {
+	background-color:rgba(0,0,0,0.15);
     position: fixed;
     inset: 0; /*t, l, b, r 0*/
   } 
-
+.modal__header{
+	display:none;
+}
 
 .modal-participation {
 position: relative;
@@ -33,11 +36,6 @@ font-size: 18px;
     padding: 52px 60px 30px 55px;
     
 }
-
-.hidden{
-    display: none !important;
-}
-
 
 .modal-text{
     font-weight: 500;

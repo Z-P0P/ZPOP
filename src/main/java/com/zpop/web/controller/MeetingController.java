@@ -86,7 +86,8 @@ public class MeetingController {
 		}
 		model.addAttribute("dto", dto);
 		model.addAttribute("participants", participants);
-		
+		model.addAttribute("meetingId", id); 
+		model.addAttribute("memberId", 1);//임시로 하드코딩
 		
 		service.updateViewCount(id); // 조회수 증가 
 
