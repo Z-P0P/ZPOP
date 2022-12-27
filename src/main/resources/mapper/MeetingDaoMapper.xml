@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.MeetingDao">
+	<select id="getDetailView"  resultType= "com.zpop.web.dto.MeetingDetailDto">
+        SELECT m.title, m.startedAt, m.detailRegion, m.content, m.maxMember, m.regMemberId,m.id,
+                        m.viewCount,c.name categoryName, r.name regionName
+        FROM meeting m 
+        JOIN category c on m.categoryId = c.id 
+        JOIN region r on m.regionId = r.id 
+        WHERE m.id = #{id};
+	</select>
+
     <insert id="insert" parameterType="com.zpop.web.entity.meeting.Meeting">
         INSERT INTO meeting
-        (regMemberId, categoryId, regionId, ageRangeId, contactTypeId,
-        genderCategory, title, content, detailRegion, maxMember,
-        startedAt, contact)
-        VALUES
-        (#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId}, #{contactTypeId},
-        #{genderCategory}, #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact})
+        (regMemberId, categoryId, regionId, ageRangeId, title, content, detailRegion, maxMember,
+        startedAt, contact, contactTypeId , genderCategory)
+        VALUES (#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId},
+        #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact}, #{contactTypeId}, #{genderCategory})
     </insert>
 
-    <select id="get" resultType="com.zpop.web.entity.meeting.Meeting"> SELECT * FROM meeting WHERE
-        id=#{id} </select>
+    <select id="get" resultType="com.zpop.web.entity.meeting.Meeting">
+        SELECT *
+        FROM meeting
+        WHERE id=#{id}
+    </select>
 
     <select id="getThumbnailViewList" parameterType="com.zpop.web.dto.MeetingThumbnailPagination"
         resultType="com.zpop.web.entity.meeting.MeetingThumbnailView"> SELECT * FROM meetingThumb <trim
@@ -41,8 +51,17 @@
         </trim>
         LIMIT 0, 9; </select>
 
-    <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> update meeting
-        deletedAt=CURRENT_TIMESTAMP() WHERE id = #{id} </update>
+    <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> 
+        UPDATE meeting
+        deletedAt=CURRENT_TIMESTAMP()
+        WHERE id = #{id}
+    </update>
+	
+	<update id="updateViewCount" parameterType="com.zpop.web.dto.MeetingDetailDto">
+        UPDATE meeting
+        SET viewCount = viewCount + 1
+        WHERE id = #{id}
+	</update>
 
     <select id="getMeetingList" resultType="com.zpop.web.entity.meeting.MeetingThumbnailView">
         SELECT *
