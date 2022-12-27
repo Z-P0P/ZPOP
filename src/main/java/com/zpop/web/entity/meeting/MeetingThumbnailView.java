@@ -16,12 +16,12 @@ public class MeetingThumbnailView {
     private Date startedAt;
     private int viewCount;
     private int commentCount;
-    private boolean isClosed;
+    private Date closedAt;
 
     public MeetingThumbnailView() {
     }
 
-    public MeetingThumbnailView(int id, int categoryId, String category, int regionId, String ageRange, int ageRangeId, String region, int maxMember, int genderCategory, String title, Date startedAt, int viewCount, int commentCount, boolean isClosed) {
+    public MeetingThumbnailView(int id, int categoryId, String category, int regionId, String ageRange, int ageRangeId, String region, int maxMember, int genderCategory, String title, Date startedAt, int viewCount, int commentCount, Date closedAt) {
         this.id = id;
         this.categoryId = categoryId;
         this.category = category;
@@ -35,7 +35,7 @@ public class MeetingThumbnailView {
         this.startedAt = startedAt;
         this.viewCount = viewCount;
         this.commentCount = commentCount;
-        this.isClosed = isClosed;
+        this.closedAt = closedAt;
     }
 
     public int getId() {
@@ -90,7 +90,7 @@ public class MeetingThumbnailView {
         return commentCount;
     }
 
-    public boolean isClosed() {
-        return isClosed;
+    public Date getClosedAt() {
+        return closedAt;
     }
 }

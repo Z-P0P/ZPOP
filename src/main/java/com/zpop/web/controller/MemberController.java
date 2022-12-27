@@ -1,17 +1,19 @@
 package com.zpop.web.controller;
 
+
+import java.util.List;
+
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.entity.Member;
 import com.zpop.web.service.MemberService;
 import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 /*****
  * 1. 다른 사용자 프로필 조회              --> 모달 url 불필요

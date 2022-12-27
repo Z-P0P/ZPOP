@@ -29,7 +29,7 @@ public class TempMeetingController {
             Model model
             ){
         List<MeetingThumbnailResponse> meetings = service.getList();
-
+        
         model.addAttribute("meetings", meetings);
 
         return "meeting/list";
