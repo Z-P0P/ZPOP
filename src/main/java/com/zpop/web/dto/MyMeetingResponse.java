@@ -22,7 +22,7 @@ public class MyMeetingResponse {
     public MyMeetingResponse() {
     }
 
-    public MyMeetingResponse(String categoryName, String regionName, String startedAt, String title, String age, int maxMember, String genderCategory, boolean isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId,boolean canRate) {
+    public MyMeetingResponse(String categoryName, String regionName, String startedAt, String title, String age, int maxMember, String genderCategory, boolean isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId, boolean canRate) {
         this.categoryName = categoryName;
         this.regionName = regionName;
         this.startedAt = startedAt;
@@ -36,10 +36,7 @@ public class MyMeetingResponse {
         this.meetingId = meetingId;
         this.participantId = participantId;
         this.regMemberId = regMemberId;
-        this.canRate =canRate;
-    }
-
-    public MyMeetingResponse(String categoryName, String regionName, String dateTime, String title, String age, int maxMember, String genderCategory, int isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId) {
+        this.canRate = canRate;
     }
 
     public String getCategoryName() {
@@ -152,24 +149,5 @@ public class MyMeetingResponse {
 
     public void setCanRate(boolean canRate) {
         this.canRate = canRate;
-    }
-
-    @Override
-    public String toString() {
-        return "MyMeetingResponse{" +
-                "categoryName='" + categoryName + '\'' +
-                ", regionName='" + regionName + '\'' +
-                ", startedAt='" + startedAt + '\'' +
-                ", title='" + title + '\'' +
-                ", age='" + age + '\'' +
-                ", maxMember=" + maxMember +
-                ", genderCategory='" + genderCategory + '\'' +
-                ", isClosed=" + isClosed +
-                ", viewCount=" + viewCount +
-                ", commentCount=" + commentCount +
-                ", meetingId=" + meetingId +
-                ", participantId=" + participantId +
-                ", regMemberId=" + regMemberId +
-                '}';
     }
 }
