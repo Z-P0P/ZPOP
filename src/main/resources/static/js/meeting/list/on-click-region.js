@@ -1,6 +1,6 @@
 import state from "./state.js";
 import requestMeetings from "./request-meetings.js";
-import { generateUrl } from "./util.js";
+import generateUrl from "./generate-url.js";
 import { insertMeetings, removeMeetings } from "./view.js";
 
 export default function (e) {
@@ -62,7 +62,7 @@ export default function (e) {
    * regions을 포함하여 모임 요청
    */
   function requestMeetingsIncludeRegions() {
-    const url = generateUrl();
+    const url = generateUrl(state);
     requestMeetings(url).then((meetings) => {
       removeMeetings();
       insertMeetings(meetings);

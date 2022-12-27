@@ -14,14 +14,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-/*
- * 작성자: 임형미
- */
+
 @Service
 public class DefalutMemberService implements MemberService {
 
-    @Autowired
-    private MemberDao dao;
+	@Autowired
+    private MemberDao dao;   
     @Autowired
     private MeetingDao meetingDao;
     @Autowired
@@ -43,14 +41,9 @@ public class DefalutMemberService implements MemberService {
         return dao.getById(id);
     }
 
-
-
     @Override
     public List<MyMeetingResponse> getMyMeeting(int memberId) {
-
-
         List<MyMeetingView> mmv = dao.getMyMeeting(memberId);
-
 
         List<MyMeetingResponse> list = new ArrayList<>();
 
@@ -104,9 +97,7 @@ public class DefalutMemberService implements MemberService {
     @Override
     public List<MyMeetingResponse> getMyGathering(int memberId) {
 
-
         List<MyMeetingView> mmv = dao.getMyGathering(memberId);
-
 
         List<MyMeetingResponse> list = new ArrayList<>();
 
@@ -147,25 +138,11 @@ public class DefalutMemberService implements MemberService {
                     m.getParticipantId(),
                     m.getRegMemberId(),
                     canRate
-
             );
             System.out.println(mt);
             list.add(mt);
-
         }
 
         return list;
-
-    }
-
-    @Override
-    public List<Member> getList(int page, String keyword, String option) {
-        return null;
-    }
-
-    @Override
-    public int getSearchCount(String keyword, String option) {
-        return 0;
     }
 }
-

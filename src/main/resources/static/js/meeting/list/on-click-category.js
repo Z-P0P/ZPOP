@@ -1,7 +1,7 @@
 import state from "./state.js";
 import requestMeetings from "./request-meetings.js";
 import { insertMeetings, removeMeetings } from "./view.js";
-import { generateUrl } from "./util.js";
+import generateUrl from "./generate-url.js";
 
 export default function(e) {
   const categoryId = e.target.dataset.id;
@@ -16,7 +16,7 @@ export default function(e) {
 
   state.category = categoryId;
 
-  const url = generateUrl();
+  const url = generateUrl(state);
 
   requestMeetings(url).then((meetings) => {
     removeMeetings();
