@@ -27,13 +27,14 @@
 
             <h2 class="profile__title" >프로필 수정</h2>
             <div class="profile__image">
-                <!-- <input type="file"> 추가해야함 -->
+                <!--📌to do: 이미지 등록-->
                 <div class="profile__image--no-photo">
                     <div class="icon icon-camera"></div>
                 </div>
             </div>
 
             <div class="input-text">
+                <!--📌to do: 닉네임 수정-->
                 <label class="input-text__label" for="input-text__content">닉네임</label>
                 <input id ="input-text__content" class="input-text__content" type="text" th:value="${session.member.nickname}">
             </div>

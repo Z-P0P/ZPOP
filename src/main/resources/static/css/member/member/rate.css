@@ -1,3 +1,4 @@
+/*-----modal body에 패딩-----*/
 .modal__body{
     padding-left: 20px;
     padding-right: 20px;
@@ -7,7 +8,7 @@
     width: 100%;
 }
 
-
+/*----- 평가하기 전체를 감싸는 container ---*/
 .rate-container{
     display: flex;
     flex-direction: column;
@@ -24,6 +25,7 @@
     font-weight: var(--semi-bold);
 
 }
+/* ------😚이모티콘 리스트 영역 시작------*/
 .rate__emoji-list{
     display: flex;
     width: 100%;
@@ -34,6 +36,7 @@
 
 }
 
+/* 인기도 -1, 1, 3*/
 .rate__emoji p{
     display: inline-block;
     font-size: 14px;
@@ -56,11 +59,16 @@
     padding-right: 24px;
 }
 
+/* ------😚이모티콘 리스트 영역 끝------*/
+
+
+/* -------- slider 영역 시작 -------*/
 .rate__slider{
     display: flex;
     flex-direction: column;
     margin-bottom: 26px;
 }
+/*  닉네임  */
 .rate__slider span {
     display: flex;
     align-self: center;
@@ -69,12 +77,16 @@
     color: var(--dark-grey2);
 
 }
-
+/*  range  */
 .rete__slider input{
     display: flex;
     align-items: center;
 }
 
+/* -------- slider 영역 끝 -------*/
+
+
+/* -- 완료 버튼✅ ---*/
 div.btn.btn-semiround {
     margin-top: 34px;
     font-size: 18px;
@@ -83,6 +95,8 @@ div.btn.btn-semiround {
     height: fit-content;
     background-color: var(--main-color);
 }
+
+/* -------반응형 적용 -------*/
 @media (min-width: 390px) {
     .rate__emoji-list{
         width: 390px;
