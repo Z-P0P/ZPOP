@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="/css/member/component/meeting-info.css">
     <link rel="stylesheet" href="/css/member/component/participant.css" type="text/css" >
     <link rel="stylesheet" href="/css/member/component/comment.css" />
+    <link rel="stylesheet" href="/css/member/component/reply.css" />
     <link rel="stylesheet" href="/css/member/popup.css">
     <link rel="stylesheet" href="/css/member/component/modal-2.css">
     <!-- detail page css -->
@@ -38,7 +39,7 @@
             </div>
             <div class="meeting__header">
                 <div class="meeting__title-container">
-                <span class="hidden meeting-Id" th:text="${dto.id}"></span>
+                <span class="hidden meeting-Id" th:text="${meetingId}"></span>
                     <span class="meeting__title"  th:text="${dto.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
                     <th:block th:if="${session.member != null && memberType == 'host'}">
@@ -90,14 +91,13 @@
             <span th:text="|${#lists.size(participants)}/${dto.maxMember}|">15/56</span>
             <span class="icon icon-arrow-up"></span>
         </div>
-            <span class="participant-Id"  >8</span>
         <ul class="participant__list">
             <li th:each="participant:${participants}">
-                <span class="participant__info" 
-                	th:text="${participant.nickname}"></span>
-                	<img src="/images/girl.svg"  
-                	th:src="@{${participant.profileImagePath}?${participant.profileImagePath}:'/images/icon/user-profile.svg'}">
-                
+            <div class="participant__info">
+                <img src="/images/girl.svg"  
+                    th:src="@{${participant.profileImagePath}?${participant.profileImagePath}:'/images/icon/user-profile.svg'}">
+                <span th:text="${participant.nickname}"></span>
+            </div>
             </li>
         </ul>
     </section>
@@ -131,35 +131,5 @@
     </main>
 </body>
 
-<script>
-//     window.addEventListener("load",function(){
-//         const participationBtn = document.querySelector("#participation-btn");
-// 		console.log("load");
-//         participationBtn.onclick = function(e){
-//             e.preventDefault();
-            
-//             console.log("참여하기 버튼 클릭")
-//             const data = { 
-//         			method: "POST", // 또는 'PUT'
-//                   headers: {
-//                     "Content-Type": "application/json",
-//                	},
-//                   body: JSON.stringify({
-//                 	  meetingId:280,
-//                 	  participantId:2
-//                   })
-//         		}
 
-//                 fetch("http://localhost:8080/meeting/participate",data)
-//                 .then((response) => {
-//                   console.log('성공:', data);
-//         		  alert("성공적으로 참여했습니다");
-//                 })
-//                 .catch((error) => {
-//         			console.error('실패:', error);
-//         			alert("참여에 실패했습니다");
-//                 });
-//         }
-//     })
-</script>
 </html>
