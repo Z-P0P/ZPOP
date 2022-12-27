@@ -67,6 +67,10 @@ public class DefalutMemberService implements MemberService {
 
             String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
 
+            boolean isClosedResult = false;
+            if(m.getClosedAt() != null)
+                isClosedResult = true;
+
             Date date = m.getStartedAt();
             LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
             LocalDate now =LocalDate.now();
@@ -80,15 +84,15 @@ public class DefalutMemberService implements MemberService {
                     m.getAge(),
                     m.getMaxMember(),
                     genderCategory,
-                    m.isClosed(),
+                    isClosedResult,
                     m.getViewCount(),
                     m.getCommentCount(),
                     m.getMeetingId(),
                     m.getParticipantId(),
                     m.getRegMemberId(),
                     canRate
-
             );
+
             System.out.println(mt);
             list.add(mt);
 
@@ -119,6 +123,10 @@ public class DefalutMemberService implements MemberService {
 
             String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
 
+            boolean isClosedResult = false;
+            if(m.getClosedAt() != null)
+                isClosedResult = true;
+
             Date date = m.getStartedAt();
             LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
             LocalDate now =LocalDate.now();
@@ -132,7 +140,7 @@ public class DefalutMemberService implements MemberService {
                     m.getAge(),
                     m.getMaxMember(),
                     genderCategory,
-                    m.isClosed(),
+                    isClosedResult,
                     m.getViewCount(),
                     m.getCommentCount(),
                     m.getMeetingId(),
@@ -148,6 +156,16 @@ public class DefalutMemberService implements MemberService {
 
         return list;
 
+    }
+
+    @Override
+    public List<Member> getList(int page, String keyword, String option) {
+        return null;
+    }
+
+    @Override
+    public int getSearchCount(String keyword, String option) {
+        return 0;
     }
 }
 

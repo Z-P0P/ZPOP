@@ -10,7 +10,7 @@ public class MyMeetingView {
     private String age;
     private int maxMember;
     private int genderCategory;
-    private boolean isClosed;
+    private Date closedAt;
     private int viewCount;
     private int commentCount;
     private int meetingId;
@@ -20,7 +20,7 @@ public class MyMeetingView {
     public MyMeetingView() {
     }
 
-    public MyMeetingView(String categoryName, String regionName, Date startedAt, String title, String age, int maxMember, int genderCategory, boolean isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId) {
+    public MyMeetingView(String categoryName, String regionName, Date startedAt, String title, String age, int maxMember, int genderCategory, Date closedAt, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId) {
         this.categoryName = categoryName;
         this.regionName = regionName;
         this.startedAt = startedAt;
@@ -28,7 +28,7 @@ public class MyMeetingView {
         this.age = age;
         this.maxMember = maxMember;
         this.genderCategory = genderCategory;
-        this.isClosed = isClosed;
+        this.closedAt = closedAt;
         this.viewCount = viewCount;
         this.commentCount = commentCount;
         this.meetingId = meetingId;
@@ -92,12 +92,12 @@ public class MyMeetingView {
         this.genderCategory = genderCategory;
     }
 
-    public boolean isClosed() {
-        return isClosed;
+    public Date getClosedAt() {
+        return closedAt;
     }
 
-    public void setClosed(boolean closed) {
-        isClosed = closed;
+    public void setClosedAt(Date closedAt) {
+        this.closedAt = closedAt;
     }
 
     public int getViewCount() {
@@ -138,24 +138,5 @@ public class MyMeetingView {
 
     public void setRegMemberId(int regMemberId) {
         this.regMemberId = regMemberId;
-    }
-
-    @Override
-    public String toString() {
-        return "MyMeetingView{" +
-                "categoryName='" + categoryName + '\'' +
-                ", regionName='" + regionName + '\'' +
-                ", startedAt=" + startedAt +
-                ", title='" + title + '\'' +
-                ", age='" + age + '\'' +
-                ", maxMember=" + maxMember +
-                ", genderCategory=" + genderCategory +
-                ", isClosed=" + isClosed +
-                ", viewCount=" + viewCount +
-                ", commentCount=" + commentCount +
-                ", meetingId=" + meetingId +
-                ", participantId=" + participantId +
-                ", regMemberId=" + regMemberId +
-                '}';
     }
 }
