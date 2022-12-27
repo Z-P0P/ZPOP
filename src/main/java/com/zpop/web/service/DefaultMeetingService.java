@@ -85,6 +85,10 @@ public class DefaultMeetingService implements MeetingService{
 
             String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
 
+            boolean isClosedResult = false;
+            if(m.getClosedAt() != null) 
+                isClosedResult = true;
+            
             MeetingThumbnailResponse meetingThumbnail = new MeetingThumbnailResponse(
                 m.getId(),
                 m.getCategory(),
@@ -96,8 +100,9 @@ public class DefaultMeetingService implements MeetingService{
                 dateTime,
                 m.getViewCount(),
                 m.getCommentCount(),
-                m.isClosed()
+                isClosedResult
             );
+
             list.add(meetingThumbnail);
         }
 

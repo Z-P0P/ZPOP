@@ -15,17 +15,26 @@
         id=#{id} </select>
 
     <select id="getThumbnailViewList" parameterType="com.zpop.web.dto.MeetingThumbnailPagination"
-        resultType="com.zpop.web.entity.meeting.MeetingThumbnailView"> SELECT * FROM meetingThumb <trim
-            prefix="where" prefixOverrides="AND | OR">
+        resultType="com.zpop.web.entity.meeting.MeetingThumbnailView">
+        SELECT * FROM meetingThumbnail <trim
+            prefix="WHERE" prefixOverrides="AND | OR">
             <choose>
                 <when test="startId == 0"> id >= #{startId} </when>
                 <otherwise>
                     <![CDATA[ id < #{startId} ]]>
                 </otherwise>
             </choose>
-            <if test="isClosed != null">
-                AND isClosed = #{isClosed}
+            <if test="isClosed == false">
+                AND closedAt IS NULL
             </if>
+            <choose>
+                <when test="isClosed == false"> 
+                    AND closedAt IS NULL
+                </when>
+                <when test="isClosed == true"> 
+                    AND closedAt IS NOT NULL
+                </when>
+            </choose>
             <if test="categoryId != null">
                 AND categoryId = #{categoryId}
             </if>

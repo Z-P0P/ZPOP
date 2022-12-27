@@ -18,7 +18,7 @@ public class Meeting {
     private String contact;
     private int viewCount;
     private int commentCount;
-    private boolean isClosed;
+    private Date closedAt;
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
@@ -101,8 +101,8 @@ public class Meeting {
         return commentCount;
     }
 
-    public boolean isClosed() {
-        return isClosed;
+    public Date getClosedAt() {
+        return closedAt;
     }
 
     public Date getCreatedAt() {
