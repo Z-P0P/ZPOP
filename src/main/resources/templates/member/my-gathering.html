@@ -2,30 +2,26 @@
 <head>
 
   <title>내가 모집한 모임</title>
-  <link rel="stylesheet" href="">
   <link rel="stylesheet" href="/css/loading.css">
   <link rel="stylesheet" href="/css/member/component/meeting.css" >
   <link rel="stylesheet" href="/css/member/meeting/list.css" >
+  <link rel="stylesheet" href="/css/member/member/my-meeting.css">
   <link rel="stylesheet" href="/css/member/member/slider.css">
-  <!--    <link rel="stylesheet" th:href="@{/css/member/component/meeting.css}">-->
-  <!--    <link rel="stylesheet" th:href="@{/css/member/meeting/list.css}">-->
-  <!--추가된 css 파일 my-meeting -->
-  <!--    <link rel="stylesheet" th:href="@{/css/member/member/my-meeting.css}">-->
 
   <script src="/js/member/select.js"></script>
   <script src="/js/member/my-meeting.js"></script>
 </head>
-<main layout:fragment="content" class="main" >
+<body>
+<!--📌to do: 뒤로가기 있는 헤더 적용 -->
+<main layout:fragment="content" class="main">
 
+  <section class="main__content">
 
-
-    <!--  my-meeting added: (아이콘) + 내가 참여한 모임 & 내가 모집한 모임 -->
-    <div class="my-meeting">
+    <div class="title-container">
       <span class="icon icon-hands-up">i</span>
       <h3 class="my-meeting__title"> 내가 모집한 모임</h3>
     </div>
 
-  <section class="main__content">
     <ul id="meetings" class="meetings">
       <li th:each="meeting : ${meetings}" th:attr="data-id=${meeting.meetingId}">
         <a class="meeting" th:href="@{/meeting/{id}(id = ${meeting.meetingId})}">
@@ -85,6 +81,7 @@
       </li>
     </ul>
   </section>
-</main>
 
+</main>
+</body>
 </html>
