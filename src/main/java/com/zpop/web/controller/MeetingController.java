@@ -59,6 +59,11 @@ public class MeetingController {
 
 		// 변수에 담아서 성공 실패만 리턴해줘도 됨.
 		return "성공"; //TODO: 등록이된 모임 id를 넘겨줘야 함. 
+		
+		
+						// 예외
+					   //TODO: 1. DB테이블에 Not Null인 column을 입력하지 않았을 경우
+					   //	   2. 날짜/시간을 현재 시간보다 과거로 입력했을 때.
 	}
 
 	@GetMapping("/{id}")
@@ -129,6 +134,33 @@ public class MeetingController {
 		
 		return dto;
 	}
+	
+	@GetMapping("/participate")
+	@ResponseBody
+	public List<MeetingParticipantsDto> getParticipants(int meetingId) {
+		
+		return service.getParticipants(meetingId);
+			
+		
+		// 예외처리 리스트
+		
+//		1. 참여하려는 사용자가 주최자인 경우 --> memberId == regmemberId
+//		2. 해당 모임에 대해서 강퇴된 사용자가 참여하기 버튼을 누를 경우  
+//		3. 로그인을 하지 않은 사용자가 참여하기 버튼을 누른 경우 -> 로그인 모달이 나와야됨.
+//		4. 내가 이미 참여한 모임일 경우
+	}
+	
+	@PostMapping("/participate")
+	@ResponseBody
+	public String participate(@RequestBody Participation participation) {
+		//String userId = user.getmemberId();
+		service.participate(participation);
+		
+		return "redirect:participate";
+	}
+	
+
+	
 	
 }
 
