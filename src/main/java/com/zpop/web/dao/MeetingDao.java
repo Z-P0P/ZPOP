@@ -23,6 +23,8 @@ public interface MeetingDao {
     
     int updateDeletedAt(Meeting meeting);
 
+    int updateClosedAt(Meeting meeting);
+
     void updateViewCount(int id);
 
 	List<AdminMeetingDto> getAdminViewList(int size, int offset, String keyword, String option);
