@@ -34,9 +34,6 @@
                     <![CDATA[ id < #{startId} ]]>
                 </otherwise>
             </choose>
-            <if test="isClosed == false">
-                AND closedAt IS NULL
-            </if>
             <choose>
                 <when test="isClosed == false"> 
                     AND closedAt IS NULL
