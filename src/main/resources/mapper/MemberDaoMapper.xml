@@ -13,7 +13,6 @@
     <select id="getByNickname" resultType="Member">
         SELECT * FROM member
         WHERE nickname=#{nickname} </select>
-
     <select id="getMyMeeting" parameterType="com.zpop.web.entity.Member"
             resultType="com.zpop.web.entity.member.MyMeetingView">
         SELECT * FROM myMeetingView
@@ -22,4 +21,40 @@
             resultType="com.zpop.web.entity.member.MyMeetingView">
         SELECT * FROM myMeetingView
         WHERE regMemberId = #{id} </select>
+    <select id="getList" resultType= "Member">
+    	SELECT *
+    	FROM member
+    	LIMIT #{offset},#{size};
+    </select>
+    
+    <!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 닉네임만 함 -->
+    <select id="countBySearch" resultType= "java.lang.Integer">
+      	SELECT COUNT(id) 
+      	FROM member
+      	<where>
+      		<if test="keyword!=null">
+      			nickname LIKE '%${keyword}%'
+      		</if>
+      	</where>
+    </select>
+    <select id="getListBySearch" resultType="Member">
+    	SELECT 
+    		id,
+    		profileImagePath,
+    		nickname,
+    		fame,
+    		isSuspended,
+    		createdAt,
+    		resignedAt
+   		FROM
+   			member
+   		ORDER BY id DESC
+   		LIMIT #{offset},#{size};
+   		<!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 닉네임만 함 -->
+  		<where>
+      		<if test="keyword!=null">
+      			nickname LIKE '%${keyword}%'
+      		</if>
+      	</where>
+    </select>
 </mapper>

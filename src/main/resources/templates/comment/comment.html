@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/button.css" />
     <link rel="stylesheet" href="/css/member/component/comment.css" />
     <link rel="stylesheet" href="/css/member/component/profile-box.css">
+    
   </head>
   <body>
     <section class="comment">
@@ -39,7 +40,7 @@
                       <span>답글 달기</span>
               </div>
           </li>
-          	<template id="template">
+          <template id="template">
           <li>
               <div class="profile"> 
                   <span class="profile__image" ></span>
@@ -56,7 +57,7 @@
       </ul>
   </section>
   </body>
-  <script>
+ <script>
   
   	function addNewCommentElement(newText){
   		
@@ -72,31 +73,30 @@
 	  			template.after(newNode);
 	  		else
 	  			targetNode.after(newNode);
+	  		document.getElementById("comment-text").value = "";//플레이스홀더 되살림.
   		}
-  		
   	}	
   
     window.addEventListener("load", (e) => {
         const registerBtn = document.querySelector("#register-btn");
 
-        registerBtn.addEventListener("click",(e) => {
+         registerBtn.addEventListener("click",(e) => {
             e.preventDefault();
 
             const commentText = document.querySelector("#comment-text").value;
-
             const data = {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+					"meetingId":1,
                     "content":commentText,
-                    "writerId":8,
-                    "meetingId":1
+                    "writerId":3,
                 })
             }
 
-            fetch("http://localhost:8080/comment", data)
+            fetch("http://localhost:8080/meeting/comment", data)
             .then(response => {
 		        const newCommentText = document.getElementById("comment-text").value;
             	if(newCommentText){

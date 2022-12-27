@@ -21,9 +21,14 @@ public interface MemberDao {
 	int insert(Member member);
 
 	int update(Member member);
-
+	int countBySearch(String keyword, String option);
 	int count(int socialTypeId);
 
+
+
+	List<Member> getListBySearch(int size, int offset, String keyword, String option);
+	
 	List<MyMeetingView> getMyMeeting(int memberId);
 	List<MyMeetingView> getMyGathering(int memberId);
+
 }

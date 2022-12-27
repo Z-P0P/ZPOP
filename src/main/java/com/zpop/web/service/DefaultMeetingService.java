@@ -36,8 +36,27 @@ public class DefaultMeetingService implements MeetingService{
     }
 
     @Override
-    public List<MeetingThumbnailResponse> getList(int startId, String keyword, Boolean isClosed) {
-        MeetingThumbnailPagination pagination = new MeetingThumbnailPagination(startId, keyword, isClosed);
+    public List<MeetingThumbnailResponse> getList() {
+        return getList(
+            0,
+            null,
+            null,
+            null,
+            null
+        );
+    }
+
+    @Override
+    public List<MeetingThumbnailResponse> getList(
+            int startId, String keyword, Integer categoryId, String strRegionIds, Boolean isClosed
+            ) {
+        String[] regionIds = null;
+        if(strRegionIds != null)
+            regionIds = strRegionIds.split(",");
+
+        MeetingThumbnailPagination pagination = 
+            new MeetingThumbnailPagination(startId, keyword, categoryId, regionIds, isClosed);
+
         List<MeetingThumbnailView> meetingThumbnailViews = dao.getThumbnailViewList(pagination);
         
         // 응답에 맞게 데이터 변환

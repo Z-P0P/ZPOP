@@ -27,4 +27,11 @@ public interface MemberService {
 
         //5. 프로필 수정시, 프로필 사진 및 닉네임 변경
 
+
+        
+	public List<Member> getList(int page, String keyword, String option);
+
+	public int getSearchCount(String keyword, String option);
+	
 }
+

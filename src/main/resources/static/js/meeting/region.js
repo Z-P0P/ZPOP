@@ -5,10 +5,10 @@ window.addEventListener('load', function() {
 	const regionSelectedStatus = [];
 
 	const meetingActivateOption = document.querySelector(".meeting-activate-option");
-	const selectOptions = document.querySelectorAll(".select-box__options > li");
+	const regionCategoryOptions = document.querySelectorAll(".region-category .select-box__options > li");
 	const meetingOptions = document.querySelector(".meeting__options");
 	
-	for (let option of selectOptions) {
+	for (let option of regionCategoryOptions) {
 		option.onclick = addRegion;
 	}
 	

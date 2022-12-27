@@ -14,7 +14,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+/*
+ * 작성자: 임형미
+ */
 @Service
 public class DefalutMemberService implements MemberService {
 
