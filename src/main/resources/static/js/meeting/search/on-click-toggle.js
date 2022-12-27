@@ -1,7 +1,7 @@
 import state from "./state.js";
-import requestMeetings from "./request-meetings.js";
-import { insertMeetings, removeMeetings } from "./view.js";
-import generateUrl from "./generate-url.js";
+import generateUrl from "../list/generate-url.js";
+import { insertMeetings, removeMeetings } from "../list/view.js";
+import requestMeetings from "../list/request-meetings.js";
 
 export default function (e) {
   state.isToggleOn = e.target.checked;

@@ -7,81 +7,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/loading.css" />
-    <link rel="stylesheet" href="/css/member/component/header.css" />
-    <link rel="stylesheet" href="/css/member/component/select.css" />
     <link rel="stylesheet" href="/css/member/component/meeting.css" />
     <link rel="stylesheet" href="/css/member/component/search-bar.css" />
     <link rel="stylesheet" href="/css/member/component/select.css">
-    <link rel="stylesheet" href="/css/member/component/region-bar.css">
     <link rel="stylesheet" href="/css/member/component/meeting-category.css" />
-    <link rel="stylesheet" href="/css/member/meeting/list.css" />
-    <script type="module" src="/js/meeting/list/list.js" defer></script>
-
-
+    <link rel="stylesheet" href="/css/member/meeting/search.css" />
+    <script type="module" src="/js/meeting/search/search.js" defer></script>
   </head>
   <body>
     <main layout:fragment="content" class="main">
-      <div class="banner">
-      	<img alt="" src="/images/banner.png">
-      </div>
-
-      <!-----------------------modal 추가--------------------------->
-      <!--👩🏻 메인화면-->
-
-
-      <!-------------------------------------------------->
-
       <header class="main__header">
-        <div class="search-bar">
-          <span class="icon icon-search">돋보기</span>
-          <input
-            id="search-bar-input"
-            class="search-content"
-            type="text"
-            placeholder="원하는 집합을 찾아보세요!"
-          />
+        <div class="search-result">
+          <h1>
+            <strong th:text="${keyword}">검색어</strong> 검색결과
+          </h1> 
         </div>
-
-        <div class="category-container">
-          <nav class="category-nav">
-            <ul class="category-subcontainer">
-              <li data-id=0 class="category selected">전체</li>
-              <li data-id=1 class="category">밥/카페</li>
-              <li data-id=2 class="category">운동</li>
-              <li data-id=3 class="category">스터디</li>
-              <li data-id=4 class="category">방탈출</li>
-              <li data-id=5 class="category">보드게임</li>
-              <li data-id=6 class="category">문화</li>
-              <li data-id=7 class="category">펫</li>
-              <li data-id=8 class="category">기타</li>
-            </ul>
-          </nav>
-        </div>
-
         <div class="meeting__options">
-          <div class="region-category">
-            <label for="category"></label>
-            <div class="select-box select-box--input select-box--round">
-              <input
-                placeholder="지역"
-                type="text"
-                name="category"
-                id=""
-                readonly
-              />
-              <ul class="select-box__options">
-                  <li data-id=1>서울</li>
-                  <li data-id=2>인천/경기</li>
-                  <li data-id=3>충청/대전/세종</li>
-                  <li data-id=4>강원</li>
-                  <li data-id=5>경북/대구</li>
-                  <li data-id=6>전라/광주</li>
-                  <li data-id=7>경남/부산/울산</li>
-                  <li data-id=8>제주</li>
-                  <li data-id=9>온라인</li>
-              </ul>
-            </div>
-          </div>
           <div class="meeting-activate-option">
             <span>모집 중만 보기</span>
             <input type="checkbox" id="toggle" checked hidden />
@@ -93,6 +34,8 @@
       </header>
 
       <section class="main__content">
+
+
         <ul id="meetings" class="meetings">
           <li th:each="meeting : ${meetings}" th:attr="data-id=${meeting.id}">
             <a class="meeting" th:href="@{/meeting/{id}(id = ${meeting.id})}">
@@ -152,17 +95,12 @@
           </li>
         </ul>
         <!-- no search result -->
-        <!-- <div class="search-result-none hidden">
+        <div class="result-none hidden">
           <p>
-            '<strong class="search-keyword">검색어</strong>'에 대한 검색 결과가
+            '<strong class="search-keyword" th:text="${keyword}">검색어</strong>'에 대한 검색 결과가
             없어요 !
           </p>
           <p>검색할 단어를 변경하거나, 검색어를 확인해주세요.</p>
-        </div> -->
-        <!-- no result -->
-        <div class="result-none hidden">
-          <p>찾고있는 모임이 없네요!</p>
-          <p>교집합을 만들어볼까요?</p>
         </div>
       </section>
 

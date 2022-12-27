@@ -1,7 +1,7 @@
 import state from "./state.js";
 import requestMeetings from "./request-meetings.js";
 import { hideLoading, hideResultNone, insertMeetings, showLoading, showResultNone } from "./view.js";
-import { generateUrl } from "./util.js";
+import generateUrl from "./generate-url.js";
 
 export default function () {
   const THROTTLING_TIMER = 1300;
@@ -19,7 +19,7 @@ export default function () {
       state.timer = null;
 
       const isScrollEvent = true;
-      const url = generateUrl(isScrollEvent);
+      const url = generateUrl(state, isScrollEvent);
 
       requestMeetings(url).then((meetings) => {
         hideResultNone();
