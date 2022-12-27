@@ -27,8 +27,8 @@
       <h3 class="my-meeting__title"> 내가 참여한 모임</h3>
     </div>
     <ul id="meetings" class="meetings">
-      <li th:each="meeting : ${meetings}">
-        <a class="meeting" >
+      <li th:each="meeting : ${meetings}" th:attr="data-id=${meeting.meetingId}">
+        <a class="meeting"  th:href="@{/meeting/{id}(id = ${meeting.meetingId})}">
           <div class="meeting__header">
             <div class="meeting__info-detail-more">
                   <span class="meeting__category" th:text="${meeting.categoryName}"
@@ -105,7 +105,6 @@
   <!--📌to do: 데이터 심어주기 방장이면 방장 아이콘 표시해주기-->
 
 
-
   <div id="modal-eval-notification" class="modal-wrapper hidden">
     <div class="modal">
 
@@ -116,7 +115,7 @@
       <div class="modal__body">
         <div class="rate-container">
 
-            <h1 class="rate__title">
+            <h1 class="rate__title" >
               영등포 풋살 어쩌꾸..
             </h1>
 
