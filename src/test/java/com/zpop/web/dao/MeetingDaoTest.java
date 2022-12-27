@@ -24,34 +24,20 @@ class MeetingDaoTest {
         private MeetingDao meetingDao;
 
         @Test
-        void insert_테스트() {
-                Meeting testMeeting = new Meeting(
-                        1,
-                        1,
-                        1,
-                        1,
-                        1,
-                        0,
-                        "제목",
-                        "내용",
-                        "상세장소",
-                        5,
-                        new Date(),
-                        "연락처"
-                );
-                int result = meetingDao.insert(testMeeting);
-                assertThat(result).isEqualTo(1);
-        }
-
-        @Test
         void get_테스트() {
                 Meeting meeting = meetingDao.get(1);
                 System.out.println(meeting.getTitle());
         }
 
         @Test
-        void get_list_테스트() {
-                MeetingThumbnailPagination pagination = new MeetingThumbnailPagination(0, null, null);
+        void get_list_전체_조회_테스트() {
+                int startId = 0;
+                String keyword = null;
+                Integer categoryId = null;
+                String[] regionIds = null;
+                Boolean isClosed = null;
+                MeetingThumbnailPagination pagination =
+                        new MeetingThumbnailPagination(startId, keyword, categoryId, regionIds, isClosed);
 
                 List<MeetingThumbnailView> meetings = meetingDao.getThumbnailViewList(pagination);
                 for (MeetingThumbnailView m : meetings)
