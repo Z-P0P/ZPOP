@@ -1,30 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/static/css/admin/style.css" type="text/css"/>
-    <link rel="stylesheet" href="/static/css/admin/component/button.css">
-    <link rel="stylesheet" href="/static/css/admin/component/status.css">
-    <link rel="stylesheet" href="/static/css/admin/component/header.css">
-    <link rel="stylesheet" href="/static/css/admin/component/admin-nav.css">
-    <link rel="stylesheet" href="/static/css/admin/component/admin-search-bar.css">
-    <link rel="stylesheet" href="/static/css/admin/component/table-bar.css">
-    <link rel="stylesheet" href="/static/css/admin/component/admin-list.css">
-    <link rel="stylesheet" href="/static/css/deco.css">
-    <script src="/static/js/member/modal.js"></script>
-    <script src="/static/js/admin/admin.js"></script>
+    <link rel="stylesheet" href="/css/admin/style.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/admin/component/button.css">
+    <link rel="stylesheet" href="/css/admin/component/status.css">
+    <link rel="stylesheet" href="/css/admin/component/header.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-nav.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-search-bar.css">
+    <link rel="stylesheet" href="/css/admin/component/table-bar.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-list.css">
+    <link rel="stylesheet" href="/css/deco.css">
+    <script src="/js/member/modal.js"></script>
+    <script src="/js/admin/admin.js"></script>
 </head>
 <body>
     <div class="main-wrapper">
         <main>
             <nav class="admin-nav">
                 <ul class="admin-nav__lists">
-                    <li class="admin-nav__list" ><a href="./list.html">모임 조회</a></li>
-                    <li class="admin-nav__list"><a href="./category.html">카테고리 관리</a></li>
-                    <li class="admin-nav__list admin-nav__list--selected"><a href="./region.html">지역 관리</a></li>
+                    <li class="admin-nav__list" ><a href="./list">모임 조회</a></li>
+                    <li class="admin-nav__list"><a href="./category">카테고리 관리</a></li>
+                    <li class="admin-nav__list admin-nav__list--selected"><a href="./region">지역 관리</a></li>
                 </ul>
             </nav>
             <div class="admin-search-bar-div">
@@ -82,47 +82,40 @@
                       <input class="checkbox" type="checkbox" name="table-checkbox" />
                       <span class="table-bar__icon table-bar__icon-check"></span>
                       <span class="table-bar__icon table-bar__icon-x"></span>
-                      <span class="table-bar__icon table-bar__icon-plus"></span>
                     </div>
               
                     <div class="table-bar__right-container">
-                      <span class="table-bar__page"> 9,999개 중 1-10 </span>
-                      <span class="table-bar__icon table-bar__icon-arrow-left hide"></span>
-                      <span class="table-bar__icon table-bar__icon-arrow-right hide"></span>
+                    <span class="table-bar__page" 
+                      th:text="|${count}개 중 ${(page-1)*10+1}-${(page-1)*10+#lists.size(regions)}|"> 
+                      9,999개 중 1-10 </span>
+                      <a th:href="${page-1}==0?'#': |?p=${page-1}|"class="table-bar__icon table-bar__icon-arrow-left hide"></a>
+                      <a th:href="${@adminViewUtils.hasNextPage(page,10,#lists.size(regions),count)}?|?p=${page+1}|:'#'" class="table-bar__icon table-bar__icon-arrow-right hide"></a>
                     </div>
-                  </div>
+                  </div>  
                 <ul class="admin-list">
                     <li class="admin-list__header">
                         <ul>
                             <li>
                                 <span>ID</span>
-                                <button><img src="/static/images/icon/up-down.svg" alt=""></button>
+                                <button><img src="/images/icon/up-down.svg" alt=""></button>
                             </li>
                             <li>지역명</li>
                             <li>총 모임 수</li>
                             <li>활성 여부</li>
                         </ul>
                     </li>
-                    <li class="admin-list__content">
+                    <li class="admin-list__content" th:each="region: ${regions}">
                         <ul class="list-content">
                             <li class="list-content__id">
                                 <input type="checkbox" class="checkbox">
-                                <span>1</span>
+                                <span th:text="${region.id}">1</span>
                             </li>
-                            <li>서울</li>
-                            <li>15</li>
-                            <li><span class="status status--round status--positive">True</span></li>
-                        </ul>
-                    </li>
-                    <li class="admin-list__content">
-                        <ul class="list-content">
-                            <li class="list-content__id">
-                                <input type="checkbox" class="checkbox">
-                                <span>2</span>
-                            </li>
-                            <li>경기</li>
-                            <li>15</li>
-                            <li><span class="status status--round status--negative">False</span></li>
+                            <li th:text="${region.name}|">서울</li>
+                            <li th:text="${region.num}">15</li>
+                            <li class="list-content__status">
+                            	<span class="status status--round" th:classappend="${region.deletedAt} != null ? 'status--negative':'status--positive'"
+                            	th:text="${region.deletedAt} == null ? 'TRUE':'FALSE'">False</span>
+                           	</li>
                         </ul>
                     </li>
                 </ul>
@@ -131,15 +124,15 @@
         </main>
     </div>
     <aside class="left-side-bar">
-        <img src="/static/images/logo/logo-with-text.svg" alt="로고">
+        <img src="/images/logo/logo-with-text.svg" alt="로고">
         <nav>
             <ul>
                 <li><a class="add-deco-img-left deco-img-home" href="index.html">대시보드</a></li>
-                <li><a class="add-deco-img-left deco-img-notification" href="../banner/list.html">공지 관리</a></li>
-                <li class="selected"><a class="add-deco-img-left deco-img-meeting-white" href="../meeting/list.html">모임 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-user" href="../member/list.html">회원 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-comment" href="../comment/list.html">댓글 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-report" href="../report/list.html">신고 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-notification" href="/admin/banner/list">공지 관리</a></li>
+                <li class="selected"><a class="add-deco-img-left deco-img-meeting-white" href="/admin/meeting/list">모임 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-user" href="/admin/member/list">회원 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-comment" href="/admin/comment/list">댓글 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-report" href="/admin/report/list">신고 관리</a></li>
                 <li><a class="add-deco-img-left deco-img-logout" href="logout.html">로그아웃</a></li>
             </ul>
         </nav>

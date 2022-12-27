@@ -3,11 +3,28 @@ package com.zpop.web.service;
 import com.zpop.web.dto.MeetingThumbnailResponse;
 import com.zpop.web.entity.Member;
 
+import com.zpop.web.dto.MeetingDetailDto;
+import com.zpop.web.dto.MeetingParticipantsDto;
+import com.zpop.web.entity.Participation;
+
+import com.zpop.web.entity.meeting.Meeting;
 import java.util.List;
 
+
 public interface MeetingService {
-    List<MeetingThumbnailResponse> getList();
-    List<MeetingThumbnailResponse> getList(String keyword);
-    List<MeetingThumbnailResponse> getList(int startId, String keyword, Integer categoryId, String regionIds, Boolean isClosed);
-    boolean delete(int id, Member member);
+			int register(Meeting meeting);
+
+			List<MeetingThumbnailResponse> getList();
+			List<MeetingThumbnailResponse> getList(String keyword);
+			List<MeetingThumbnailResponse> getList(int startId, String keyword, Integer categoryId, String regionIds, Boolean isClosed);
+
+			MeetingDetailDto getById(int id);
+
+			List<MeetingParticipantsDto> getParticipants(int meetingId);
+
+			int participate(Participation participation);
+
+			void updateViewCount(int id);
+
+			boolean delete(int id, Member member);
 }

@@ -5,6 +5,12 @@
 .hidden {
   display: none !important;
 }
+.pointer{
+	cursor:pointer
+}
+.underline{
+	text-decoration:underline;
+}
 
 .add-deco-img-left::before,
 .add-deco-img-right::after {
@@ -48,6 +54,10 @@
 
 .deco-img-home::before {
   background-image: url(/images/icon/home.svg);
+}
+
+.deco-img-comment::before {
+  background-image: url(/images/icon/comment.svg);
 }
 
 .deco-img-notification::before {

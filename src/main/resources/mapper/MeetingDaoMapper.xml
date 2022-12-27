@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.MeetingDao">
+	<select id="getDetailView"  resultType= "com.zpop.web.dto.MeetingDetailDto">
+        SELECT m.title, m.startedAt, m.detailRegion, m.content, m.maxMember, m.regMemberId,m.id,
+                        m.viewCount,c.name categoryName, r.name regionName
+        FROM meeting m 
+        JOIN category c on m.categoryId = c.id 
+        JOIN region r on m.regionId = r.id 
+        WHERE m.id = #{id};
+	</select>
+
     <insert id="insert" parameterType="com.zpop.web.entity.meeting.Meeting">
         INSERT INTO meeting
-        (regMemberId, categoryId, regionId, ageRangeId, contactTypeId,
-        genderCategory, title, content, detailRegion, maxMember,
-        startedAt, contact)
-        VALUES
-        (#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId}, #{contactTypeId},
-        #{genderCategory}, #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact})
+        (regMemberId, categoryId, regionId, ageRangeId, title, content, detailRegion, maxMember,
+        startedAt, contact, contactTypeId , genderCategory)
+        VALUES (#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId},
+        #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact}, #{contactTypeId}, #{genderCategory})
     </insert>
 
-    <select id="get" resultType="com.zpop.web.entity.meeting.Meeting"> SELECT * FROM meeting WHERE
-        id=#{id} </select>
+    <select id="get" resultType="com.zpop.web.entity.meeting.Meeting">
+        SELECT *
+        FROM meeting
+        WHERE id=#{id}
+    </select>
 
     <select id="getThumbnailViewList" parameterType="com.zpop.web.dto.MeetingThumbnailPagination"
         resultType="com.zpop.web.entity.meeting.MeetingThumbnailView">
@@ -50,8 +60,17 @@
         </trim>
         LIMIT 0, 9; </select>
 
-    <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> update meeting
-        deletedAt=CURRENT_TIMESTAMP() WHERE id = #{id} </update>
+    <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> 
+        UPDATE meeting
+        deletedAt=CURRENT_TIMESTAMP()
+        WHERE id = #{id}
+    </update>
+	
+	<update id="updateViewCount" parameterType="com.zpop.web.dto.MeetingDetailDto">
+        UPDATE meeting
+        SET viewCount = viewCount + 1
+        WHERE id = #{id}
+	</update>
 
     <select id="getMeetingList" resultType="com.zpop.web.entity.meeting.MeetingThumbnailView">
         SELECT *
@@ -59,5 +78,44 @@
         JOIN participation p ON mt.id = p.meetingId
         JOIN member m ON p.participantId = m.id
         WHERE m.id =#{id}
+    </select>
+    <select id="getAdminViewList" resultType="AdminMeetingDto">
+    SELECT 
+		meeting.id, 
+		meeting.title, 
+		member.nickname as hostNickname, 
+		meeting.maxMember, 
+		meeting.createdAt, 
+		meeting.isClosed, 
+		meeting.deletedAt,
+    	Ifnull(pNum.num, 0) as participantsNum
+	FROM meeting
+	JOIN member
+	ON meeting.regMemberId = member.id
+	LEFT OUTER JOIN(
+		SELECT 
+			meetingId, 
+            COUNT(IF(bannedAt IS NULL AND canceledAt IS NULL,1, NULL)) as num
+	    FROM participation
+	    GROUP BY meetingId
+	    ) AS pNum
+	ON pNum.meetingId=meeting.id
+	ORDER BY meeting.id DESC
+	LIMIT #{offset},#{size};
+	<where>
+      	<if test="keyword!=null">
+      		title LIKE '%${keyword}%'
+    	</if>
+    </where>
+    </select>
+    <!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 모임글 제목만 함 -->
+    <select id="count" resultType= "java.lang.Integer">
+      	SELECT COUNT(id) 
+      	FROM meeting
+      	<where>
+      		<if test="keyword!=null">
+      			title LIKE '%${keyword}%'
+      		</if>
+      	</where>
     </select>
 </mapper>
