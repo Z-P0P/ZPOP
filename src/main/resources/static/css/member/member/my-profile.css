@@ -16,6 +16,7 @@
 
 .my-profile-container> h2{
     color: var(--black);
+    font-weight: bold;
 }
 
 .profile__title{
@@ -35,6 +36,7 @@
     height: fit-content;
     justify-content: center;
 }
+
 
 
 /* .profile__with-photo
@@ -61,6 +63,14 @@
     right: 3px;
 }
 
+.input-text {
+    margin-top: 49px;
+    margin-bottom: 49px;
+}
+
+.input-text__label{
+    padding-bottom: 9px;
+}
 /* --------------  마이프로필 닉네임 ------------*/
 
 .profile__nickname{
@@ -90,6 +100,7 @@
 /* -----------마이 프로필 버튼 (수정하기, 저장하기) ------ */
 
 .profile__btn{
+    display: inline-block;
     color:var(--white);
     font-weight: var(--bold);
     text-align: center;
@@ -129,7 +140,8 @@
     
 }
 
-.profile__page-move span{
+.profile__page-move a{
+    width: 100%;
     font-weight: var(--bold);
     font-size: var(--medium);
 }

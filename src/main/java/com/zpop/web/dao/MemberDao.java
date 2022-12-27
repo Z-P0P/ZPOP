@@ -1,13 +1,10 @@
 package com.zpop.web.dao;
 
 import com.zpop.web.entity.Member;
+import com.zpop.web.entity.member.MyMeetingView;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
-
-import com.zpop.web.entity.Member;
 
 @Mapper
 public interface MemberDao {
@@ -27,5 +24,11 @@ public interface MemberDao {
 	int countBySearch(String keyword, String option);
 	int count(int socialTypeId);
 
+
+
 	List<Member> getListBySearch(int size, int offset, String keyword, String option);
+	
+	List<MyMeetingView> getMyMeeting(int memberId);
+	List<MyMeetingView> getMyGathering(int memberId);
+
 }
