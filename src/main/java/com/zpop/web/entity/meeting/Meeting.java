@@ -119,8 +119,8 @@ public class Meeting {
 	}
 
 
-	public void setClosed(boolean isClosed) {
-		this.isClosed = isClosed;
+	public void setclosedAt(Date closedAt) {
+		this.closedAt = closedAt;
 	}
 
 
@@ -217,7 +217,7 @@ public class Meeting {
 				+ regionId + ", ageRangeId=" + ageRangeId + ", genderCategory=" + genderCategory + ", title=" + title
 				+ ", content=" + content + ", detailRegion=" + detailRegion + ", maxMember=" + maxMember
 				+ ", startedAt=" + startedAt + ", contact=" + contact + ", contactTypeId=" + contactTypeId
-				+ ", viewCount=" + viewCount + ", commentCount=" + commentCount + ", isClosed=" + isClosed
+				+ ", viewCount=" + viewCount + ", commentCount=" + commentCount + ", closedAt=" + closedAt
 				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
 	}
 }
