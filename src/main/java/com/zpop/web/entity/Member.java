@@ -15,6 +15,11 @@ public class Member {
 
     private boolean isSuspended;
 
+    public Member() {
+    }
+
+
+
     public int getId() {
         return this.id;
     }

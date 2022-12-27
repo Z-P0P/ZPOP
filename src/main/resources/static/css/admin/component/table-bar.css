@@ -1,12 +1,10 @@
 .table-bar {
-  margin: 20px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: rgb(255, 255, 255);
   border: 1px solid #ebebeb;
   border-radius: 10px 10px 0 0;
-  max-width: 75rem;
   min-height: 3rem;
   padding: 0 30px;
 }
@@ -54,19 +52,35 @@ input {
 }
 
 .table-bar__icon-check::before {
-  background-image: url(/static/images/icon/check.svg);
+  background-image: url(/images/icon/check.svg);
 }
 
 .table-bar__icon-x::before {
-  background-image: url(/static/images/icon/x.svg);
+  background-image: url(/images/icon/x.svg);
+}
+
+.table-bar__icon-plus::before {
+  background-image: url(/images/icon/plus.svg);
 }
 
 .table-bar__icon-arrow-left::before {
-  background-image: url(/static/images/icon/arrow-left.svg);
+  background-image: url(/images/icon/arrow-left.svg);
 }
 
 .table-bar__icon-arrow-right::before {
-  background-image: url(/static/images/icon/arrow-right.svg);
+  background-image: url(/images/icon/arrow-right.svg);
+}
+
+.table-bar__icon--user-ban::before{
+  background-image: url(/images/icon/user-ban.svg);
+}
+
+.table-bar__icon--user-check::before{
+  background-image: url(/images/icon/user-check.svg);
+}
+
+.table-bar__icon--user-suspend::before{
+  background-image: url(/images/icon/user-suspend.svg);
 }
 
 @media (min-width: 576px) {

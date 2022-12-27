@@ -1,21 +1,15 @@
-/* --------------my-meeting start ------------------- */
-/*  내가 참여한 모임 & 내가 모집한 모임 페이지의
-   타이틀과 아이콘을 묶어주는 영역 */
-.my-meeting-container{
+
+/*---- 🖐🤝🏻내가 모집한 모임, 내가 참여한 모임 title 표시 -----*/
+
+.title-container{
     display: flex;
-    justify-content: space-evenly;
-
-}
-
-
-.my-meeting {
-    display: flex;
+    width: 100%;
     align-content: center;
     align-items: baseline;
     padding-bottom: 15px;
-    border-bottom: 0.7px solid var(--light-grey1);
     margin-top: 30px;
 }
+
 
 .my-meeting__title{
     padding-left:1px;
@@ -25,60 +19,32 @@
     font-weight: var(--bold);
 }
 
-/* my-meeting span = icon 입니다 */
-.my-meeting span {
-    display: flex;
-    margin-right: 3.5px;
-    align-items: flex-end;
-}
-
-/* --------------my-meeting end--------------------- */
+.title-container span {
+      display: flex;
+     margin-right: 5px;
+       align-items: flex-end;
+     }
 
 
-/* -------meeting → meeting-participated 변경 start -----*/
+/* --- 🖐🤝🏻내가 모집한 모임, 내가 참여한 모임 title 표시 끝 ❗ --- */
 
-/* 내가 참여한 모임은 보더라인이 바뀌어야하기 때문에 */
-.meeting-participated{
-    border:none;
+
+/*  --- 내가 참여한 모임용 meeting cascading   ---*/
+/* 📌 to do : 모바일에 맞게 레이아웃 다듬어주기*/
+.meeting{
+    border: none;
     border-radius: 0px;
-    border-bottom: 0.7px solid var(--light-grey1);
-    display: flex;
-    flex-direction: column;
-    width: 350px;
-    min-height: 188px;
-    padding: 20px;
-    justify-content: space-between;
+    border-bottom: 1.3px solid var(--light-grey1);
+    min-height: 166px;
 }
 
-/* 평가하기 버튼 */
-div.btn.btn-semiround.rate {
-    background-color:var(--main-color);
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    height: fit-content;
-    padding: 10.4px;
-    width: 100%;
-}
-
-/* 평가완료 버튼 */
-div.btn.btn-semiround.rated {
-    background-color:var(--light-grey1);
-    color: var(--dark-grey2);
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    height: fit-content;
-    padding: 10.4px;
-    width: 100%;
-}
 
 
 @media (min-width: 768px) {
 
-    /* 태블릿 반응형 되었을 때, 맨 윗줄 보더 삭제 */
-    .my-meeting {
+    .title-container {
         border:none;
+        width: auto;
     }
     .my-meeting__title{
         padding-top: 20px;
@@ -86,24 +52,24 @@ div.btn.btn-semiround.rated {
         font-size: 20px;
        
     }
-   
-    .meeting-participated {
-        display: flex;
-        flex-direction: column;
-        width: 350px;
-        min-height: 188px;
-        border-radius: 15px;
-        background-color: var(--white);
+
+    .meeting{
         border: 2px solid var(--light-grey1);
-        padding: 20px;
-        justify-content: space-between;
+        border-radius: 15px;
+
     }
+   
+
 }
 
 @media (min-width:1200px){
+    .title-container {
+        width: 100%;
+    }
     .my-meeting__title{
         padding-top: 74px;
         padding-bottom: 56px;
         font-size: 20px;
     }
 }
+

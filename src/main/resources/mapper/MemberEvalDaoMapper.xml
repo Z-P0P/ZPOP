@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zpop.web.dao.MemberEvalDao">
+    <insert id ="insert" parameterType ="com.zpop.web.dao.MemberEvalDao">
+        INSERT INTO memberEval
+        (meetingId,evaluatorId,evaluateeId,result)
+        VALUES
+        (#{meetingId} , #{evaluatorId}, #{evaluateeId} , #{result})
+    </insert>
+    <insert id="insertAll" parameterType="java.util.List">
+        INSERT INTO memberEval (
+        meetingId,
+        evaluatorId,
+        evaluateeId,
+        result)
+        VALUES
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+            #{element.meetingId},
+            #{element.evaluatorId},
+            #{element.evaluateeId},
+            #{element.result}
+        </foreach>
+    </insert>
+    <select id="getAdminViewList" resultType="AdminMemberEvalDto">
+		SELECT
+			me.id,
+			m1.nickname as evaluateeNickname,
+			m1.id as evaluateeId,
+			m2.nickname as evaluatorNickname,
+			m2.id as evaluatorId,
+			me.result as rate,
+			m.title as meetingTitle,
+			m.id as meetingId,
+			me.createdAt
+		FROM memberEval as me
+		JOIN member as m1
+		ON me.evaluateeId = m1.id
+		JOIN member as m2
+		ON me.evaluatorId = m2.id
+		JOIN meeting as m
+		ON me.meetingId = m.id
+		LIMIT #{offset},#{size}
+		<where>
+			<if test="keyword!=null">
+				title LIKE '%${keyword}%'
+			</if>
+		</where>
+	</select>
+	<select id="countBySearch" resultType="java.lang.Integer">
+		SELECT COUNT(id)
+		FROM memberEval
+	</select>
+</mapper>

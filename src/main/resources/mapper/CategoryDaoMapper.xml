@@ -3,20 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.CategoryDao">
-    <select id="get" resultType= "com.zpop.web.entity.Category">
-        select *
-        from category
-        where id=#{id}
-    </select>
-	
-	<select id="getByName"  resultType="Category">
-			select * from category
-			where name=#{name}
+	<select id="getAdminViewList" resultType="AdminCategoryDto">
+		SELECT
+			category.id,
+			category.name,
+			meetingCount.num,
+			category.deletedAt
+			FROM category
+		LEFT OUTER JOIN(
+			SELECT categoryId, COUNT(categoryId) AS num
+			FROM meeting
+			GROUP BY categoryId
+			) AS meetingCount
+		ON category.id = meetingCount.categoryId
+		LIMIT #{offset},#{size}
 	</select>
-	
-    <select id="getList" resultType= "com.zpop.web.entity.Category">
-        select *
-        from category
-    </select>
+	<select id="count" resultType="int">
+		SELECT COUNT(id)
+		FROM category
+	</select>
 </mapper>
 

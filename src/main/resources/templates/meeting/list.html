@@ -7,15 +7,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/loading.css" />
+    <link rel="stylesheet" href="/css/member/component/header.css" />
+    <link rel="stylesheet" href="/css/member/component/select.css" />
     <link rel="stylesheet" href="/css/member/component/meeting.css" />
     <link rel="stylesheet" href="/css/member/component/search-bar.css" />
     <link rel="stylesheet" href="/css/member/component/select.css">
-        <link rel="stylesheet" href="/css/member/component/region-bar.css">
     <link rel="stylesheet" href="/css/member/component/meeting-category.css" />
     <link rel="stylesheet" href="/css/member/meeting/list.css" />
-    <script src="/js/meeting/list.js" defer></script>
-    <script src="/js/meeting/region.js"></script>
-    <script src="/js/meeting/category.js"></script>
+    <script type="module" src="/js/meeting/list/list.js" defer></script>
+
+
   </head>
   <body>
     <main layout:fragment="content" class="main">
@@ -149,13 +150,18 @@
             </a>
           </li>
         </ul>
-        <!-- no result -->
-        <div class="hidden result-none">
+        <!-- no search result -->
+        <!-- <div class="search-result-none hidden">
           <p>
             '<strong class="search-keyword">검색어</strong>'에 대한 검색 결과가
             없어요 !
           </p>
           <p>검색할 단어를 변경하거나, 검색어를 확인해주세요.</p>
+        </div> -->
+        <!-- no result -->
+        <div class="result-none hidden">
+          <p>찾고있는 모임이 없네요!</p>
+          <p>교집합을 만들어볼까요?</p>
         </div>
       </section>
 

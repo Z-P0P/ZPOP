@@ -1,8 +1,12 @@
 package com.zpop.web.entity;
 
+import java.util.Date;
+
 public class AgeRange {
     private int id;
     private String type;
+    private Date createdAt;
+    private Date deletedAt;
 
     public AgeRange() {
     }
@@ -17,5 +21,13 @@ public class AgeRange {
 
     public String getType() {
         return type;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
     }
 }

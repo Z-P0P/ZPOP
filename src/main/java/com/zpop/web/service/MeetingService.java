@@ -12,11 +12,21 @@ import java.util.List;
 
 
 public interface MeetingService {
-    List<MeetingThumbnailResponse> getList(int startId, String keyword, Boolean isClosed);
+
+	List<MeetingThumbnailResponse> getList();
+
+	List<MeetingThumbnailResponse> getList(int startId, String keyword, Integer categoryId, String regionIds, Boolean isClosed);
+	
 	int register(Meeting meeting);
+
 	int participate(Participation participation);
+
 	MeetingDetailDto getById(int id);
+
 	List<MeetingParticipantsDto> getParticipants(int meetingId);
+
     boolean delete(int id, Member member);
+
 	void updateViewCount(int id);
+
 }

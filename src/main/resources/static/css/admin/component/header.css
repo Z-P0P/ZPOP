@@ -62,6 +62,12 @@
     margin-top:auto;
 }
 
+.left-side-bar li a::before{
+    width:1.5rem;
+    height:1.5rem;
+}
+
+
 /* side-bar가 펼쳐질 때의 속성 정의 */
 .left-side-bar.expended{
     width:16.5rem;

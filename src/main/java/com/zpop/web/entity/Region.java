@@ -1,16 +1,18 @@
 package com.zpop.web.entity;
 
+import java.util.Date;
+
 public class Region {
     private int id;
     private String name;
-    private boolean isActivated;
+    private Date createdAt;
+    private Date deletedAt;
 
     public Region() {
     }
 
-    public Region(String name, boolean isActivated) {
+    public Region(String name) {
         this.name = name;
-        this.isActivated = isActivated;
     }
 
     public int getId() {
@@ -21,7 +23,11 @@ public class Region {
         return name;
     }
 
-    public boolean isActivated() {
-        return isActivated;
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
     }
 }

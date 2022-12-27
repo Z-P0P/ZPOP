@@ -1,8 +1,5 @@
 package com.zpop.web.controller;
 
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,15 +24,25 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import com.zpop.web.entity.comment.Comment;
+import com.zpop.web.entity.comment.CommentView;
+import com.zpop.web.service.CommentService;
+/*
+ * 작성자: 임형미 & 
+ */
 @Controller
 @RequestMapping("/meeting")
 public class MeetingController {
-	// controller -> 요청하는 페이지가 있음
 
 	@Autowired
 	private MeetingService service;
-	
+
+	@Autowired
+	CommentService commentService;
 	
 	@GetMapping("/register")
 	public String registerView() {
@@ -43,32 +50,21 @@ public class MeetingController {
 		// TODO: 인가처리
 		return "/meeting/register";
 	}
-// 
 	
 	@PostMapping("/register")
 	@ResponseBody
 	public String register(@RequestBody MeetingRegisterDto dto) {
-//		System.out.println(dto.toString());
-		//db에 저장을하려면 컨트롤러,
-		//서비스는 entity  dao
+
 		service.register(dto.toEntity()); // 모임 등록
-		
-		
-		System.out.println("요청받았음");
+
 		// 변수에 담아서 성공 실패만 리턴해줘도 됨.
-		return "성공";
+		return "성공"; //TODO: 등록이된 모임 id를 넘겨줘야 함. 
 	}
 
 	@GetMapping("/{id}")
 	public String detailView(@PathVariable int id, Model model, HttpSession session) {
-		//쿠키 클라이언트에 저장됨. 보안에 취약함.
-		//Cookie cookie = new Cookie();
-		//cookie.setAttribute(null, null);
-		//단점 너무 많이쓰면 안됨. 
-			
-		
-		
-		
+		// TODO: 댓글이랑 합치기 
+		// TODO: getById에 Member or memberId로 넣어서 밑에 비즈니스로직 service 레이어로 옮기기
 		MeetingDetailDto dto = service.getById(id);
 		Member member = (Member)session.getAttribute("member");
 		List<MeetingParticipantsDto> participants = service.getParticipants(id);
@@ -82,51 +78,57 @@ public class MeetingController {
 			else {
 				model.addAttribute("memberType" ,"member");
 			}
-				
 		}
 		model.addAttribute("dto", dto);
 		model.addAttribute("participants", participants);
 		model.addAttribute("meetingId", id); 
 		model.addAttribute("memberId", 1);//임시로 하드코딩
-		
+		// service의 public 메서드 -> 사용자가 쓰는 기능
+		// 따라서 private updateViewCount으로 바꾸고 getById안에 넣기.
 		service.updateViewCount(id); // 조회수 증가 
-
-		System.out.println(model.toString());
-		
 		return "meeting/detail";
 	}
-	
+	// TODO: service 레이어로
 	public static boolean isMemberParticipated(Member member, List<MeetingParticipantsDto> participants) {
-		
 		for(MeetingParticipantsDto dto : participants) {
-			System.out.println(dto.getMemberId());
-			System.out.println(member.getId());
 			if(dto.getMemberId() == member.getId()) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	
-	@PostMapping("/participate")
+
+	// 댓글 달라 -> GET /meeting/{id}/comment
+	@PostMapping("comment")
 	@ResponseBody
-	public String participate(@RequestBody Participation participation) {
-		//String userId = user.getmemberId();
-		service.participate(participation);
+	public  Map<String, Object> getComment(@RequestBody Comment comment) {
 		
-		return "redirect:participate";
+		List<CommentView> comments = commentService.getComment(comment.getMeetingId());
+		int countOfComment = commentService.getCountOfComment(comment.getMeetingId());
+		
+		Map<String,Object> dto = new HashMap<>();
+		dto.put("status",200);
+		dto.put("resultObject",comments);
+		dto.put("countOfComment",countOfComment);
+		
+		return dto;
 	}
-	
-	@GetMapping("/participate")
+
+	// 답글 달라 -> GET CommentController GET /{id}/reply
+	@PostMapping("reply")
 	@ResponseBody
-	public List<MeetingParticipantsDto> getParticipants(int meetingId) {
+	public  Map<String, Object> getReply(@RequestBody Comment comment) {
+
+		List<CommentView> replies = commentService.getReply(comment.getGroupId());
+		int countOfReply = commentService.getCountOfReply(comment.getGroupId());
 		
-		return service.getParticipants(meetingId);
+		Map<String,Object> dto = new HashMap<>();
+		dto.put("status",200);
+		dto.put("resultObject",replies);
+		dto.put("countOfReply",countOfReply);
+		
+		return dto;
 	}
 	
-	
-	
-	
-	}
+}
 
