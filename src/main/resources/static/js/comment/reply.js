@@ -10,7 +10,7 @@ export function getReply(meetingId, groupId, replyUl) {
 			"groupId": groupId
 		})
 	}
-	fetch("http://localhost:8080/meeting/reply", data)
+	fetch("/meeting/reply", data)
 		.then(response => {
 			if (response.ok) {
 				return response;
@@ -20,7 +20,7 @@ export function getReply(meetingId, groupId, replyUl) {
 		.then(json => {
 			let replies = json.resultObject;
 			let count = json.countOfReply;
-			//refreshReplyCount(replyUl, count);
+			refreshReplyCount(replyUl, count);
 			for (const r of replies) {
 				let parentNickname = "";
 				if (r.parentNickname != null)
@@ -90,13 +90,13 @@ export function writeReply(meetingId, writerId, groupId, parentId, replyUl, link
 				})
 			}
 
-				fetch("http://localhost:8080/reply", data)
+				fetch("/reply", data)
 					.then(response => {
 							if (response.ok) {
 								linkContainer.classList.remove("hidden");
 								while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제
 									replyUl.removeChild(replyUl.firstChild);
-								//getReply(meetingId, groupId, replyUl); //AJAX로 새로 렌더링
+								getReply(meetingId, groupId, replyUl); //AJAX로 새로 렌더링
 							}
 							else alert("시스템 장애로 등록이 안되고 있습니다.");
 					});
