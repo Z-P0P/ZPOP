@@ -1,16 +1,9 @@
 
 export function getReply(meetingId, groupId, replyUl) {
 	const data = {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			"meetingId": meetingId,
-			"groupId": groupId
-		})
+		method: "GET"
 	}
-	fetch("/meeting/reply", data)
+	fetch(`/meeting/reply/${groupId}`, data)
 		.then(response => {
 			if (response.ok) {
 				return response;
@@ -49,7 +42,7 @@ export function getReply(meetingId, groupId, replyUl) {
 		});
 }
 
-export function writeReply(meetingId, writerId, groupId, parentId, replyUl, linkContainer) {
+export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer) {
 		
 		let template =  // text input box를 동적으로 추가 
 			`
@@ -82,8 +75,7 @@ export function writeReply(meetingId, writerId, groupId, parentId, replyUl, link
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					"content": replyText,
-					"writerId": writerId,
+					"content": replyText, //writerId 는 세션에서 받아옴.
 					"meetingId": meetingId,
 					"parentCommentId": parentId,
 					"groupId": groupId

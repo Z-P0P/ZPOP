@@ -3,7 +3,6 @@ import * as Reply from "./reply.js";
 window.addEventListener("load", () => {
 	//DOM에서 SSR로 뿌려진값들 추출 
 	const meetingId = document.querySelector(".meeting-id").innerText.trim();
-	const writerId = document.querySelector(".member-id").innerText.trim(); 
 	const commentUl = document.querySelector(".comment__list");
 	const registerBtn = document.querySelector("#register-btn");
 	//새 댓글등록
@@ -24,15 +23,21 @@ window.addEventListener("load", () => {
 			
 			//AJAX로 답글 리스트 생성
 			Reply.getReply(meetingId, commentId, replyUl);
-			//각 댓글 하위의 답글리스트에 '답글에 답글달기' 이벤트 핸들러 부착 
-			replyUl.addEventListener("click",(e)=>{
-				if(e.target.classList.contains("reply-to-reply")){
-				const parentId = e.target.previousElementSibling.innerText.trim();
-				const parent = e.target.parentElement;
-				parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
-				Reply.writeReply(meetingId, writerId, commentId, parentId, replyUl, parent);
-				} //groupId = commentId
-			});
+			
+			//각 댓글 하위의 답글리스트에 '답글에 답글달기' 이벤트 핸들러 1회만 부착
+			if(!replyUl.classList.contains("click-handler")){
+				
+				replyUl.addEventListener("click",(e)=>{
+					if(e.target.classList.contains("reply-to-reply")){
+					const parentId = e.target.previousElementSibling.innerText.trim();
+					const parent = e.target.parentElement;
+					parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
+					Reply.writeReply(meetingId, commentId, parentId, replyUl, parent);
+					} //groupId = commentId
+				});
+				replyUl.classList.add("click-handler");
+			}
+			
 			//AJAX로 완성된 답글 리스트 보여주기
 			replySection.classList.remove("hidden");//<section class="reply hidden">
 			
@@ -81,8 +86,7 @@ function writeComment(registerBtn, meetingId, commentUl){
 			},
 			body: JSON.stringify({
 				"meetingId": meetingId,
-				"writerId": writerId,
-				"content": commentText
+				"content": commentText //writerId 는 세션에서 받아옴
 			})
 		};
 		if(commentText==""){
@@ -105,15 +109,9 @@ function writeComment(registerBtn, meetingId, commentUl){
 //AJAX로 댓글 렌더링
 function getComment(meetingId, commentUl) {
 	const data = {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			"meetingId": meetingId,
-		})
+		method: "GET"
 	}
-	fetch("/meeting/comment", data)
+	fetch(`/meeting/comment/${meetingId}`, data)
 		.then(response => {
 			if (response.ok) {
 				return response;

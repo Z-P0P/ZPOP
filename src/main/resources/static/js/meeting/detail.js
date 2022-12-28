@@ -2,7 +2,6 @@ window.addEventListener("load", function() {
 
 	const participationBtn = document.querySelector("#participation-btn");
 	const meetingId = document.querySelector(".meeting-id").innerText.trim();
-	const memberId = document.querySelector(".member-id").innerText.trim(); 
 	const btnModalParticipate = document.querySelector(".btn-modal-right");
 	
 	participationBtn.onclick = function(e) {
@@ -31,13 +30,13 @@ window.addEventListener("load", function() {
 
 	btnModalParticipate.onclick = function(e) {
 		const data = {
-			method: "POST", // 또는 'PUT'
+			method: "GET", // 또는 'PUT'
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
 				"meetingId": meetingId,
-				"participantId": memberId
+				//"participantId": memberId //세션을 이용하므로 필요가 없다.
 			})
 		}
 

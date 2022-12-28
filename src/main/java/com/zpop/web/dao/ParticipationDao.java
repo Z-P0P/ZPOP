@@ -13,11 +13,14 @@ import com.zpop.web.entity.Participation;
 
 @Mapper
 public interface ParticipationDao {
-    int insert(Participation participation);
+	
+    int insert(int meetingId, int memberId);
     Participation get(int id);
+    
     List<Participation> getListByMeetingId(int meetingId);
     List<Participation> getList();
     List<MeetingParticipantsDto>getByMeetingId(int meetingId);
     List<AdminParticipationDto> getAdminViewList(int size, int offset, String keyword, String option);
-	int countBySearch(String keyword, String option);
+	
+    int countBySearch(String keyword, String option);
 }
