@@ -123,5 +123,33 @@
   background-image: url(/images/icon/siren-red.svg);
 }
 .icon-handshake {
+  width: 20px;
+  height: 20px;
+  cursor:none;
   background-image: url(/images/icon/handshake.svg);
+}
+
+.icon-hands-up {
+  width: 20px;
+  height: 20px;
+  cursor:none;
+  background-image: url(/images/icon/hands-up.svg);
+}
+
+.icon-bad {
+  width: 46px;
+  height: 41px;
+  background-image: url(/images/icon/bad.svg);
+}
+
+.icon-good {
+  width: 46px;
+  height: 41px;
+  background-image: url(/images/icon/good.svg);
+}
+
+.icon-excellent {
+  width: 46px;
+  height: 41px;
+  background-image: url(/images/icon/excellent.svg);
 }

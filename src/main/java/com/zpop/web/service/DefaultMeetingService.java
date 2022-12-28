@@ -19,20 +19,33 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
+import com.zpop.web.dao.CategoryDao;
+
+import com.zpop.web.dto.MeetingDetailDto;
+import com.zpop.web.dto.MeetingParticipantsDto;
+
+
 @Service
 public class DefaultMeetingService implements MeetingService{
 
     @Autowired
     private MeetingDao dao;
-    @Autowired
-    private ParticipationDao participationDao;
 
+    
+    @Autowired
+	private ParticipationDao participationDao;
+    
+    @Autowired
+    private CategoryDao categoryDao;
+    
     public DefaultMeetingService() {
     }
 
     public DefaultMeetingService(MeetingDao dao, ParticipationDao participationDao){
         this.dao = dao;
         this.participationDao = participationDao;
+
     }
 
     @Override
@@ -42,7 +55,18 @@ public class DefaultMeetingService implements MeetingService{
             null,
             null,
             null,
-            null
+            false
+        );
+    }
+
+    @Override
+    public List<MeetingThumbnailResponse> getList(String keyword) {
+        return getList(
+            0,
+            keyword,
+            null,
+            null,
+            false
         );
     }
 
@@ -74,6 +98,10 @@ public class DefaultMeetingService implements MeetingService{
 
             String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
 
+            boolean isClosedResult = false;
+            if(m.getClosedAt() != null) 
+                isClosedResult = true;
+            
             MeetingThumbnailResponse meetingThumbnail = new MeetingThumbnailResponse(
                 m.getId(),
                 m.getCategory(),
@@ -85,13 +113,41 @@ public class DefaultMeetingService implements MeetingService{
                 dateTime,
                 m.getViewCount(),
                 m.getCommentCount(),
-                m.isClosed()
+                isClosedResult
             );
+
             list.add(meetingThumbnail);
         }
 
         return list;
     }
+
+    
+    
+	@Override
+	public int register(Meeting meeting) {
+		return dao.insert(meeting);
+	}
+
+	public int participate(Participation participation) {
+		// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
+		// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
+		// 강퇴당한 사용자일 경우
+		// 마감된 모임일 경우
+//		Participation participation = new Participation(participation);
+		return participationDao.insert(participation);
+	}
+
+	@Override
+	public MeetingDetailDto getById(int id) {
+		return dao.getDetailView(id);
+	}
+
+	@Override
+	public List<MeetingParticipantsDto> getParticipants(int meetingId) {
+		
+		return participationDao.getByMeetingId(meetingId);
+	}
 
     @Override
     public boolean delete(int id, Member member) {
@@ -125,4 +181,11 @@ public class DefaultMeetingService implements MeetingService{
 
         return true;
     }
+	@Override
+	public void updateViewCount(int id) {
+		dao.updateViewCount(id);
+		
+	}
 }
+
+

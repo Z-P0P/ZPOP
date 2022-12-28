@@ -22,7 +22,13 @@ public class Participation {
         return id;
     }
 
-    public int getMeetingId() {
+    @Override
+	public String toString() {
+		return "Participation [id=" + id + ", meetingId=" + meetingId + ", participantId=" + participantId
+				+ ", createdAt=" + createdAt + ", bannedAt=" + bannedAt + ", canceledAt=" + canceledAt + "]";
+	}
+
+	public int getMeetingId() {
         return meetingId;
     }
 

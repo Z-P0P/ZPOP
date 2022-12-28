@@ -21,7 +21,7 @@ import com.zpop.web.dto.admin.AdminCategoryDto;
 import com.zpop.web.dto.admin.AdminMeetingDetailsDto;
 import com.zpop.web.dto.admin.AdminMeetingDetailsResponse;
 import com.zpop.web.dto.admin.AdminMeetingDto;
-import com.zpop.web.entity.meeting.Meeting;
+import com.zpop.web.dto.admin.AdminRegionDto;
 
 
 @Service
@@ -56,7 +56,7 @@ public class DefaultAdminMeetingService implements AdminMeetingService {
 		// TODO Auto-generated method stub
 		int size = 10;
 		int offset=(page-1)*size;
-		List<AdminMeetingDto> list = meetingDao.getAdminViewList(size, offset, null, null);
+		List<AdminMeetingDto> list = meetingDao.getAdminViewList(size, offset, keyword, option);
 		
 		return list;
 	}
@@ -70,38 +70,32 @@ public class DefaultAdminMeetingService implements AdminMeetingService {
 	}
 
 
-	@Override
-	public List<AdminCategoryDto> getCategory(int page, String keyword, String option) {
-		int size = 10;
-		int offset=(page-1)*size;
-		List<AdminCategoryDto> list = categoryDao.getAdminViewList(size, offset, keyword, option);
-		
-		return list;
-	}
+
+}
 
 
-	@Override
-	public int countCategory(String keyword, String option) {
-		return categoryDao.count(keyword,option);
-	}
-
-
-	@Override
-	public int countRegion(String keyword, String option) {
 	
-		return regionDao.count(keyword, option);
-
-	}
-
-
 	@Override
-	public List<AdminRegionDto> getRegion(int page, String keyword, String option) {
-		int size = 10;
-		int offset=(page-1)*size;
-		List<AdminRegionDto> list = regionDao.getAdminViewList(offset, size, keyword, option);
+	public AdminMeetingDetailsResponse getDetailsResponse(int id) {
 		
-		return list;
+		AdminMeetingDetailsDto dto = meetingDao.getAdminDetailView(id);
+		List<CategoryDto> categories = categoryDao.getActiveList();
+		List<RegionDto> regions = regionDao.getActiveList();
+		List<ContactTypeDto> contactTypes = contactTypeDao.getActiveList();
+		List<AgeRangeDto> ageRanges = ageRangeDao.getActiveList();
+		List<MeetingParticipantsDto> participants = participationDao.getByMeetingId(id);
+		
+		AdminMeetingDetailsResponse response = new AdminMeetingDetailsResponse(
+									dto,
+									categories,
+									regions,
+									contactTypes,
+									ageRanges,
+									participants
+									);
+		return response;
 	}
+}
 
 
 	

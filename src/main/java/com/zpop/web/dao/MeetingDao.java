@@ -1,5 +1,6 @@
 package com.zpop.web.dao;
 
+import com.zpop.web.dto.MeetingDetailDto;
 import com.zpop.web.dto.MeetingThumbnailPagination;
 import com.zpop.web.dto.ParticipantDto;
 import com.zpop.web.dto.admin.AdminMeetingDetailsDto;
@@ -14,19 +15,24 @@ import java.util.List;
 public interface MeetingDao {
     int insert(Meeting meeting);
 
+    MeetingDetailDto getDetailView(int id); 
+
     Meeting get(int id);
-
-    List<MeetingThumbnailView> getThumbnailViewList(MeetingThumbnailPagination pagination);
-
-    int updateDeletedAt(Meeting meeting);
 
     List<MeetingThumbnailView> getMeetingList(int id);
 
-	List<AdminMeetingDto> getAdminViewList(int size, int offset, String keyword, String option);
-	int count(String keyword, String option);
+    List<MeetingThumbnailView> getThumbnailViewList(MeetingThumbnailPagination pagination);
+    
+    int updateDeletedAt(Meeting meeting);
 
 	AdminMeetingDetailsDto getAdminDetailView(int meetingId);
 
 	List<ParticipantDto> getParticipants(int id);
+
+    void updateViewCount(int id);
+
+	List<AdminMeetingDto> getAdminViewList(int size, int offset, String keyword, String option);
+
+	int count(String keyword, String option);
 }
 

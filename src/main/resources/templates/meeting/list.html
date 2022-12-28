@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="/css/member/component/meeting.css" />
     <link rel="stylesheet" href="/css/member/component/search-bar.css" />
     <link rel="stylesheet" href="/css/member/component/select.css">
+    <link rel="stylesheet" href="/css/member/component/region-bar.css">
     <link rel="stylesheet" href="/css/member/component/meeting-category.css" />
     <link rel="stylesheet" href="/css/member/meeting/list.css" />
     <script type="module" src="/js/meeting/list/list.js" defer></script>
+
 
   </head>
   <body>
@@ -49,8 +51,8 @@
               <li data-id=3 class="category">스터디</li>
               <li data-id=4 class="category">방탈출</li>
               <li data-id=5 class="category">보드게임</li>
-              <li data-id=6 class="category">펫</li>
-              <li data-id=7 class="category">육아</li>
+              <li data-id=6 class="category">문화</li>
+              <li data-id=7 class="category">펫</li>
               <li data-id=8 class="category">기타</li>
             </ul>
           </nav>
@@ -68,15 +70,15 @@
                 readonly
               />
               <ul class="select-box__options">
-                 <li data-id=1>서울</li>
-                 <li data-id=2>인천/경기</li>
-                 <li data-id=3>충청/대전/세종</li>
-                 <li data-id=4>강원</li>
-                 <li data-id=5>경북/대구</li>
-                 <li data-id=6>전라/광주</li>
-                 <li data-id=7>경남/부산/울산</li>
-                 <li data-id=8>제주</li>
-                 <li data-id=9>온라인</li>
+                  <li data-id=1>서울</li>
+                  <li data-id=2>인천/경기</li>
+                  <li data-id=3>충청/대전/세종</li>
+                  <li data-id=4>강원</li>
+                  <li data-id=5>경북/대구</li>
+                  <li data-id=6>전라/광주</li>
+                  <li data-id=7>경남/부산/울산</li>
+                  <li data-id=8>제주</li>
+                  <li data-id=9>온라인</li>
               </ul>
             </div>
           </div>
@@ -113,9 +115,9 @@
 
               <div class="meeting__info">
                 <ul class="meeting__tags">
-                  <li th:text='${"#" + meeting.ageRange}'>연령대</li>
-                  <li th:text='${"#" + meeting.maxMember + "명"}'>인원</li>
-                  <li th:text='${"#" + meeting.genderCategory}'>성별</li>
+                  <li th:text="|#${meeting.ageRange}|">연령대</li>
+                  <li th:text="|#${meeting.maxMember}명|">인원</li>
+                  <li th:text="|#${meeting.genderCategory}|">성별</li>
                 </ul>
                 <div class="meeting__info-detail">
                   <div
