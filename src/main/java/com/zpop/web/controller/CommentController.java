@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zpop.web.entity.Member;
 import com.zpop.web.entity.comment.Comment;
 import com.zpop.web.entity.comment.CommentView;
 import com.zpop.web.service.CommentService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 //@RequestMapping("/")
@@ -46,12 +49,16 @@ public class CommentController {
 
 	
 	@PostMapping("comment")
-	public  String registerComment(@RequestBody Comment comment) {
+	public  String registerComment(@RequestBody Comment comment, HttpSession session) {
+		Member member = (Member)session.getAttribute("member");
+		comment.setWriterId(member.getId());
 		service.registerComment(comment);
 		return "comment/comment";
 	}
 	@PostMapping("reply")
-	public  String registerReply(@RequestBody Comment comment) {
+	public  String registerReply(@RequestBody Comment comment, HttpSession session) {
+		Member member = (Member)session.getAttribute("member");
+		comment.setWriterId(member.getId());
 		service.registerReply(comment);
 		return "comment/reply";
 	}

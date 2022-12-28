@@ -80,8 +80,10 @@ public class MeetingController {
 		model.addAttribute("dto", dto);
 		model.addAttribute("participants", participants);
 		model.addAttribute("meetingId", id); 
+		//session.setAttribute("memberId", member.getId());
 		// service의 public 메서드 -> 사용자가 쓰는 기능
 		// 따라서 private updateViewCount으로 바꾸고 getById안에 넣기.
+		service.updateViewCount(id); // 조회수 증가 
 		
 		/*------------------------ 댓글 부분 ---------------------------*/
 		
@@ -89,7 +91,6 @@ public class MeetingController {
 		int countOfComment = commentService.getCountOfComment(id);
 		model.addAttribute("comments", comments);
 		model.addAttribute("countOfComment", countOfComment);
-		service.updateViewCount(id); // 조회수 증가 
 		return "meeting/detail";
 	}
 	
@@ -148,8 +149,8 @@ public class MeetingController {
 //		3. 로그인을 하지 않은 사용자가 참여하기 버튼을 누른 경우 -> 로그인 모달이 나와야됨.
 //		4. 내가 이미 참여한 모임일 경우
 	
-	@GetMapping("/participate")
-	public String participate(@RequestParam int meetingId, HttpSession session) {
+	@GetMapping("/participate/{meetingId}")
+	public String participate(@PathVariable int meetingId, HttpSession session) {
 		
 		Member member = (Member)session.getAttribute("member");
 		int memberId = member.getId();

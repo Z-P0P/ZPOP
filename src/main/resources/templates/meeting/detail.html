@@ -33,6 +33,7 @@
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
 
 <main class="main"  layout:fragment="content">
+	<span hidden class="member-id" th:text="${session.memberId}"></span>
     <section class="meeting">
         <div class="meeting__info">
             <div class="meeting__category-wrap">

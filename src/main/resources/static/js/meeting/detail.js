@@ -28,19 +28,9 @@ window.addEventListener("load", function() {
 	
 
 
-	btnModalParticipate.onclick = function(e) {
-		const data = {
-			method: "GET", // 또는 'PUT'
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				"meetingId": meetingId,
-				//"participantId": memberId //세션을 이용하므로 필요가 없다.
-			})
-		}
+	btnModalParticipate.onclick = function() {
 
-		fetch("/meeting/participate", data)
+		fetch(`/meeting/participate/${meetingId}`)
 			.then((response) => {
 				if (response.ok) {
 					console.log("성공");

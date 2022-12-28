@@ -1,9 +1,7 @@
 
-export function getReply(meetingId, groupId, replyUl) {
-	const data = {
-		method: "GET"
-	}
-	fetch(`/meeting/reply/${groupId}`, data)
+export function getReply(groupId, replyUl) {
+	//GET request가 디폴트
+	fetch(`/meeting/reply/${groupId}`)
 		.then(response => {
 			if (response.ok) {
 				return response;
@@ -43,7 +41,8 @@ export function getReply(meetingId, groupId, replyUl) {
 }
 
 export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer) {
-		
+		//기존에 열려있는 텍스트 박스들 닫기
+		removeTextBox("multi");
 		let template =  // text input box를 동적으로 추가 
 			`
               <div class="reply__input-container"> 
@@ -75,7 +74,7 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					"content": replyText, //writerId 는 세션에서 받아옴.
+					"content": replyText, 
 					"meetingId": meetingId,
 					"parentCommentId": parentId,
 					"groupId": groupId
@@ -85,10 +84,14 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 				fetch("/reply", data)
 					.then(response => {
 							if (response.ok) {
+								if(groupId == parentId) {//원댓글에 대한 답글일 경우
+									removeTextBox('single');
+									linkContainer.children[2].classList.remove("hidden");
+								}
 								linkContainer.classList.remove("hidden");
 								while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제
 									replyUl.removeChild(replyUl.firstChild);
-								getReply(meetingId, groupId, replyUl); //AJAX로 새로 렌더링
+								getReply(groupId, replyUl); //AJAX로 새로 렌더링
 							}
 							else alert("시스템 장애로 등록이 안되고 있습니다.");
 					});
@@ -105,6 +108,22 @@ function refreshReplyCount(replyUl, count){
 	replyUl.parentElement.previousElementSibling.children[1].innerHTML = "답글 " + count + "개";
 }
 
+//text-box 제거
+function removeTextBox(count) {
+	if (count == 'single'){
+		const inputBox = document.querySelector(".reply__input-container");
+			inputBox.previousElementSibling.classList.remove("hidden");	
+			inputBox.remove();
+		}
+	
+	else if (count == 'multi'){
+		const inputBoxes = document.querySelectorAll(".reply__input-container");
+		inputBoxes.forEach((item)=>{
+			item.previousElementSibling.classList.remove("hidden");	
+			item.remove();
+		});
+	}
+}
 
 //DOM추가기법으로 새 답글을 리스트 하단에 표시 (사용x)
 //function addNewReplyElement(newText, parentNickname) {
