@@ -120,7 +120,7 @@ function getComment(meetingId, commentUl) {
 			"meetingId": meetingId,
 		})
 	}
-	fetch("http://localhost:8080/meeting/comment", data)
+	fetch("/meeting/comment", data)
 		.then(response => {
 			if (response.ok) {
 				return response;
