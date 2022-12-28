@@ -1,6 +1,7 @@
 package com.zpop.web.service;
 
 import com.zpop.web.dao.MeetingDao;
+import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.dto.MeetingThumbnailPagination;
 import com.zpop.web.dto.MeetingThumbnailResponse;
@@ -32,12 +33,14 @@ public class DefaultMeetingService implements MeetingService{
     @Autowired
     private MeetingDao dao;
 
-    
     @Autowired
 	private ParticipationDao participationDao;
     
     @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    private MemberDao memberDao;
     
     public DefaultMeetingService() {
     }
@@ -186,6 +189,52 @@ public class DefaultMeetingService implements MeetingService{
 		dao.updateViewCount(id);
 		
 	}
+
+    @Override
+    public boolean kick(int id, int participantId, Member member) {
+        Meeting foundMeeting = dao.get(id);
+
+        if(foundMeeting == null || foundMeeting.getDeletedAt() != null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+        
+        int memberId = member.getId();
+
+        if(foundMeeting.getRegMemberId() != memberId)
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
+
+        List<Participation> participations = participationDao.getListByMeetingId(id);
+
+        Participation kickTarget = null;
+
+        for(Participation p: participations) {
+            if(p.getParticipantId() == participantId) {
+                kickTarget = p;
+                break;
+            }
+        }
+
+        if(kickTarget == null || kickTarget.getCanceledAt() != null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "모임에 참여하지 않는 회원입니다");
+
+        if(kickTarget.getBannedAt() != null)
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 강퇴된 회원입니다");
+
+        // 탈퇴한 회원인지 확인
+        int kickTargetMemberId = kickTarget.getParticipantId();
+        Member kickTargetMember = memberDao.getById(kickTargetMemberId);
+        if(kickTargetMember.getResignedAt() != null) {
+            //TODO: dao.참여취소(kickTargetId);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다");
+        }
+
+        // 자기자신을 강퇴하려 할 때
+        if(kickTargetMemberId == member.getId())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 내보낼 수 없습니다");
+
+        participationDao.updateBannedAt(kickTarget.getId());
+        
+        return true;
+    }
 
     @Override
     public boolean close(int id, Member member) {
