@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="/css/member/component/select.css">
     <link rel="stylesheet" href="/css/member/component/profile-box.css">
     <link rel="stylesheet" href="/css/member/component/meeting-info.css">
-    <link rel="stylesheet" href="/css/member/component/participant.css" type="text/css" >
+    <link rel="stylesheet" href="/css/member/component/participant.css" >
     <link rel="stylesheet" href="/css/member/component/comment.css" />
     <link rel="stylesheet" href="/css/member/component/reply.css" />
     <link rel="stylesheet" href="/css/member/popup.css">
@@ -26,12 +26,14 @@
     <!-- detail page css -->
     <link rel="stylesheet" href="/css/member/meeting/detail.css">
     <script src="/js/meeting/detail.js"></script>
+    <script type="module" src="/js/comment/comment.js"></script>
 
 </head>
 <body>
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
 
 <main class="main"  layout:fragment="content">
+	<span class="hidden member-id" th:text="${memberId}"></span>
     <section class="meeting">
         <div class="meeting__info">
             <div class="meeting__category-wrap">
@@ -39,7 +41,7 @@
             </div>
             <div class="meeting__header">
                 <div class="meeting__title-container">
-                <span class="hidden meeting-Id" th:text="${meetingId}"></span>
+                <span class="hidden meeting-id" th:text="${meetingId}"></span>
                     <span class="meeting__title"  th:text="${dto.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
                     <th:block th:if="${session.member != null && memberType == 'host'}">
@@ -84,7 +86,7 @@
             </div>
         </div>
     </section>
-	<span class="hidden member-Id" th:text="${memberId}"></span>
+	
     <section class="participant">
         <div class="participant__num">
             <span>참가자</span>
@@ -102,7 +104,7 @@
         </ul>
     </section>
 			
-    	
+   <!------ 참여 모달 ------>
      <div class="modal-2 hidden" id="modal-wrapper-participation">
 
         <div class="modal-participation">
@@ -128,6 +130,42 @@
             </div>
         </div>
     </div>
+    
+    <!--------------- 댓글 섹션 -------------------->
+    <section class="comment">
+			<h2 class="comment__num" th:text="'댓글 ' + ${countOfComment}+' 개'">N</h2>
+			<div class="comment__input-container">
+				<textarea class="comment__input" name="comment-text"
+					id="comment-text" placeholder="댓글을 입력하세요."></textarea>
+				<span class="comment__btn btn btn-round" id="register-btn">등록하기</span>
+			</div>
+			<ul class="comment__list">
+
+				<li th:each="comment:${comments}">
+					<div class="profile">
+						<span class="profile__image" th:text="${comment.profileImgPath}"></span>
+						<span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
+						<span class="profile__time" th:text="${comment.elapsedTime}">3분전</span>
+						<button></button>
+					</div> <span class="comment__content" th:text="${comment.content}">
+						이 헌법에 의한 최초의 대통령의 임기는 이 헌법시행일로부터 개시한다. 모든 국민은 거주·이전의 자유를 가진다. 대통령은
+						제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다. </span>
+					<div class="comment__replies">
+						<span class="hidden comment-id" th:text="${comment.id}">댓글아이디</span>
+						<span class="pointer underline reply-cnt"
+							th:classappend="(${comment.countOfReply}==0)? 'hidden'"
+							th:text="'답글 ' + ${comment.countOfReply}+'개'"></span> <span
+							class="hidden pointer reply-close">닫기</span> <span
+							class="pointer underline reply-write">답글 달기</span>
+					</div>
+					<section class="reply hidden">
+						<ul class="reply__list">
+
+						</ul>
+					</section>
+				</li>
+			</ul>
+		</section>
     </main>
 </body>
 

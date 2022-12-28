@@ -87,12 +87,20 @@ public class MeetingController {
 		model.addAttribute("dto", dto);
 		model.addAttribute("participants", participants);
 		model.addAttribute("meetingId", id); 
-		model.addAttribute("memberId", 1);//임시로 하드코딩
 		// service의 public 메서드 -> 사용자가 쓰는 기능
 		// 따라서 private updateViewCount으로 바꾸고 getById안에 넣기.
+		
+		/*------------------------ 댓글 부분 ---------------------------*/
+		
+		List<CommentView> comments = commentService.getComment(id);
+		int countOfComment = commentService.getCountOfComment(id);
+		model.addAttribute("comments", comments);
+		model.addAttribute("countOfComment", countOfComment);
 		service.updateViewCount(id); // 조회수 증가 
 		return "meeting/detail";
 	}
+	
+	
 	// TODO: service 레이어로
 	public static boolean isMemberParticipated(Member member, List<MeetingParticipantsDto> participants) {
 		for(MeetingParticipantsDto dto : participants) {

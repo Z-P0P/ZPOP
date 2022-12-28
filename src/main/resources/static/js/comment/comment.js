@@ -1,10 +1,10 @@
 import * as Reply from "./reply.js";
 
-const writerId = 4;
 window.addEventListener("load", () => {
 	//DOM에서 SSR로 뿌려진값들 추출 
+	const meetingId = document.querySelector(".meeting-id").innerText.trim();
+	const writerId = document.querySelector(".member-id").innerText.trim(); 
 	const commentUl = document.querySelector(".comment__list");
-	const meetingId = document.querySelector("#meeting-id").innerText.trim();
 	const registerBtn = document.querySelector("#register-btn");
 	//새 댓글등록
 	writeComment(registerBtn, meetingId, commentUl); //댓글 등록 버튼에 이벤트 핸들러 부착
@@ -24,22 +24,15 @@ window.addEventListener("load", () => {
 			
 			//AJAX로 답글 리스트 생성
 			Reply.getReply(meetingId, commentId, replyUl);
-			
-			//각 댓글 하위의 답글리스트에 '답글에 답글달기' 이벤트 핸들러 1회만 부착
-			if(!replyUl.classList.contains("click-handler")){
-				
-				replyUl.addEventListener("click",(e)=>{
-					if(e.target.classList.contains("reply-to-reply")){
-						console.log("여기")
-					const parentId = e.target.previousElementSibling.innerText.trim();
-					const parent = e.target.parentElement;
-					parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
-					Reply.writeReply(meetingId, writerId, commentId, parentId, replyUl, parent);
-					} //groupId = commentId
-				});
-				replyUl.classList.add("click-handler");
-			}
-			
+			//각 댓글 하위의 답글리스트에 '답글에 답글달기' 이벤트 핸들러 부착 
+			replyUl.addEventListener("click",(e)=>{
+				if(e.target.classList.contains("reply-to-reply")){
+				const parentId = e.target.previousElementSibling.innerText.trim();
+				const parent = e.target.parentElement;
+				parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
+				Reply.writeReply(meetingId, writerId, commentId, parentId, replyUl, parent);
+				} //groupId = commentId
+			});
 			//AJAX로 완성된 답글 리스트 보여주기
 			replySection.classList.remove("hidden");//<section class="reply hidden">
 			
@@ -97,7 +90,7 @@ function writeComment(registerBtn, meetingId, commentUl){
 			 return;
 		}
 		
-		fetch("http://localhost:8080/comment", data)
+		fetch("/comment", data)
 			.then(response => {
 					if (response.ok) {
 						commentBox.value = "";
