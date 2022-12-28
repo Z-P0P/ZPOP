@@ -26,5 +26,7 @@ public interface MeetingService {
 
 			void updateViewCount(int id);
 
+			boolean close(int id, Member member);
+
 			boolean delete(int id, Member member);
 }

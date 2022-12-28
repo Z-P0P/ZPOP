@@ -32,5 +32,9 @@
 		SELECT COUNT(id) 
     	FROM region
 	</select>
+	<select id="getActiveList" resultType="RegionDto">
+		SELECT r.id, r.name
+		FROM region AS r
+		WHERE r.deletedAt IS NULL
+	</select>
 </mapper>
-

@@ -69,50 +69,81 @@
         WHERE id = #{id}
 	</update>
 
-    <select id="getMeetingList" resultType="com.zpop.web.entity.meeting.MeetingThumbnailView">
-        SELECT *
-        FROM meetingThumb AS mt
-        JOIN participation p ON mt.id = p.meetingId
-        JOIN member m ON p.participantId = m.id
-        WHERE m.id =#{id}
-    </select>
-    <select id="getAdminViewList" resultType="AdminMeetingDto">
-    SELECT 
-		meeting.id, 
-		meeting.title, 
-		member.nickname as hostNickname, 
-		meeting.maxMember, 
-		meeting.createdAt, 
-		meeting.isClosed, 
-		meeting.deletedAt,
-    	Ifnull(pNum.num, 0) as participantsNum
-	FROM meeting
-	JOIN member
-	ON meeting.regMemberId = member.id
-	LEFT OUTER JOIN(
-		SELECT 
-			meetingId, 
-            COUNT(IF(bannedAt IS NULL AND canceledAt IS NULL,1, NULL)) as num
-	    FROM participation
-	    GROUP BY meetingId
-	    ) AS pNum
-	ON pNum.meetingId=meeting.id
-	ORDER BY meeting.id DESC
-	LIMIT #{offset},#{size};
-	<where>
-      	<if test="keyword!=null">
-      		title LIKE '%${keyword}%'
-    	</if>
-    </where>
-    </select>
-    <!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 모임글 제목만 함 -->
-    <select id="count" resultType= "java.lang.Integer">
-      	SELECT COUNT(id) 
-      	FROM meeting
-      	<where>
-      		<if test="keyword!=null">
-      			title LIKE '%${keyword}%'
-      		</if>
-      	</where>
-    </select>
+	<select id="getMeetingList"
+		resultType="com.zpop.web.entity.meeting.MeetingThumbnailView">
+		SELECT *
+		FROM meetingThumb AS mt
+		JOIN participation p ON
+		mt.id = p.meetingId
+		JOIN member m ON p.participantId = m.id
+		WHERE m.id
+		=#{id}
+	</select>
+	<select id="getAdminViewList" resultType="AdminMeetingDto">
+		SELECT
+		meeting.id,
+		meeting.title,
+		member.nickname as hostNickname,
+		meeting.maxMember,
+		meeting.createdAt,
+		IF(meeting.closedAt IS NULL, 0, 1) AS isClosed,
+		IF(meeting.deletedAt IS NULL, 0, 1) AS isDeleted,
+		IFNULL(pNum.num, 0) as participantsNum
+		FROM meeting
+		JOIN member
+		ON meeting.regMemberId = member.id
+		LEFT OUTER JOIN(
+		SELECT
+		meetingId,
+		COUNT(IF(bannedAt IS NULL AND canceledAt IS NULL,1, NULL))
+		as num
+		FROM participation
+		GROUP BY meetingId
+		) AS pNum
+		ON
+		pNum.meetingId=meeting.id
+		ORDER BY meeting.id DESC
+		LIMIT
+		#{offset},#{size};
+		<where>
+			<if test="keyword!=null">
+				title LIKE '%${keyword}%'
+			</if>
+		</where>
+	</select>
+	<!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 모임글 제목만 함 -->
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(id)
+		FROM meeting
+		<where>
+			<if test="keyword!=null">
+				title LIKE '%${keyword}%'
+			</if>
+		</where>
+	</select>
+	<select id="getAdminDetailView"
+		resultType="AdminMeetingDetailsDto">
+		SELECT
+			meeting.*,
+			IF(meeting.deletedAt IS NULL, 0, 1) AS isDeleted,
+			IF(meeting.closedAt IS NULL, 0, 1) AS isClosed,
+			m1.nickname AS regMemberNickname,
+			m1.profileImagePath AS regMemberProfile,
+			c.name AS categoryName,
+			r.name AS regionName,
+			ar.type AS ageRangeType,
+			ct.name AS contactTypeName
+		FROM meeting
+		JOIN member AS m1
+		ON meeting.regMemberId = m1.id
+		JOIN category AS c
+		ON meeting.categoryId = c.id
+		JOIN region AS r
+		ON meeting.regionId = r.id
+		JOIN ageRange AS ar
+		ON meeting.ageRangeId = ar.id
+		JOIN contactType AS ct
+		ON meeting.contactTypeId = ct.id
+		WHERE meeting.id=#{meetingId}
+	</select>
 </mapper>

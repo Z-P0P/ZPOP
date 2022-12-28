@@ -10,7 +10,7 @@ export function getReply(meetingId, groupId, replyUl) {
 			"groupId": groupId
 		})
 	}
-	fetch("http://localhost:8080/meeting/reply", data)
+	fetch("/meeting/reply", data)
 		.then(response => {
 			if (response.ok) {
 				return response;
@@ -65,7 +65,7 @@ export function writeReply(meetingId, writerId, groupId, parentId, replyUl, link
                   </div>
               </div> 
                    `;
-		//클릭된 특정 답글링크의 위치아래에 inputbox추가.                 
+		//클릭된 특정 답글링크의 위치아래에 inputbox추가.    
 		linkContainer.insertAdjacentHTML("afterend", template);
 
 		document.querySelector(".register-btn").addEventListener("click", () => {
@@ -90,10 +90,9 @@ export function writeReply(meetingId, writerId, groupId, parentId, replyUl, link
 				})
 			}
 
-				fetch("http://localhost:8080/reply", data)
+				fetch("/reply", data)
 					.then(response => {
 							if (response.ok) {
-								replyUl.parentElement.previousElementSibling.remove();
 								linkContainer.classList.remove("hidden");
 								while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제
 									replyUl.removeChild(replyUl.firstChild);
