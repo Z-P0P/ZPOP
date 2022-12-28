@@ -186,6 +186,34 @@ public class DefaultMeetingService implements MeetingService{
 		dao.updateViewCount(id);
 		
 	}
+
+    @Override
+    public boolean close(int id, Member member) {
+
+        Meeting foundMeeting = dao.get(id);
+
+        if(foundMeeting == null || foundMeeting.getDeletedAt() != null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+        
+        int memberId = member.getId();
+
+        if(foundMeeting.getRegMemberId() != memberId)
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
+        
+        if(foundMeeting.getClosedAt() != null)
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 마감된 모임입니다");
+        
+        // 모임 시작일이 지났을 때 -> 마감 후 예외
+        Date startedAt = foundMeeting.getStartedAt();
+        if(startedAt.before(new Date())) {
+            dao.updateClosedAt(foundMeeting);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 마감된 모임입니다");
+        }
+
+        dao.updateClosedAt(foundMeeting);
+
+        return true;
+    }
 }
 
 

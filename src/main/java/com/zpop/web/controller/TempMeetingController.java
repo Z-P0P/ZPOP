@@ -58,4 +58,13 @@ public class TempMeetingController {
         boolean result = service.delete(id, testMember);
         return true;
     }
+
+    @PatchMapping("/close/{id}")
+    @ResponseBody
+    public boolean close (
+        @PathVariable(name = "id") int id
+    ) {
+        Member testMember = new Member();
+        return service.close(id, testMember);
+    }
 }
