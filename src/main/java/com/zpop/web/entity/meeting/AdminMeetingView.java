@@ -1,5 +1,5 @@
 package com.zpop.web.entity.meeting;
 
-public class AdminMeetingView extends {
+public class AdminMeetingView {
 
 }

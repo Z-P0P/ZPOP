@@ -11,8 +11,14 @@ public class AdminMeetingDto {
 	private int maxMember;
 	private Date createdAt;
 	private boolean isClosed;
-	private Date deletedAt;
+	private boolean isDeleted;
 
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	public int getId() {
 		return id;
 	}
@@ -49,12 +55,7 @@ public class AdminMeetingDto {
 	public void setClosed(boolean isClosed) {
 		this.isClosed = isClosed;
 	}
-	public Date getDeletedAt() {
-		return deletedAt;
-	}
-	public void setDeletedAt(Date deletedAt) {
-		this.deletedAt = deletedAt;
-	}
+
 	public int getParticipantsNum() {
 		return participantsNum;
 	}

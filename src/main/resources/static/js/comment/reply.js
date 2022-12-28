@@ -10,7 +10,7 @@ export function getReply(meetingId, groupId, replyUl) {
 			"groupId": groupId
 		})
 	}
-	fetch("http://localhost:8080/meeting/reply", data)
+	fetch("/meeting/reply", data)
 		.then(response => {
 			if (response.ok) {
 				return response;
@@ -90,7 +90,7 @@ export function writeReply(meetingId, writerId, groupId, parentId, replyUl, link
 				})
 			}
 
-				fetch("http://localhost:8080/reply", data)
+				fetch("/reply", data)
 					.then(response => {
 							if (response.ok) {
 								linkContainer.classList.remove("hidden");
