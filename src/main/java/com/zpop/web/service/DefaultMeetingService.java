@@ -231,7 +231,7 @@ public class DefaultMeetingService implements MeetingService{
         if(kickTargetMemberId == member.getId())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 내보낼 수 없습니다");
 
-        participationDao.updateBannedAt(kickTarget.getId(), new Date());
+        participationDao.updateBannedAt(kickTarget.getId());
         
         return true;
     }

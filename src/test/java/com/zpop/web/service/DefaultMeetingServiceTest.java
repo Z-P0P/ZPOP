@@ -92,7 +92,7 @@ class DefaultMeetingServiceTest {
         assertThat(result).isEqualTo(true);
 
         // verify
-        verify(participationDao, times(1)).updateBannedAt(anyInt(), any());
+        verify(participationDao, times(1)).updateBannedAt(anyInt());
     }
     @Test
     public void kick_존재하지_않는_모임이라면_NOT_FOUND() {

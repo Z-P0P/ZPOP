@@ -45,16 +45,23 @@
 		ON participation.participantId = member.id
 		LIMIT #{offset},#{size}
 	</select>
-	    <select id="countBySearch" resultType= "java.lang.Integer">
+
+	<update id="updateBannedAt">
+		UPDATE participation
+		SET bannedAt = CURRENT_TIMESTAMP()
+		WHERE id=#{id}
+	</update>
+
+	<select id="countBySearch" resultType= "java.lang.Integer">
       	SELECT COUNT(id) 
       	FROM participation
     </select>
-    	<select id="getByMeetingId" resultType="MeetingParticipantsDto">
-				SELECT p.id, p.participantId as memberId, m.nickname, m.profileImagePath
-				from participation p
-				join member m on p.participantId = m.id
-				WHERE meetingId = #{meetingId};
-	    </select>
+	<select id="getByMeetingId" resultType="MeetingParticipantsDto">
+			SELECT p.id, p.participantId as memberId, m.nickname, m.profileImagePath
+			from participation p
+			join member m on p.participantId = m.id
+			WHERE meetingId = #{meetingId};
+	</select>
     
 </mapper>
 
