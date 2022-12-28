@@ -1,151 +1,321 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/admin/style.css" type="text/css"/>
-    <link rel="stylesheet" href="/css/admin/component/button.css">
-    <link rel="stylesheet" href="/css/admin/component/status.css">
-    <link rel="stylesheet" href="/css/admin/component/header.css">
-    <link rel="stylesheet" href="/css/admin/component/admin-nav.css">
-    <link rel="stylesheet" href="/css/admin/component/admin-search-bar.css">
-    <link rel="stylesheet" href="/css/admin/component/table-bar.css">
-    <link rel="stylesheet" href="/css/admin/component/admin-list.css">
-    <link rel="stylesheet" href="/css/deco.css">
-    <script src="/js/member/modal.js"></script>
-    <script src="/js/admin/admin.js"></script>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<link rel="stylesheet" href="/css/admin/style.css" type="text/css" />
+<link rel="stylesheet" href="/css/admin/component/button.css">
+<link rel="stylesheet" href="/css/icon.css">
+<link rel="stylesheet" href="/css/button.css">
+<link rel="stylesheet" href="/css/admin/component/status.css">
+<link rel="stylesheet" href="/css/admin/component/header.css">
+<link rel="stylesheet" href="/css/member/component/participant.css">
+<link rel="stylesheet" href="/css/admin/component/admin-nav.css">
+<link rel="stylesheet" href="/css/admin/component/modal.css">
+<link rel="stylesheet" href="/css/admin/component/select.css">
+<link rel="stylesheet" href="/css/admin/component/admin-search-bar.css">
+<link rel="stylesheet" href="/css/admin/component/table-bar.css">
+<link rel="stylesheet" href="/css/admin/component/admin-list.css">
+<link rel="stylesheet" href="/css/deco.css">
+<script src="/js/member/modal.js"></script>
+<script src="/js/admin/select.js"></script>
+<script src="/js/admin/admin.js"></script>
+<script src="/js/admin/meeting.js"></script>
 </head>
 <body>
-    <div class="main-wrapper">
-        <main>
-            <nav class="admin-nav">
-                <ul class="admin-nav__lists">
-                    <li class="admin-nav__list admin-nav__list--selected" ><a href="./list.html">모임 조회</a></li>
-                    <li class="admin-nav__list"><a href="./category.html">카테고리 관리</a></li>
-                    <li class="admin-nav__list"><a href="./region.html">지역 관리</a></li>
-                </ul>
-            </nav>
-            <div class="admin-search-bar-div">
-                <div class="admin-search-bar-box">
-                    <input class="admin-search-bar" type="text" placeholder="키워드를 입력하세요">
-                    <button class="admin-search-button"></button>
-                    <div class="filter-box hidden">
-                        <form>
-                            <div><span>검색어</span><input class="keyword-input" type="text"></div>
-                            <div>
-                                <span>카테고리</span>
-                                <select class="category-select">
-                                    <option value = "category" selected></option>
-                                    <option value = "food">밥/카페</option>
-                                    <option value = "sports">운동</option>
-                                    <option value = "study">스터디</option>
-                                    <option value = "room-escape">방탈출</option>
-                                    <option value = "board-game">보드게임</option>
-                                    <option value = "culture">문화</option>
-                                    <option value = "pet">펫</option>
-                                    <option value = "etc">기타</option>
-                                </select>
-                            </div>
-                            <div>
-                                <span>기간</span>
-                                <input class="date-input" type="date">
-                                <span>로 부터</span>
-                                <select class="period-select">
-                                    <option selected>1일</option>
-                                    <option>3일</option>
-                                    <option>1주</option>
-                                    <option>1개월</option>
-                                    <option>3개월</option>
-                                    <option>6개월</option>
-                                    <option>1년</option>
-                                </select>
-                            </div>
-                            <div>
-                                <span>페이지당 결과</span>
-                                <select class="result-amount">
-                                    <option value = "10" selected>10개</option>
-                                    <option value = "20">20개</option>
-                                    <option value = "50">50개</option>
-                                    <option value = "100">100개</option>
-                                </select>
-                            </div>
-                            <div class="search-button"><input type="submit" value="검색" class="filter-button"></div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="admin-list-container">
-                <div class="table-bar">
-                    <div class="table-bar__left-container">
-                      <input class="checkbox" type="checkbox" name="table-checkbox" />
-                      <span class="table-bar__icon table-bar__icon-check"></span>
-                      <span class="table-bar__icon table-bar__icon-x"></span>
-                    </div>
-              
-                    <div class="table-bar__right-container">
-                      <span class="table-bar__page" 
-                      th:text="|${count}개 중 ${(page-1)*10+1}-${(page)*10}|"> 
-                      9,999개 중 1-10 </span>
-                      <a th:href="${page-1}==0?'#': |?p=${page-1}|"class="table-bar__icon table-bar__icon-arrow-left hide"></a>
-                      <a th:href="|?p=${page+1}|" class="table-bar__icon table-bar__icon-arrow-right hide"></a>
-                    </div>
-                  </div>
-                <ul class="admin-list">
-                    <li class="admin-list__header">
-                        <ul>
-                            <li>
-                                <span>ID</span>
-                                <button><img src="/images/icon/up-down.svg" alt=""></button>
-                            </li>
-                            <li>제목/방장</li>
-                            <li>참여자</li>
-                            <li>등록 일시</li>
-                            <li>마감 여부</li>
-                            <li>삭제 여부</li>
-                        </ul>
-                    </li>
-                    <li class="admin-list__content" th:each="meeting: ${meetings}">
-                        <ul class="list-content">
-                            <li class="list-content__id">
-                                <input type="checkbox" class="checkbox">
-                                <span th:text="${meeting.id}">1</span>
-                            </li>
-                            <li class="list-content__title">
-                                <span class="bold" th:text="${meeting.title}">크리스마스날 맨유 응원하실분 구합니다. 제발요</span>
-                                <span th:text="${meeting.hostNickname}">우빈쿤</span>    
-                            </li>
-                            <li th:text="|${meeting.participantsNum}/${meeting.maxMember}|">1/5</li>
-                            <li class="list-content_date" th:text="${meeting.createdAt}">2022-02-22</li>
-                            <li class="list-content__status">
-                            	<span class="status status--round" th:classappend="${meeting.isClosed}? 'status--negative':'status--positive'"
-                            	th:text="${meeting.isClosed} ? 'TRUE':'FALSE'">False</span>
-                           	</li>
-                            <li class="list-content__status">
-                            	<span class="status status--round" th:classappend="${meeting.deletedAt} != null ? 'status--negative':'status--positive'"
-                            	th:text="${meeting.deletedAt} != null ? 'TRUE':'FALSE'">False</span>
-                           	</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            
-        </main>
-    </div>
-    <aside class="left-side-bar">
-        <img src="/images/logo/logo-with-text.svg" alt="로고">
-        <nav>
-            <ul>
-                <li><a class="add-deco-img-left deco-img-home" href="index.html">대시보드</a></li>
-                <li><a class="add-deco-img-left deco-img-notification" href="/admin/banner/list">공지 관리</a></li>
-                <li class="selected"><a class="add-deco-img-left deco-img-meeting-white" href="/admin/meeting/list">모임 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-user" href="/admin/member/list">회원 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-comment" href="/admin/comment/list">댓글 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-report" href="/admin/report/list">신고 관리</a></li>
-                <li><a class="add-deco-img-left deco-img-logout" href="logout.html">로그아웃</a></li>
-            </ul>
-        </nav>
-    </aside>
+	<div class="main-wrapper">
+		<main>
+			<nav class="admin-nav">
+				<ul class="admin-nav__lists">
+					<li class="admin-nav__list admin-nav__list--selected"><a
+						href="./list">모임 조회</a></li>
+					<li class="admin-nav__list"><a href="./category">카테고리 관리</a></li>
+					<li class="admin-nav__list"><a href="./region">지역 관리</a></li>
+				</ul>
+			</nav>
+			<div class="admin-search-bar-div">
+				<div class="admin-search-bar-box">
+					<input class="admin-search-bar" type="text"
+						placeholder="키워드를 입력하세요">
+					<button class="admin-search-button"></button>
+					<div class="filter-box hidden">
+						<form>
+							<div>
+								<span>검색어</span><input class="keyword-input" type="text">
+							</div>
+							<div>
+								<span>카테고리</span> <select class="category-select">
+									<option value="category" selected></option>
+									<option value="food">밥/카페</option>
+									<option value="sports">운동</option>
+									<option value="study">스터디</option>
+									<option value="room-escape">방탈출</option>
+									<option value="board-game">보드게임</option>
+									<option value="culture">문화</option>
+									<option value="pet">펫</option>
+									<option value="etc">기타</option>
+								</select>
+							</div>
+							<div>
+								<span>기간</span> <input class="date-input" type="date"> <span>로
+									부터</span> <select class="period-select">
+									<option selected>1일</option>
+									<option>3일</option>
+									<option>1주</option>
+									<option>1개월</option>
+									<option>3개월</option>
+									<option>6개월</option>
+									<option>1년</option>
+								</select>
+							</div>
+							<div>
+								<span>페이지당 결과</span> <select class="result-amount">
+									<option value="10" selected>10개</option>
+									<option value="20">20개</option>
+									<option value="50">50개</option>
+									<option value="100">100개</option>
+								</select>
+							</div>
+							<div class="search-button">
+								<input type="submit" value="검색" class="filter-button">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="admin-list-container">
+				<div class="table-bar">
+					<div class="table-bar__left-container">
+						<input class="checkbox" type="checkbox" name="table-checkbox" />
+						<span class="table-bar__icon table-bar__icon-check"></span> <span
+							class="table-bar__icon table-bar__icon-x"></span>
+					</div>
+
+					<div class="table-bar__right-container">
+						<span class="table-bar__page"
+							th:text="|${count}개 중 ${(page-1)*10+1}-${(page-1)*10+#lists.size(meetings)}|">
+							9,999개 중 1-10 </span> <a th:href="${page-1}==0?'#': |?p=${page-1}|"
+							class="table-bar__icon table-bar__icon-arrow-left hide"></a> <a
+							th:href="${@adminViewUtils.hasNextPage(page,10,#lists.size(meetings),count)}?|?p=${page+1}|:'#'"
+							class="table-bar__icon table-bar__icon-arrow-right hide"></a>
+					</div>
+				</div>
+				<ul class="admin-list">
+					<li class="admin-list__header">
+						<ul>
+							<li><span>ID</span>
+								<button>
+									<img src="/images/icon/up-down.svg" alt="">
+								</button></li>
+							<li>제목/방장</li>
+							<li>참여자</li>
+							<li>등록 일시</li>
+							<li>마감 여부</li>
+							<li>삭제 여부</li>
+						</ul>
+					</li>
+					<li class="admin-list__content" th:each="meeting: ${meetings}">
+						<ul class="list-content">
+							<li class="list-content__id"><input
+								th:name="|id-${meeting.id}|" type="checkbox" class="checkbox">
+								<label th:text="${meeting.id}">1</label></li>
+							<li class="list-content__title"><span class="bold"
+								th:text="${meeting.title}">크리스마스날 맨유 응원하실분 구합니다. 제발요</span> <span
+								th:text="${meeting.hostNickname}">우빈쿤</span></li>
+							<li th:text="|${meeting.participantsNum}/${meeting.maxMember}|">1/5</li>
+							<li class="list-content_date" th:text="${meeting.createdAt}">2022-02-22</li>
+							<li class="list-content__status"><span
+								class="status status--round"
+								th:classappend="${meeting.isClosed}? 'status--negative':'status--positive'"
+								th:text="${meeting.isClosed} ? 'TRUE':'FALSE'">False</span></li>
+							<li class="list-content__status"><span
+								class="status status--round"
+								th:classappend="${meeting.isDeleted} ? 'status--negative':'status--positive'"
+								th:text="${meeting.isDeleted}? 'TRUE':'FALSE'">False</span></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+		</main>
+	</div>
+	<div id="modal-meeting-details" class="modal-wrapper hidden">
+		<div class="modal">
+			<div class="modal__header">
+				<span class="modal__title">모임 상세보기</span> 
+				<span class="modal__close-btn icon icon-x" data-modal="#modal-meeting-details">닫기</span>
+			</div>
+			<div class="modal__body">
+				<ul class="details">
+					<li class="details__status-container">
+						<div class="details__status">
+							<div>활성여부</div>
+							<input type="checkbox" class="checkbox" id="is-deleted">
+						</div>
+						<div class="details__status">
+							<div>마감여부</div>
+							<input type="checkbox" class="checkbox" id="is-closed">
+						</div>
+					</li>
+					<li class="details__members">
+						<div>주최자</div>
+						<ul class="participant__list" id="reg-member">
+							<span class="participant__info">
+								<img src="/images/profile/">
+							</span>
+						</ul>
+					</li>
+					<li class="details__members">
+						<div>참여자 목록</div>
+						<ul class="participant__list" id="participants">
+						</ul>
+					</li>
+					<li class="details__option-container">
+						<div class="details__option">
+							<label class="input__label" for="category">카테고리</label>
+							<div class="select-box select-box--input">
+								<span>스터디</span>
+								<ul class="select-box__options" id="category-options">
+								</ul>
+								<input class="hidden" type="text" name="category" value="1" readonly>
+							</div>
+						</div>
+						<div class="details__option">
+							<label class="input__label" for="region">지역</label>
+							<div class="select-box select-box--input">
+								<span>서울</span>
+								<ul class="select-box__options" id="region-options">
+								</ul>
+								<input class="hidden" type="text" name="region" value="1" readonly>
+							</div>
+						</div>
+						<div class="details__input-text">
+							<label for="detailRegion">상세장소</label> 
+							<input id="detail-region" class="input__content" type="text" name="detailRegion"
+								value="서울시 우리집">
+						</div>
+					</li>
+					<li class="details__option-container">
+						<div class="details__option">
+							<label class="input__label" for="category">연락 방법</label>
+							<div class="select-box select-box--input">
+								<span id="contact-type">카카오톡</span>
+								<ul class="select-box__options" id="contact-type-options">
+								</ul>
+								<input class="hidden" type="text" name="contactType" value="1" readonly>								
+							</div>
+						</div>
+						<div class="details__input-text">
+							<label for="contact">연락처</label> 
+							<input id="contact" class="input__content" type="text" name="contact">
+						</div>
+					</li>
+					<li class="details__option-container">
+						<div class="details__option">
+							<label class="input__label" for="category">최대 인원 수</label>
+							<div class="select-box select-box--input">
+								<span>2 명</span>
+								<ul class="select-box__options" id="max-member-options">
+									<li data-id=1>2 명</li>
+                                    <li data-id=2>3 명</li>
+                                    <li data-id=3>4 명</li>
+                                    <li data-id=4>5 명</li>
+                                    <li data-id=5>6 명</li>
+								</ul>
+								<input class="hidden" type="text" name="maxMember" value="2" readonly>								
+							</div>
+						</div>
+						<div class="details__option">
+							<label class="input__label" for="category">연령대</label>
+							<div class="select-box select-box--input">
+								<span>20 대</span>
+								<ul class="select-box__options" id="age-range-options">
+								</ul>
+								<input class="hidden" type="text" name="ageRange" value="1" readonly>
+							</div>
+						</div>
+						<div class="details__option">
+							<label class="input__label" for="category">성별</label>
+							<div class="select-box select-box--input">
+								<span>남녀 모두</span>
+								<ul class="select-box__options">
+									<li data-id=1>남녀 모두</li>
+									<li data-id=2>남자만</li>
+									<li data-id=3>여자만</li>
+								</ul>
+								<input class="hidden" type="text" name="genderCategory" value="1" readonly>
+							</div>
+						</div>
+					</li>
+					<li class="details__input-text">
+						<label for="input__content--id">제목</label>
+						<input class="input__content" type="text" id="title">
+					</li>
+					<li class="details__input-text">
+						<label for="input__content--id">내용</label> 
+						<input class="input__content" type="text" id="content"></li>
+					<li class="details__date-container">
+						<div class="details__date">
+							<span>시작 일시</span>
+							<span id="started-at">2022-02-23 13:00:00</span>
+						</div>
+						<div class="details__date">
+							<span>마감 일시</span>
+							<span id="closed-at">2022-02-23 13:00:00</span>
+						</div>
+						<div class="details__date">
+							<span>등록 일시</span>
+							<span id="created-at">2022-02-23 13:00:00</span>
+						</div>
+						<div class="details__date">
+							<span>수정 일시</span>
+							<span id="updated-at">2022-02-23 13:00:00</span>
+						</div>
+						<div class="details__date">
+							<span>삭제 일시</span>
+							<span id="deleted-at">2022-02-23 13:00:00</span>
+						</div>
+					</li>
+					<li class="details__count-container">
+						<div class="details__count">
+							<span>조회수</span> 
+							<span id="num-comments">6</span>
+						</div>
+						<div class="details__count">
+							<span>댓글수</span> 
+							<span id="num-comments">5</span>
+						</div>
+					</li>
+				</ul>
+				<div>
+					<button class="btn btn-round btn-action" type="submit">저장</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<aside class="left-side-bar">
+		<img src="/images/logo/logo-with-text.svg" alt="로고">
+		<nav>
+			<ul>
+				<li><a class="add-deco-img-left deco-img-home"
+					href="index.html">대시보드</a></li>
+				<li><a class="add-deco-img-left deco-img-notification"
+					href="/admin/banner/list">공지 관리</a></li>
+				<li class="selected"><a
+					class="add-deco-img-left deco-img-meeting-white"
+					href="/admin/meeting/list">모임 관리</a></li>
+				<li><a class="add-deco-img-left deco-img-user"
+					href="/admin/member/list">회원 관리</a></li>
+				<li><a class="add-deco-img-left deco-img-comment"
+					href="/admin/comment/list">댓글 관리</a></li>
+				<li><a class="add-deco-img-left deco-img-report"
+					href="/admin/report/list">신고 관리</a></li>
+				<li><a class="add-deco-img-left deco-img-logout"
+					href="logout.html">로그아웃</a></li>
+			</ul>
+		</nav>
+	</aside>
 </body>
 </html>

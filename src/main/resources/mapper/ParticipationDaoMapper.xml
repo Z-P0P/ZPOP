@@ -26,5 +26,11 @@
         select *
         from participation
     </select>
+   	<select id="getByMeetingId" resultType="MeetingParticipantsDto">
+		SELECT p.id, p.participantId AS memberId, m.nickname, m.profileImagePath
+		FROM participation p
+		JOIN member m 
+		ON p.participantId = m.id
+		WHERE meetingId = #{meetingId} AND (p.bannedAt IS NULL AND p.canceledAt IS NULL);
+    </select>
 </mapper>
-

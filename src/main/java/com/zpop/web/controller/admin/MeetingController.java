@@ -7,10 +7,13 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zpop.web.dto.admin.AdminCategoryDto;
+import com.zpop.web.dto.admin.AdminMeetingDetailsResponse;
 import com.zpop.web.dto.admin.AdminMeetingDto;
 import com.zpop.web.service.admin.AdminMeetingService;
 
@@ -45,5 +48,42 @@ public class MeetingController {
 		return "admin/meeting/list";
 	}
 	
-
+	@GetMapping("category")
+	public String getCategory(Model model
+			,@RequestParam(name="p", defaultValue="1") int page
+			,@RequestParam @Nullable String keyword
+			,@RequestParam @Nullable String option) {
+	
+		List<AdminCategoryDto> categories = adminMeetingService.getCategory(page,keyword,option);
+		int count = adminMeetingService.countCategory(keyword, option);
+		model.addAttribute("categories", categories);
+		model.addAttribute("count",count);
+		model.addAttribute("page",page);
+		
+		return "admin/meeting/category";
+	}
+	
+	@GetMapping("region")
+	public String getRegion(Model model
+			,@RequestParam(name="p", defaultValue="1") int page
+			,@RequestParam @Nullable String keyword
+			,@RequestParam @Nullable String option) {
+	
+		List<AdminRegionDto> regions = adminMeetingService.getRegion(page,keyword,option);
+		int count = adminMeetingService.countRegion(keyword, option);
+		model.addAttribute("regions", regions);
+		model.addAttribute("count",count);
+		model.addAttribute("page",page);
+		
+		return "admin/meeting/region";
+	}
+	
+	@RequestMapping("{id}")
+	@ResponseBody
+	public AdminMeetingDetailsResponse getDetailInfo(@PathVariable("id") int id) {
+		
+		AdminMeetingDetailsResponse result = adminMeetingService.getDetailsResponse(id);
+		return result;
+	}
+	
 }

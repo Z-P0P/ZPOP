@@ -1,6 +1,8 @@
 package com.zpop.web.dao;
 
 import com.zpop.web.dto.MeetingThumbnailPagination;
+import com.zpop.web.dto.ParticipantDto;
+import com.zpop.web.dto.admin.AdminMeetingDetailsDto;
 import com.zpop.web.dto.admin.AdminMeetingDto;
 import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.entity.meeting.MeetingThumbnailView;
@@ -23,4 +25,8 @@ public interface MeetingDao {
 	List<AdminMeetingDto> getAdminViewList(int size, int offset, String keyword, String option);
 	int count(String keyword, String option);
 
+	AdminMeetingDetailsDto getAdminDetailView(int meetingId);
+
+	List<ParticipantDto> getParticipants(int id);
 }
+
