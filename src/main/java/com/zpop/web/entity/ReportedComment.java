@@ -16,13 +16,12 @@ public class ReportedComment {
 	private Date blockedAt;
 	private Date releasedAt;
 	
-	public ReportedComment(int id, int commentId, int reporterId, int typeId, int adminId, String reason,
+	public ReportedComment(int commentId, int reporterId, int adminId, int typeId, String reason,
 			String original, Date createdAt, Date processedAt, Date blockedAt, Date releasedAt) {
-		this.id = id;
 		this.commentId = commentId;
 		this.reporterId = reporterId;
-		this.typeId = typeId;
 		this.adminId = adminId;
+		this.typeId = typeId;
 		this.reason = reason;
 		this.original = original;
 		this.createdAt = createdAt;

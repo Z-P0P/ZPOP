@@ -3,6 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.ReportedCommentDao">
+
+	<insert id="insert" parameterType="ReportedComment">
+		INSERT INTO reportedComment (commentId,reporterId,adminId,typeId,reason,original,createdAt,processedAt,blockedAt,releasedAt) 
+		VALUES(#{commentId},#{reporterId},#{adminId},#{typeId},#{reason},#{original},#{createdAt},#{processedAt},#{blockedAt},#{releasedAt});
+	</insert>
+
 	<select id="getAdminViewList" resultType="AdminReportedCommentDto">
 		SELECT
 			rc.id,
@@ -24,8 +30,10 @@
 		ON rc.typeId = crt.id
 		LIMIT #{offset},#{size}
 	</select>
+	
 	<select id="count" resultType="Integer">
 		SELECT count(id)
 		FROM reportedComment;
 	</select>
+
 </mapper>
