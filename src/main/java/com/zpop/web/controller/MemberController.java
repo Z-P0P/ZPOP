@@ -1,19 +1,19 @@
 package com.zpop.web.controller;
 
 
-import java.util.List;
-
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.entity.Member;
+import com.zpop.web.service.MeetingService;
 import com.zpop.web.service.MemberService;
 import jakarta.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /*****
  * 1. 다른 사용자 프로필 조회              --> 모달 url 불필요
@@ -34,6 +34,9 @@ public class MemberController {
 
     @Autowired
     private MemberService service;
+
+    @Autowired
+    private MeetingService meetingService;
 
     //다른 사용자 프로필 조회 (return 경로 임시)
     @GetMapping("{id}")
@@ -64,6 +67,33 @@ public class MemberController {
     public String getMeeting(HttpSession session , Model model) {
         Member member = (Member) session.getAttribute("member");
         List<MyMeetingResponse> meetings = service.getMyMeeting(member.getId());
+
+
+//        List meetingIds = new ArrayList();
+//        for (MyMeetingResponse mmr: meetings
+//             ) {
+//            int i = mmr.getMeetingId();
+//            meetingIds.add(i);
+//            System.out.println(i);
+//        }
+//        System.out.println("add"+meetingIds.get(0));
+//        System.out.println("add"+meetingIds.get(1));
+//
+//        meetingService.getById((Integer) meetingIds.get(0));
+//        meetingService.getById((Integer) meetingIds.get(1));
+
+//        List<Meeting> meetingInfo
+        //끼요오옷.
+//        for (MyMeetingResponse mmr: meetings
+//        ) {
+//            List<MyMeetingView> s = new ArrayList<>();
+//
+//            s.add((MyMeetingView) service.getMeeting(mmr.getMeetingId()));
+//
+//        }
+
+
+
         model.addAttribute("meetings", meetings);
 
         return "member/my-meeting";
@@ -75,6 +105,8 @@ public class MemberController {
         Member member = (Member) session.getAttribute("member");
         List<MyMeetingResponse> meetings = service.getMyGathering(member.getId());
         model.addAttribute("meetings", meetings);
+
+
         return "member/my-gathering";
 
     }

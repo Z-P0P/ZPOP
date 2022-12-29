@@ -145,4 +145,12 @@ public class DefalutMemberService implements MemberService {
 
         return list;
     }
+
+    @Override
+    public List<MyMeetingView> getMeeting(int meetingId) {
+
+       return dao.getMeeting(meetingId);
+    }
+
+
 }

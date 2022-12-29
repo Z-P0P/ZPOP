@@ -27,7 +27,7 @@ public interface MemberDao {
 
 
 	List<Member> getListBySearch(int size, int offset, String keyword, String option);
-	
+	List<MyMeetingView> getMeeting(int meetingId);
 	List<MyMeetingView> getMyMeeting(int memberId);
 	List<MyMeetingView> getMyGathering(int memberId);
 

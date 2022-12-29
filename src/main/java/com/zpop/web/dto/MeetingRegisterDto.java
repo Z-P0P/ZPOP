@@ -24,7 +24,7 @@ public class MeetingRegisterDto {
 	private int viewCount;
 	public Meeting toEntity() {// DTO -> ENTITY HH:MM -> HH:MM:SS
 		return new Meeting(getRegMemberId(), getCategoryId(), getRegionId(), getAgeRangeId(),getContactTypeId(),getGenderCategory(),getTitle(), getContent(),
-				getDetailRegion(), getMaxMember(), getStartedAt(), getContact(), getviewCount());
+				getDetailRegion(), getMaxMember(), getStartedAt(), getContact());
 	}
 
 	public int getRegMemberId() {

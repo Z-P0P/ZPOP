@@ -13,6 +13,10 @@
     <select id="getByNickname" resultType="Member">
         SELECT * FROM member
         WHERE nickname=#{nickname} </select>
+	<select id ="getMeeting" resultType="com.zpop.web.entity.member.MyMeetingView">
+		SELECT * FROM myMeetingView
+		WHERE meetingId = #{id}
+	</select>
     <select id="getMyMeeting" parameterType="com.zpop.web.entity.Member"
             resultType="com.zpop.web.entity.member.MyMeetingView">
         SELECT * FROM myMeetingView
