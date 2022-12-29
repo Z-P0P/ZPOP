@@ -5,8 +5,8 @@
 <mapper namespace="com.zpop.web.dao.ReportedMemberDao">
 
 	<insert id="insert" parameterType="ReportedMeeting">
-		insert into reportedMember (reportedId,reporterId,typeId,adminId,reason,createdAt,processedAt,blockedAt,releasedAt) 
-		values(#{reportedId},#{reporterId},#{typeId},#{adminId},#{reason},#{createdAt},#{processedAt},#{blockedAt},#{releasedAt});
+		INSERT INTO reportedMember (reportedId,reporterId,typeId,adminId,reason,createdAt,processedAt,blockedAt,releasedAt) 
+		VALUES(#{reportedId},#{reporterId},#{typeId},#{adminId},#{reason},#{createdAt},#{processedAt},#{blockedAt},#{releasedAt});
 	</insert>
 
 	<select id="getAdminViewList" resultType="AdminReportedMemberDto">

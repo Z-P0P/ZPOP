@@ -24,7 +24,7 @@ public class DefaultReportService implements ReportService {
 	@Autowired
 	private ReportedCommentDao reportedCommentDao;
 		
-	public DefaultReportService() {}
+	public DefaultReportService() {};
 
 	public DefaultReportService(
 			ReportedMeetingDao reportedMeetingDao, 
