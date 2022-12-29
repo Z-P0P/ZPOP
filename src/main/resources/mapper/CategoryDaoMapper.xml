@@ -22,5 +22,9 @@
 		SELECT COUNT(id)
 		FROM category
 	</select>
+	<select id="getActiveList" resultType="CategoryDto">
+		SELECT c.id, c.name
+		FROM category AS c
+		WHERE c.deletedAt IS NULL
+	</select>
 </mapper>
-

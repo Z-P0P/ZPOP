@@ -47,4 +47,16 @@ public class Participation {
     public Date getCanceledAt() {
         return canceledAt;
     }
+
+    public void setParticipantId(int participantId) {
+        this.participantId = participantId;
+    }
+
+    public void setCanceledAt(Date canceledAt) {
+        this.canceledAt = canceledAt;
+    }
+
+    public void setBannedAt(Date bannedAt) {
+        this.bannedAt = bannedAt;
+    }
 }

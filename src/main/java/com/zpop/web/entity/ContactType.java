@@ -18,6 +18,10 @@ public class ContactType {
     public String getName() {
         return name;
     }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Date getCreatedAt() {
         return createdAt;

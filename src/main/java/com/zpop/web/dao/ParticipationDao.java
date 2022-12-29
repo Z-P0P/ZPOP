@@ -1,5 +1,6 @@
 package com.zpop.web.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,6 @@ public interface ParticipationDao {
     List<Participation> getList();
     List<MeetingParticipantsDto>getByMeetingId(int meetingId);
     List<AdminParticipationDto> getAdminViewList(int size, int offset, String keyword, String option);
-	
-    int countBySearch(String keyword, String option);
+    int updateBannedAt(int id);
+	int countBySearch(String keyword, String option);
 }
