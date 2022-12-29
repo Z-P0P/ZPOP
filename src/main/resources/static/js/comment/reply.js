@@ -1,7 +1,7 @@
 
 export function getReply(groupId, replyUl) {
 	//GET request가 디폴트
-	fetch(`/meeting/reply/${groupId}`)
+	fetch(`/comment/${groupId}/reply`)
 		.then(response => {
 			if (response.ok) {
 				return response;

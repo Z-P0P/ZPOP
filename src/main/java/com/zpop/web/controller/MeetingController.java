@@ -106,7 +106,7 @@ public class MeetingController {
 	}
 
 	
-	@GetMapping("comment/{meetingId}")
+	@GetMapping("{meetingId}/comment")
 	@ResponseBody
 	public  Map<String, Object> getComment(@PathVariable int meetingId) {
 		
@@ -117,21 +117,6 @@ public class MeetingController {
 		dto.put("status",200);
 		dto.put("resultObject",comments);
 		dto.put("countOfComment",countOfComment);
-		
-		return dto;
-	}
-
-	@GetMapping("reply/{groupId}")
-	@ResponseBody
-	public  Map<String, Object> getReply(@PathVariable int groupId) {
-
-		List<CommentView> replies = commentService.getReply(groupId);
-		int countOfReply = commentService.getCountOfReply(groupId);
-		
-		Map<String,Object> dto = new HashMap<>();
-		dto.put("status",200);
-		dto.put("resultObject",replies);
-		dto.put("countOfReply",countOfReply);
 		
 		return dto;
 	}
