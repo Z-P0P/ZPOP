@@ -21,14 +21,14 @@ import com.zpop.web.service.CommentService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/comment")
+@RequestMapping("/")
 public class CommentController {
 	@Autowired
 	CommentService service;
 	
 
 
-	@GetMapping("{groupId}/reply")
+	@GetMapping("comment/{groupId}/reply")
 	@ResponseBody
 	public  Map<String, Object> getReply(@PathVariable int groupId) {
 

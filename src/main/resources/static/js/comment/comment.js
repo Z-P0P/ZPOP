@@ -111,7 +111,7 @@ function writeComment(registerBtn, meetingId, commentUl){
 //AJAX로 댓글 렌더링
 function getComment(meetingId, commentUl) {
 	
-	fetch(`/meeting/comment/${meetingId}`)
+	fetch(`/meeting/${meetingId}/comment`)
 		.then(response => {
 			if (response.ok) {
 				return response;
