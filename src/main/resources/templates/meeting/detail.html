@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ layout:decorate="~{inc/layout}">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+	
+	
     <link rel="stylesheet" href="/css/member/style.css" />
     <link rel="stylesheet" href="/css/deco.css">
     <link rel="stylesheet" href="/css/button.css">
@@ -17,52 +20,52 @@
     <link rel="stylesheet" href="/css/member/component/meeting-info.css">
     <link rel="stylesheet" href="/css/member/component/participant.css" type="text/css" >
     <link rel="stylesheet" href="/css/member/component/comment.css" />
+    <link rel="stylesheet" href="/css/member/popup.css">
+    <link rel="stylesheet" href="/css/member/component/modal-2.css">
     <!-- detail page css -->
     <link rel="stylesheet" href="/css/member/meeting/detail.css">
+    <script src="/js/meeting/detail.js"></script>
 
 </head>
 <body>
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
-<header class="header header--list">
-    <h1 class="text-hidden">ZPOP</h1>
-    <nav>
-        <ul>
-            <li class="header__main"><a class="text-hidden" href="#">홈으로 이동</a></li>
-            <li class="header__create-meeting"><a href="">모임 등록</a></li>
-            <li class="header__search"><button class="text-hidden">검색</button></li>
-            <li class="header__notification"><button class="text-hidden">알림확인</button></li>
-            <li class="header__profile"><button class="text-hidden"><img src="/images/girl.svg" alt="">프로필로 이동</a></li>
-        </ul>
-    </nav>
-</header>
 
-
-<main class="main">
+<main class="main"  layout:fragment="content">
     <section class="meeting">
         <div class="meeting__info">
             <div class="meeting__category-wrap">
-                <span class="meeting__category">문화생활</span>
+                <span class="meeting__category"  th:text="${dto.categoryName}">문화생활</span>
             </div>
             <div class="meeting__header">
                 <div class="meeting__title-container">
-                    <span class="meeting__title">한강공원에서 러닝하실 분~🙂</span>
+                <span class="hidden meeting-Id" th:text="${dto.id}"></span>
+                    <span class="meeting__title"  th:text="${dto.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
+                    <th:block th:if="${session.member != null && memberType == 'host'}">
+                    		<div th:replace="~{inc/meeting-detail-modal::member-host}"></div>
+                    </th:block>
+                    <th:block th:if="${session.member != null && memberType == 'participant'}">
+                    		<div th:replace="~{inc/meeting-detail-modal::member-participant}"></div>
+                    </th:block>
+                       <th:block th:if="${session.member != null && memberType == 'member'}">
+                    		<div th:replace="~{inc/meeting-detail-modal::member}"></div>
+                    </th:block>
                 </div>
                 <div class="meeting__date-container">
                     <img class="meeting__small-calander" src="/images/icon/small-calander.svg">
-                    <span class="meeting__date">11.01(일) 13:00</span>
+                    <span class="meeting__date"  th:text="${dto.startedAt}">11.01(일) 13:00</span>
                 </div>
                 <div class="meeting__region-container">
                     <img class="meeting__small-location" src="/images/icon/small-location.svg" alt="">
-                    <span class="meeting__region">경남/부산/울산</span>
+                    <span class="meeting__region"  th:text="${dto.regionName}">경남/부산/울산</span>
                 </div>
                 <div class="meeting__detail-region-wrap">
-                    <span class="meeting__detail-region">서면역 9와 3/4 이번에도 수정하면 꿀밤 날리겠습니다^^</span>
+                    <span class="meeting__detail-region"  th:text="${dto.detailRegion}">서면역 9와 3/4 이번에도 수정하면 꿀밤 날리겠습니다^^</span>
                 </div>
             </div>
         </div>
         <div class="meeting__conetent-container">
-                    <span class="meeting__content">
+                    <span class="meeting__content"  th:text="${dto.content}">
                         한강에서 우리 함께 뛰어요~!
                         왜냐면은 제가 달리기를너무너무 조아하하하하해하기때문이에용
                         목표는 10km! 완주하실 분만 모집합니다~!!
@@ -74,129 +77,89 @@
                 #+10명
                 #남자만
             </div>
-            <div class="meeting__views">조회수 999회</div>
+            <div class="meeting__views"  th:text=' ${"조회수 " + dto.viewCount}'>조회수 999회</div>
             <div class="meeting__btn">
-                <span class="btn btn-round btn-join">참여하기</span>
+                <span class="btn btn-round btn-join" id="participation-btn"  data-modal="#modal-wrapper-participation">참여하기</span>
             </div>
         </div>
-        </div>
     </section>
-
+	<span class="hidden member-Id" th:text="${memberId}"></span>
     <section class="participant">
         <div class="participant__num">
             <span>참가자</span>
-            <span>15/56</span>
+            <span th:text="|${#lists.size(participants)}/${dto.maxMember}|">15/56</span>
             <span class="icon icon-arrow-up"></span>
         </div>
+            <span class="participant-Id"  >8</span>
         <ul class="participant__list">
-            <li>
-                <span class="participant__info"><img src="/images/girl.svg">일이삼사오육칠팔구십</span>
-            </li>
-            <li>
-                <span class="participant__info"><img src="/images/girl.svg">일이삼사오육칠팔구십</span>
-            </li>
-            <li>
-                <span class="participant__info"><img src="/images/girl.svg">일이삼사오육칠팔구십</span>
-            </li>
-            <li>
-                <span class="participant__info"><img src="/images/girl.svg">일이삼사오육칠팔구십</span>
-            </li>
-            <li>
-                <span class="participant__info"><img src="/images/girl.svg">일이삼사오육칠팔구십</span>
+            <li th:each="participant:${participants}">
+                <span class="participant__info" 
+                	th:text="${participant.nickname}"></span>
+                	<img src="/images/girl.svg"  
+                	th:src="@{${participant.profileImagePath}?${participant.profileImagePath}:'/images/icon/user-profile.svg'}">
+                
             </li>
         </ul>
     </section>
+			
+    	
+     <div class="modal-2 hidden" id="modal-wrapper-participation">
 
-    <section class="comment">
-        <h2 class="comment__num">댓글 N개</h2>
-        <div class="comment__input-container">
-                <textarea
-                        class="comment__input"
-                        name="댓글 입력"
-                        placeholder="댓글을 입력하세요."
-                ></textarea>
-            <span class="comment__btn btn btn-round">등록하기</span>
-        </div>
-        <ul class="comment__list">
-            <li>
-                <div class="profile">
-                    <span class="profile__image"></span>
-                    <span class="profile__nickname">찬우몬</span>
-                    <span class="profile__time">3분전</span>
-                    <button></button>
+        <div class="modal-participation">
+            <div class="modal__header">
+                <span class="modal__x-icon pointer modal__close-btn" data-modal="#modal-wrapper-participation"></span>
+            </div>
+            <div class="modal__body">
+                <div class="modal-participation-content">
+                    <div class="modal-icon">
+                        <img src="/images/icon/handshake24.svg">
+                    </div>
+                    <div class="modal-text">
+                        <strong th:text="${dto.title}">
+                            찬우와 월드컵 응원할 사람
+                        </strong>
+                        <div class="next-line">이 모임에 참여하시겠어요?</div>
+                    </div>
                 </div>
-                <span class="comment__content">
-                        이 헌법에 의한 최초의 대통령의 임기는 이 헌법시행일로부터 개시한다. 모든 국민은 거주·이전의 자유를 가진다. 대통령은 제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다.
-                    </span>
-                <div class="comment__replies">
-                    <span>답글 n개</span>
-                    <span>답글 달기</span>
+                <div class="btn-modal">
+                    <div class="btn-modal-left  modal__close-btn pointer" data-modal="#modal-wrapper-participation">다음에 할래요</div>
+                    <div class="btn-modal-right modal__close-btn pointer" data-modal="#modal-wrapper-participation">참여하기</div>
                 </div>
-            </li>
-        </ul>
-    </section>
-    </div>
-
-    <!--------------------------  케밥 모달 추가 --------------------------->
-    <!--💛글상세보기, 참여자-->
-
-
-    <div class="modal-select">
-        <div class="modal-select__contents">복사하기
-            <span class="icon icon-copy"></span>
-        </div>
-        <div class="modal-select__contents">참여링크
-            <span class="icon icon-link"></span>
-        </div>
-        <div class="modal-select__contents">글 신고
-            <span class="icon icon-siren-red"></span>
+            </div>
         </div>
     </div>
-    <!--💛글상세보기, 주최자-->
-
-
-    <div class="modal-select">
-        <div class="modal-select__contents">복사 하기
-            <span class="icon icon-copy"></span>
-        </div>
-        <div class="modal-select__contents">수정
-            <span class="icon icon-edit"></span>
-        </div>
-        <div class="modal-select__contents">삭제
-            <span class="icon icon-trash"></span>
-        </div>
-    </div>
-
-    <!--💛글상세보기, 기본유저-->
-    <div class="modal-select">
-        <div class="modal-select__contents">복사 하기
-            <span class="icon icon-copy"></span>
-        </div>
-        <div class="modal-select__contents">글 신고
-            <span class="icon icon-siren-red"></span>
-        </div>
-    </div>
-
-
-    <!-- 💚 댓글 (작성자)-->
-    <div class="modal-select">
-        <div class="modal-select__contents">수정
-            <span class="icon icon-edit"></span>
-        </div>
-        <div class="modal-select__contents">삭제
-            <span class="icon icon-trash"></span>
-        </div>
-    </div>
-
-    <!-- 💚 댓글 (기본유저)-->
-    <div class="modal-select">
-
-        <div class="modal-select__contents">댓글 신고
-            <span class="icon icon-siren-red"></span>
-        </div>
-    </div>
-
-
-    <!--------------------------  케밥 모달 추가 --------------------------->
+    </main>
 </body>
+
+<script>
+//     window.addEventListener("load",function(){
+//         const participationBtn = document.querySelector("#participation-btn");
+// 		console.log("load");
+//         participationBtn.onclick = function(e){
+//             e.preventDefault();
+            
+//             console.log("참여하기 버튼 클릭")
+//             const data = { 
+//         			method: "POST", // 또는 'PUT'
+//                   headers: {
+//                     "Content-Type": "application/json",
+//                	},
+//                   body: JSON.stringify({
+//                 	  meetingId:280,
+//                 	  participantId:2
+//                   })
+//         		}
+
+//                 fetch("http://localhost:8080/meeting/participate",data)
+//                 .then((response) => {
+//                   console.log('성공:', data);
+//         		  alert("성공적으로 참여했습니다");
+//                 })
+//                 .catch((error) => {
+//         			console.error('실패:', error);
+//         			alert("참여에 실패했습니다");
+//                 });
+//         }
+//     })
+</script>
 </html>

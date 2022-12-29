@@ -26,13 +26,10 @@ public class TempMeetingController {
 
     @GetMapping("/list")
     public String getListView(
-            Model model,
-            @RequestParam(required = false, defaultValue = "0") int startId,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Boolean isClosed
+            Model model
             ){
-        List<MeetingThumbnailResponse> meetings = service.getList(startId, keyword, isClosed);
-
+        List<MeetingThumbnailResponse> meetings = service.getList();
+        
         model.addAttribute("meetings", meetings);
 
         return "meeting/list";
@@ -41,11 +38,13 @@ public class TempMeetingController {
     @GetMapping("/api/list")
     @ResponseBody
     public List<MeetingThumbnailResponse> getList(
-            @RequestParam(required = false, defaultValue = "0") int startId,
+            @RequestParam(required = false, defaultValue = "0") int start,
             @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Integer category,
+            @RequestParam(required = false) String regions,
             @RequestParam(required = false) Boolean isClosed
-    ){
-        List<MeetingThumbnailResponse> meetings = service.getList(startId, keyword, isClosed);
+    ){  
+        List<MeetingThumbnailResponse> meetings = service.getList(start, keyword, category, regions, isClosed);
 
         return meetings;
     }
@@ -57,6 +56,27 @@ public class TempMeetingController {
     ) {
         Member testMember = new Member();
         boolean result = service.delete(id, testMember);
-        return true;
+        return result;
+    }
+
+    @DeleteMapping("/{id}/participant/{participantId}")
+    @ResponseBody
+    public boolean kick(
+            @PathVariable(name = "id") int id,
+            @PathVariable(name = "participantId") int participantId
+    ) {
+        Member testMember = new Member();
+        testMember.setId(3);
+        boolean result = service.kick(id, participantId, testMember);
+        return result;
+    }
+
+    @PatchMapping("/close/{id}")
+    @ResponseBody
+    public boolean close (
+        @PathVariable(name = "id") int id
+    ) {
+        Member testMember = new Member();
+        return service.close(id, testMember);
     }
 }

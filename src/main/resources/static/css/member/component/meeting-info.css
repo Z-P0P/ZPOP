@@ -15,6 +15,7 @@
 
 .meeting__title-hambuger-icon{
     margin-left: auto;
+    cursor: pointer;
 }
 
 .meeting__category{
@@ -74,15 +75,14 @@
 }
 
 .meeting__btn {
-    display: inline-flex;
+    display: block;
     position: fixed;
-    bottom: 0px;
+    bottom: 8px;
     font-size: 16px;
-    
 }
+
 .btn-join{
     width: 90vw;
-   
 }
 
 

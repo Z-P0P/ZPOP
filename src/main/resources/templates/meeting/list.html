@@ -1,17 +1,29 @@
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{inc/layout}">
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{inc/layout}"
+>
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/loading.css" />
+    <link rel="stylesheet" href="/css/member/component/header.css" />
+    <link rel="stylesheet" href="/css/member/component/select.css" />
     <link rel="stylesheet" href="/css/member/component/meeting.css" />
     <link rel="stylesheet" href="/css/member/component/search-bar.css" />
     <link rel="stylesheet" href="/css/member/component/select.css">
+    <link rel="stylesheet" href="/css/member/component/region-bar.css">
     <link rel="stylesheet" href="/css/member/component/meeting-category.css" />
     <link rel="stylesheet" href="/css/member/meeting/list.css" />
-    <link rel="stylesheet" href="/css/member/meeting/list.css" />
-    <script src="/js/meeting/list.js" defer></script>
+    <script type="module" src="/js/meeting/list/list.js" defer></script>
+
+
   </head>
   <body>
-    <main layout:fragment="content" class="main" >
-      <div class="banner"></div>
+    <main layout:fragment="content" class="main">
+      <div class="banner">
+      	<img alt="" src="/images/banner.png">
+      </div>
 
       <!-----------------------modal 추가--------------------------->
       <!--👩🏻 메인화면-->
@@ -23,6 +35,7 @@
         <div class="search-bar">
           <span class="icon icon-search">돋보기</span>
           <input
+            id="search-bar-input"
             class="search-content"
             type="text"
             placeholder="원하는 집합을 찾아보세요!"
@@ -32,15 +45,15 @@
         <div class="category-container">
           <nav class="category-nav">
             <ul class="category-subcontainer">
-              <li class="category selected">전체</li>
-              <li class="category">밥/카페</li>
-              <li class="category">운동</li>
-              <li class="category">스터디</li>
-              <li class="category">방탈출</li>
-              <li class="category">보드게임</li>
-              <li class="category">펫</li>
-              <li class="category">육아</li>
-              <li class="category">기타</li>
+              <li data-id=0 class="category selected">전체</li>
+              <li data-id=1 class="category">밥/카페</li>
+              <li data-id=2 class="category">운동</li>
+              <li data-id=3 class="category">스터디</li>
+              <li data-id=4 class="category">방탈출</li>
+              <li data-id=5 class="category">보드게임</li>
+              <li data-id=6 class="category">문화</li>
+              <li data-id=7 class="category">펫</li>
+              <li data-id=8 class="category">기타</li>
             </ul>
           </nav>
         </div>
@@ -57,21 +70,21 @@
                 readonly
               />
               <ul class="select-box__options">
-                <li>밥/카페</li>
-                <li>운동</li>
-                <li>스터디</li>
-                <li>방탈출</li>
-                <li>보드게임</li>
-                <li>문화</li>
-                <li>펫</li>
-                <li>기타</li>
+                  <li data-id=1>서울</li>
+                  <li data-id=2>인천/경기</li>
+                  <li data-id=3>충청/대전/세종</li>
+                  <li data-id=4>강원</li>
+                  <li data-id=5>경북/대구</li>
+                  <li data-id=6>전라/광주</li>
+                  <li data-id=7>경남/부산/울산</li>
+                  <li data-id=8>제주</li>
+                  <li data-id=9>온라인</li>
               </ul>
             </div>
           </div>
-
           <div class="meeting-activate-option">
-            <span>모집 중인 모임만 보기</span>
-            <input type="checkbox" id="toggle" checked="checked" hidden />
+            <span>모집 중만 보기</span>
+            <input type="checkbox" id="toggle" checked hidden />
             <label for="toggle" class="toggle-switch">
               <span class="toggle-button"></span>
             </label>
@@ -102,9 +115,9 @@
 
               <div class="meeting__info">
                 <ul class="meeting__tags">
-                  <li th:text='${"#" + meeting.ageRange}'>연령대</li>
-                  <li th:text='${"#" + meeting.maxMember + "명"}'>인원</li>
-                  <li th:text='${"#" + meeting.genderCategory}'>성별</li>
+                  <li th:text="|#${meeting.ageRange}|">연령대</li>
+                  <li th:text="|#${meeting.maxMember}명|">인원</li>
+                  <li th:text="|#${meeting.genderCategory}|">성별</li>
                 </ul>
                 <div class="meeting__info-detail">
                   <div
@@ -138,6 +151,19 @@
             </a>
           </li>
         </ul>
+        <!-- no search result -->
+        <!-- <div class="search-result-none hidden">
+          <p>
+            '<strong class="search-keyword">검색어</strong>'에 대한 검색 결과가
+            없어요 !
+          </p>
+          <p>검색할 단어를 변경하거나, 검색어를 확인해주세요.</p>
+        </div> -->
+        <!-- no result -->
+        <div class="result-none hidden">
+          <p>찾고있는 모임이 없네요!</p>
+          <p>교집합을 만들어볼까요?</p>
+        </div>
       </section>
 
       <!--  loading   -->

@@ -22,7 +22,13 @@ public class Participation {
         return id;
     }
 
-    public int getMeetingId() {
+    @Override
+	public String toString() {
+		return "Participation [id=" + id + ", meetingId=" + meetingId + ", participantId=" + participantId
+				+ ", createdAt=" + createdAt + ", bannedAt=" + bannedAt + ", canceledAt=" + canceledAt + "]";
+	}
+
+	public int getMeetingId() {
         return meetingId;
     }
 
@@ -40,5 +46,17 @@ public class Participation {
 
     public Date getCanceledAt() {
         return canceledAt;
+    }
+
+    public void setParticipantId(int participantId) {
+        this.participantId = participantId;
+    }
+
+    public void setCanceledAt(Date canceledAt) {
+        this.canceledAt = canceledAt;
+    }
+
+    public void setBannedAt(Date bannedAt) {
+        this.bannedAt = bannedAt;
     }
 }

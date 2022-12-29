@@ -1,26 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.MemberDao">
     <insert id="insert" parameterType="Member">
-        insert into member(socialTypeId, socialId, nickname)
-        values(#{socialTypeId}, #{socialId}, #{nickname})
-    </insert>
-    <select id="getById" resultType= "Member">
-        select *
-        from member
-        where id=#{id}
+        INSERT INTO member(socialTypeId, socialId, nickname)
+        VALUES (#{socialTypeId}, #{socialId}, #{nickname}) </insert>
+    <select id="getById" resultType="Member">
+        SELECT * FROM member
+        WHERE id=#{id} </select>
+    <select id="getBySocialId" resultType="Member">
+        SELECT * FROM member
+        WHERE socialId=#{socialId} </select>
+    <select id="getByNickname" resultType="Member">
+        SELECT * FROM member
+        WHERE nickname=#{nickname} </select>
+    <select id="getMyMeeting" parameterType="com.zpop.web.entity.Member"
+            resultType="com.zpop.web.entity.member.MyMeetingView">
+        SELECT * FROM myMeetingView
+        WHERE participantId = #{id} </select>
+    <select id="getMyGathering" parameterType="com.zpop.web.entity.Member"
+            resultType="com.zpop.web.entity.member.MyMeetingView">
+        SELECT * FROM myMeetingView
+        WHERE regMemberId = #{id} </select>
+    <select id="getList" resultType= "Member">
+    	SELECT *
+    	FROM member
+    	LIMIT #{offset},#{size};
     </select>
-    <select id="getBySocialId" resultType= "Member">
-        select *
-        from member
-        where socialId=#{socialId}
+    
+    <!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 닉네임만 함 -->
+    <select id="countBySearch" resultType= "java.lang.Integer">
+      	SELECT COUNT(id) 
+      	FROM member
+      	<where>
+      		<if test="keyword!=null">
+      			nickname LIKE '%${keyword}%'
+      		</if>
+      	</where>
     </select>
-    <select id="getByNickname" resultType= "Member">
-        select *
-        from member
-		where nickname=#{nickname}
+    <select id="getListBySearch" resultType="Member">
+    	SELECT 
+    		id,
+    		profileImagePath,
+    		nickname,
+    		fame,
+    		isSuspended,
+    		createdAt,
+    		resignedAt
+   		FROM
+   			member
+   		ORDER BY id DESC
+   		LIMIT #{offset},#{size};
+   		<!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 닉네임만 함 -->
+  		<where>
+      		<if test="keyword!=null">
+      			nickname LIKE '%${keyword}%'
+      		</if>
+      	</where>
     </select>
 </mapper>
-

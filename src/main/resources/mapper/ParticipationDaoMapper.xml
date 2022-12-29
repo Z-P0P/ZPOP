@@ -5,26 +5,71 @@
 
 <mapper namespace="com.zpop.web.dao.ParticipationDao">
     <insert id="insert" parameterType="com.zpop.web.entity.Participation">
-        insert into participation
+        INSERT INTO participation
         (meetingId, participantId)
-        values(#{meetingId}, #{participantId})
+        VALUES (#{meetingId}, #{participantId})
     </insert>
-
+	
     <select id="get" resultType= "com.zpop.web.entity.Participation">
-        select *
-        from participation
-        where id=#{id}
+        SELECT *
+        FROM participation
+        WHERE id=#{id}
     </select>
 
-    <select id="getListByMeetingId" resultType= "com.zpop.web.entity.Participation">
-        select *
-        from participation
-        where meetingId=#{id}
+	<select id="getListByMeetingId"
+		resultType="com.zpop.web.entity.Participation">
+		SELECT *
+		FROM participation
+		WHERE meetingId=#{id}
+	</select>
+
+	<select id="getList"
+		resultType="com.zpop.web.entity.Participation">
+		SELECT *
+		FROM participation
+	</select>
+	<select id="getAdminViewList" resultType="AdminParticipationDto">
+		SELECT
+			participation.id,
+			meeting.title,
+			meeting.id as meetingId,
+			member.profileImagePath,
+			member.nickname as participantNickname,
+			member.id as participantId,
+			participation.createdAt,
+			participation.canceledAt
+		FROM participation
+		JOIN meeting
+		ON participation.meetingId = meeting.id
+		JOIN member
+		ON participation.participantId = member.id
+		LIMIT #{offset},#{size}
+	</select>
+
+	<update id="updateBannedAt">
+		UPDATE participation
+		SET bannedAt = CURRENT_TIMESTAMP()
+		WHERE id=#{id}
+	</update>
+
+	<select id="countBySearch" resultType= "java.lang.Integer">
+      	SELECT COUNT(id) 
+      	FROM participation
     </select>
 
-    <select id="getList" resultType= "com.zpop.web.entity.Participation">
-        select *
-        from participation
+	<select id="getByMeetingId" resultType="MeetingParticipantsDto">
+			SELECT p.id, p.participantId as memberId, m.nickname, m.profileImagePath
+			from participation p
+			join member m on p.participantId = m.id
+			WHERE meetingId = #{meetingId};
+	</select>
+    
+   	<select id="getByMeetingId" resultType="MeetingParticipantsDto">
+		SELECT p.id, p.participantId AS memberId, m.nickname, m.profileImagePath
+		FROM participation p
+		JOIN member m 
+		ON p.participantId = m.id
+		WHERE meetingId = #{meetingId} AND (p.bannedAt IS NULL AND p.canceledAt IS NULL);
     </select>
+
 </mapper>
-

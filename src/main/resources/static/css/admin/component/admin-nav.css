@@ -1,12 +1,12 @@
-.admin-nav-container{
-    width: 1200px;
+.admin-nav-wrapper{
+    /* width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    /* padding-bottom: 1rem; */
+    padding-bottom: 1rem; */
     
 }
 
-.admin-nav-lists{
+.admin-nav__lists{
     font-size: 20px;
     border-bottom: 3px solid var(--admin-light-grey);
     padding:1rem 1rem;
@@ -20,13 +20,13 @@
 
 
 
-li{
+.admin-nav__list{
     cursor: pointer;
     display: inline;
     margin: 0 1.5rem
 }
 
-.selected{
+.admin-nav__list--selected{
     border-bottom: 2px solid var(--admin-loyal-blue);
     padding-bottom: 1rem;
     font-weight: bold;

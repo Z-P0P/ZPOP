@@ -9,6 +9,8 @@ window.onload = () => {
       for (let option of selectBoxOptions) {
         option.onclick = () => {
           selectBoxInput.value = option.innerText;
+          selectBoxInput.dataset.id = option.dataset.id;
+              console.log(selectBoxInput.dataset.id);
         };
       }
     }

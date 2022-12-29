@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="/css/button.css" />
     <link rel="stylesheet" href="/css/member/component/reply.css" />
     <link rel="stylesheet" href="/css/member/component/profile-box.css">
+    <link rel="stylesheet" href="/css/deco.css" />
+    <script src="/js/comment/reply.js"></script>
   </head>
   <body>
     <section class="reply">
@@ -28,18 +30,31 @@
               </span>
               </div>
               <div class="reply__replies">
+		              <span class="hidden" th:text="${reply.parentCommentId}"></span>
+                      <span class="pointer">답글 달기</span>
+		              <span class="hidden" th:text="${reply.groupId}"></span>
+              </div>
+          </li>
+          <template id="template">
+          	<li >
+              <div class="profile"> 
+                  <span class="profile__image"></span>
+                  <span class="profile__nickname profile__nickname" >쿤님</span>
+                  <span class="profile__time" >방금</span>
+                  <button></button>
+              </div>
+              <div class="reply-container">
+              <span class="reply__at-symbol" >@</span><!--span사이 공백없애기 
+               --><span class="reply__to" ></span>
+              <span class="reply__content" ></span>
+              </div>
+              <div id="add-reply" class="reply__replies">
                       <span>답글 달기</span>
               </div>
           </li>
+          </template>
       </ul>
-      <div class="reply__input-container"> 
-        <textarea
-        class="reply__input"
-        name="답글 입력"
-        placeholder="답글을 입력하세요."
-        ></textarea>
-        <span class="reply__btn btn btn-round">등록하기</span>
-    </div>
+      
   </section>
   </body>
 </html>
