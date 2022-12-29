@@ -14,6 +14,7 @@ public interface NotificationDao {
 	List<Notification> getList();
 
 	// 알림을 읽었을 때, readAt을 읽은 시각으로 설정
-	//boolean updateReadDate(int id);
+	void update(int id, Date readAt);
+	void updateByType(Date readAt, int type);
 
 }

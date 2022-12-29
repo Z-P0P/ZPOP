@@ -4,11 +4,15 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.NotificationDao">
 	 <select id="getList" resultType="Notification">
-		select * 
-		from notification 
-		where readAt is null;
+		SELECT * 
+		FROM notification 
+		WHERE readAt IS null;
 	</select>
-	<update id="updateReadDate" parameterType="boolean">
-		UPDATE notification SET readAt = '1999-07-19';
+	<update id="update">
+		UPDATE notification SET readAt = #{readAt} WHERE id = #{id};
 	</update>
+	<update id="updateByType">
+		UPDATE notification SET readAt = #{readAt} WHERE type = #{type};
+	</update>
+	
 </mapper>
