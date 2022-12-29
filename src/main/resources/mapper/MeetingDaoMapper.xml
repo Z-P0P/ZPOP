@@ -152,4 +152,9 @@
 		ON meeting.contactTypeId = ct.id
 		WHERE meeting.id=#{meetingId}
 	</select>
+	    <select id="getMaxMember" resultType="int">
+    select maxMember from meeting
+    where id=#{meetingId}
+    
+    </select>
 </mapper>

@@ -271,6 +271,10 @@ public class DefaultMeetingService implements MeetingService{
 				// 강퇴당한 사용자일 경우
 				// 마감된 모임일 경우
 //				Participation participation = new Participation(participation);
+		
+		
+				int maxNumber = dao.getMaxMember(meetingId);
+				System.out.println(maxNumber);
 				return participationDao.insert(meetingId, memberId);
 	}
 }
