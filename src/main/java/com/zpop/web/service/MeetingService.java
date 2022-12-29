@@ -22,7 +22,7 @@ public interface MeetingService {
 
 			List<MeetingParticipantsDto> getParticipants(int id);
 
-			int participate(Participation participation);
+			int participate(int meetingId, int memberId);
 
 			void updateViewCount(int id);
 

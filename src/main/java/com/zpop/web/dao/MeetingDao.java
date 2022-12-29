@@ -34,5 +34,7 @@ public interface MeetingDao {
 	List<AdminMeetingDto> getAdminViewList(int size, int offset, String keyword, String option);
 
 	int count(String keyword, String option);
+
+	int updateClosedAt(Meeting foundMeeting);
 }
 

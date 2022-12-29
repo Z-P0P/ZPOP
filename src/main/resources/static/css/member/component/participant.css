@@ -31,6 +31,7 @@
   cursor: pointer;
   align-items: center;
   padding-left: 6px;
+  background-color: #f9f9f9;
 }
 
 .participant__info:hover{
