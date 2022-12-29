@@ -90,10 +90,11 @@
     <section class="participant">
         <div class="participant__num">
             <span>참가자</span>
-            <span class="participantSize" th:text="${#lists.size(participants)}">7</span>
+            <span class="participant-count" th:text="${#lists.size(participants)}">7</span>
             <span>/</span>
             <span th:text="${dto.maxMember}">10</span>
-            <span class="icon icon-arrow-up"></span>
+            <span class="icon pointer icon-arrow-up"></span>
+            <span class="icon pointer hidden icon-arrow-down"></span>
         </div>
         <ul class="participant__list">
             <li th:each="participant:${participants}">

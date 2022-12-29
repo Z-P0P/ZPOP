@@ -264,12 +264,15 @@ public class DefaultMeetingService implements MeetingService{
         return true;
     }
 
+    
 	@Override
 	public int participate(int meetingId, int memberId) {
 				// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
 				// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
 				// 강퇴당한 사용자일 경우
 				// 마감된 모임일 경우
+//		3. 로그인을 하지 않은 사용자가 참여하기 버튼을 누른 경우 -> 로그인 모달이 나와야됨.
+//		4. 내가 이미 참여한 모임일 경우
 				
 				int maxMember = dao.getmaxMember(meetingId);
 				// result는 성공(1) 실패(0)

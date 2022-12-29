@@ -86,7 +86,7 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 							if (response.ok) {
 								if(groupId == parentId) {//원댓글에 대한 답글일 경우
 									removeTextBox('single');
-									linkContainer.children[2].classList.remove("hidden");
+									linkContainer.children[2].classList.remove("hidden");//닫기 버튼
 								}
 								linkContainer.classList.remove("hidden");
 								while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제

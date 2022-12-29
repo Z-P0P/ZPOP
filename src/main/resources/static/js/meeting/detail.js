@@ -3,6 +3,11 @@ window.addEventListener("load", function() {
 	const participationBtn = document.querySelector("#participation-btn");
 	const meetingId = document.querySelector(".meeting-id").innerText.trim();
 	const btnModalParticipate = document.querySelector(".btn-modal-right");
+	const participantUl = document.querySelector(".participant__list");
+	const participantCount = document.querySelector(".participant-count");
+	const arrowUp = document.querySelector(".icon-arrow-up");
+	const arrowDown = document.querySelector(".icon-arrow-down");
+	
 	participationBtn.onclick = function(e) {
 		e.preventDefault();
 		const modal = document.querySelector(e.target.getAttribute("data-modal"));
@@ -22,9 +27,6 @@ window.addEventListener("load", function() {
 	for (closeBtn of modalCloseBtns) {
 		closeBtn.onclick = hideModalByButton;
 	}
-
-
-
 	
 	const meetingTitleHambugerIcon = document.querySelector(".meeting__title-hambuger-icon");
 	
@@ -33,7 +35,16 @@ window.addEventListener("load", function() {
 		
 	}
 		
-
+	arrowUp.addEventListener("click",(e)=>{
+		participantUl.classList.add("hidden");
+		e.target.classList.add("hidden");
+		e.target.nextElementSibling.classList.remove("hidden");
+	});
+	arrowDown.addEventListener("click",(e)=>{
+		participantUl.classList.remove("hidden");
+		e.target.classList.add("hidden");
+		e.target.previousElementSibling.classList.remove("hidden");
+	});
 
 	btnModalParticipate.onclick = function() {
 		const data = {
@@ -50,16 +61,43 @@ window.addEventListener("load", function() {
          .then((response) => {
             if (response.ok) {
                console.log("성공");
-               document.querySelector("#modal-wrapper-participation").classList.add("hidden");
+            	document.querySelector("#modal-wrapper-participation").classList.add("hidden");
+             	while(participantUl.hasChildNodes()) //기존 참여자아이콘 한개씩 삭제
+					participantUl.removeChild(participantUl.firstChild);
+				getParticipant();			
             }
             else alert("시스템 장애로 등록이 안되고 있습니다.");
-
-         })
-         .catch((error) => {
+            })
+	        .catch((error) => {
             console.error('실패:', error);
          });
-
-
+	}
+	
+	function getParticipant(){
+		fetch(`/meeting/${meetingId}/participant`)
+		.then(response => {
+			if (response.ok) {
+				return response;
+			}
+			else console.log(response)
+		})
+		.then(data => data.json())
+		.then(participants => {
+			let count = participants.length;
+			participantCount.innerText = count;
+			for (const p of participants) {
+				let template = `
+					<li>
+			            <div class="participant__info">
+			                <img src="/images/girl.svg">  
+			                <span>${p.nickname}</span>
+			            </div>
+		            </li>
+				`
+				participantUl.insertAdjacentHTML("beforeend", template);
+			}
+		});
+		
 	}
 
 })

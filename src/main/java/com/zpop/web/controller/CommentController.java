@@ -24,10 +24,10 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/")
 public class CommentController {
 	@Autowired
-	CommentService service;
+	private CommentService service;
 	
 
-
+	//답글 AJAX endpoint (js에서 콜하는 함수)
 	@GetMapping("comment/{groupId}/reply")
 	@ResponseBody
 	public  Map<String, Object> getReply(@PathVariable int groupId) {
@@ -43,7 +43,7 @@ public class CommentController {
 		return dto;
 	}
 
-	
+	//댓글(=comment) 등록
 	@PostMapping("comment")
 	public  String registerComment(@RequestBody Comment comment, HttpSession session) {
 		Member member = (Member)session.getAttribute("member");
@@ -51,6 +51,7 @@ public class CommentController {
 		service.registerComment(comment);
 		return "comment/comment";
 	}
+	//답글(=reply) 등록
 	@PostMapping("reply")
 	public  String registerReply(@RequestBody Comment comment, HttpSession session) {
 		Member member = (Member)session.getAttribute("member");

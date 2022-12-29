@@ -30,12 +30,10 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/meeting")
 public class MeetingController {
-
 	@Autowired
 	private MeetingService service;
-
 	@Autowired
-	CommentService commentService;
+	private CommentService commentService;
 	
 	@GetMapping("/register")
 	public String registerView() {
@@ -61,7 +59,6 @@ public class MeetingController {
 
 	@GetMapping("/{id}")
 	public String detailView(@PathVariable int id, Model model, HttpSession session) {
-		// TODO: 댓글이랑 합치기 
 		// TODO: getById에 Member or memberId로 넣어서 밑에 비즈니스로직 service 레이어로 옮기기
 		
 		MeetingDetailDto dto = service.getById(id);
@@ -95,6 +92,13 @@ public class MeetingController {
 		return "meeting/detail";
 	}
 	
+	//참여자목록 AJAX endpoint(js가 콜하는 함수)
+	@GetMapping("{meetingId}/participant")
+	@ResponseBody
+	public List<MeetingParticipantsDto> getParticipant(@PathVariable int meetingId){
+		List<MeetingParticipantsDto> list = service.getParticipants(meetingId);
+		return list;
+	}
 	
 	// TODO: service 레이어로
 	public static boolean isMemberParticipated(Member member, List<MeetingParticipantsDto> participants) {
@@ -106,7 +110,7 @@ public class MeetingController {
 		return false;
 	}
 
-	
+	//댓글 AJAX endpoint (js에서 콜하는 함수)
 	@GetMapping("{meetingId}/comment")
 	@ResponseBody
 	public  Map<String, Object> getComment(@PathVariable int meetingId) {
@@ -122,12 +126,7 @@ public class MeetingController {
 		return dto;
 	}
 	
-//	@GetMapping("/participate")
-//	@ResponseBody
-//	public List<MeetingParticipantsDto> getParticipants(int meetingId) {
-//		
-//		return service.getParticipants(meetingId);
-//	}
+
 	// 예외처리 리스트
 	
 //		1. 참여하려는 사용자가 주최자인 경우 --> memberId == regmemberId
@@ -135,6 +134,7 @@ public class MeetingController {
 //		3. 로그인을 하지 않은 사용자가 참여하기 버튼을 누른 경우 -> 로그인 모달이 나와야됨.
 //		4. 내가 이미 참여한 모임일 경우
 	
+	//참여 AJAX endpoint (js에서 콜하는 함수)
 	@PostMapping("/participate/{meetingId}")
 	@ResponseBody
 	public String participate(@PathVariable int meetingId, HttpSession session) {
