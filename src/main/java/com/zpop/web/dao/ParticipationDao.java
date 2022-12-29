@@ -16,6 +16,7 @@ import com.zpop.web.entity.Participation;
 public interface ParticipationDao {
 	
     int insert(int meetingId, int memberId);
+    
     Participation get(int id);
     
     List<Participation> getListByMeetingId(int meetingId);

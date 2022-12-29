@@ -29,8 +29,17 @@ window.addEventListener("load", function() {
 
 
 	btnModalParticipate.onclick = function() {
+		const data = {
+			method: "POST", 
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				"meetingId": meetingId,
+			})
+		}
 
-		fetch(`/meeting/participate/${meetingId}`)
+		fetch(`/meeting/participate/${meetingId}`,data)
 			.then((response) => {
 				if (response.ok) {
 					console.log("성공");

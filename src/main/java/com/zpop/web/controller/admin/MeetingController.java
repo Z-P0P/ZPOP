@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zpop.web.dto.admin.AdminCategoryDto;
 import com.zpop.web.dto.admin.AdminMeetingDetailsResponse;
 import com.zpop.web.dto.admin.AdminMeetingDto;
+import com.zpop.web.dto.admin.AdminRegionDto;
 import com.zpop.web.service.admin.AdminMeetingService;
 
 @Controller("adminMeetingController")

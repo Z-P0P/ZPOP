@@ -7,7 +7,7 @@
     <insert id="insert" parameterType="int">
         INSERT INTO participation
         (meetingId, participantId)
-        VALUES (#{meetingId}, #{participantId})
+        VALUES (#{meetingId}, #{memberId})
     </insert>
 	
     <select id="get" resultType= "com.zpop.web.entity.Participation">
@@ -57,13 +57,7 @@
       	FROM participation
     </select>
 
-	<select id="getByMeetingId" resultType="MeetingParticipantsDto">
-			SELECT p.id, p.participantId as memberId, m.nickname, m.profileImagePath
-			from participation p
-			join member m on p.participantId = m.id
-			WHERE meetingId = #{meetingId};
-	</select>
-    
+	    
    	<select id="getByMeetingId" resultType="MeetingParticipantsDto">
 		SELECT p.id, p.participantId AS memberId, m.nickname, m.profileImagePath
 		FROM participation p

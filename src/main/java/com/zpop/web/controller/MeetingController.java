@@ -149,14 +149,15 @@ public class MeetingController {
 //		3. 로그인을 하지 않은 사용자가 참여하기 버튼을 누른 경우 -> 로그인 모달이 나와야됨.
 //		4. 내가 이미 참여한 모임일 경우
 	
-	@GetMapping("/participate/{meetingId}")
+	@PostMapping("/participate/{meetingId}")
+	@ResponseBody
 	public String participate(@PathVariable int meetingId, HttpSession session) {
 		
 		Member member = (Member)session.getAttribute("member");
 		int memberId = member.getId();
 		service.participate(meetingId, memberId);
 		
-		return "";
+		return "meeting/detail";
 	}
 }
 
