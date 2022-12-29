@@ -90,7 +90,9 @@
     <section class="participant">
         <div class="participant__num">
             <span>참가자</span>
-            <span th:text="|${#lists.size(participants)}/${dto.maxMember}|">15/56</span>
+            <span class="participantSize" th:text="${#lists.size(participants)}">7</span>
+            <span>/</span>
+            <span th:text="${dto.maxMember}">10</span>
             <span class="icon icon-arrow-up"></span>
         </div>
         <ul class="participant__list">

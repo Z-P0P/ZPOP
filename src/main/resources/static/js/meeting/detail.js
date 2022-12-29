@@ -3,7 +3,6 @@ window.addEventListener("load", function() {
 	const participationBtn = document.querySelector("#participation-btn");
 	const meetingId = document.querySelector(".meeting-id").innerText.trim();
 	const btnModalParticipate = document.querySelector(".btn-modal-right");
-	
 	participationBtn.onclick = function(e) {
 		e.preventDefault();
 		const modal = document.querySelector(e.target.getAttribute("data-modal"));
@@ -24,8 +23,16 @@ window.addEventListener("load", function() {
 		closeBtn.onclick = hideModalByButton;
 	}
 
+
+
 	
+	const meetingTitleHambugerIcon = document.querySelector(".meeting__title-hambuger-icon");
 	
+	meetingTitleHambugerIcon.onclick = function(e){
+		console.log("햄버거 버튼입니다");
+		
+	}
+		
 
 
 	btnModalParticipate.onclick = function() {
@@ -39,18 +46,18 @@ window.addEventListener("load", function() {
 			})
 		}
 
-		fetch(`/meeting/participate/${meetingId}`,data)
-			.then((response) => {
-				if (response.ok) {
-					console.log("성공");
-					document.querySelector("#modal-wrapper-participation").classList.add("hidden");
-				}
-				else alert("시스템 장애로 등록이 안되고 있습니다.");
+      	fetch(`/meeting/participate/${meetingId}`,data)
+         .then((response) => {
+            if (response.ok) {
+               console.log("성공");
+               document.querySelector("#modal-wrapper-participation").classList.add("hidden");
+            }
+            else alert("시스템 장애로 등록이 안되고 있습니다.");
 
-			})
-			.catch((error) => {
-				console.error('실패:', error);
-			});
+         })
+         .catch((error) => {
+            console.error('실패:', error);
+         });
 
 
 	}

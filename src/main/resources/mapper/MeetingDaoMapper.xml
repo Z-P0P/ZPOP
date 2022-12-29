@@ -152,4 +152,10 @@
 		ON meeting.contactTypeId = ct.id
 		WHERE meeting.id=#{meetingId}
 	</select>
+	
+		<select id="getmaxMember" resultType="java.lang.Integer">
+		SELECT maxMember FROM meeting
+		WHERE id = #{meetingId}
+		</select>
+	
 </mapper>

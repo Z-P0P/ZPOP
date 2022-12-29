@@ -266,12 +266,25 @@ public class DefaultMeetingService implements MeetingService{
 
 	@Override
 	public int participate(int meetingId, int memberId) {
-		// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
+				// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
 				// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
 				// 강퇴당한 사용자일 경우
 				// 마감된 모임일 경우
-//				Participation participation = new Participation(participation);
-				return participationDao.insert(meetingId, memberId);
+				
+				int maxMember = dao.getmaxMember(meetingId);
+				// result는 성공(1) 실패(0)
+				int result = 0;
+				
+				int size = participationDao.getparticipantsSize(meetingId);
+				
+				if(maxMember > size) {
+					participationDao.insert(meetingId, memberId);
+					result = 1;
+				}
+				else
+					result = 0;
+
+				return result;
 	}
 }
 

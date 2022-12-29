@@ -25,4 +25,6 @@ public interface ParticipationDao {
     List<AdminParticipationDto> getAdminViewList(int size, int offset, String keyword, String option);
     int updateBannedAt(int id);
 	int countBySearch(String keyword, String option);
+
+	int getparticipantsSize(int meetingId);
 }

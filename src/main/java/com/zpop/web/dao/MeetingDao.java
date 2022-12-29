@@ -36,5 +36,8 @@ public interface MeetingDao {
 	int count(String keyword, String option);
 
 	int updateClosedAt(Meeting foundMeeting);
+
+	int getmaxMember(int meetingId);
+
 }
 

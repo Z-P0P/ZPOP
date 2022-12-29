@@ -56,7 +56,6 @@
       	SELECT COUNT(id) 
       	FROM participation
     </select>
-
 	    
    	<select id="getByMeetingId" resultType="MeetingParticipantsDto">
 		SELECT p.id, p.participantId AS memberId, m.nickname, m.profileImagePath
@@ -65,5 +64,12 @@
 		ON p.participantId = m.id
 		WHERE meetingId = #{meetingId} AND (p.bannedAt IS NULL AND p.canceledAt IS NULL);
     </select>
+	
+	<select id="getparticipantsSize" resultType="int">
+		SELECT COUNT(id) 
+		FROM participation
+		where meetingId = #{id}
+	</select>
 
+	
 </mapper>

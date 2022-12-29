@@ -63,6 +63,7 @@ public class MeetingController {
 	public String detailView(@PathVariable int id, Model model, HttpSession session) {
 		// TODO: 댓글이랑 합치기 
 		// TODO: getById에 Member or memberId로 넣어서 밑에 비즈니스로직 service 레이어로 옮기기
+		
 		MeetingDetailDto dto = service.getById(id);
 		Member member = (Member)session.getAttribute("member");
 		List<MeetingParticipantsDto> participants = service.getParticipants(id);
