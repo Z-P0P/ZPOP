@@ -20,11 +20,13 @@ public interface MeetingService {
 
 			MeetingDetailDto getById(int id);
 
-			List<MeetingParticipantsDto> getParticipants(int meetingId);
+			List<MeetingParticipantsDto> getParticipants(int id);
 
-			int participate(Participation participation);
+			int participate(int meetingId, int memberId);
 
 			void updateViewCount(int id);
+
+			boolean kick(int id, int participantId, Member member);
 
 			boolean close(int id, Member member);
 

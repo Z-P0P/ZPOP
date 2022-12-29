@@ -1,6 +1,9 @@
 window.addEventListener("load", function() {
 
 	const participationBtn = document.querySelector("#participation-btn");
+	const meetingId = document.querySelector(".meeting-id").innerText.trim();
+	const btnModalParticipate = document.querySelector(".btn-modal-right");
+	
 	participationBtn.onclick = function(e) {
 		e.preventDefault();
 		const modal = document.querySelector(e.target.getAttribute("data-modal"));
@@ -21,39 +24,32 @@ window.addEventListener("load", function() {
 		closeBtn.onclick = hideModalByButton;
 	}
 
-	const btnModalParticipate = document.querySelector(".btn-modal-right");
-	const meetingId = document.querySelector(".meeting-Id").innerText.trim();
-	const memberId = document.querySelector(".member-Id").innerText.trim();
+	
+	
 
 
-
-	btnModalParticipate.onclick = function(e) {
-
-
-
-
+	btnModalParticipate.onclick = function() {
 		const data = {
-			method: "POST", // 또는 'PUT'
+			method: "POST", 
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
 				"meetingId": meetingId,
-				"participantId": memberId
 			})
 		}
 
-		fetch("http://localhost:8080/meeting/participate", data)
+		fetch(`/meeting/participate/${meetingId}`,data)
 			.then((response) => {
 				if (response.ok) {
 					console.log("성공");
 					document.querySelector("#modal-wrapper-participation").classList.add("hidden");
 				}
+				else alert("시스템 장애로 등록이 안되고 있습니다.");
 
 			})
 			.catch((error) => {
 				console.error('실패:', error);
-				alert("참여에 실패했습니다");
 			});
 
 

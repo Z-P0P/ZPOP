@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    신고종류
+    <select name="" id="report-type">
+        <option value="1">부적절한 닉네임</option>
+        <option value="2">욕설/유해성 문구</option>
+        <option value="3">스팸/광고</option>
+        <option value="4">기타</option>
+    </select>   
+    <p>상세내용</p>
+    <input type="text" id="report-reason">
+    <button id="report-btn">신고하기</button>
+</body>
+
+<script>
+	 function addOrderResult(target){
+			const newDiv = document.createElement("div");
+			const newContent = document.createTextNode("신고 완료하였습니다!");
+			newDiv.appendChild(newContent);
+			
+			target.insertAdjacentElement("afterend", newDiv);
+		}
+
+    window.addEventListener("load", (e) => {
+        const reportBtn = document.querySelector("#report-btn");
+
+        reportBtn.addEventListener("click",(e) => {
+            e.preventDefault();
+
+            const reportType = document.querySelector("#report-type").value;
+            const reportReason = document.querySelector("#report-reason").value;
+
+            const data = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    reportType,
+                    reportReason
+                })
+            }
+
+            fetch("http://localhost:8080/report/member-test", data)
+            .then((response) => {
+				const result = document.querySelector("#report-btn");
+				addOrderResult(result);
+			})
+  			.catch((error) => alert("신고를 실패하였습니다"));
+        })
+    });
+</script>
+</html>

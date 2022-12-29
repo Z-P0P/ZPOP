@@ -15,7 +15,6 @@ import com.zpop.web.dto.AgeRangeDto;
 import com.zpop.web.dto.CategoryDto;
 import com.zpop.web.dto.ContactTypeDto;
 import com.zpop.web.dto.MeetingParticipantsDto;
-import com.zpop.web.dto.ParticipantDto;
 import com.zpop.web.dto.RegionDto;
 import com.zpop.web.dto.admin.AdminCategoryDto;
 import com.zpop.web.dto.admin.AdminMeetingDetailsDto;
@@ -26,97 +25,95 @@ import com.zpop.web.dto.admin.AdminRegionDto;
 
 @Service
 public class DefaultAdminMeetingService implements AdminMeetingService {
-	
-	private final MeetingDao meetingDao;
-	private final CategoryDao categoryDao;
-	private final RegionDao regionDao;
-	private final AgeRangeDao ageRangeDao;
-	private final ContactTypeDao contactTypeDao;
-	private final ParticipationDao participationDao;
-	
-	
-	@Autowired
-	public DefaultAdminMeetingService(MeetingDao meetingDao,
-									CategoryDao categoryDao,
-									RegionDao regionDao,
-									AgeRangeDao ageRangeDao,
-									ContactTypeDao contactTypeDao,
-									ParticipationDao participationDao) {
-		this.meetingDao = meetingDao;
-		this.categoryDao = categoryDao;
-		this.regionDao = regionDao;
-		this.contactTypeDao = contactTypeDao;
-		this.ageRangeDao = ageRangeDao;
-		this.participationDao = participationDao;
-	}
+   
+   private final MeetingDao meetingDao;
+   private final CategoryDao categoryDao;
+   private final RegionDao regionDao;
+   private final AgeRangeDao ageRangeDao;
+   private final ContactTypeDao contactTypeDao;
+   private final ParticipationDao participationDao;
+   
+   
+   @Autowired
+   public DefaultAdminMeetingService(MeetingDao meetingDao,
+                           CategoryDao categoryDao,
+                           RegionDao regionDao,
+                           AgeRangeDao ageRangeDao,
+                           ContactTypeDao contactTypeDao,
+                           ParticipationDao participationDao) {
+      this.meetingDao = meetingDao;
+      this.categoryDao = categoryDao;
+      this.regionDao = regionDao;
+      this.contactTypeDao = contactTypeDao;
+      this.ageRangeDao = ageRangeDao;
+      this.participationDao = participationDao;
+   }
 
 
-	@Override
-	public List<AdminMeetingDto> getList(int page, String keyword, String option) {
-		// TODO Auto-generated method stub
-		int size = 10;
-		int offset=(page-1)*size;
-		List<AdminMeetingDto> list = meetingDao.getAdminViewList(size, offset, keyword, option);
-		
-		return list;
-	}
+   @Override
+   public List<AdminMeetingDto> getList(int page, String keyword, String option) {
+      // TODO Auto-generated method stub
+      int size = 10;
+      int offset=(page-1)*size;
+      List<AdminMeetingDto> list = meetingDao.getAdminViewList(size, offset, keyword, option);
+      
+      return list;
+   }
 
-	@Override
-	public int count(String keyword, String option) {
-		
-		int count = meetingDao.count(keyword, option);
-		
-		return count;
-	}
-
-
-
-}
-
-
-	
-	@Override
-	public AdminMeetingDetailsResponse getDetailsResponse(int id) {
-		
-		AdminMeetingDetailsDto dto = meetingDao.getAdminDetailView(id);
-		List<CategoryDto> categories = categoryDao.getActiveList();
-		List<RegionDto> regions = regionDao.getActiveList();
-		List<ContactTypeDto> contactTypes = contactTypeDao.getActiveList();
-		List<AgeRangeDto> ageRanges = ageRangeDao.getActiveList();
-		List<MeetingParticipantsDto> participants = participationDao.getByMeetingId(id);
-		
-		AdminMeetingDetailsResponse response = new AdminMeetingDetailsResponse(
-									dto,
-									categories,
-									regions,
-									contactTypes,
-									ageRanges,
-									participants
-									);
-		return response;
-	}
-}
+   @Override
+   public int count(String keyword, String option) {
+      
+      int count = meetingDao.count(keyword, option);
+      
+      return count;
+   }
+   
+   @Override
+   public AdminMeetingDetailsResponse getDetailsResponse(int id) {
+      
+      AdminMeetingDetailsDto dto = meetingDao.getAdminDetailView(id);
+      List<CategoryDto> categories = categoryDao.getActiveList();
+      List<RegionDto> regions = regionDao.getActiveList();
+      List<ContactTypeDto> contactTypes = contactTypeDao.getActiveList();
+      List<AgeRangeDto> ageRanges = ageRangeDao.getActiveList();
+      List<MeetingParticipantsDto> participants = participationDao.getByMeetingId(id);
+      
+      AdminMeetingDetailsResponse response = new AdminMeetingDetailsResponse(
+                           dto,
+                           categories,
+                           regions,
+                           contactTypes,
+                           ageRanges,
+                           participants
+                           );
+      return response;
+   }
 
 
-	
-	@Override
-	public AdminMeetingDetailsResponse getDetailsResponse(int id) {
-		
-		AdminMeetingDetailsDto dto = meetingDao.getAdminDetailView(id);
-		List<CategoryDto> categories = categoryDao.getActiveList();
-		List<RegionDto> regions = regionDao.getActiveList();
-		List<ContactTypeDto> contactTypes = contactTypeDao.getActiveList();
-		List<AgeRangeDto> ageRanges = ageRangeDao.getActiveList();
-		List<MeetingParticipantsDto> participants = participationDao.getByMeetingId(id);
-		
-		AdminMeetingDetailsResponse response = new AdminMeetingDetailsResponse(
-									dto,
-									categories,
-									regions,
-									contactTypes,
-									ageRanges,
-									participants
-									);
-		return response;
-	}
+   @Override
+   public List<AdminCategoryDto> getCategory(int page, String keyword, String option) {
+      int size = 10;
+      int offset=(page-1)*size;
+      return categoryDao.getAdminViewList(offset,size,keyword, option);
+   }
+
+
+   @Override
+   public int countCategory(String keyword, String option) {
+      return categoryDao.count(keyword, option);
+   }
+
+
+   @Override
+   public int countRegion(String keyword, String option) {
+      return regionDao.count(keyword, option);
+   }
+
+
+   @Override
+   public List<AdminRegionDto> getRegion(int page, String keyword, String option) {
+      int size = 10;
+      int offset=(page-1)*size;
+      return regionDao.getAdminViewList(offset,size, keyword, option);
+   }
 }

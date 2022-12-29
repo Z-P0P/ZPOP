@@ -10,6 +10,7 @@ public class Notification {
 	private int type;
 	private Date readAt;
 	private Date createdAt;
+	private String elapsedTime;
 
 	public Notification(int id, int memberId, String url, int type, Date readAt, Date createdAt) {
 		super();
@@ -69,6 +70,14 @@ public class Notification {
 		this.createdAt = createdAt;
 	}
 
+	public String getElapsedTime() {
+		return elapsedTime;
+	}
+
+	public void setElapsedTime(String elapsedTime) {
+		this.elapsedTime = elapsedTime;
+	}
+	
 	@Override
 	public String toString() {
 		return "Notification [id=" + id + ", memberId=" + memberId + ", url=" + url + ", type=" + type + ", readAt="

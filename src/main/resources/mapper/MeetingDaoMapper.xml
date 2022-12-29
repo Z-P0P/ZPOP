@@ -62,6 +62,12 @@
         deletedAt=CURRENT_TIMESTAMP()
         WHERE id = #{id}
     </update>
+
+    <update id="updateClosedAt" parameterType="com.zpop.web.entity.meeting.Meeting">
+        UPDATE meeting
+        closedAt=CURRENT_TIMESTAMP()
+        WHERE id = #{id}
+    </update>
 	
 	<update id="updateViewCount" parameterType="com.zpop.web.dto.MeetingDetailDto">
         UPDATE meeting
@@ -146,4 +152,9 @@
 		ON meeting.contactTypeId = ct.id
 		WHERE meeting.id=#{meetingId}
 	</select>
+	    <select id="getMaxMember" resultType="int">
+    select maxMember from meeting
+    where id=#{meetingId}
+    
+    </select>
 </mapper>
