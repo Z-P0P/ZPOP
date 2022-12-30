@@ -13,5 +13,7 @@ public interface MemberService {
 
         List<MyMeetingResponse> getMyGathering(int memberId);
 
+		int getUserType(int memberId, int meetingId);
+
 }
 

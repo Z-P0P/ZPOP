@@ -44,13 +44,13 @@
                 <span class="hidden meeting-id" th:text="${meetingId}"></span>
                     <span class="meeting__title"  th:text="${dto.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
-                    <th:block th:if="${session.member != null && memberType == 'host'}">
+                    <th:block th:if="${session.member != null && userType== 3}">
                     		<div th:replace="~{inc/meeting-detail-modal::member-host}"></div>
                     </th:block>
-                    <th:block th:if="${session.member != null && memberType == 'participant'}">
+                    <th:block th:if="${session.member != null && userType== 2}">
                     		<div th:replace="~{inc/meeting-detail-modal::member-participant}"></div>
                     </th:block>
-                       <th:block th:if="${session.member != null && memberType == 'member'}">
+                       <th:block th:if="${session.member != null && userType== 1}">
                     		<div th:replace="~{inc/meeting-detail-modal::member}"></div>
                     </th:block>
                 </div>

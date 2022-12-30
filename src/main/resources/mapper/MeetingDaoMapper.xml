@@ -158,4 +158,9 @@
 		WHERE id = #{meetingId}
 		</select>
 	
+		<select id="getMeetingHost" resultType="int">
+					SELECT regMemberId from meeting
+					where id = #{id}
+		</select>
+	
 </mapper>

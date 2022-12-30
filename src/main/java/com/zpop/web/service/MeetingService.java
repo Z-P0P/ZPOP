@@ -8,6 +8,9 @@ import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.entity.Participation;
 
 import com.zpop.web.entity.meeting.Meeting;
+
+import jakarta.servlet.http.HttpSession;
+
 import java.util.List;
 
 

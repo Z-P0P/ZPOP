@@ -38,6 +38,7 @@ public interface MeetingDao {
 	int updateClosedAt(Meeting foundMeeting);
 
 	int getmaxMember(int meetingId);
-
+	
+	int getMeetingHost(int meetingId);
 }
 

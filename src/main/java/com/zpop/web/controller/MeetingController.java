@@ -22,11 +22,10 @@ import com.zpop.web.entity.Member;
 import com.zpop.web.entity.comment.CommentView;
 import com.zpop.web.service.CommentService;
 import com.zpop.web.service.MeetingService;
+import com.zpop.web.service.MemberService;
 
 import jakarta.servlet.http.HttpSession;
-/*
- * 작성자: 임형미 & 
- */
+
 @Controller
 @RequestMapping("/meeting")
 public class MeetingController {
@@ -35,6 +34,8 @@ public class MeetingController {
 	@Autowired
 	private CommentService commentService;
 	
+	@Autowired
+	private MemberService memberService;
 	@GetMapping("/register")
 	public String registerView() {
 
@@ -62,22 +63,19 @@ public class MeetingController {
 		// TODO: getById에 Member or memberId로 넣어서 밑에 비즈니스로직 service 레이어로 옮기기
 		
 		MeetingDetailDto dto = service.getById(id);
-		Member member = (Member)session.getAttribute("member");
 		List<MeetingParticipantsDto> participants = service.getParticipants(id);
+		Member member = (Member)session.getAttribute("member");
+		
+		int userType = 0;
 		if(member != null) {
-			if(member.getId() == dto.getRegMemberId()) {
-				model.addAttribute("memberType","host");
-			}
-			else if(isMemberParticipated (member,participants)){
-				model.addAttribute("memberType" ,"participant");
-			}
-			else {
-				model.addAttribute("memberType" ,"member");
-			}
+			int memberId = member.getId();
+			userType = memberService.getUserType(memberId,id);
 		}
+		
 		model.addAttribute("dto", dto);
 		model.addAttribute("participants", participants);
 		model.addAttribute("meetingId", id); 
+		model.addAttribute("userType",userType);
 		//session.setAttribute("memberId", member.getId());
 		// service의 public 메서드 -> 사용자가 쓰는 기능
 		// 따라서 private updateViewCount으로 바꾸고 getById안에 넣기.
@@ -101,15 +99,7 @@ public class MeetingController {
 	}
 	
 	// TODO: service 레이어로
-	public static boolean isMemberParticipated(Member member, List<MeetingParticipantsDto> participants) {
-		for(MeetingParticipantsDto dto : participants) {
-			if(dto.getMemberId() == member.getId()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
+	
 	//댓글 AJAX endpoint (js에서 콜하는 함수)
 	@GetMapping("{meetingId}/comment")
 	@ResponseBody

@@ -18,7 +18,7 @@
 
 	<select id="getListByMeetingId"
 		resultType="com.zpop.web.entity.Participation">
-		SELECT *
+		SELECT participantId
 		FROM participation
 		WHERE meetingId=#{id}
 	</select>
@@ -58,14 +58,14 @@
     </select>
 	    
    	<select id="getByMeetingId" resultType="MeetingParticipantsDto">
-		SELECT p.id, p.participantId AS memberId, m.nickname, m.profileImagePath
+		SELECT p.participantId AS memberId, m.nickname, m.profileImagePath
 		FROM participation p
 		JOIN member m 
 		ON p.participantId = m.id
 		WHERE meetingId = #{meetingId} AND (p.bannedAt IS NULL AND p.canceledAt IS NULL);
     </select>
 	
-	<select id="getparticipantsSize" resultType="int">
+	<select id="getparticipantsCount" resultType="int">
 		SELECT COUNT(id) 
 		FROM participation
 		where meetingId = #{id}
