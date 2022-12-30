@@ -172,7 +172,7 @@ public class DefaultMeetingService implements MeetingService {
 		Elements imageTags = doc.select("img");
 		for (Element tag : imageTags) {
 			String src = tag.attr("src");
-			src = File.separator + "image" + File.separator + String.valueOf(dto.getRegMemberId()) + File.separator + src;
+			src = File.separator + "images" + File.separator + String.valueOf(dto.getRegMemberId()) + File.separator + src;
 			tag.attr("src", src);
 		}
 		dto.setContent(doc.toString());

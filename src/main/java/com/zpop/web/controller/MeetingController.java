@@ -66,7 +66,7 @@ public class MeetingController {
 			 HttpServletRequest request) throws FileNotFoundException, IOException {
 		
 		// 저장되는 파일 경로를 controller에서 얻어서 service로 넘겨줌
-		String path = "/image";
+		String path = "/images";
 		String realPath = request.getServletContext().getRealPath(path);
 		   
 		
