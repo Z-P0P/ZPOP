@@ -34,7 +34,7 @@ public class SecurityConfig {
                             // notification 
                             .requestMatchers("/notification/**").hasAnyRole("USER")
                             // admin
-                            .requestMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
+                            .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                             .anyRequest().permitAll()
             )
             .logout(logout ->
