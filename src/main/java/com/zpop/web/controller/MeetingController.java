@@ -2,9 +2,9 @@ package com.zpop.web.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +12,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import com.zpop.web.dto.RegisterMeetingRequest;
 import com.zpop.web.dto.RegisterMeetingResponse;
 import com.zpop.web.entity.Member;
 import com.zpop.web.entity.comment.CommentView;
+import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.CommentService;
 import com.zpop.web.service.MeetingService;
 
@@ -60,20 +62,15 @@ public class MeetingController {
 	public String register(int categoryId, int regionId, int ageRangeId,
 			 int contactTypeId,	 int genderCategory, String title, String content,
 			 String detailRegion,int maxMember, @DateTimeFormat(pattern= "yyyy-MM-dd'T'HH:mm") LocalDateTime startedAt, String contact, @Nullable List <MultipartFile> images, 
-			 HttpSession session, HttpServletRequest request) throws FileNotFoundException, IOException {
+			 @AuthenticationPrincipal ZpopUserDetails userDetails,
+			 HttpServletRequest request) throws FileNotFoundException, IOException {
 		
-		Member member = (Member)session.getAttribute("member");
-		if(member==null) {
-			//비인가 사용자
-			return "NOT_AUTHORIZED";
-		}
-
 		// 저장되는 파일 경로를 controller에서 얻어서 service로 넘겨줌
 		String path = "/image";
 		String realPath = request.getServletContext().getRealPath(path);
 		   
 		
-		int regMemberId = member.getId();
+		int regMemberId = userDetails.getId();
 		RegisterMeetingRequest dto = new RegisterMeetingRequest(
 				regMemberId,
 				categoryId,
