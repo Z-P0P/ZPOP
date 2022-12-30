@@ -2,6 +2,7 @@ package com.zpop.web.service;
 
 import com.zpop.web.dao.MeetingDao;
 import com.zpop.web.dao.MemberDao;
+import com.zpop.web.dao.NotificationDao;
 import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.dto.MeetingThumbnailPagination;
 import com.zpop.web.dto.MeetingThumbnailResponse;
@@ -14,6 +15,7 @@ import com.zpop.web.utils.TextDateTimeCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -41,6 +43,9 @@ public class DefaultMeetingService implements MeetingService{
 
     @Autowired
     private MemberDao memberDao;
+    
+    @Autowired
+	private NotificationDao notificationDao;
     
     public DefaultMeetingService() {
     }
@@ -258,12 +263,13 @@ public class DefaultMeetingService implements MeetingService{
             dao.updateClosedAt(foundMeeting);
             throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 마감된 모임입니다");
         }
-
+        
         dao.updateClosedAt(foundMeeting);
 
         return true;
     }
 
+    @Transactional
 	@Override
 	public int participate(int meetingId, int memberId) {
 		// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
@@ -275,7 +281,23 @@ public class DefaultMeetingService implements MeetingService{
 		
 				int maxNumber = dao.getMaxMember(meetingId);
 				System.out.println(maxNumber);
+				
+				// 새로운 참여시 알림 생성
+				
+				int regMemberId = getRegMemberId(meetingId);
+				createNotification(regMemberId,"/meeting/"+meetingId,2);
 				return participationDao.insert(meetingId, memberId);
+	}
+    
+    // 새로운 참여시 알림 생성을 위한 메서드
+    @Override
+	public void createNotification(int memberId, String url, int type) {
+		notificationDao.insertCommentNotification(memberId, url, type);
+	}
+    
+    private int getRegMemberId(int meetingId) {
+		int regMemberId = dao.getRegMemberIdByMeetingId(meetingId);
+		return regMemberId;
 	}
 }
 

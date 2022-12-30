@@ -157,4 +157,9 @@
     where id=#{meetingId}
     
     </select>
+    
+    <!-- 댓글 알림 생성을 위한 구문 -->
+    <select id="getRegMemberIdByMeetingId" resultType="int">
+    	SELECT regMemberId FROM meeting WHERE id = #{meetingId}
+    </select>
 </mapper>

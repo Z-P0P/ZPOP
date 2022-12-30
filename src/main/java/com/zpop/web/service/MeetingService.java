@@ -31,4 +31,6 @@ public interface MeetingService {
 			boolean close(int id, Member member);
 
 			boolean delete(int id, Member member);
+
+			void createNotification(int memberId, String url, int type);
 }

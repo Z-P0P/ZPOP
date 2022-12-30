@@ -70,5 +70,19 @@
     where id=#{meetingId}
     
     </select>
+    
+    <select id="getParticipantIdByMeetingId" resultType= "integer">
+    	SELECT participantId FROM participation WHERE meetingId = #{meetingId}
+    </select>
+    
+    <select id="getListByParticipantId"
+		resultType="int">
+		SELECT participantId
+		FROM participation
+		WHERE participantId=#{participantId}
+		AND bannedAt IS NULL
+		AND canceledAt IS NULL
+		AND isEvaluated = FALSE
+	</select>
 
 </mapper>
