@@ -102,7 +102,10 @@ main{
 }
 
 .input__message{
-    height:20px;
+	display:inline-flex;
+    align-items:center;
+    padding:5px 8px;
+    height:32px;
 }
 
 .meeting-form__buttons{
@@ -122,4 +125,21 @@ main{
     display: flex;
     flex-direction: column;
     row-gap: 1.5rem;
+}
+
+.meeting-form .ql-toolbar{
+	margin-top:8px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+    border: 0.125rem solid #EBEBEB;
+}
+
+.meeting-form .ql-container{
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+    border: 0.125rem solid #EBEBEB;
+}
+
+#contact-input{
+	margin-top:0;
 }
