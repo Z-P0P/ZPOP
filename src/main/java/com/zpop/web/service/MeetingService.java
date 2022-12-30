@@ -24,6 +24,8 @@ public interface MeetingService {
 
 			int participate(int meetingId, int memberId);
 
+			boolean cancelParticipate(int id, int memberId);
+
 			void updateViewCount(int id);
 
 			boolean kick(int id, int participantId, Member member);
