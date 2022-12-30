@@ -2,7 +2,6 @@ import quillGenerator from "../utils/quill-generator.js";
 
 
 window.addEventListener("load", function() {
-	const toolbarOptions = ['bold', 'italic', 'underline', 'strike', 'link', 'image'];
 	const quill = quillGenerator("#editor", {
 		theme: 'snow',
 		modules: {
@@ -97,7 +96,7 @@ window.addEventListener("load", function() {
 				
 		// 추후 예외처리 필요함
 		fetch(submitURL, option)
-		.then(response => response.body())
+		.then(response => response.body)
 		.then(data=>console.log(data));
 
 	});
@@ -109,7 +108,7 @@ function getDateTime() {
 	let now = new Date();
 	let year = now.getFullYear();
 	let month = now.getMonth() + 1;
-	let day = now.getDaste();
+	let day = now.getDate();
 	let hour = now.getHours();
 	let minute = now.getMinutes();
 	let second = now.getSeconds();
