@@ -71,6 +71,7 @@ public class MeetingController {
 		   
 		
 		int regMemberId = userDetails.getId();
+		System.out.println(regMemberId);
 		RegisterMeetingRequest dto = new RegisterMeetingRequest(
 				regMemberId,
 				categoryId,

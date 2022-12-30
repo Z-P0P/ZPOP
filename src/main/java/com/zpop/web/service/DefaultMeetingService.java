@@ -56,15 +56,15 @@ public class DefaultMeetingService implements MeetingService {
 
 	@Autowired
 	private ParticipationDao participationDao;
-    
-    @Autowired
-    private CategoryDao categoryDao;
 
-    @Autowired
-    private MemberDao memberDao;
-    
-    public DefaultMeetingService() {
-    }
+	@Autowired
+	private CategoryDao categoryDao;
+
+	@Autowired
+	private MemberDao memberDao;
+
+	public DefaultMeetingService() {
+	}
 
 	@Override
 	public List<MeetingThumbnailResponse> getList() {
@@ -166,20 +166,25 @@ public class DefaultMeetingService implements MeetingService {
 		if (dto.getContact().equals("")) {
 			// 연락처 미입력
 		}
-		realPath += File.separator + String.valueOf(dto.getRegMemberId());
-		
+
+		Meeting meeting = dto.toEntity();
+		dao.insert(meeting);
+		int meetingId = meeting.getId();
+		System.out.println(meetingId + " " + meeting.getRegMemberId());
+		int participation = participationDao.insert(meetingId, meeting.getRegMemberId());
+
+		realPath += File.separator + String.valueOf(meetingId);
+
 		Document doc = Jsoup.parse(dto.getContent());
 		Elements imageTags = doc.select("img");
 		for (Element tag : imageTags) {
 			String src = tag.attr("src");
-			src = File.separator + "images" + File.separator + String.valueOf(dto.getRegMemberId()) + File.separator + src;
+			src = File.separator + "images" + File.separator + String.valueOf(meetingId) + File.separator
+					+ src;
 			tag.attr("src", src);
 		}
-		dto.setContent(doc.toString());
-		
-		int meetingId = dao.insert(dto.toEntity());
-		
-		if (images.size() != 0) {
+
+		if (images != null) {
 			for (MultipartFile image : images) {
 
 				File pathFile = new File(realPath);
@@ -201,10 +206,12 @@ public class DefaultMeetingService implements MeetingService {
 				fos.close();
 				fis.close();
 			}
-
+			meeting.setContent(doc.body().html());
+			System.out.println(doc.body().html());
+			dao.updateContent(meeting);
 		}
 
-		return 0;
+		return 1;
 	}
 
 //	public int participate(Participation participation) {
@@ -254,7 +261,6 @@ public class DefaultMeetingService implements MeetingService {
 			if (bannedAt == null && canceledAt == null)
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "참가자가 있어 모임을 삭제할 수 없습니다");
 		}
-
 		dao.updateDeletedAt(foundMeeting);
 
 		return true;
@@ -266,51 +272,51 @@ public class DefaultMeetingService implements MeetingService {
 
 	}
 
-    @Override
-    public boolean kick(int id, int participantId, Member member) {
-        Meeting foundMeeting = dao.get(id);
+	@Override
+	public boolean kick(int id, int participantId, Member member) {
+		Meeting foundMeeting = dao.get(id);
 
-        if(foundMeeting == null || foundMeeting.getDeletedAt() != null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
-        
-        int memberId = member.getId();
+		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
 
-        if(foundMeeting.getRegMemberId() != memberId)
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
+		int memberId = member.getId();
 
-        List<Participation> participations = participationDao.getListByMeetingId(id);
+		if (foundMeeting.getRegMemberId() != memberId)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
 
-        Participation kickTarget = null;
+		List<Participation> participations = participationDao.getListByMeetingId(id);
 
-        for(Participation p: participations) {
-            if(p.getParticipantId() == participantId) {
-                kickTarget = p;
-                break;
-            }
-        }
+		Participation kickTarget = null;
 
-        if(kickTarget == null || kickTarget.getCanceledAt() != null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "모임에 참여하지 않는 회원입니다");
+		for (Participation p : participations) {
+			if (p.getParticipantId() == participantId) {
+				kickTarget = p;
+				break;
+			}
+		}
 
-        if(kickTarget.getBannedAt() != null)
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 강퇴된 회원입니다");
+		if (kickTarget == null || kickTarget.getCanceledAt() != null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "모임에 참여하지 않는 회원입니다");
 
-        // 탈퇴한 회원인지 확인
-        int kickTargetMemberId = kickTarget.getParticipantId();
-        Member kickTargetMember = memberDao.getById(kickTargetMemberId);
-        if(kickTargetMember.getResignedAt() != null) {
-            //TODO: dao.참여취소(kickTargetId);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다");
-        }
+		if (kickTarget.getBannedAt() != null)
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 강퇴된 회원입니다");
 
-        // 자기자신을 강퇴하려 할 때
-        if(kickTargetMemberId == member.getId())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 내보낼 수 없습니다");
+		// 탈퇴한 회원인지 확인
+		int kickTargetMemberId = kickTarget.getParticipantId();
+		Member kickTargetMember = memberDao.getById(kickTargetMemberId);
+		if (kickTargetMember.getResignedAt() != null) {
+			// TODO: dao.참여취소(kickTargetId);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다");
+		}
 
-        participationDao.updateBannedAt(kickTarget.getId());
-        
-        return true;
-    }
+		// 자기자신을 강퇴하려 할 때
+		if (kickTargetMemberId == member.getId())
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 내보낼 수 없습니다");
+
+		participationDao.updateBannedAt(kickTarget.getId());
+
+		return true;
+	}
 
 	@Override
 	public RegisterMeetingResponse getActiveOptions() {
@@ -348,20 +354,19 @@ public class DefaultMeetingService implements MeetingService {
 
 		dao.updateClosedAt(foundMeeting);
 
-        return true;
-    }
+		return true;
+	}
 
 	@Override
 	public int participate(int meetingId, int memberId) {
 		// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
-				// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
-				// 강퇴당한 사용자일 경우
-				// 마감된 모임일 경우
+		// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
+		// 강퇴당한 사용자일 경우
+		// 마감된 모임일 경우
 //				Participation participation = new Participation(participation);
-		
-		
-				int maxNumber = dao.getMaxMember(meetingId);
-				System.out.println(maxNumber);
-				return participationDao.insert(meetingId, memberId);
+
+		int maxNumber = dao.getMaxMember(meetingId);
+		System.out.println(maxNumber);
+		return participationDao.insert(meetingId, memberId);
 	}
 }

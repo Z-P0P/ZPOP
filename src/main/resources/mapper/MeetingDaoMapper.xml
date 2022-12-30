@@ -17,6 +17,12 @@
         VALUES (#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId},
         #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact}, #{contactTypeId}, #{genderCategory})
     </insert>
+    
+    <update id="updateContent" parameterType="Meeting">
+        UPDATE meeting
+        SET content=#{content}
+        WHERE id = #{id}
+    </update>
 
     <select id="get" resultType="com.zpop.web.entity.meeting.Meeting">
         SELECT *
