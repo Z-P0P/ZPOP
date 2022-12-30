@@ -33,4 +33,8 @@ public class AdminCategoryDto {
 	public void setDeletedAt(Date deletedAt) {
 		this.deletedAt = deletedAt;
 	}
+	@Override
+	public String toString() {
+		return "AdminCategoryDto [id=" + id + ", name=" + name + ", num=" + num + ", deletedAt=" + deletedAt + "]";
+	}
 }

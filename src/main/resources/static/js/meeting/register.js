@@ -1,96 +1,154 @@
-// meeting에서 register.html에서 사용하는 JS 파일입니다.
-
-
-// 등록하기 버튼을 누른다.
-// 사용자가 입력한 값을 추출한다.
-// 서버에 요청을 JSON형태로 보낸다. (POST) (/meeting)
-// Responsebody , RestController
-// const meetingDate = document.querySelector("#meeting-date").value;
-// const meetingRegion = document.querySelector("#meeting-region").value;
-// const meetingDetailRegion = document.querySelector("#meeting-detail-region").value;
-// const meetingAgeRange = document.querySelector("#meeting-ageRange").value;
-// const meetingGender = document.querySelector("#meeting-gender").value;
-// const meetingOpenNum = document.querySelector("#meeting-open-num").value;
-// const meetingContatc = document.querySelector("#meeting-contact").value;
-// const meetingOpenChatLink = document.querySelector("#meeting-openchat-link").value;
-
-
-
-
-// console.log(meetingTitle);
-// console.log(meetingCategory);
-// console.log(meetingDate);
-// console.log(meetingRegion);
-// console.log(meetingDetailRegion);
-// console.log(meetingAgeRange);
-// console.log(meetingGender);
-// console.log(meetingOpenNum);
-// console.log(meetingContatc);
-// console.log(meetingOpenChatLink);
 import quillGenerator from "../utils/quill-generator.js";
 
 
-window.addEventListener("load", function () {
-  const toolbarOptions = ['bold', 'italic', 'underline', 'strike', 'link', 'image'];
-  const quill = quillGenerator("#editor", {
-      theme: 'snow',
-      modules: {
-        toolbar: toolbarOptions,
-      },
-  });
-  
-  const registerBtn = document.querySelector("#register-btn");
+window.addEventListener("load", function() {
+	const toolbarOptions = ['bold', 'italic', 'underline', 'strike', 'link', 'image'];
+	const quill = quillGenerator("#editor", {
+		theme: 'snow',
+		modules: {
+			toolbar: {
+				container: [
+					[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+					['bold', 'italic', 'underline'],
+					[{ 'list': 'ordered' }, { 'list': 'bullet' }],
+					[{ 'align': [] }],
+					['link', 'image'],
+					['clean'],
+					[{ 'color': [] }]
+				],
+			}
+		}
+	});
 
-  registerBtn.onclick = function (e) {
-
-    e.preventDefault();
+	const meetingForm = document.querySelector(".meeting-form");
+	const messages = meetingForm.querySelectorAll('.input__message');
+	const allSelectBoxOptions = meetingForm.querySelectorAll('.select-box__options > li');
 	
-    const categoryId = document.querySelector("#categoryId").dataset.id;
-    const regionId = document.querySelector("#regionId").dataset.id;
-    const ageRangeId = document.querySelector("#ageRangeId").dataset.id;
-    const maxMember = document.querySelector("#maxMember").dataset.id;
-	const genderCategory = document.querySelector("#genderCategory").dataset.id;
-    const contactTypeId = document.querySelector("#contactTypeId").dataset.id;
-	const startedAt = document.querySelector("#startedAt").value;
-    const title = document.querySelector("#meeting-title").value;
-    const content = document.querySelector("#editor").value;
-    const detailRegion = document.querySelector("#detailRegion").value;
-    const contact = document.querySelector("#contact").value;
-    const option = {
-      method: "POST", // 또는 'PUT'
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        regMemberId: 3,
-        categoryId: categoryId,
-        regionId: regionId,
-        ageRangeId: ageRangeId,
-        detailRegion: detailRegion,
-        contact: contact,
-        contactTypeId: contactTypeId,
-        title:title,
-        maxMember: maxMember,
-        startedAt:startedAt,
-        content:"메리크리스마스",
-        genderCategory:genderCategory
-      })
+	// 셀렉트박스가 한 번이라도 선택되면 그 아래의 에러 메시지지를 초기화시키는 event 등록
+	// 추후 refectoring 필요함
+	allSelectBoxOptions.forEach(option => {
+		option.addEventListener('click', function(e) {
+			let target = e.target;
+			for (target; target.tagName != "DIV"; target = target.parentElement);
+			const message = target.nextElementSibling;
+			message.innerText = '';
+		})
+	})
+
+	// input[type=text] 에 내용이 한번이라도 입력하면 그 아래의 메시지를 초기화시키는 event 등록
+	const allInputTextBoxes = meetingForm.querySelectorAll('.input-text__content');
+	allInputTextBoxes.forEach(input => {
+		input.onkeypress = function(e) {
+			let target = e.target;
+			for (target; target.tagName != "DIV"; target = target.parentElement);
+			const message = target.nextElementSibling;
+			message.innerText = '';
+		}
+	})
+
+	// 등록하기 버튼 누를 때의 로직
+	meetingForm.addEventListener('submit', function(e) {
+		e.preventDefault();
+
+		// 메시지 출력 전 기존에 출력된 모든 메시지 초기화
+		messages.forEach(message => message.innerText = '');
+
+
+		const submitURL = '/meeting/register';
+		const data = new FormData(e.target);
+		const parser = new DOMParser();
+		const quillContentDOM = parser.parseFromString(quill.root.innerHTML, 'text/html');
+		const attachedImages = quillContentDOM.querySelectorAll('img');
+
+		// 등록된 글의 이미지를 찾아서 이미지 이름을 'ZPOP_날짜시간_이미지순서' 로 저장
+		// base64 이미지는 그대로 메모리에 냅두고, 이미지를 파일로 바꿔서 form 데이터에 저장/
+	
+		let count = 0;
+		attachedImages.forEach(base64Img => {
+			let fileName = `${getDateTime()}_${count}`;
+			let formAttachedImage = dataURLtoFile(base64Img.src, fileName);
+			fileName = formAttachedImage.name;
+			data.append('images', formAttachedImage);
+			base64Img.src = fileName;
+			count++;
+		});
+
+		// 바뀐 내용을 문자열로 바꿔서 form 데이터에 반영
+		const content = quillContentDOM.documentElement.innerHTML;
+
+		data.append('content', content);
+
+		count = 0;
+		let isBlanked = false;
+		// form 데이터 중에 공백이 있으면 에러메시지 출력
+		data.forEach((value, key) => {
+			if (value == '') {
+				messages[count].innerText = "값이 없어요";
+				isBlanked = true;
+			}
+			count++;
+		})
+		if (isBlanked) return;
+
+		const option = {
+			method: "POST",
+			body: data,
+		}
+				
+		// 추후 예외처리 필요함
+		fetch(submitURL, option)
+		.then(response => response.body())
+		.then(data=>console.log(data));
+
+	});
+});
+
+
+// 이미지 파일이름 설정 시 붙는 날짜,시간을 반환
+function getDateTime() {
+	let now = new Date();
+	let year = now.getFullYear();
+	let month = now.getMonth() + 1;
+	let day = now.getDaste();
+	let hour = now.getHours();
+	let minute = now.getMinutes();
+	let second = now.getSeconds();
+	let millisecond = now.getMilliseconds();
+
+	if (month.toString().length == 1) {
+		month = '0' + month;
+	}
+	if (day.toString().length == 1) {
+		day = '0' + day;
+	}
+	if (hour.toString().length == 1) {
+		hour = '0' + hour;
+	}
+	if (minute.toString().length == 1) {
+		minute = '0' + minute;
+	}
+	if (second.toString().length == 1) {
+		second = '0' + second;
+	}
+	if (millisecond.toString().length == 1) {
+		millisecond = '00' + second;
+	}
+	if (millisecond.toString().length == 2) {
+		millisecond = '0' + second;
+	}
+
+	let dateTime = `${year}${month}${day}_${hour}${minute}${second}${millisecond}`;
+	return dateTime;
+}
+
+
+// base64 이미지를 File Object로 변환
+function dataURLtoFile(dataurl, filename) {
+let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
     }
-      fetch("register",option)
-      .then((response) => response.text())
-      .then((data) => {
-        console.log('성공:', data);
-        alert("성공");
-        if(data=="성공")
-        	location.href = "/login";
-      })
-      .catch((error) => {
-        console.error('실패:', error);
-        alert("실패");
-      });
-
-
-
-
-  }
-})
+	let extension = mime.split('/')[1];
+    return new File([u8arr], `ZPOP_${filename}.${extension}`, {type:mime});
+}

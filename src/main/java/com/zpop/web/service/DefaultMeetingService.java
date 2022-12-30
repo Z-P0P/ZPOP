@@ -1,39 +1,60 @@
 package com.zpop.web.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.zpop.web.dao.AgeRangeDao;
+import com.zpop.web.dao.CategoryDao;
+import com.zpop.web.dao.ContactTypeDao;
 import com.zpop.web.dao.MeetingDao;
 import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.ParticipationDao;
+import com.zpop.web.dao.RegionDao;
+import com.zpop.web.dto.AgeRangeDto;
+import com.zpop.web.dto.CategoryDto;
+import com.zpop.web.dto.ContactTypeDto;
+import com.zpop.web.dto.MeetingDetailDto;
+import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.dto.MeetingThumbnailPagination;
 import com.zpop.web.dto.MeetingThumbnailResponse;
+import com.zpop.web.dto.RegionDto;
+import com.zpop.web.dto.RegisterMeetingRequest;
+import com.zpop.web.dto.RegisterMeetingResponse;
 import com.zpop.web.entity.Member;
 import com.zpop.web.entity.Participation;
 import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.entity.meeting.MeetingThumbnailView;
 import com.zpop.web.utils.TextDateTimeCalculator;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-
-import com.zpop.web.dao.CategoryDao;
-
-import com.zpop.web.dto.MeetingDetailDto;
-import com.zpop.web.dto.MeetingParticipantsDto;
-
-
 @Service
-public class DefaultMeetingService implements MeetingService{
+public class DefaultMeetingService implements MeetingService {
 
-    @Autowired
-    private MeetingDao dao;
+	@Autowired
+	private MeetingDao dao;
+	@Autowired
+	private RegionDao regionDao;
+	@Autowired
+	private ContactTypeDao contactTypeDao;
+	@Autowired
+	private AgeRangeDao ageRangeDao;
 
-    @Autowired
+	@Autowired
 	private ParticipationDao participationDao;
     
     @Autowired
@@ -45,91 +66,145 @@ public class DefaultMeetingService implements MeetingService{
     public DefaultMeetingService() {
     }
 
-    public DefaultMeetingService(MeetingDao dao, ParticipationDao participationDao){
-        this.dao = dao;
-        this.participationDao = participationDao;
-
-    }
-
-    @Override
-    public List<MeetingThumbnailResponse> getList() {
-        return getList(
-            0,
-            null,
-            null,
-            null,
-            false
-        );
-    }
-
-    @Override
-    public List<MeetingThumbnailResponse> getList(String keyword) {
-        return getList(
-            0,
-            keyword,
-            null,
-            null,
-            false
-        );
-    }
-
-    @Override
-    public List<MeetingThumbnailResponse> getList(
-            int startId, String keyword, Integer categoryId, String strRegionIds, Boolean isClosed
-            ) {
-        String[] regionIds = null;
-        if(strRegionIds != null)
-            regionIds = strRegionIds.split(",");
-
-        MeetingThumbnailPagination pagination = 
-            new MeetingThumbnailPagination(startId, keyword, categoryId, regionIds, isClosed);
-
-        List<MeetingThumbnailView> meetingThumbnailViews = dao.getThumbnailViewList(pagination);
-        
-        // 응답에 맞게 데이터 변환
-        List<MeetingThumbnailResponse> list = new ArrayList<>();
-        for(MeetingThumbnailView m : meetingThumbnailViews) {
-            String genderCategory = "누구나";
-            switch (m.getGenderCategory()) {
-                case 1:
-                    genderCategory = "남자 모임";
-                    break;
-                case 2:
-                    genderCategory = "여자 모임";
-                    break;
-            }
-
-            String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
-
-            boolean isClosedResult = false;
-            if(m.getClosedAt() != null) 
-                isClosedResult = true;
-            
-            MeetingThumbnailResponse meetingThumbnail = new MeetingThumbnailResponse(
-                m.getId(),
-                m.getCategory(),
-                m.getRegion(),
-                m.getAgeRange(),
-                genderCategory,
-                m.getMaxMember(),
-                m.getTitle(),
-                dateTime,
-                m.getViewCount(),
-                m.getCommentCount(),
-                isClosedResult
-            );
-
-            list.add(meetingThumbnail);
-        }
-
-        return list;
-    }
-
-    
-    
 	@Override
-	public int register(Meeting meeting) {
-		return dao.insert(meeting);
+	public List<MeetingThumbnailResponse> getList() {
+		return getList(0, null, null, null, false);
+	}
+
+	@Override
+	public List<MeetingThumbnailResponse> getList(String keyword) {
+		return getList(0, keyword, null, null, false);
+	}
+
+	@Override
+	public List<MeetingThumbnailResponse> getList(int startId, String keyword, Integer categoryId, String strRegionIds,
+			Boolean isClosed) {
+		String[] regionIds = null;
+		if (strRegionIds != null)
+			regionIds = strRegionIds.split(",");
+
+		MeetingThumbnailPagination pagination = new MeetingThumbnailPagination(startId, keyword, categoryId, regionIds,
+				isClosed);
+
+		List<MeetingThumbnailView> meetingThumbnailViews = dao.getThumbnailViewList(pagination);
+
+		// 응답에 맞게 데이터 변환
+		List<MeetingThumbnailResponse> list = new ArrayList<>();
+		for (MeetingThumbnailView m : meetingThumbnailViews) {
+			String genderCategory = "누구나";
+			switch (m.getGenderCategory()) {
+			case 1:
+				genderCategory = "남자 모임";
+				break;
+			case 2:
+				genderCategory = "여자 모임";
+				break;
+			}
+
+			String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
+
+			boolean isClosedResult = false;
+			if (m.getClosedAt() != null)
+				isClosedResult = true;
+
+			MeetingThumbnailResponse meetingThumbnail = new MeetingThumbnailResponse(m.getId(), m.getCategory(),
+					m.getRegion(), m.getAgeRange(), genderCategory, m.getMaxMember(), m.getTitle(), dateTime,
+					m.getViewCount(), m.getCommentCount(), isClosedResult);
+
+			list.add(meetingThumbnail);
+		}
+
+		return list;
+	}
+
+	@Override
+	public int register(RegisterMeetingRequest dto, List<MultipartFile> images, String realPath) throws IOException {
+
+		if (dto.getCategoryId() == 0) {
+			// 카테고리 입력 x
+		}
+		if (dto.getRegionId() == 0) {
+			// 지역 입력 x
+		}
+
+		if (dto.getAgeRangeId() == 0) {
+			// 연령 입력 x
+		}
+
+		if (dto.getContactTypeId() == 0) {
+			// 연락방법 입력 x
+		}
+
+		if (dto.getGenderCategory() == 0) {
+			// 성별 입력 x
+		}
+
+		if (dto.getTitle().equals("")) {
+			// 제목 입력 x
+		}
+
+		if (dto.getContent().equals("")) {
+			// 내용 입력 x
+		}
+
+		if (dto.getMaxMember() < 2) {
+			// 인원 미입력
+		}
+
+		if (dto.getStartedAt() == null) {
+			// 시작시간 입력 x
+		}
+
+		if (dto.getStartedAt().before(new Date())) {
+			// 현재시간보다 과거 시간을 입력
+		}
+
+		if (dto.getDetailRegion().equals("")) {
+			// 상세 지역 미입력
+		}
+
+		if (dto.getContact().equals("")) {
+			// 연락처 미입력
+		}
+		realPath += File.separator + String.valueOf(dto.getRegMemberId());
+		
+		Document doc = Jsoup.parse(dto.getContent());
+		Elements imageTags = doc.select("img");
+		for (Element tag : imageTags) {
+			String src = tag.attr("src");
+			src = File.separator + "image" + File.separator + String.valueOf(dto.getRegMemberId()) + File.separator + src;
+			tag.attr("src", src);
+		}
+		dto.setContent(doc.toString());
+		
+		int meetingId = dao.insert(dto.toEntity());
+		
+		if (images.size() != 0) {
+			for (MultipartFile image : images) {
+
+				File pathFile = new File(realPath);
+				if (!pathFile.exists()) {
+					pathFile.mkdirs();
+				}
+
+				String completePath = realPath + File.separator + image.getOriginalFilename();
+				System.out.println(completePath);
+				InputStream fis = image.getInputStream();
+				OutputStream fos = new FileOutputStream(completePath);
+
+				byte[] buf = new byte[1024];
+				int size = 0;
+				while ((size = fis.read(buf)) > 0) {
+					fos.write(buf, 0, size);
+				}
+
+				fos.close();
+				fis.close();
+			}
+
+		}
+
+		return 0;
 	}
 
 //	public int participate(Participation participation) {
@@ -148,46 +223,47 @@ public class DefaultMeetingService implements MeetingService{
 
 	@Override
 	public List<MeetingParticipantsDto> getParticipants(int meetingId) {
-		
+
 		return participationDao.getByMeetingId(meetingId);
 	}
 
-    @Override
-    public boolean delete(int id, Member member) {
+	@Override
+	public boolean delete(int id, Member member) {
 
-        Meeting foundMeeting = dao.get(id);
+		Meeting foundMeeting = dao.get(id);
 
-        if(foundMeeting == null || foundMeeting.getDeletedAt() != null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
 
-        int memberId = member.getId();
+		int memberId = member.getId();
 
-        if(foundMeeting.getRegMemberId() != memberId)
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
+		if (foundMeeting.getRegMemberId() != memberId)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
 
-        List<Participation> participations = participationDao.getListByMeetingId(id);
+		List<Participation> participations = participationDao.getListByMeetingId(id);
 
-        for(Participation p : participations) {
-            // 주최자 자기 자신 제외
-            if(p.getParticipantId() == memberId)
-                continue;
+		for (Participation p : participations) {
+			// 주최자 자기 자신 제외
+			if (p.getParticipantId() == memberId)
+				continue;
 
-            Date bannedAt = p.getBannedAt();
-            Date canceledAt = p.getCanceledAt();
+			Date bannedAt = p.getBannedAt();
+			Date canceledAt = p.getCanceledAt();
 
-            // 정상 참가자가 한명이라도 있으면 삭제 불가
-            if(bannedAt == null && canceledAt == null )
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "참가자가 있어 모임을 삭제할 수 없습니다");
-        }
+			// 정상 참가자가 한명이라도 있으면 삭제 불가
+			if (bannedAt == null && canceledAt == null)
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "참가자가 있어 모임을 삭제할 수 없습니다");
+		}
 
-        dao.updateDeletedAt(foundMeeting);
+		dao.updateDeletedAt(foundMeeting);
 
-        return true;
-    }
+		return true;
+	}
+
 	@Override
 	public void updateViewCount(int id) {
 		dao.updateViewCount(id);
-		
+
 	}
 
     @Override
@@ -236,30 +312,41 @@ public class DefaultMeetingService implements MeetingService{
         return true;
     }
 
-    @Override
-    public boolean close(int id, Member member) {
+	@Override
+	public RegisterMeetingResponse getActiveOptions() {
 
-        Meeting foundMeeting = dao.get(id);
+		List<RegionDto> regions = regionDao.getActiveList();
+		List<CategoryDto> categories = categoryDao.getActiveList();
+		List<ContactTypeDto> contactTypes = contactTypeDao.getActiveList();
+		List<AgeRangeDto> ageRanges = ageRangeDao.getActiveList();
 
-        if(foundMeeting == null || foundMeeting.getDeletedAt() != null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
-        
-        int memberId = member.getId();
+		return new RegisterMeetingResponse(regions, categories, contactTypes, ageRanges);
+	}
 
-        if(foundMeeting.getRegMemberId() != memberId)
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
-        
-        if(foundMeeting.getClosedAt() != null)
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 마감된 모임입니다");
-        
-        // 모임 시작일이 지났을 때 -> 마감 후 예외
-        Date startedAt = foundMeeting.getStartedAt();
-        if(startedAt.before(new Date())) {
-            dao.updateClosedAt(foundMeeting);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 마감된 모임입니다");
-        }
+	@Override
+	public boolean close(int id, Member member) {
 
-        dao.updateClosedAt(foundMeeting);
+		Meeting foundMeeting = dao.get(id);
+
+		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+
+		int memberId = member.getId();
+
+		if (foundMeeting.getRegMemberId() != memberId)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
+
+		if (foundMeeting.getClosedAt() != null)
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 마감된 모임입니다");
+
+		// 모임 시작일이 지났을 때 -> 마감 후 예외
+		Date startedAt = foundMeeting.getStartedAt();
+		if (startedAt.before(new Date())) {
+			dao.updateClosedAt(foundMeeting);
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 마감된 모임입니다");
+		}
+
+		dao.updateClosedAt(foundMeeting);
 
         return true;
     }
@@ -278,5 +365,3 @@ public class DefaultMeetingService implements MeetingService{
 				return participationDao.insert(meetingId, memberId);
 	}
 }
-
-
