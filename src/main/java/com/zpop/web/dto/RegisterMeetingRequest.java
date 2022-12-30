@@ -1,13 +1,10 @@
 package com.zpop.web.dto;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.zpop.web.entity.meeting.Meeting;
 
-public class MeetingRegisterDto {
+public class RegisterMeetingRequest {
 
 	private int regMemberId;
 	private int categoryId;
@@ -21,6 +18,28 @@ public class MeetingRegisterDto {
 	private int maxMember;
 	private Date startedAt;
 	private String contact;
+	
+	
+	
+	
+	public RegisterMeetingRequest(int regMemberId, int categoryId, int regionId, int ageRangeId, int contactTypeId,
+			int genderCategory, String title, String content, String detailRegion, int maxMember, Date startedAt,
+			String contact) {
+		this.regMemberId = regMemberId;
+		this.categoryId = categoryId;
+		this.regionId = regionId;
+		this.ageRangeId = ageRangeId;
+		this.contactTypeId = contactTypeId;
+		this.genderCategory = genderCategory;
+		this.title = title;
+		this.content = content;
+		this.detailRegion = detailRegion;
+		this.maxMember = maxMember;
+		this.startedAt = startedAt;
+		this.contact = contact;
+	}
+
+
 	public Meeting toEntity() {// DTO -> ENTITY HH:MM -> HH:MM:SS
 		return new Meeting(getRegMemberId(), getCategoryId(), getRegionId(), getAgeRangeId(),getContactTypeId(),getGenderCategory(),getTitle(), getContent(),
 				getDetailRegion(), getMaxMember(), getStartedAt(), getContact());
@@ -70,24 +89,13 @@ public class MeetingRegisterDto {
 		return startedAt;
 	}
 
-	/*
-	 * public void setStartedAt(Date startedAt) throws ParseException {
-	 * System.out.println(startedAt); DateFormat formatter = new
-	 * SimpleDateFormat("yyyy-MM-dd'T'hh:mm"); Date date =
-	 * (Date)formatter.parse(startedAt); System.out.println(date);
-	 * 
-	 * this.startedAt = startedAt; }
-	 */
 	public String getContact() {
 		return contact;
 	}
 
-
-
-
 	@Override
 	public String toString() {
-		return "MeetingRegisterDto [regMemberId=" + regMemberId + ", categoryId=" + categoryId + ", regionId="
+		return "RegisterMeetingRequest [regMemberId=" + regMemberId + ", categoryId=" + categoryId + ", regionId="
 				+ regionId + ", ageRangeId=" + ageRangeId + ", contactTypeId=" + contactTypeId + ", genderCategory="
 				+ genderCategory + ", title=" + title + ", content=" + content + ", detailRegion=" + detailRegion
 				+ ", maxMember=" + maxMember + ", startedAt=" + startedAt + ", contact=" + contact + "]";
@@ -101,5 +109,12 @@ public class MeetingRegisterDto {
 		return genderCategory;
 	}
 
+	public void setRegMemberId(int regMemberId) {
+		this.regMemberId = regMemberId;
+	}
 	
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 }

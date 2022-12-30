@@ -134,6 +134,11 @@
   }
 }
 
+.region-category > .select-box{
+	margin-top:0;
+}
+
+
 .result-none {
   padding: 80px 0;
 }

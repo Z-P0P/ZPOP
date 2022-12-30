@@ -5,13 +5,14 @@
   font-size: 16px;
   color: var(--dark-grey2);
   font-weight: var(--regular);
+  margin-top:8px;
 }
 
 .select-box--input * {
   font-size: 18px;
 }
 
-.select-box--input > input {
+.select-box--input > span {
   border-radius: 5px;
   width: 100%;
   padding: 14px 18px;
@@ -20,12 +21,12 @@
 }
 
 @media (min-width: 576px) {
-  .select-box--input > input {
+  .select-box--input > span {
     padding: 14px 20px;
   }
 }
 
-.select-box--round > input {
+.select-box--round > span {
   border-radius: 50px;
 }
 

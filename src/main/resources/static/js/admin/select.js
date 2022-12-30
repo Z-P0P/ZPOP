@@ -14,7 +14,6 @@ function initSelectBoxes(){
         option.onclick = () => {
           selectBoxSpan.innerText = option.innerText;
           selectBoxSpan.parentElement.querySelector("input").value = option.dataset.id;
-              console.log(selectBoxSpan.dataset.id);
         };
       }
     }

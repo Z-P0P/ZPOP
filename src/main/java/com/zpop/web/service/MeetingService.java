@@ -1,6 +1,8 @@
 package com.zpop.web.service;
 
 import com.zpop.web.dto.MeetingThumbnailResponse;
+import com.zpop.web.dto.RegisterMeetingRequest;
+import com.zpop.web.dto.RegisterMeetingResponse;
 import com.zpop.web.entity.Member;
 
 import com.zpop.web.dto.MeetingDetailDto;
@@ -8,11 +10,15 @@ import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.entity.Participation;
 
 import com.zpop.web.entity.meeting.Meeting;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 
 public interface MeetingService {
-			int register(Meeting meeting);
 
 			List<MeetingThumbnailResponse> getList();
 			List<MeetingThumbnailResponse> getList(String keyword);
@@ -24,6 +30,8 @@ public interface MeetingService {
 
 			int participate(int meetingId, int memberId);
 
+			boolean cancelParticipate(int id, int memberId);
+
 			void updateViewCount(int id);
 
 			boolean kick(int id, int participantId, Member member);
@@ -33,4 +41,8 @@ public interface MeetingService {
 			boolean delete(int id, Member member);
 
 			void createNotification(int memberId, String url, int type);
+
+			RegisterMeetingResponse getActiveOptions();
+
+			int register(RegisterMeetingRequest dto, List<MultipartFile> images, String realPath) throws FileNotFoundException, IOException;
 }
