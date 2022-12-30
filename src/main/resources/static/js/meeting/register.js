@@ -56,7 +56,7 @@ window.addEventListener("load", function() {
 		const submitURL = '/meeting/register';
 		const data = new FormData(e.target);
 		const parser = new DOMParser();
-		const quillContentDOM = parser.parseFromString(quill.root.innerHTML, 'text/html');
+		const quillContentDOM = parser.parseFromString(quill.root.innerHTML, 'text/html').body;
 		const attachedImages = quillContentDOM.querySelectorAll('img');
 
 		// 등록된 글의 이미지를 찾아서 이미지 이름을 'ZPOP_날짜시간_이미지순서' 로 저장
@@ -73,7 +73,7 @@ window.addEventListener("load", function() {
 		});
 
 		// 바뀐 내용을 문자열로 바꿔서 form 데이터에 반영
-		const content = quillContentDOM.documentElement.innerHTML;
+		const content = quillContentDOM.innerHTML;
 
 		data.append('content', content);
 
