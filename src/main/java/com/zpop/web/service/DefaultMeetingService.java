@@ -369,4 +369,47 @@ public class DefaultMeetingService implements MeetingService {
 		System.out.println(maxNumber);
 		return participationDao.insert(meetingId, memberId);
 	}
+
+    @Override
+    public boolean cancelParticipate(int id, int memberId) {
+
+        // 모임이 존재하는지 확인한다
+        Meeting foundMeeting = dao.get(id);
+
+        if(foundMeeting == null || foundMeeting.getDeletedAt() != null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+        
+        // 참여자가 맞는지 확인한다
+        Participation participationInfo = null;
+
+        List<Participation> participations = participationDao.getListByMeetingId(id);
+        for(Participation p : participations) {
+            if(p.getParticipantId() == memberId) {
+                participationInfo = p;
+                break;
+            }
+        }
+
+        /*
+         * 1. 모임에 참여한 적이 없을 때
+         * 2. 취소한 모임에 참여 취소할 때
+         * 3. kick당한 모임에 참여 취소할 때
+         */
+        if(participationInfo == null ||
+            participationInfo.getCanceledAt() != null ||
+            participationInfo.getBannedAt() != null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "참여한 모임에만 참여를 취소할 수 있습니다");
+
+        // 마감된 모임은 참여를 취소할 수 없다
+        Date currentTime = new Date();
+        Date meetingStartedAt = foundMeeting.getStartedAt();
+
+        if(foundMeeting.getClosedAt() != null ||
+            currentTime.after(meetingStartedAt))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "마감된 모임에 참여를 취소할 수 없습니다");
+        
+        participationDao.updateCanceledAt(participationInfo.getId());
+
+        return true;
+    }
 }
