@@ -40,8 +40,6 @@ public interface MeetingService {
 
 			boolean delete(int id, Member member);
 
-			void createNotification(int memberId, String url, int type);
-
 			RegisterMeetingResponse getActiveOptions();
 
 			int register(RegisterMeetingRequest dto, List<MultipartFile> images, String realPath) throws FileNotFoundException, IOException;
