@@ -16,7 +16,7 @@ window.addEventListener('load', function(){
 
 function validateNickname(nickname){
 	console.log(nickname);
-    const url = 'http://localhost:8080/register/nickname/validation';
+    const url = '/register/nickname/validation';
     const options = {
         method: "POST",
         headers : {
@@ -38,7 +38,7 @@ function validateNickname(nickname){
 
 function setNickname(nickname){
 	console.log(nickname);
-    const url = 'http://localhost:8080/register/nickname/set';
+    const url = '/register/nickname/set';
     const options = {
         method: "POST",
         headers : {
@@ -55,7 +55,7 @@ function setNickname(nickname){
     })
     .then(data => {
 		if (data=="nickname_created"){
-			location.href = "http://localhost:8080/login"
+			location.href = "/login"
 		}
 	});
 }
