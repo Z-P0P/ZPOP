@@ -27,7 +27,20 @@ public class DefaultCommentService implements CommentService {
 		} 
 		return list;
 	}
-
+	@Override
+	public List<CommentView> getCommentWithWriter(int memberId, int meetingId) {
+		List<CommentView> list = dao.getComment(meetingId);
+		for(CommentView element:list) {
+			//본인댓글인지 여부표시
+			if(element.getWriterId() == memberId)
+				element.setMyComment(true);
+		    //작성시간표시
+		    element.setElapsedTime(ElapsedTimeCalculator.getElpasedTime(element.getCreatedAt()));
+		    // 답글 수
+		    element.setCountOfReply(dao.getCountOfReply(element.getId()));
+		} 
+		return list;
+	}
 	@Override
 	public List<CommentView> getReply(int groupId) {
 		List<CommentView> list = dao.getReply(groupId);
@@ -64,9 +77,6 @@ public class DefaultCommentService implements CommentService {
 		int countOfReply = dao.getCountOfReply(groupId);
 		return countOfReply;
 	}
-	
-	
-	
 
 
 }

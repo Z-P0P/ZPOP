@@ -150,10 +150,10 @@
 						<span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
 						<span class="profile__time" th:text="${comment.elapsedTime}">3분전</span>
 						<button></button>
-		                    <th:block th:if="${session.member != null && commenterType== 2}">
+		                    <th:block th:if="${session.member != null && comment.isMyComment}">
 		                    		<div th:replace="~{inc/meeting-detail-modal::writer}"></div>
 		                    </th:block>
-		                       <th:block th:if="${session.member != null && commenterType== 1}">
+		                       <th:block th:if="${session.member != null && !comment.isMyComment}">
 		                    		<div th:replace="~{inc/meeting-detail-modal::reader}"></div>
 		                    </th:block>
 					</div> <span class="comment__content" th:text="${comment.content}">

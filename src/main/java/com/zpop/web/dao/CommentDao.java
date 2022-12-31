@@ -31,4 +31,6 @@ public interface CommentDao {
 
 	int deleteComment(int id);
 
+	int getWrierId(int commentId);
+
 }

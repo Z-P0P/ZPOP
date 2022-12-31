@@ -4,38 +4,48 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.CommentDao">
   <select id="getComment" resultType= "com.zpop.web.entity.comment.CommentView">
-	select * 
-	from commentView 
-	where 
+	SELECT * 
+	FROM commentView 
+	WHERE 
 		<if test=" query != null">
 			meetingId = #{query}
 		</if>
-		and parentCommentId is null
-	order by createdAt
+		AND parentCommentId IS NULL
+	ORDER BY createdAt
+  </select>
+  <select id="getCommentWithWriter" resultType= "com.zpop.web.entity.comment.CommentView">
+  	SELECT * 
+	FROM commentView 
+	WHERE 
+		<if test=" query != null">
+			meetingId = #{query}
+		</if>
+		AND parentCommentId IS NULL
+	ORDER BY createdAt
   </select>
   <select id="getReply" resultType= "com.zpop.web.entity.comment.CommentView">
-	select * 
-	from commentView
-	where
+	SELECT * 
+	FROM commentView
+	WHERE
 		<if test=" query != null">
 			groupId = #{query}
 		</if>
-	and parentCommentId is not null
-    order by createdAt
+	AND parentCommentId IS NOT NULL
+    ORDER BY createdAt
   </select>
   <select id="getCountOfComment" resultType="int">
-  	select count(id) 
-  	from comment
-  	where
+  	SELECT count(id) 
+  	FROM comment
+  	WHERE
 		<if test=" query != null">
 			meetingId = #{query}
 		</if>
-  	and parentCommentId is null
+  	AND parentCommentId IS NULL
   </select>
   <select id="getCountOfReply" resultType="int">
-  	select count(id) 
-  	from comment
-  	where
+  	SELECT count(id) 
+  	FROM comment
+  	WHERE
 		<if test=" query != null">
 			groupId = #{query}
 		</if>
@@ -47,22 +57,22 @@
 	  	values (#{meetingId}, #{writerId}, #{content})
   </insert> -->
   <insert id="insertComment" parameterType="com.zpop.web.entity.comment.Comment">
-  	insert into comment 
+  	INSERT INTO comment 
 	  	(meetingId, writerId, content)
-	  	values (#{meetingId}, #{writerId}, #{content})
+	  	VALUES (#{meetingId}, #{writerId}, #{content})
   </insert>
   
   <insert id="insertReply" parameterType="com.zpop.web.entity.comment.Comment">
-  		insert into comment 
+  		INSERT INTO comment 
 				(meetingId, parentCommentId, groupId, writerId, content)
 				values (#{meetingId}, #{parentCommentId}, #{groupId}, #{writerId}, #{content})
   </insert>
   <update id="updateComment" parameterType="com.zpop.web.entity.comment.Comment">
-  	update comment
+  	UPDATE comment
   	<set>
       <if test="content != null">content=#{content}</if>
     </set>
-  	where id = #{id}
+  	WHERE id = #{id}
   </update>
   
 </mapper>
