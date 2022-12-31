@@ -1,15 +1,11 @@
 package com.zpop.web.dao;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import com.zpop.web.dto.admin.AdminParticipationDto;
-import com.zpop.web.entity.Participation;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.zpop.web.dto.MeetingParticipantsDto;
+import com.zpop.web.dto.admin.AdminParticipationDto;
 import com.zpop.web.entity.Participation;
 
 @Mapper
@@ -25,4 +21,7 @@ public interface ParticipationDao {
     List<AdminParticipationDto> getAdminViewList(int size, int offset, String keyword, String option);
     int updateBannedAt(int id);
 	int countBySearch(String keyword, String option);
+	
+	int[] getParticipantIdByMeetingId(int meetingId);
+	int[] getListByParticipantId(int participantId);
 }

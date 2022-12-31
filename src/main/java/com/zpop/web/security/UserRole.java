@@ -13,4 +13,8 @@ public enum UserRole {
     public String getRole() {
         return role;
     }
+    
+    public String getConfig() {
+    	return role.substring(5);
+    }
 }
