@@ -398,6 +398,7 @@ public class DefaultMeetingService implements MeetingService {
 		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
 		int maxMember = dao.getmaxMember(meetingId);
 		int count = participationDao.getparticipantsCount(meetingId);
+		int hostId = dao.getMeetingHost(meetingId);
 		int result = 0;
 		// result는 성공(1) 실패(0)
 		
@@ -410,13 +411,41 @@ public class DefaultMeetingService implements MeetingService {
 				return 0;
 			}
 			participationDao.insert(meetingId, memberId);
+			createNotification(hostId, "/meeting/"+meetingId,2);
 			result = 1;
 		}
-		else
+		else {
 			participationDao.insert(meetingId, memberId);
+			createNotification(hostId, "/meeting/"+meetingId,2);
+			result = 1;
+		}	
 		return result;
 	}
-
+	@Override
+	public int getUserType(int memberId, int meetingId) {
+		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
+		int hostId = dao.getMeetingHost(meetingId);
+		int userType = 0;
+		// userType
+		// 0--> 일반(비로그인)
+		// 1 --> 일반(로그인)
+		// 2--> 참여자 
+		// 3--> 호스트
+		if(memberId == hostId) {
+			userType = 3;
+		}
+		else if(isMemberParticipated (memberId,participants)){
+			userType = 2;
+		}
+		else if(memberId != 0) {
+			userType = 1;
+		}
+		else {
+			userType = 0;
+		}
+		return userType;
+	}
+	
     @Override
     public boolean cancelParticipate(int id, int memberId) {
 
@@ -455,7 +484,7 @@ public class DefaultMeetingService implements MeetingService {
             currentTime.after(meetingStartedAt))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "마감된 모임에 참여를 취소할 수 없습니다");
         
-        participationDao.updateCanceledAt(participationInfo.getId());
+        //participationDao.updateCanceledAt(participationInfo.getId());
 
         return true;
     }
@@ -463,9 +492,7 @@ public class DefaultMeetingService implements MeetingService {
 	private void createNotification(int memberId, String url, int type) {
 		notificationDao.insertCommentNotification(memberId, url, type);
 	}
+
+	
     
-    private int getRegMemberId(int meetingId) {
-		int regMemberId = dao.getRegMemberIdByMeetingId(meetingId);
-		return regMemberId;
-	}
 }

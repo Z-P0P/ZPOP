@@ -45,9 +45,6 @@ public class MeetingController {
 	private CommentService commentService;
 	
 	@GetMapping("/register")
-	public String registerView() {
-
-	@GetMapping("/register")
 	public String registerView(Model model) {
 
 		RegisterMeetingResponse response = service.getActiveOptions();
