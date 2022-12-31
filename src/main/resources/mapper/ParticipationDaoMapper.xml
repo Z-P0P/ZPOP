@@ -9,7 +9,6 @@
         (meetingId, participantId)
         VALUES (#{meetingId}, #{memberId})
     </insert>
-	
     <select id="get" resultType= "com.zpop.web.entity.Participation">
         SELECT *
         FROM participation
@@ -69,6 +68,20 @@
 		SELECT COUNT(id) 
 		FROM participation
 		where meetingId = #{id}
+	</select>
+    
+    <select id="getParticipantIdByMeetingId" resultType= "integer">
+    	SELECT participantId FROM participation WHERE meetingId = #{meetingId}
+    </select>
+    
+    <select id="getListByParticipantId"
+		resultType="int">
+		SELECT participantId
+		FROM participation
+		WHERE participantId=#{participantId}
+		AND bannedAt IS NULL
+		AND canceledAt IS NULL
+		AND isEvaluated = FALSE
 	</select>
 
 	

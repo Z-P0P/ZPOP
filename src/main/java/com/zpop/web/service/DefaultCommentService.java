@@ -3,9 +3,15 @@ package com.zpop.web.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.zpop.web.dao.CommentDao;
+import com.zpop.web.dao.MeetingDao;
+import com.zpop.web.dao.NotificationDao;
+import com.zpop.web.entity.Member;
 import com.zpop.web.entity.comment.Comment;
 import com.zpop.web.entity.comment.CommentView;
+import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.utils.ElapsedTimeCalculator;
 /*
  * 작성자:임형미
@@ -15,6 +21,13 @@ public class DefaultCommentService implements CommentService {
 	
 	@Autowired
 	private CommentDao dao;
+	
+	@Autowired
+	private MeetingDao meetingDao;
+	
+	@Autowired
+	private NotificationDao notificationDao;
+	
 	
 	@Override
 	public List<CommentView> getComment(int meetingId) {
@@ -53,17 +66,23 @@ public class DefaultCommentService implements CommentService {
 		return list;
 	}
 
-	
+	@Transactional
 	@Override
 	public int registerComment(Comment comment) {
 		
 		int affectedRow = dao.insertComment(comment);
+		// 댓글 알림 생성
+		int regMemberId = getRegMemberId(comment.getMeetingId());
+		createCommentNotification(regMemberId,"/meeting/"+comment.getMeetingId(),3);
 		return affectedRow;
 	}
 
+	@Transactional
 	@Override
 	public int registerReply(Comment comment) {
 		int affectedRow = dao.insertReply(comment);
+		int regMemberId = getRegMemberId(comment.getMeetingId());
+		createCommentNotification(regMemberId,"/meeting/"+comment.getMeetingId(),4);
 		return affectedRow;
 	}
 	
@@ -78,5 +97,14 @@ public class DefaultCommentService implements CommentService {
 		return countOfReply;
 	}
 
-
+	// 새로운 댓글 생성시 알림 생성을 위한 메서드
+	@Override
+	public void createCommentNotification(int memberId, String url, int type) {
+		notificationDao.insertCommentNotification(memberId, url, type);
+	}
+	
+	private int getRegMemberId(int meetingId) {
+		int regMemberId = meetingDao.getRegMemberIdByMeetingId(meetingId);
+		return regMemberId;
+	}
 }

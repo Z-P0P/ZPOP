@@ -10,22 +10,22 @@ public class ReportedMeeting {
 	private int typeId;
 	private int adminId;
 	private String reason;
-	private String original;
+	private String originalTitle;
 	private String field;
 	private Date createdAt;
 	private Date processedAt;
 	private Date blockedAt;
 	private Date releasedAt;
 	
-	public ReportedMeeting(int id, int meetingId, int reporterId, int typeId, int adminId, String reason,
-			String original, String field, Date createdAt, Date processedAt, Date blockedAt, Date releasedAt) {
-		this.id = id;
+	public ReportedMeeting(int meetingId, int reporterId, int typeId, int adminId, String reason,
+			String originalTitle, String field, Date createdAt, Date processedAt, Date blockedAt, Date releasedAt) {
+	
 		this.meetingId = meetingId;
 		this.reporterId = reporterId;
 		this.typeId = typeId;
 		this.adminId = adminId;
 		this.reason = reason;
-		this.original = original;
+		this.originalTitle = originalTitle;
 		this.field = field;
 		this.createdAt = createdAt;
 		this.processedAt = processedAt;
@@ -81,12 +81,12 @@ public class ReportedMeeting {
 		this.reason = reason;
 	}
 
-	public String getOriginal() {
-		return original;
+	public String getOriginalTitle() {
+		return originalTitle;
 	}
 
-	public void setOriginal(String original) {
-		this.original = original;
+	public void setOriginalTitle(String originalTitle) {
+		this.originalTitle = originalTitle;
 	}
 	
 	public String getField() {
@@ -128,5 +128,7 @@ public class ReportedMeeting {
 	public void setReleasedAt(Date releasedAt) {
 		this.releasedAt = releasedAt;
 	}
+
+
 	
 }

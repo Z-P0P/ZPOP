@@ -3,6 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.ReportedMemberDao">
+
+	<insert id="insert" parameterType="ReportedMeeting">
+		INSERT INTO reportedMember (reportedId,reporterId,typeId,adminId,reason,createdAt,processedAt,blockedAt,releasedAt) 
+		VALUES(#{reportedId},#{reporterId},#{typeId},#{adminId},#{reason},#{createdAt},#{processedAt},#{blockedAt},#{releasedAt});
+	</insert>
+
 	<select id="getAdminViewList" resultType="AdminReportedMemberDto">
 		SELECT
 			rm.id,
@@ -25,4 +31,5 @@
 		SELECT count(id)
 		FROM reportedMember;
 	</select>
+
 </mapper>

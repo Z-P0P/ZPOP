@@ -15,9 +15,9 @@ public class ReportedMember {
 	private Date blockedAt;
 	private Date releasedAt;
 	
-	public ReportedMember(int id, int reportedId, int reporterId, int typeId, int adminId, String reason,
+	public ReportedMember(int reportedId, int reporterId, int typeId, int adminId, String reason,
 			Date createdAt, Date processedAt, Date blockedAt, Date releasedAt) {
-		this.id = id;
+
 		this.reportedId = reportedId;
 		this.reporterId = reporterId;
 		this.typeId = typeId;
