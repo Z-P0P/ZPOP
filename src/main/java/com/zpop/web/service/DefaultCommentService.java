@@ -104,7 +104,7 @@ public class DefaultCommentService implements CommentService {
 	}
 	
 	private int getRegMemberId(int meetingId) {
-		int regMemberId = meetingDao.getRegMemberIdByMeetingId(meetingId);
+		int regMemberId = meetingDao.getMeetingHost(meetingId);
 		return regMemberId;
 	}
 }
