@@ -41,8 +41,6 @@ public interface MeetingDao {
 	
 	int getMeetingHost(int meetingId);
 	
-	int getRegMemberIdByMeetingId(int meetingId);
-
 	int updateContent(Meeting meeting);
 
 }
