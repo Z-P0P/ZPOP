@@ -17,5 +17,6 @@ public interface CommentService {
 	
 	int getCountOfComment(int meetingId);
 	int getCountOfReply(int groupId);
+	int getCommenterType(int memberId, int id);
 
 }

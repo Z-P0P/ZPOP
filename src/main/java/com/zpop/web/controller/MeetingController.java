@@ -71,7 +71,7 @@ public class MeetingController {
 		if(member != null) {
 			int memberId = member.getId();
 			userType = service.getUserType(memberId,id);
-			commenterType = service.getCommenterType(memberId, id);
+			commenterType = commentService.getCommenterType(memberId, id);
 		}
 		
 		model.addAttribute("dto", dto);

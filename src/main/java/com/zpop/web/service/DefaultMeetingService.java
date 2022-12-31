@@ -310,9 +310,5 @@ public class DefaultMeetingService implements MeetingService {
 		return userType;
 	}
 
-	@Override
-	public int getCommenterType(int memberId, int id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 }

@@ -33,5 +33,4 @@ public interface MeetingService {
 		int participate(int meetingId, int memberId);
 		int getUserType(int memberId, int meetingId);
 
-		int getCommenterType(int memberId, int id);
 }
