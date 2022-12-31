@@ -80,7 +80,6 @@ public class MeetingController {
 		service.updateViewCount(id); // 조회수 증가 
 		
 		/*------------------------ 댓글 부분 ---------------------------*/
-		int commenterType = 0;
 		List<CommentView> comments = null;
 		if(member != null) {
 			comments = commentService.getCommentWithWriter(memberId, id);
@@ -90,7 +89,6 @@ public class MeetingController {
 		int countOfComment = commentService.getCountOfComment(id);
 		model.addAttribute("comments", comments);
 		model.addAttribute("countOfComment", countOfComment);
-		model.addAttribute("commenterType",commenterType);
 		return "meeting/detail";
 	}
 	
