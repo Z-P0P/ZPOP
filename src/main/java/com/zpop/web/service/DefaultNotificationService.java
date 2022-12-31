@@ -21,7 +21,7 @@ public class DefaultNotificationService implements NotificationService {
 	@Override
 	public List<Notification> getNotification() {
 		
-		int testMemberId = 2;
+		int testMemberId = 3;
 		List<Notification> list = dao.getList();
 		List<Notification> unreadList = new ArrayList();
 		

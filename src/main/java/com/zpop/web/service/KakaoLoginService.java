@@ -1,6 +1,7 @@
 package com.zpop.web.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +12,8 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.zpop.web.dao.MemberDao;
+import com.zpop.web.dao.NotificationDao;
+import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.entity.Member;
 
 @Service
@@ -34,6 +37,12 @@ public class KakaoLoginService implements LoginService{
 		this.CLIENT_ID = CLIENT_ID;
 		this.DIRECT_URI = REDIRECT_URI;
 	}
+	
+	@Autowired
+	private NotificationDao notificationDao;
+	
+	@Autowired
+	private ParticipationDao participationDao;
 	
 	
 	public String getAccessToken(String code, String state) throws IOException, InterruptedException {
@@ -88,10 +97,20 @@ public class KakaoLoginService implements LoginService{
 	@Override
 	public Member getMemberInfo(String socialId) {
 		
+		Member member = memberDao.getBySocialId(socialId);
+		int participantId = member.getId();
+		int[] participantIds = participationDao.getListByParticipantId(participantId);
+		
+		if(participantIds[0] != 0)
+			createNotification(participantIds[0],"meeting/evaluation",1);
+		
 		return memberDao.getBySocialId(socialId);
 	
 	}
 	
+	private void createNotification(int memberId, String url, int type) {
+		notificationDao.insertCommentNotification(memberId,url,type);
+	}
 	
 	
 }

@@ -14,5 +14,9 @@
 	<update id="updateByType">
 		UPDATE notification SET readAt = #{readAt} WHERE type = #{type};
 	</update>
-	
+	  <insert id="insertCommentNotification">
+  		INSERT INTO notification
+  				(memberId, url, type)
+  				values(#{memberId},#{url},#{type})
+  	</insert>
 </mapper>

@@ -24,6 +24,7 @@ import com.zpop.web.dao.CategoryDao;
 import com.zpop.web.dao.ContactTypeDao;
 import com.zpop.web.dao.MeetingDao;
 import com.zpop.web.dao.MemberDao;
+import com.zpop.web.dao.NotificationDao;
 import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.dao.RegionDao;
 import com.zpop.web.dto.AgeRangeDto;
@@ -62,6 +63,9 @@ public class DefaultMeetingService implements MeetingService {
 
 	@Autowired
 	private MemberDao memberDao;
+
+	@Autowired
+	private NotificationDao notificationDao;
 
 	public DefaultMeetingService() {
 	}
@@ -367,6 +371,10 @@ public class DefaultMeetingService implements MeetingService {
 
 		int maxNumber = dao.getMaxMember(meetingId);
 		System.out.println(maxNumber);
+
+		// 새로운 참여시 알림 생성
+		int regMemberId = getRegMemberId(meetingId);
+		createNotification(regMemberId,"/meeting/"+meetingId,2);
 		return participationDao.insert(meetingId, memberId);
 	}
 
@@ -412,4 +420,13 @@ public class DefaultMeetingService implements MeetingService {
 
         return true;
     }
+
+	private void createNotification(int memberId, String url, int type) {
+		notificationDao.insertCommentNotification(memberId, url, type);
+	}
+    
+    private int getRegMemberId(int meetingId) {
+		int regMemberId = dao.getRegMemberIdByMeetingId(meetingId);
+		return regMemberId;
+	}
 }

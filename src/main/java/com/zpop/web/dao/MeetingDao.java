@@ -39,6 +39,9 @@ public interface MeetingDao {
 
 	int getMaxMember(int meetingId);
 
+	int getRegMemberIdByMeetingId(int meetingId);
+
 	int updateContent(Meeting meeting);
+
 }
 
