@@ -243,44 +243,76 @@ public class DefaultMeetingService implements MeetingService {
 		return true;
 	}
 	
-	@Override
-	public int participate(int meetingId, int memberId) {
-		// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
-		// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
-		// 강퇴당한 사용자일 경우
-		// 마감된 모임일 경우
+	/************************* 참여 관련 로직 **********************/
+	// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
+	// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
+	// 강퇴당한 사용자일 경우
+	// 마감된 모임일 경우
 //		3. 로그인을 하지 않은 사용자가 참여하기 버튼을 누른 경우 -> 로그인 모달이 나와야됨.
 //		4. 내가 이미 참여한 모임일 경우
+	public static boolean isMemberParticipated(int memberId, List<Participation> participants) {
+        for(Participation p : participants) {
+           if(p.getParticipantId()== memberId) {
+              return true;
+           }
+        }
+        return false;
+     }
+	@Override
+	public int participate(int meetingId, int memberId) {
 		
-		List<MeetingParticipantsDto> participants = participationDao.getByMeetingId(meetingId);
-		Member member = memberService.getById(memberId);
+		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
 		int maxMember = dao.getmaxMember(meetingId);
 		int count = participationDao.getparticipantsCount(meetingId);
 		int result = 0;
 		// result는 성공(1) 실패(0)
-			
-			
-			
-		
-		
-		
-		
 		
 		// for each에서 앞에 오는것은 무조건 타입
 		// Java List에서 null체크를 할 때는 isEmpty()를 사용한다.
-		if (!participants.isEmpty()) {
-			for (MeetingParticipantsDto p : participants) {
-				if (p.getMemberId() == memberId || maxMember <= count) {
-					result = 0;
-					break;
-				}else {
-					participationDao.insert(meetingId, memberId);
-					result = 1;
-				}
+		if (!participants.isEmpty()) {//개발중엔 임시로 null check필요
+			if(maxMember <= count)
+				return 0;
+			if(isMemberParticipated (memberId,participants)) {
+				return 0;
 			}
-		}else {
 			participationDao.insert(meetingId, memberId);
+			result = 1;
 		}
-			return result;
+		else
+			participationDao.insert(meetingId, memberId);
+		return result;
+	}
+	
+	
+	
+	@Override
+	public int getUserType(int memberId, int meetingId) {
+		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
+		int hostId = dao.getMeetingHost(meetingId);
+		int userType = 0;
+		// userType
+		// 0--> 일반(비로그인)
+		// 1 --> 일반(로그인)
+		// 2--> 참여자 
+		// 3--> 호스트
+		if(memberId == hostId) {
+			userType = 3;
+		}
+		else if(isMemberParticipated (memberId,participants)){
+			userType = 2;
+		}
+		else if(memberId != 0) {
+			userType = 1;
+		}
+		else {
+			userType = 0;
+		}
+		return userType;
+	}
+
+	@Override
+	public int getCommenterType(int memberId, int id) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

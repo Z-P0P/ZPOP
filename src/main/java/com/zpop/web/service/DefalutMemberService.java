@@ -148,42 +148,4 @@ public class DefalutMemberService implements MemberService {
         return list;
     }
     
-  
-    
-    public static boolean isMemberParticipated(int memberId, List<Participation> participants) {
-        for(Participation p : participants) {
-           if(p.getParticipantId()== memberId) {
-              return true;
-           }
-        }
-        return false;
-     }
-    
-    
-    
-    
-	@Override
-	public int getUserType(int memberId, int meetingId) {
-		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
-		int hostId = meetingDao.getMeetingHost(meetingId);
-		int userType = 0;
-		// userType
-		// 0--> 일반(비로그인)
-		// 1 --> 일반(로그인)
-		// 2--> 참여자 
-		// 3--> 호스트
-		if(memberId == hostId) {
-			userType = 3;
-		}
-		else if(isMemberParticipated (memberId,participants)){
-			userType = 2;
-		}
-		else if(memberId != 0) {
-			userType = 1;
-		}
-		else {
-			userType = 0;
-		}
-		return userType;
-	}
 }

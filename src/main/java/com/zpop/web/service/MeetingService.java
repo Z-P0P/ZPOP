@@ -15,23 +15,23 @@ import java.util.List;
 
 
 public interface MeetingService {
-			int register(Meeting meeting);
 
-			List<MeetingThumbnailResponse> getList();
-			List<MeetingThumbnailResponse> getList(String keyword);
-			List<MeetingThumbnailResponse> getList(int startId, String keyword, Integer categoryId, String regionIds, Boolean isClosed);
+		int register(Meeting meeting);
 
-			MeetingDetailDto getById(int id);
+		List<MeetingThumbnailResponse> getList();
+		List<MeetingThumbnailResponse> getList(String keyword);
+		List<MeetingThumbnailResponse> getList(int startId, String keyword, Integer categoryId, String regionIds, Boolean isClosed);
 
-			List<MeetingParticipantsDto> getParticipants(int id);
+		MeetingDetailDto getById(int id);
+		void updateViewCount(int id);
 
-			int participate(int meetingId, int memberId);
+		boolean kick(int id, int participantId, Member member);
+		boolean close(int id, Member member);
+		boolean delete(int id, Member member);
 
-			void updateViewCount(int id);
+		List<MeetingParticipantsDto> getParticipants(int id);
+		int participate(int meetingId, int memberId);
+		int getUserType(int memberId, int meetingId);
 
-			boolean kick(int id, int participantId, Member member);
-
-			boolean close(int id, Member member);
-
-			boolean delete(int id, Member member);
+		int getCommenterType(int memberId, int id);
 }
