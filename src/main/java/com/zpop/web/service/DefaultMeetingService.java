@@ -43,6 +43,22 @@ import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.entity.meeting.MeetingThumbnailView;
 import com.zpop.web.utils.TextDateTimeCalculator;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+
+import com.zpop.web.dao.CategoryDao;
+
+import com.zpop.web.dto.MeetingDetailDto;
+import com.zpop.web.dto.MeetingParticipantsDto;
+
+
 @Service
 public class DefaultMeetingService implements MeetingService {
 
@@ -361,24 +377,76 @@ public class DefaultMeetingService implements MeetingService {
 
 		return true;
 	}
-
+	
+	/************************* 참여 관련 로직 **********************/
+	// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
+	// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
+	// 강퇴당한 사용자일 경우
+	// 마감된 모임일 경우
+//		3. 로그인을 하지 않은 사용자가 참여하기 버튼을 누른 경우 -> 로그인 모달이 나와야됨.
+//		4. 내가 이미 참여한 모임일 경우
+	public static boolean isMemberParticipated(int memberId, List<Participation> participants) {
+        for(Participation p : participants) {
+           if(p.getParticipantId()== memberId) {
+              return true;
+           }
+        }
+        return false;
+     }
 	@Override
 	public int participate(int meetingId, int memberId) {
-		// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
-		// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
-		// 강퇴당한 사용자일 경우
-		// 마감된 모임일 경우
-//				Participation participation = new Participation(participation);
-
-		int maxNumber = dao.getMaxMember(meetingId);
-		System.out.println(maxNumber);
-
-		// 새로운 참여시 알림 생성
-		int regMemberId = getRegMemberId(meetingId);
-		createNotification(regMemberId,"/meeting/"+meetingId,2);
-		return participationDao.insert(meetingId, memberId);
+		
+		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
+		int maxMember = dao.getmaxMember(meetingId);
+		int count = participationDao.getparticipantsCount(meetingId);
+		int hostId = dao.getMeetingHost(meetingId);
+		int result = 0;
+		// result는 성공(1) 실패(0)
+		
+		// for each에서 앞에 오는것은 무조건 타입
+		// Java List에서 null체크를 할 때는 isEmpty()를 사용한다.
+		if (!participants.isEmpty()) {//개발중엔 임시로 null check필요
+			if(maxMember <= count)
+				return 0;
+			if(isMemberParticipated (memberId,participants)) {
+				return 0;
+			}
+			participationDao.insert(meetingId, memberId);
+			createNotification(hostId, "/meeting/"+meetingId,2);
+			result = 1;
+		}
+		else {
+			participationDao.insert(meetingId, memberId);
+			createNotification(hostId, "/meeting/"+meetingId,2);
+			result = 1;
+		}	
+		return result;
 	}
-
+	@Override
+	public int getUserType(int memberId, int meetingId) {
+		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
+		int hostId = dao.getMeetingHost(meetingId);
+		int userType = 0;
+		// userType
+		// 0--> 일반(비로그인)
+		// 1 --> 일반(로그인)
+		// 2--> 참여자 
+		// 3--> 호스트
+		if(memberId == hostId) {
+			userType = 3;
+		}
+		else if(isMemberParticipated (memberId,participants)){
+			userType = 2;
+		}
+		else if(memberId != 0) {
+			userType = 1;
+		}
+		else {
+			userType = 0;
+		}
+		return userType;
+	}
+	
     @Override
     public boolean cancelParticipate(int id, int memberId) {
 
@@ -417,7 +485,7 @@ public class DefaultMeetingService implements MeetingService {
             currentTime.after(meetingStartedAt))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "마감된 모임에 참여를 취소할 수 없습니다");
         
-        participationDao.updateCanceledAt(participationInfo.getId());
+        //participationDao.updateCanceledAt(participationInfo.getId());
 
         return true;
     }
@@ -425,9 +493,7 @@ public class DefaultMeetingService implements MeetingService {
 	private void createNotification(int memberId, String url, int type) {
 		notificationDao.insertCommentNotification(memberId, url, type);
 	}
+
+	
     
-    private int getRegMemberId(int meetingId) {
-		int regMemberId = dao.getRegMemberIdByMeetingId(meetingId);
-		return regMemberId;
-	}
 }

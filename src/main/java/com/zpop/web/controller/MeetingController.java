@@ -35,19 +35,14 @@ import com.zpop.web.service.MeetingService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-/*
- * 작성자: 임형미 & 
- */
 @Controller
 @RequestMapping("/meeting")
 public class MeetingController {
-
 	@Autowired
 	private MeetingService service;
-
 	@Autowired
-	CommentService commentService;
-
+	private CommentService commentService;
+	
 	@GetMapping("/register")
 	public String registerView(Model model) {
 
@@ -103,78 +98,47 @@ public class MeetingController {
 	}
 
 	@GetMapping("/{id}")
-	public String detailView(@PathVariable int id, Model model, HttpSession session) {
-		// TODO: 댓글이랑 합치기
-		// TODO: getById에 Member or memberId로 넣어서 밑에 비즈니스로직 service 레이어로 옮기기
+	public String detailView(@PathVariable int id, Model model, 
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		MeetingDetailDto dto = service.getById(id);
-		Member member = (Member) session.getAttribute("member");
 		List<MeetingParticipantsDto> participants = service.getParticipants(id);
-		if (member != null) {
-			if (member.getId() == dto.getRegMemberId()) {
-				model.addAttribute("memberType", "host");
-			} else if (isMemberParticipated(member, participants)) {
-				model.addAttribute("memberType", "participant");
-			} else {
-				model.addAttribute("memberType", "member");
-			}
+		
+		int memberId = 0;
+		int userType = 0;
+		if(userDetails!=null) {
+			memberId = userDetails.getId();
+			userType = service.getUserType(memberId,id);
 		}
+		
 		model.addAttribute("dto", dto);
 		model.addAttribute("participants", participants);
 		model.addAttribute("meetingId", id); 
-		//session.setAttribute("memberId", member.getId());
+		model.addAttribute("userType",userType);
 		// service의 public 메서드 -> 사용자가 쓰는 기능
 		// 따라서 private updateViewCount으로 바꾸고 getById안에 넣기.
 		service.updateViewCount(id); // 조회수 증가 
 		
 		/*------------------------ 댓글 부분 ---------------------------*/
-		
-		List<CommentView> comments = commentService.getComment(id);
+		List<CommentView> comments = null;
+		if(memberId != 0)
+			comments = commentService.getCommentWithWriter(memberId, id);
+		else 
+			comments = commentService.getComment(id);
 		int countOfComment = commentService.getCountOfComment(id);
 		model.addAttribute("comments", comments);
 		model.addAttribute("countOfComment", countOfComment);
 		return "meeting/detail";
 	}
 	
-	
-	// TODO: service 레이어로
-	public static boolean isMemberParticipated(Member member, List<MeetingParticipantsDto> participants) {
-		for (MeetingParticipantsDto dto : participants) {
-			if (dto.getMemberId() == member.getId()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	
-	@GetMapping("{meetingId}/comment")
+	//참여자목록 AJAX endpoint(js가 콜하는 함수)
+	@GetMapping("{meetingId}/participant")
 	@ResponseBody
-	public  Map<String, Object> getComment(@PathVariable int meetingId) {
-		
-		List<CommentView> comments = commentService.getComment(meetingId);
-		int countOfComment = commentService.getCountOfComment(meetingId);
-		
-		Map<String,Object> dto = new HashMap<>();
-		dto.put("status",200);
-		dto.put("resultObject",comments);
-		dto.put("countOfComment",countOfComment);
-		
-		return dto;
+	public List<MeetingParticipantsDto> getParticipant(@PathVariable int meetingId){
+		List<MeetingParticipantsDto> list = service.getParticipants(meetingId);
+		return list;
 	}
 	
-//	@GetMapping("/participate")
-//	@ResponseBody
-//	public List<MeetingParticipantsDto> getParticipants(int meetingId) {
-//		
-//		return service.getParticipants(meetingId);
-//	}
-	// 예외처리 리스트
-	
-//		1. 참여하려는 사용자가 주최자인 경우 --> memberId == regmemberId
-//		2. 해당 모임에 대해서 강퇴된 사용자가 참여하기 버튼을 누를 경우  
-//		3. 로그인을 하지 않은 사용자가 참여하기 버튼을 누른 경우 -> 로그인 모달이 나와야됨.
-//		4. 내가 이미 참여한 모임일 경우
-	
+	//참여 AJAX endpoint (js에서 콜하는 함수)
 	@PostMapping("/participate/{meetingId}")
 	@ResponseBody
 	public String participate(@PathVariable int meetingId, HttpSession session) {

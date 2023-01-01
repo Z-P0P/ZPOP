@@ -10,6 +10,7 @@ import com.zpop.web.entity.comment.CommentView;
 public interface CommentService {
 	
 	List<CommentView> getComment(int meetingId);
+	List<CommentView> getCommentWithWriter(int memberId, int meetingId);
 	List<CommentView> getReply(int grouopId);
 	
 	int registerComment(Comment comment);

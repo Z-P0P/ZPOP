@@ -44,13 +44,11 @@
                 <span class="hidden meeting-id" th:text="${meetingId}"></span>
                     <span class="meeting__title"  th:text="${dto.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
-                    <th:block th:if="${session.member != null && memberType == 'host'}">
-                    		<div th:replace="~{inc/meeting-detail-modal::member-host}"></div>
-                    </th:block>
-                    <th:block th:if="${session.member != null && memberType == 'participant'}">
+                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-host}"></div>
+                    <th:block th:if="${session.member != null && userType== 2}">
                     		<div th:replace="~{inc/meeting-detail-modal::member-participant}"></div>
                     </th:block>
-                       <th:block th:if="${session.member != null && memberType == 'member'}">
+                       <th:block th:if="${session.member != null && userType== 1}">
                     		<div th:replace="~{inc/meeting-detail-modal::member}"></div>
                     </th:block>
                 </div>
@@ -90,8 +88,11 @@
     <section class="participant">
         <div class="participant__num">
             <span>참가자</span>
-            <span th:text="|${#lists.size(participants)}/${dto.maxMember}|">15/56</span>
-            <span class="icon icon-arrow-up"></span>
+            <span class="participant-count" th:text="${#lists.size(participants)}">7</span>
+            <span>/</span>
+            <span th:text="${dto.maxMember}">10</span>
+            <span class="icon pointer icon-arrow-up"></span>
+            <span class="icon pointer hidden icon-arrow-down"></span>
         </div>
         <ul class="participant__list">
             <li th:each="participant:${participants}">
@@ -147,6 +148,12 @@
 						<span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
 						<span class="profile__time" th:text="${comment.elapsedTime}">3분전</span>
 						<button></button>
+		                    <th:block th:if="${comment.isMyComment}">
+		                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
+		                    </th:block>
+		                       <th:block th:if="${!comment.isMyComment}">
+		                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::reader}"></div>
+		                    </th:block>
 					</div> <span class="comment__content" th:text="${comment.content}">
 						이 헌법에 의한 최초의 대통령의 임기는 이 헌법시행일로부터 개시한다. 모든 국민은 거주·이전의 자유를 가진다. 대통령은
 						제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다. </span>

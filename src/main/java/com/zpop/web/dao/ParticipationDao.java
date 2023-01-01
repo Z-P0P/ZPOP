@@ -22,6 +22,8 @@ public interface ParticipationDao {
     int updateBannedAt(int id);
     int updateCanceledAt(int id);
 	int countBySearch(String keyword, String option);
+
+	int getparticipantsCount(int meetingId);
 	
 	int[] getParticipantIdByMeetingId(int meetingId);
 	int[] getListByParticipantId(int participantId);

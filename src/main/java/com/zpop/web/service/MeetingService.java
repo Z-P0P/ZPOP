@@ -20,27 +20,30 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface MeetingService {
 
-			List<MeetingThumbnailResponse> getList();
-			List<MeetingThumbnailResponse> getList(String keyword);
-			List<MeetingThumbnailResponse> getList(int startId, String keyword, Integer categoryId, String regionIds, Boolean isClosed);
+	List<MeetingThumbnailResponse> getList();
+	List<MeetingThumbnailResponse> getList(String keyword);
+	List<MeetingThumbnailResponse> getList(int startId, String keyword, Integer categoryId, String regionIds, Boolean isClosed);
 
-			MeetingDetailDto getById(int id);
+	MeetingDetailDto getById(int id);
 
-			List<MeetingParticipantsDto> getParticipants(int id);
+	List<MeetingParticipantsDto> getParticipants(int id);
 
-			int participate(int meetingId, int memberId);
+	int participate(int meetingId, int memberId);
 
-			boolean cancelParticipate(int id, int memberId);
+	boolean cancelParticipate(int id, int memberId);
 
-			void updateViewCount(int id);
+	void updateViewCount(int id);
 
-			boolean kick(int id, int participantId, Member member);
+	boolean kick(int id, int participantId, Member member);
 
-			boolean close(int id, Member member);
+	boolean close(int id, Member member);
 
-			boolean delete(int id, Member member);
+	boolean delete(int id, Member member);
 
-			RegisterMeetingResponse getActiveOptions();
+	RegisterMeetingResponse getActiveOptions();
 
-			int register(RegisterMeetingRequest dto, List<MultipartFile> images, String realPath) throws FileNotFoundException, IOException;
+	int register(RegisterMeetingRequest dto, List<MultipartFile> images, String realPath) throws FileNotFoundException, IOException;
+
+	int getUserType(int memberId, int meetingId);
+
 }

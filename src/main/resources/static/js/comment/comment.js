@@ -76,6 +76,50 @@ function closeReplyList(replyUl, replyCnt, replyClose){
 		replyClose.classList.add("hidden")
 		replyCnt.classList.remove("hidden")
 }
+
+//AJAX로 댓글 렌더링
+function getComment(meetingId, commentUl) {
+	
+	fetch(`/comment?meetingId=${meetingId}`)
+		.then(response => {
+			if (response.ok) {
+				return response;
+			}
+		})
+		.then(data => data.json())
+		.then(json => {
+			let comments = json.resultObject;
+			let count = json.countOfComment;
+			const countHeader = document.querySelector(".comment__num");
+			countHeader.innerHTML = "댓글 " + count +" 개";
+			for (const c of comments) {
+				let countOfReply = "";
+				if(c.countOfReply != 0)
+					countOfReply = "답글 " + c.countOfReply + "개";
+				let template = `
+					<li>
+						<div class="profile">
+							<span class="profile__image"></span> 
+							<span class="profile__nickname">${c.nickname}</span> 
+							<span class="profile__time">${c.elapsedTime}</span>
+							<button></button>
+						</div> <span class="comment__content">${c.content}</span>
+						<div class="comment__replies underline pointer">
+							<span class="hidden comment-id">${c.id}</span> 
+							<span class="pointer underline reply-cnt">${countOfReply}</span>
+							<span class="hidden pointer hidden reply-close">닫기</span>
+							<span class="pointer underline reply-write">답글 달기</span>
+						</div>
+						<section class="reply hidden">
+							<ul class="reply__list">
+							</ul>
+						</section>
+					</li>
+				`
+				commentUl.insertAdjacentHTML("beforeend", template);
+			}
+		});
+}
 //새 댓글 등록시 SSR로 렌더링된 기존 댓글을 지우고  AJAX로 전체를 다시 렌더링함. 
 function writeComment(registerBtn, meetingId, commentUl){
 	registerBtn.addEventListener("click", () => {
@@ -107,49 +151,6 @@ function writeComment(registerBtn, meetingId, commentUl){
 					else alert("시스템 장애로 등록이 안되고 있습니다.");
 			});
 	});
-}
-//AJAX로 댓글 렌더링
-function getComment(meetingId, commentUl) {
-	
-	fetch(`/meeting/${meetingId}/comment`)
-		.then(response => {
-			if (response.ok) {
-				return response;
-			}
-		})
-		.then(data => data.json())
-		.then(json => {
-			let comments = json.resultObject;
-			let count = json.countOfComment;
-			const countHeader = document.querySelector(".comment__num");
-			countHeader.innerHTML = "댓글 " + count +" 개";
-			for (const c of comments) {
-				let countOfReply = "";
-				if(c.countOfReply != 0)
-					countOfReply = "답글 " + c.countOfReply + "개";
-				let template = `
-					<li>
-						<div class="profile">
-							<span class="profile__image"></span> 
-							<span class="profile__nickname">${c.nickname}</span> 
-							<span class="profile__time">${c.elapsedTime}</span>
-							<button></button>
-						</div> <span class="comment__content">${c.content}</span>
-						<div class="comment__replies underline pointer">
-							<span class="hidden comment-id">${c.id}</span> 
-							<span class="pointer underline hidden reply-cnt">${countOfReply}</span>
-							<span class="hidden pointer reply-close">닫기</span>
-							<span class="pointer underline reply-write">답글 달기</span>
-						</div>
-						<section class="reply hidden">
-							<ul class="reply__list">
-							</ul>
-						</section>
-					</li>
-				`
-				commentUl.insertAdjacentHTML("beforeend", template);
-			}
-		});
 }
 //DOM추가로 새글 보여주기(사용x)
 //function addNewCommentElement(newText) {

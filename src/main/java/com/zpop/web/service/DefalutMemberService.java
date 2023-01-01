@@ -3,8 +3,10 @@ package com.zpop.web.service;
 import com.zpop.web.dao.MeetingDao;
 import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.ParticipationDao;
+import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.entity.Member;
+import com.zpop.web.entity.Participation;
 import com.zpop.web.entity.member.MyMeetingView;
 import com.zpop.web.utils.TextDateTimeCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,4 +147,5 @@ public class DefalutMemberService implements MemberService {
 
         return list;
     }
+    
 }

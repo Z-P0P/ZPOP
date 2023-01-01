@@ -1,16 +1,9 @@
 package com.zpop.web.dto;
 
 public class MeetingParticipantsDto {
-	private int id;
-	private int memberId;
+	private int memberId; 
 	private String nickname;
 	private String profileImagePath;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getProfileImagePath() {
 		return profileImagePath;
 	}

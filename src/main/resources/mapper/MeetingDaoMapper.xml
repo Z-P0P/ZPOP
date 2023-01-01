@@ -158,14 +158,14 @@
 		ON meeting.contactTypeId = ct.id
 		WHERE meeting.id=#{meetingId}
 	</select>
-	    <select id="getMaxMember" resultType="int">
-    select maxMember from meeting
-    where id=#{meetingId}
-    
-    </select>
-    
-    <!-- 댓글 알림 생성을 위한 구문 -->
-    <select id="getRegMemberIdByMeetingId" resultType="int">
-    	SELECT regMemberId FROM meeting WHERE id = #{meetingId}
-    </select>
+	
+	<select id="getmaxMember" resultType="java.lang.Integer">
+		SELECT maxMember FROM meeting
+		WHERE id = #{meetingId}
+	</select>
+
+	<select id="getMeetingHost" resultType="int">
+		SELECT regMemberId from meeting
+		where id = #{id}
+	</select>
 </mapper>
