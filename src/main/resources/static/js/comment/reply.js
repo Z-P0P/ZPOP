@@ -16,6 +16,23 @@ export function getReply(groupId, replyUl) {
 				let parentNickname = "";
 				if (r.parentNickname != null)
 					parentNickname = '@' + r.parentNickname;
+				let kebobModalWriter = `
+					<div class="modal-select comment__kebob">
+			        <div class="modal-select__contents" data-id="comment-edit">수정
+			            <span class="icon icon-edit"></span>
+			        </div>
+			        <div class="modal-select__contents" data-id="comment-delete">삭제
+			            <span class="icon icon-trash"></span>
+			        </div>
+			    	</div>	
+				`
+				let kebobModalReader = `
+					 <div class="modal-select comment__kebob">
+				        <div class="modal-select__contents" data-id="comment-report">댓글 신고
+				            <span class="icon icon-siren-red"></span>
+				        </div>
+				     </div>
+				`
 				let template = `
 					<li> 
 						<div class="profile">
@@ -23,6 +40,7 @@ export function getReply(groupId, replyUl) {
 							<span class="profile__nickname profile__nickname">${r.nickname}</span>
 							<span class="profile__time">${r.elapsedTime}</span>
 							<button></button>
+							${r.myComment?kebobModalWriter:kebobModalReader}
 						</div>
 						<div class="reply-container">
 							<span class="reply__to">${parentNickname}</span>

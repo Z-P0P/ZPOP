@@ -29,9 +29,16 @@ public class ReplyController {
 	//답글(reply)불러오기 AJAX endpoint (js에서 콜하는 함수)
 	@GetMapping()
 	@ResponseBody
-	public  Map<String, Object> getReply(@RequestParam int groupId) {
-
-		List<CommentView> replies = service.getReply(groupId);
+	public  Map<String, Object> getReply(@RequestParam int groupId,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		List<CommentView> replies = null;
+		int memberId = 0;
+		if(userDetails!=null) 
+			memberId = userDetails.getId();
+		if(memberId != 0)
+			replies = service.getReplyWithWriter(memberId, groupId);
+		else
+			replies = service.getReply(groupId);
 		int countOfReply = service.getCountOfReply(groupId);
 		
 		Map<String,Object> dto = new HashMap<>();
@@ -42,7 +49,7 @@ public class ReplyController {
 		return dto;
 	}
 
-	//답글(=reply) 등록 AJAX endpoint (js에서 콜하는 함수)
+	//답글(reply) 등록 AJAX endpoint (js에서 콜하는 함수)
 	@PostMapping()
 	public  String registerReply(@RequestBody Comment comment, 
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
