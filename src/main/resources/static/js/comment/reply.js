@@ -1,7 +1,7 @@
 
 export function getReply(groupId, replyUl) {
 	//GET request가 디폴트
-	fetch(`/comment/${groupId}/reply`)
+	fetch(`/reply?groupId=${groupId}`)
 		.then(response => {
 			if (response.ok) {
 				return response;
@@ -61,7 +61,6 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 		linkContainer.insertAdjacentHTML("afterend", template);
 
 		document.querySelector(".register-btn").addEventListener("click", () => {
-			
 			const replyText = document.querySelector("#reply-text").value;
 			
 			if(replyText==""){
@@ -86,7 +85,8 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 							if (response.ok) {
 								if(groupId == parentId) {//원댓글에 대한 답글일 경우
 									removeTextBox('single');
-									linkContainer.children[2].classList.remove("hidden");//닫기 버튼
+									linkContainer.children[1].classList.add("hidden"); //답글갯수 감추고
+									linkContainer.children[2].classList.remove("hidden");//닫기 버튼 표출
 								}
 								linkContainer.classList.remove("hidden");
 								while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제

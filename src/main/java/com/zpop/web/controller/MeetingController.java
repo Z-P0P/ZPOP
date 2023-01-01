@@ -31,7 +31,6 @@ import com.zpop.web.entity.comment.CommentView;
 import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.CommentService;
 import com.zpop.web.service.MeetingService;
-import com.zpop.web.service.MemberService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -99,16 +98,15 @@ public class MeetingController {
 	}
 
 	@GetMapping("/{id}")
-	public String detailView(@PathVariable int id, Model model, HttpSession session) {
-		// TODO: getById에 Member or memberId로 넣어서 밑에 비즈니스로직 service 레이어로 옮기기
-		
+	public String detailView(@PathVariable int id, Model model, 
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		MeetingDetailDto dto = service.getById(id);
 		List<MeetingParticipantsDto> participants = service.getParticipants(id);
-		Member member = (Member)session.getAttribute("member");
+		
 		int memberId = 0;
 		int userType = 0;
-		if(member != null) {
-			memberId = member.getId();
+		if(userDetails!=null) {
+			memberId = userDetails.getId();
 			userType = service.getUserType(memberId,id);
 		}
 		
@@ -116,16 +114,14 @@ public class MeetingController {
 		model.addAttribute("participants", participants);
 		model.addAttribute("meetingId", id); 
 		model.addAttribute("userType",userType);
-		//session.setAttribute("memberId", member.getId());
 		// service의 public 메서드 -> 사용자가 쓰는 기능
 		// 따라서 private updateViewCount으로 바꾸고 getById안에 넣기.
 		service.updateViewCount(id); // 조회수 증가 
 		
 		/*------------------------ 댓글 부분 ---------------------------*/
 		List<CommentView> comments = null;
-		if(member != null) {
+		if(memberId != 0)
 			comments = commentService.getCommentWithWriter(memberId, id);
-		}
 		else 
 			comments = commentService.getComment(id);
 		int countOfComment = commentService.getCountOfComment(id);
@@ -140,23 +136,6 @@ public class MeetingController {
 	public List<MeetingParticipantsDto> getParticipant(@PathVariable int meetingId){
 		List<MeetingParticipantsDto> list = service.getParticipants(meetingId);
 		return list;
-	}
-	
-	
-	//댓글 AJAX endpoint (js에서 콜하는 함수)
-	@GetMapping("{meetingId}/comment")
-	@ResponseBody
-	public  Map<String, Object> getComment(@PathVariable int meetingId) {
-		
-		List<CommentView> comments = commentService.getComment(meetingId);
-		int countOfComment = commentService.getCountOfComment(meetingId);
-		
-		Map<String,Object> dto = new HashMap<>();
-		dto.put("status",200);
-		dto.put("resultObject",comments);
-		dto.put("countOfComment",countOfComment);
-		
-		return dto;
 	}
 	
 	//참여 AJAX endpoint (js에서 콜하는 함수)

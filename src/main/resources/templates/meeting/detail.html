@@ -44,9 +44,7 @@
                 <span class="hidden meeting-id" th:text="${meetingId}"></span>
                     <span class="meeting__title"  th:text="${dto.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
-                    <th:block th:if="${session.member != null && userType== 3}">
-                    		<div th:replace="~{inc/meeting-detail-modal::member-host}"></div>
-                    </th:block>
+                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-host}"></div>
                     <th:block th:if="${session.member != null && userType== 2}">
                     		<div th:replace="~{inc/meeting-detail-modal::member-participant}"></div>
                     </th:block>
@@ -150,11 +148,11 @@
 						<span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
 						<span class="profile__time" th:text="${comment.elapsedTime}">3분전</span>
 						<button></button>
-		                    <th:block th:if="${session.member != null && comment.isMyComment}">
-		                    		<div th:replace="~{inc/meeting-detail-modal::writer}"></div>
+		                    <th:block th:if="${comment.isMyComment}">
+		                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
 		                    </th:block>
-		                       <th:block th:if="${session.member != null && !comment.isMyComment}">
-		                    		<div th:replace="~{inc/meeting-detail-modal::reader}"></div>
+		                       <th:block th:if="${!comment.isMyComment}">
+		                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::reader}"></div>
 		                    </th:block>
 					</div> <span class="comment__content" th:text="${comment.content}">
 						이 헌법에 의한 최초의 대통령의 임기는 이 헌법시행일로부터 개시한다. 모든 국민은 거주·이전의 자유를 가진다. 대통령은
