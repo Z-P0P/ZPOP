@@ -430,7 +430,40 @@ class DefaultMeetingServiceTest {
         assertThat(e.getReason()).isEqualTo("이미 강퇴된 회원입니다");
     }
 
-    // TODO: 탈퇴한 회원 테스트
+    @Test
+    public void kick_탈퇴한_회원이라면_참여취소_처리_후_NOT_FOUND() {
+        //given
+        int meetingId = 1;
+        int participantId = 1;
+        Member member = new Member();
+        member.setId(1);
+
+        Meeting meeting = new Meeting();
+        meeting.setId(1);
+        meeting.setRegMemberId(1);
+
+        Participation resignedParticipation = new Participation();
+        resignedParticipation.setParticipantId(1);
+        List<Participation> list = new ArrayList<>();
+        list.add(resignedParticipation);
+
+        Member resigendMember = new Member();
+        resigendMember.setId(999);
+        resigendMember.setResignedAt(new Date());
+
+        // mocking
+        given(dao.get(anyInt())).willReturn(meeting);
+        given(participationDao.getListByMeetingId(anyInt())).willReturn(list);
+        given(memberDao.getById(anyInt())).willReturn(resigendMember);
+
+        //when
+        ResponseStatusException e = assertThrows(ResponseStatusException.class,
+                () -> service.kick(meetingId, participantId, member));
+
+        //then
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(e.getReason()).isEqualTo("존재하지 않는 회원입니다");
+    }
 
     @Test
     public void kick_자신을_강퇴한다면_BAD_REQUEST() {
