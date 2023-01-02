@@ -69,7 +69,7 @@
         WHERE id = #{id}
     </update>
 	
-	<update id="updateViewCount" parameterType="com.zpop.web.dto.MeetingDetailDto">
+	<update id="increaseViewCount">
 				UPDATE meeting
 				SET viewCount = viewCount + 1
 				WHERE id = #{id}
