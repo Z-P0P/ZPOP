@@ -47,16 +47,10 @@
 		LIMIT #{offset},#{size}
 	</select>
 
-	<select id="getParticipantInfoByMeetingId" resultType="MeetingParticipantsDto">
-		SELECT p.participantId AS memberId, m.nickname, m.profileImagePath
-		FROM participation p
-		JOIN member m 
-		ON p.participantId = m.id
-		WHERE meetingId = #{meetingId} AND (p.bannedAt IS NULL AND p.canceledAt IS NULL);
-	</select>
-    
-	<select id="getParticipantIdByMeetingId" resultType= "integer">
-		SELECT participantId FROM participation WHERE meetingId = #{meetingId}
+	<select id="getParticipantInfoByMeetingId" resultType="com.zpop.web.entity.participation.ParticipationInfoView">
+		SELECT *
+		FROM participationInfo
+		WHERE meetingId = #{meetingId}
 	</select>
     
 	<select id="getListByParticipantId" resultType="int">
