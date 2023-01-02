@@ -1,5 +1,6 @@
 package com.zpop.web.service;
 
+import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.entity.Member;
 import com.zpop.web.entity.member.MyMeetingView;
@@ -14,11 +15,8 @@ public interface MemberService {
 
         List<MyMeetingResponse> getMyGathering(int memberId);
 
+        List<MyMeetingView> getParticipant(int meetingId);
 
-        //평가할 모임을 위해 모임아이디 저장할 함수
-        List<MyMeetingView> getMeeting(int meetingId);
-
-
-
+        List<EvalMemberDto> getEvalMember(int meetingId);
 }
 

@@ -1,6 +1,7 @@
 package com.zpop.web.controller;
 
 
+import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.entity.Member;
 import com.zpop.web.service.MeetingService;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -68,37 +70,13 @@ public class MemberController {
         Member member = (Member) session.getAttribute("member");
         List<MyMeetingResponse> meetings = service.getMyMeeting(member.getId());
 
-
-//        List meetingIds = new ArrayList();
-//        for (MyMeetingResponse mmr: meetings
-//             ) {
-//            int i = mmr.getMeetingId();
-//            meetingIds.add(i);
-//            System.out.println(i);
-//        }
-//        System.out.println("add"+meetingIds.get(0));
-//        System.out.println("add"+meetingIds.get(1));
-//
-//        meetingService.getById((Integer) meetingIds.get(0));
-//        meetingService.getById((Integer) meetingIds.get(1));
-
-//        List<Meeting> meetingInfo
-        //끼요오옷.
-//        for (MyMeetingResponse mmr: meetings
-//        ) {
-//            List<MyMeetingView> s = new ArrayList<>();
-//
-//            s.add((MyMeetingView) service.getMeeting(mmr.getMeetingId()));
-//
-//        }
-
-
-
         model.addAttribute("meetings", meetings);
 
         return "member/my-meeting";
     }
     // 권한 확인
+
+
 
     @GetMapping("/me/gathering")
     public String getGathering(HttpSession session, Model model){
@@ -110,6 +88,23 @@ public class MemberController {
         return "member/my-gathering";
 
     }
+//@RequestBody HashMap<String, Object> param
 
+    @ResponseBody
+    @GetMapping("/eval/{dataId}")
+    public List<EvalMemberDto> getParticipants(@PathVariable("dataId") int meetingId)
+    {
 
+         List<EvalMemberDto> participant = service.getEvalMember(meetingId) ;
+      
+//        service.getDto( title, service.getParticipant(meetingId));
+//        service.getParticipantNickname(meetingId);
+
+        // Gson gson = new Gson();
+        // String jsonString = gson.toJson(participant);
+        // System.out.println(jsonString);
+        // //데이터 , 성공여부 , status code , 에러에 해당하는 경우
+        // System.out.println(meetingId);
+        return participant;
+    }
 }

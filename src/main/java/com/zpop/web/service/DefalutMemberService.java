@@ -3,17 +3,23 @@ package com.zpop.web.service;
 import com.zpop.web.dao.MeetingDao;
 import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.ParticipationDao;
+import com.zpop.web.dto.EvalMemberDto;
+import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.entity.Member;
 import com.zpop.web.entity.member.MyMeetingView;
 import com.zpop.web.utils.TextDateTimeCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DefalutMemberService implements MemberService {
@@ -145,12 +151,12 @@ public class DefalutMemberService implements MemberService {
 
         return list;
     }
+ 
 
     @Override
-    public List<MyMeetingView> getMeeting(int meetingId) {
-
-       return dao.getMeeting(meetingId);
+    public List<EvalMemberDto> getEvalMember(int meetingId) {
+       
+        return  dao.getEvalMember(meetingId);
     }
-
-
+    
 }
