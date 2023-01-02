@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zpop.web.dao.MemberDao;
+import com.zpop.web.dao.NotificationDao;
+import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.dao.SocialTypeDao;
 import com.zpop.web.entity.Member;
 import com.zpop.web.service.LoginService;
@@ -34,6 +36,12 @@ public class LoginController {
 	private LoginService loginService;
 	private Map<String, LoginService> loginServiceMap;
 	private UserSecurityService userSecurityService;
+	
+	@Autowired
+	private ParticipationDao participationDao;
+	
+	@Autowired
+	private NotificationDao notificationDao;
 
 	@Autowired
 	public LoginController(MemberDao memberDao, 
@@ -78,6 +86,20 @@ public class LoginController {
 			session.setAttribute("socialId", socialId);
 			session.setAttribute("loginType", loginType);
 			return "redirect:/register";
+		}
+		
+		
+		// 로그인시 알림생성
+		try {
+			int participantId = member.getId();
+			int[] participantIds = participationDao.getListByParticipantId(participantId);
+			
+			if(participantIds[0] != 0)
+				createNotification(participantIds[0],"meeting/evaluation",1);
+
+		} catch (ArrayIndexOutOfBoundsException e) {
+
+		    System.err.println("Error: the array is empty!");
 		}
 
 		/*
@@ -139,4 +161,8 @@ public class LoginController {
 
 	}
 */
+	
+	private void createNotification(int memberId, String url, int type) {
+		notificationDao.insertCommentNotification(memberId,url,type);
+	}
 }
