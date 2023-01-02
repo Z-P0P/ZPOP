@@ -62,6 +62,19 @@ public interface MeetingService {
 
 	List<MeetingParticipantsDto> getParticipants(int id);
 
+	/**
+	 * 모임 연락처 얻기.
+	 *
+	 * 참여자가 해당 id의 모임에 대해 연락처를 얻는다.
+	 * 만약 존재하지 않는 id의 모임이거나, 모임이 이미 삭제 되었다면, 연락처를 얻을 수 없다.
+	 * memberId가 {@link Participation 참여자}인지 확인 후, 모임에 참여한 적이 없다면 연락처를 얻을 수 없다.
+	 *
+	 * @param id 모임 아이디
+	 * @param memberId 멤버 아이디
+	 * @return 연락처
+	 */
+	String getContact(int id, int memberId);
+
 	int participate(int meetingId, int memberId);
 
 	/**
