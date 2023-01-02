@@ -11,16 +11,7 @@
 			meetingId = #{query}
 		</if>
 		AND parentCommentId IS NULL
-	ORDER BY createdAt
-  </select>
-  <select id="getCommentWithWriter" resultType= "com.zpop.web.entity.comment.CommentView">
-  	SELECT * 
-	FROM commentView 
-	WHERE 
-		<if test=" query != null">
-			meetingId = #{query}
-		</if>
-		AND parentCommentId IS NULL
+		AND deletedAt IS NULL
 	ORDER BY createdAt
   </select>
   <select id="getReply" resultType= "com.zpop.web.entity.comment.CommentView">
@@ -51,11 +42,13 @@
 		</if>
   	
   </select>
-  <!-- <insert id="insertComment" parameterType="java.util.Map">
-  	insert into comment 
-	  	(meetingId, writerId, content)
-	  	values (#{meetingId}, #{writerId}, #{content})
-  </insert> -->
+  <select id="getCommentById" resultType= "com.zpop.web.entity.comment.Comment">
+  	SELECT * FROM comment
+  	WHERE 
+  	<if test="commentId != null">
+			id = #{commentId}
+	</if>
+  </select>
   <insert id="insertComment" parameterType="com.zpop.web.entity.comment.Comment">
   	INSERT INTO comment 
 	  	(meetingId, writerId, content)
@@ -70,10 +63,22 @@
   <update id="updateComment" parameterType="com.zpop.web.entity.comment.Comment">
   	UPDATE comment
   	<set>
-      <if test="content != null">content=#{content}</if>
+      <if test="content != null">
+      	content=#{content},
+      	updatedAt = now()
+      </if>
     </set>
-  	WHERE id = #{id}
+  	WHERE id = #{commentId}
   </update>
-  
+  <update id="deleteComment" parameterType="com.zpop.web.entity.comment.Comment">
+  	UPDATE comment
+  	<set>
+      <if test="commentId != null">
+      	deletedAt = now()
+      </if>
+    </set>
+  	WHERE
+  	id = #{commentId}
+  </update>
 </mapper>
 

@@ -14,7 +14,7 @@ import com.zpop.web.entity.comment.CommentView;
 import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.utils.ElapsedTimeCalculator;
 /*
- * 작성자:임형미
+ * 작성자:임형미, 임우빈(한집안 아님)
  */
 @Service
 public class DefaultCommentService implements CommentService {
@@ -65,7 +65,26 @@ public class DefaultCommentService implements CommentService {
 		} 
 		return list;
 	}
-
+	@Override
+	public List<CommentView> getReplyWithWriter(int memberId, int groupId) {
+		List<CommentView> list = dao.getReply(groupId);
+		for(CommentView element:list) {
+			//본인댓글인지 여부표시
+			if(element.getWriterId() == memberId) {
+				element.setMyComment(true);
+			}
+			//작성시간표시
+			element.setElapsedTime(ElapsedTimeCalculator.getElpasedTime(element.getCreatedAt()));
+			//답글수
+			element.setCountOfReply(dao.getCountOfReply(element.getGroupId()));
+		} 
+		return list;
+	}
+	@Override
+	public Comment getCommentById(int commentId) {
+		Comment comment =  dao.getCommentById(commentId);
+		return comment;
+	}
 	@Transactional
 	@Override
 	public int registerComment(Comment comment) {
@@ -96,7 +115,20 @@ public class DefaultCommentService implements CommentService {
 		int countOfReply = dao.getCountOfReply(groupId);
 		return countOfReply;
 	}
-
+	@Override
+	public int updateComment(Comment comment) {
+		int commentId = comment.getId();
+		String content = comment.getContent();
+		int affectedRow = dao.updateComment(commentId, content);
+		return affectedRow;
+	}
+	@Override
+	public int deleteComment(Comment comment) {
+		int commentId = comment.getId();
+		int affectedRow = dao.deleteComment(commentId);
+		return affectedRow;
+	}
+	
 	// 새로운 댓글 생성시 알림 생성을 위한 메서드
 	@Override
 	public void createCommentNotification(int memberId, String url, int type) {
@@ -107,4 +139,5 @@ public class DefaultCommentService implements CommentService {
 		int regMemberId = meetingDao.getMeetingHost(meetingId);
 		return regMemberId;
 	}
+
 }

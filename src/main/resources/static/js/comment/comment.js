@@ -1,5 +1,4 @@
 import * as Reply from "./reply.js";
-
 window.addEventListener("load", () => {
 	//DOM에서 SSR로 뿌려진값들 추출 
 	const meetingId = document.querySelector(".meeting-id").innerText.trim();
@@ -78,7 +77,7 @@ function closeReplyList(replyUl, replyCnt, replyClose){
 }
 
 //AJAX로 댓글 렌더링
-function getComment(meetingId, commentUl) {
+export function getComment(meetingId, commentUl) {
 	
 	fetch(`/comment?meetingId=${meetingId}`)
 		.then(response => {
@@ -122,9 +121,9 @@ function getComment(meetingId, commentUl) {
 }
 //새 댓글 등록시 SSR로 렌더링된 기존 댓글을 지우고  AJAX로 전체를 다시 렌더링함. 
 function writeComment(registerBtn, meetingId, commentUl){
+	const inputBox = document.querySelector(".comment__input");
 	registerBtn.addEventListener("click", () => {
-		const commentBox= document.querySelector("#comment-text");
-		const commentText = commentBox.value;
+		const commentText = inputBox.value;
 		const data = {
 			method: "POST",
 			headers: {
@@ -143,7 +142,7 @@ function writeComment(registerBtn, meetingId, commentUl){
 		fetch("/comment", data)
 			.then(response => {
 					if (response.ok) {
-						commentBox.value = "";
+						inputBox.value = "";
 						while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
 							commentUl.removeChild(commentUl.firstChild);
 						getComment(meetingId, commentUl); //AJAX로 새로 렌더링
@@ -152,21 +151,3 @@ function writeComment(registerBtn, meetingId, commentUl){
 			});
 	});
 }
-//DOM추가로 새글 보여주기(사용x)
-//function addNewCommentElement(newText) {
-
-// 	if (newText != "") {
-// 		const template = document.querySelector("#template-comment");
-// 		const sourceNode = window.template.content.querySelector("li");
-// 		const newNode = sourceNode.cloneNode(true);
-// 		const textSpan = newNode.querySelector('.comment__content');
-// 		const newContent = document.createTextNode(newText);
-// 		textSpan.appendChild(newContent);
-// 		const targetNode = document.querySelector(".comment__list li:last-child");
-// 		if (targetNode == null)
-// 			template.after(newNode);
-// 		else
-// 			targetNode.after(newNode);
-// 		document.getElementById("comment-text").value = "";//플레이스홀더 되살림.
-// 	}
-// }

@@ -1,27 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" 
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 
-    <link rel="stylesheet" href="/css/member/style.css" />
-    <link rel="stylesheet" href="/css/deco.css">
-    <link rel="stylesheet" href="/css/button.css">
-    <link rel="stylesheet" href="/css/icon.css">
-    <!-- component css -->
-    <link rel="stylesheet" href="/css/member/component/header.css">
-    <link rel="stylesheet" href="/css/member/component/select.css">
-    <link rel="stylesheet" href="/css/member/component/profile-box.css">
-    <link rel="stylesheet" href="/css/member/component/meeting-info.css">
-    <link rel="stylesheet" href="/css/member/component/participant.css" type="text/css" >
-    <link rel="stylesheet" href="/css/member/component/comment.css" />
-    <!-- detail page css -->
-    <link rel="stylesheet" href="/css/member/meeting/detail.css">
-
-</head>
     <!--💛글상세보기, 참여자-->
     <div class="modal-select"  th:fragment="member-participant">
         <div class="modal-select__contents">복사하기
@@ -62,10 +42,10 @@
 
     <!-- 💚 댓글 (작성자)-->
     <div class="modal-select comment__kebob" th:fragment="writer">
-        <div class="modal-select__contents">수정
+        <div class="modal-select__contents" data-id="comment-edit">수정
             <span class="icon icon-edit"></span>
         </div>
-        <div class="modal-select__contents">삭제
+        <div class="modal-select__contents" data-id="comment-delete">삭제
             <span class="icon icon-trash"></span>
         </div>
     </div>
@@ -73,7 +53,7 @@
     <!-- 💚 댓글 (기본유저)-->
     <div class="modal-select comment__kebob" th:fragment="reader">
 
-        <div class="modal-select__contents">댓글 신고
+        <div class="modal-select__contents" data-id="comment-report">댓글 신고
             <span class="icon icon-siren-red"></span>
         </div>
     </div>

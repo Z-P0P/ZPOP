@@ -117,5 +117,13 @@ public class ReportedComment {
 	public void setReleasedAt(Date releasedAt) {
 		this.releasedAt = releasedAt;
 	}
+
+	@Override
+	public String toString() {
+		return "ReportedComment [id=" + id + ", commentId=" + commentId + ", reporterId=" + reporterId + ", typeId="
+				+ typeId + ", adminId=" + adminId + ", reason=" + reason + ", original=" + original + ", createdAt="
+				+ createdAt + ", processedAt=" + processedAt + ", blockedAt=" + blockedAt + ", releasedAt=" + releasedAt
+				+ "]";
+	}
 	
 }
