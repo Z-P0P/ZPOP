@@ -32,7 +32,7 @@ public class ReportedMemberController {
 		int reportTypeId = Integer.parseInt(dto.getReportType());
 		String reportReason = dto.getReportReason();
 		
-		reportService.createMemberReport(reportTypeId,reportReason);
+		//reportService.createMemberReport(reportTypeId,reportReason);
 
 		return "report/member";
 

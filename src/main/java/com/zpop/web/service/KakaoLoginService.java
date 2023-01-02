@@ -96,21 +96,6 @@ public class KakaoLoginService implements LoginService{
 
 	@Override
 	public Member getMemberInfo(String socialId) {
-		
-		Member member = memberDao.getBySocialId(socialId);
-		int participantId = member.getId();
-		int[] participantIds = participationDao.getListByParticipantId(participantId);
-		
-		if(participantIds[0] != 0)
-			createNotification(participantIds[0],"meeting/evaluation",1);
-		
 		return memberDao.getBySocialId(socialId);
-	
 	}
-	
-	private void createNotification(int memberId, String url, int type) {
-		notificationDao.insertCommentNotification(memberId,url,type);
-	}
-	
-	
 }

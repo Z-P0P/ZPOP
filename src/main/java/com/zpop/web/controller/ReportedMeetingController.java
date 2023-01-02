@@ -32,7 +32,7 @@ public class ReportedMeetingController {
 		int reportTypeId = Integer.parseInt(dto.getReportType());
 		String reportReason = dto.getReportReason();
 		
-		reportService.createMeetingReport(reportTypeId,reportReason);
+		//reportService.createMeetingReport(reportTypeId,reportReason);
 
 		return "report/meeting";
 

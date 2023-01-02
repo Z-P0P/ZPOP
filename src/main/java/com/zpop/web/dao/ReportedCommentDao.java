@@ -17,4 +17,6 @@ public interface ReportedCommentDao {
 	
 	int insert(ReportedComment reportedComment);
 	
+	int[] select(int commentId, int reporterId);
+	
 }

@@ -35,5 +35,9 @@
 		SELECT count(id)
 		FROM reportedComment;
 	</select>
+	
+	<select id="select" resultType="Integer">
+		SELECT id FROM reportedComment WHERE commentId = #{commentId} AND reporterId = #{reporterId};
+	</select>
 
 </mapper>

@@ -39,79 +39,32 @@ public class DefaultReportService implements ReportService {
 	}
 	
 	@Override
-	public void createMeetingReport(int typeId, String reason) {
+	public void createMeetingReport(ReportedMeeting reportedMeeting) {
 		
-		Date today = new Date();
-	
-		ReportedMeeting meetingReport = new ReportedMeeting(
-				
-				1, // meetingId
-				1, // reporterId
-				typeId, // typeId
-				1, // adminId
-				reason, // reason
-				"용인 축구팸 모집합니다. 실력은 좋아야 해요.", // original
-				"축구팸 모집합니다.", // field
-				today, // createdAt
-				null, // processedAt
-				null, // blockedAt
-				null // releasedAt
-				);
-		
-		// 일단 사용자 입력 받는 typeId 와 reason만 받아서 보내는걸로 해보았습니다
-		
-		System.out.println(typeId);
-		System.out.println(reason);
-		reportedMeetingDao.insert(meetingReport);
-	}
-
-	@Override
-	public void createMemberReport(int typeId, String reason) {
-
-		Date today = new Date();
-		
-		ReportedMember memberReport = new ReportedMember(
-				1, 
-				1, 
-				typeId, 
-				1, 
-				reason, 
-				today, 
-				null,
-				null,
-				null
-				);
-		
-		System.out.println(typeId);
-		System.out.println(reason);
-		reportedMemberDao.insert(memberReport);
+		reportedMeetingDao.insert(reportedMeeting);
 		
 	}
 
 	@Override
-	public void createCommentReport(int typeId, String reason) {
+	public void createMemberReport(ReportedMember reportedMember) {
 
-		Date today = new Date();
-		
-		ReportedComment commentReport = new ReportedComment(
-				1, 
-				1, 
-				1, 
-				typeId, 
-				reason, 
-				"original content", 
-				today, 
-				null,
-				null,
-				null
-				);
-		
-		System.out.println(typeId);
-		System.out.println(reason);
-		reportedCommentDao.insert(commentReport);
+		reportedMemberDao.insert(reportedMember);
 		
 	}
-	
-	
 
+	@Override
+	public void createCommentReport(ReportedComment reportedComment) {
+	
+		reportedCommentDao.insert(reportedComment);
+		
+	}
+
+	@Override
+	public int[] getCommentId(int commentId, int reporterId) {
+
+		int[] result = reportedCommentDao.select(commentId, reporterId);
+    
+		return result;
+	}
+	
 }
