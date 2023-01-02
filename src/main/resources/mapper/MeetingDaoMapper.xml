@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.MeetingDao">
-	<select id="getDetailView"  resultType= "com.zpop.web.dto.MeetingDetailDto">
-		SELECT m.title, m.startedAt, m.detailRegion, m.content, m.maxMember, m.regMemberId,m.id,
-										m.viewCount,c.name categoryName, r.name regionName
-		FROM meeting m
-		JOIN category c on m.categoryId = c.id
-		JOIN region r on m.regionId = r.id
-		WHERE m.id = #{id};
-	</select>
 
 	<insert id="insert" parameterType="Meeting" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO meeting
