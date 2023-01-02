@@ -22,6 +22,7 @@
 			groupId = #{query}
 		</if>
 	AND parentCommentId IS NOT NULL
+	AND deletedAt IS NULL
     ORDER BY createdAt
   </select>
   <select id="getCountOfComment" resultType="int">

@@ -67,9 +67,9 @@ public class CommentController {
 	}
 	//댓글 삭제 AJAX endpoint
 	@DeleteMapping("{id}")
-	public String deleteComment(@PathVariable int id, @RequestBody Comment comment,
+	public String deleteComment(@PathVariable int id, 
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		service.deleteComment(comment);
+		service.deleteComment(id);
 		return "comment/comment";
 	}
 	//댓글 신고 AJAX endpoint
@@ -80,7 +80,6 @@ public class CommentController {
 		Comment comment = service.getCommentById(id);
 		reportedComment.setReporterId(userDetails.getId());
 		reportedComment.setOriginal(comment.getContent());
-		System.out.println(reportedComment);
 		reportService.createCommentReport(reportedComment);
 		return "{\"1\":1}"; //JSON
 	}
