@@ -80,7 +80,8 @@ public class CommentController {
 		Comment comment = service.getCommentById(id);
 		reportedComment.setReporterId(userDetails.getId());
 		reportedComment.setOriginal(comment.getContent());
-		//reportService.createCommentReport(reportedComment);
+		System.out.println(reportedComment);
+		reportService.createCommentReport(reportedComment);
 		return "{\"1\":1}"; //JSON
 	}
 }

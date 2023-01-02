@@ -27,7 +27,7 @@
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
 
 <main class="main"  layout:fragment="content">
-	<span hidden class="member-id" th:text="${session.memberId}"></span>
+	<span  class="hidden member-id" th:text="${session.memberId}"></span>
     <section class="meeting">
         <div class="meeting__info">
             <div class="meeting__category-wrap">
@@ -145,7 +145,7 @@
 						<span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
 						<span class="profile__time" th:text="${comment.elapsedTime}">3분전</span>
 						<span class="hidden comment-id" th:text="${comment.id}">3분전</span>
-						<button></button>
+						<button class="kebob"></button>
 		                    <th:block th:if="${comment.isMyComment}">
 		                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
 		                    </th:block>
