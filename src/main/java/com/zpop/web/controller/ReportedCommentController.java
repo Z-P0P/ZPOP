@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zpop.web.dto.RequestCommentReportDto;
+import com.zpop.web.dto.RequestMeetingReportDto;
 import com.zpop.web.dto.RequestMemberReportDto;
 import com.zpop.web.service.ReportService;
 
@@ -33,10 +34,18 @@ public class ReportedCommentController {
 		int reportTypeId = Integer.parseInt(dto.getReportType());
 		String reportReason = dto.getReportReason();
 		
-		reportService.createCommentReport(reportTypeId,reportReason);
+		// 중복 신고 
+		int[] reportedComments = reportService.getCommentId(1,1);
+		if(reportedComments.length > 0) {
+			System.out.println("중복 신고하였습니다");
+		}
+		// 자신의 댓글 신고
+		
+		//reportService.createCommentReport(reportTypeId,reportReason);
 
 		return "report/comment";
 
 	}
+	
 	
 }
