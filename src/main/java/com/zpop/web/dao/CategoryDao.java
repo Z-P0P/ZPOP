@@ -10,7 +10,7 @@ import com.zpop.web.entity.Category;
 
 @Mapper
 public interface CategoryDao {
-    Category get(int id);
+    Category getById(int id);
     List<Category> getList();
     Category getByName(String name);
     List<AdminCategoryDto> getAdminViewList(int offset, int size, String keyword, String option);
