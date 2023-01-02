@@ -243,6 +243,30 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
+	public String getContact(int id, int memberId) {
+		Meeting foundMeeting = dao.get(id);
+
+		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+
+		// 참여자가 맞는지 확인한다
+		Participation participationInfo = null;
+
+		List<Participation> participations = participationDao.getListByMeetingId(id);
+		for(Participation p : participations) {
+			if(p.getParticipantId() == memberId) {
+				participationInfo = p;
+				break;
+			}
+		}
+
+		if(participationInfo == null)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "참여하지않은 모임입니다");
+
+		return foundMeeting.getContact();
+	}
+
+	@Override
 	public boolean delete(int id, Member member) {
 
 		Meeting foundMeeting = dao.get(id);

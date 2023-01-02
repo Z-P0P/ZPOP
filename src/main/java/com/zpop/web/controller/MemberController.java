@@ -16,6 +16,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zpop.web.dto.MyMeetingResponse;
+import com.zpop.web.dto.ParticipantDto;
+import com.zpop.web.entity.Member;
+import com.zpop.web.security.ZpopUserDetails;
+import com.zpop.web.service.MemberService;
+
+import jakarta.servlet.http.HttpSession;
 
 /*****
  * 1. 다른 사용자 프로필 조회 --> 모달 url 불필요 2. 마이 프로필 페이지 진입 (/member/me) --> 페이지 3.
@@ -48,31 +55,30 @@ public class MemberController {
 	// 마이페이지 진입
 	@GetMapping("/me")
 	// user id는 세션에서 받아와야함
-	public String getMyPage(@AuthenticationPrincipal ZpopUserDetails userDetails, HttpSession session, Model model) {
-//		Member member = (Member) session.getAttribute("member");
-		userDetails.getId();
-		System.out.println(userDetails.getId());
-		System.out.println(userDetails.getUsername());
-		// member.setId(userDetails.getId());
-		// member.setNickname(userDetails.getUsername());
-
-//		member = userDetails.getAuthorities();
-		// model.addAttribute("member", member);
+	public String getMyPage(@AuthenticationPrincipal ZpopUserDetails userDetails,
+							 Model model) {
+		
+		Member member = service.getById(userDetails.getId());
+		
+		model.addAttribute("member", member);
+// 		int memberId = userDetails.getId()
+		
+		
 		return "member/my-profile";
 		// member 없을때 처리
 		// 만약 로그인한 사람이 아닌데 들어올 경우 -> 처리 (멤버가져오기)
 	}
 
 	@GetMapping("me/edit")
-	public String getEditPage(HttpSession session, Model model) {
-		Member member = (Member) session.getAttribute("member");
+	public String getEditPage(@AuthenticationPrincipal ZpopUserDetails userDetails, Model model) {
+		Member member = service.getById(userDetails.getId());
+		model.addAttribute("member", member);
 		return "member/profile-edit";
 	}
 
 	@GetMapping("/me/meeting")
-	public String getMeeting(HttpSession session, Model model) {
-		Member member = (Member) session.getAttribute("member");
-		List<MyMeetingResponse> meetings = service.getMyMeeting(member.getId());
+	public String getMeeting(@AuthenticationPrincipal ZpopUserDetails userDetails, Model model) {
+		List<MyMeetingResponse> meetings = service.getMyMeeting(userDetails.getId());
 		model.addAttribute("meetings", meetings);
         return "member/my-meeting";
     }
@@ -85,12 +91,12 @@ public class MemberController {
         return participant;
     }
 
+
 	// 권한 확인
 
 	@GetMapping("/me/gathering")
-	public String getGathering(HttpSession session, Model model) {
-		Member member = (Member) session.getAttribute("member");
-		List<MyMeetingResponse> meetings = service.getMyGathering(member.getId());
+	public String getGathering(@AuthenticationPrincipal ZpopUserDetails userDetails, Model model) {
+		List<MyMeetingResponse> meetings = service.getMyGathering(userDetails.getId());
 		model.addAttribute("meetings", meetings);
 		return "member/my-gathering";
 
