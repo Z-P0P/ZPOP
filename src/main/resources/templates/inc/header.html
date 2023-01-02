@@ -84,11 +84,11 @@
 <!--                    th:src="@{(${session.member.profileImagePath}?${session.member.profileImagePath}:'/images/icon/user-profile.svg')}"></button>-->
                     <ul class="select-box__options select-box__options--right select-box__options--header">
                         <!--li 말고 div 박스 전체로 -->
-                        <li><a href="/member/me">내 프로필</a></li>
-                        <li><a href="/member/me/gathering">내가 모집한 모임</a></li>
+                        <li onclick="location.href='/member/me';"><a href="/member/me">내 프로필</a></li>
+                        <li onclick="location.href='/member/me/gathering';"><a href="/member/me/gathering">내가 모집한 모임</a></li>
                         <li><a href="/member/me/meeting">내가 참여한 모임</a></li>
                         <li><a href="/member/me/meeting">모임 평가하기</a> </li>
-                        <li><a href="">로그아웃</a></li>
+                        <li onclick="location.href='/logout';"><a href="">로그아웃</a></li>
                     </ul>
                 </li>
             </ul>
