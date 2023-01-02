@@ -321,11 +321,12 @@ public class DefaultMeetingService implements MeetingService {
 		if (kickTarget.getBannedAt() != null)
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 강퇴된 회원입니다");
 
-		// 탈퇴한 회원인지 확인
+		// 탈퇴한 회원인지 확인 후
+		// 탈퇴한 회원이라면 참여 취소처리한다.
 		int kickTargetMemberId = kickTarget.getParticipantId();
 		Member kickTargetMember = memberDao.getById(kickTargetMemberId);
 		if (kickTargetMember.getResignedAt() != null) {
-			// TODO: dao.참여취소(kickTargetId);
+			participationDao.updateCanceledAt(kickTargetMemberId);
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다");
 		}
 

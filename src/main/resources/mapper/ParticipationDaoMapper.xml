@@ -51,6 +51,12 @@
 		WHERE id=#{id}
 	</update>
 
+	<update id="updateCanceledAt">
+		UPDATE participation
+		SET canceledAt = CURRENT_TIMESTAMP()
+		WHERE id=#{id}
+	</update>
+
 	<select id="countBySearch" resultType= "java.lang.Integer">
       	SELECT COUNT(id) 
       	FROM participation
