@@ -1,12 +1,14 @@
 package com.zpop.web.controller;
+
 import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.entity.Member;
+import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.MeetingService;
 import com.zpop.web.service.MemberService;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,19 +38,26 @@ public class MemberController {
     @Autowired
     private MeetingService meetingService;
 
-    @GetMapping("{id}")
-    public String getMember(@PathVariable ("id") int id, Model model){
-        Member member = service.getById(id);
-        model.addAttribute("member", member);
-        return "member/my-profile";
-	}
+//    @GetMapping("{id}")
+//    public String getMember(@PathVariable ("id") int id, Model model){
+//        Member member = service.getById(id);
+//        model.addAttribute("member", member);
+//        return "member/my-profile";
+//	}
 
 	// 마이페이지 진입
 	@GetMapping("/me")
 	// user id는 세션에서 받아와야함
-	public String getMyPage(HttpSession session, Model model) {
-		Member member = (Member) session.getAttribute("member");
+	public String getMyPage(@AuthenticationPrincipal ZpopUserDetails userDetails, HttpSession session, Model model) {
+//		Member member = (Member) session.getAttribute("member");
+		userDetails.getId();
+		System.out.println(userDetails.getId());
+		System.out.println(userDetails.getUsername());
+		// member.setId(userDetails.getId());
+		// member.setNickname(userDetails.getUsername());
 
+//		member = userDetails.getAuthorities();
+		// model.addAttribute("member", member);
 		return "member/my-profile";
 		// member 없을때 처리
 		// 만약 로그인한 사람이 아닌데 들어올 경우 -> 처리 (멤버가져오기)
