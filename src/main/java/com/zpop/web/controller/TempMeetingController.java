@@ -56,6 +56,27 @@ public class TempMeetingController {
     ) {
         Member testMember = new Member();
         boolean result = service.delete(id, testMember);
-        return true;
+        return result;
+    }
+
+    @DeleteMapping("/{id}/participant/{participantId}")
+    @ResponseBody
+    public boolean kick(
+            @PathVariable(name = "id") int id,
+            @PathVariable(name = "participantId") int participantId
+    ) {
+        Member testMember = new Member();
+        testMember.setId(3);
+        boolean result = service.kick(id, participantId, testMember);
+        return result;
+    }
+
+    @PatchMapping("/close/{id}")
+    @ResponseBody
+    public boolean close (
+        @PathVariable(name = "id") int id
+    ) {
+        Member testMember = new Member();
+        return service.close(id, testMember);
     }
 }

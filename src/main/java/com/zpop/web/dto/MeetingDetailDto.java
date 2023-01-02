@@ -13,7 +13,6 @@ public class MeetingDetailDto {
 	private String regionName;
 	private int maxMember;
 	private int regMemberId;
-	private int id;
 	
 	
 	public int getRegMemberId() {
@@ -21,12 +20,6 @@ public class MeetingDetailDto {
 	}
 	public void setRegMemberId(int regMemberId) {
 		this.regMemberId = regMemberId;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 	public int getMaxMember() {
 		return maxMember;

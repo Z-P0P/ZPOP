@@ -3,8 +3,16 @@ package com.zpop.web.controller;
 import java.io.IOException;
 import java.util.Map;
 
+import com.zpop.web.security.UserSecurityService;
+import com.zpop.web.security.ZpopUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zpop.web.dao.MemberDao;
+import com.zpop.web.dao.NotificationDao;
+import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.dao.SocialTypeDao;
 import com.zpop.web.entity.Member;
 import com.zpop.web.service.LoginService;
@@ -25,12 +35,21 @@ public class LoginController {
 
 	private LoginService loginService;
 	private Map<String, LoginService> loginServiceMap;
+	private UserSecurityService userSecurityService;
+	
+	@Autowired
+	private ParticipationDao participationDao;
+	
+	@Autowired
+	private NotificationDao notificationDao;
 
 	@Autowired
 	public LoginController(MemberDao memberDao, 
 			Map<String, LoginService> loginServiceMap
-			, SocialTypeDao socialTypeDao) {
+			, SocialTypeDao socialTypeDao
+			, UserSecurityService userSecurityService) {
 		this.loginServiceMap = loginServiceMap;
+		this.userSecurityService = userSecurityService;
 	}
 
 	// 소셜 로그인 시, kakao, naver를 공통적으로 처리함
@@ -38,11 +57,12 @@ public class LoginController {
 	public String OAuthlogin(@PathVariable("loginType") String loginType
 			,@RequestParam @Nullable String code 
 			, @RequestParam @Nullable String state
-			, HttpSession session)
+			, HttpSession session
+			, @AuthenticationPrincipal ZpopUserDetails userDetails
+	)
 			throws IOException, InterruptedException {
-		
-		
-		if (session.getAttribute("memberId") != null) {
+
+		if (userDetails != null) {
 			System.out.println("이미 로그인한 사용자임");
 			return "redirect:/";
 		}
@@ -56,7 +76,7 @@ public class LoginController {
 		String accessToken = (loginService.getAccessToken(code,state));
 		String socialId = loginService.getSocialId(accessToken);
 		Member member = loginService.getMemberInfo(socialId);
-		
+
 		/* 
 		 * 소셜id를 받아와도, 기존에 멤버로 되어있지 않으면 지금 단계에서는 member 추가 X
 		 * 대신 socialId 와 loginType을 세션에 저장하여 register에서 닉네임을 설정할 때
@@ -68,8 +88,31 @@ public class LoginController {
 			return "redirect:/register";
 		}
 		
-		// 만약 member가 조회되면 세션에 정보를 저장하여 member정보를 view에 활용함
-		session.setAttribute("member", member);
+		
+		// 로그인시 알림생성
+		try {
+			int participantId = member.getId();
+			int[] participantIds = participationDao.getListByParticipantId(participantId);
+			
+			if(participantIds[0] != 0)
+				createNotification(participantIds[0],"meeting/evaluation",1);
+
+		} catch (ArrayIndexOutOfBoundsException e) {
+
+		    System.err.println("Error: the array is empty!");
+		}
+
+		/*
+		 * 회원가입이 완료되어있는 멤버는
+		 * SecurityContextHolder에 인증정보 등록 후 로그인 완료
+		 */
+		UserDetails user = userSecurityService.loadUserByUsername(member.getNickname());
+
+		Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		securityContext.setAuthentication(auth);
+		session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+
 		return "redirect:/";
 		
 	}
@@ -118,4 +161,8 @@ public class LoginController {
 
 	}
 */
+	
+	private void createNotification(int memberId, String url, int type) {
+		notificationDao.insertCommentNotification(memberId,url,type);
+	}
 }

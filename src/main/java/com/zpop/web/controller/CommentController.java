@@ -1,58 +1,86 @@
 package com.zpop.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zpop.web.entity.ReportedComment;
 import com.zpop.web.entity.comment.Comment;
 import com.zpop.web.entity.comment.CommentView;
+import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.CommentService;
+import com.zpop.web.service.ReportService;
 
 @Controller
-//@RequestMapping("/")
+@RequestMapping("/comment")
 public class CommentController {
 	@Autowired
-	CommentService service;
+	private CommentService service;
+	@Autowired
+	private ReportService reportService;
 	
-	@GetMapping("/comment")
-	public String comment(Model model) {
-		//개발시 임시로 하드코딩한 값
-		int meetingId = 1;
+	//댓글(comment)불러오기 AJAX endpoint (js에서 콜하는 함수)
+	@GetMapping()
+	@ResponseBody
+	public  Map<String, Object> getComment(@RequestParam int meetingId) {
+		
 		List<CommentView> comments = service.getComment(meetingId);
 		int countOfComment = service.getCountOfComment(meetingId);
 		
-		model.addAttribute("comments", comments);
-		model.addAttribute("countOfComment", countOfComment);
+		Map<String,Object> dto = new HashMap<>();
+		dto.put("status",200);
+		dto.put("resultObject",comments);
+		dto.put("countOfComment",countOfComment);
 		
-		return "comment/comment";
-		
+		return dto;
 	}
 	
-	@GetMapping("/reply")
-	public String reply(Model model) {
-		//개발시 임시로 하드코딩한 값
-		int groupId = 4;
-		List<CommentView> replies = service.getReply(groupId);
-		model.addAttribute("replies", replies);
-		return "comment/reply";
-	}
-	
-
-	
-	@PostMapping("comment")
-	public  String registerComment(@RequestBody Comment comment) {
+	//댓글(comment) 등록 AJAX endpoint (js에서 콜하는 함수)
+	@PostMapping()
+	public  String registerComment(@RequestBody Comment comment, 
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		comment.setWriterId(userDetails.getId());
 		service.registerComment(comment);
 		return "comment/comment";
 	}
-	@PostMapping("reply")
-	public  String registerReply(@RequestBody Comment comment) {
-		service.registerReply(comment);
-		return "comment/reply";
+	
+	//댓글 수정 AJAX endpoint
+	@PatchMapping("{id}")
+	public String updateComment(@PathVariable int id, @RequestBody Comment comment,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		service.updateComment(comment);
+		return "comment/comment";
+	}
+	//댓글 삭제 AJAX endpoint
+	@DeleteMapping("{id}")
+	public String deleteComment(@PathVariable int id, @RequestBody Comment comment,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		service.deleteComment(comment);
+		return "comment/comment";
+	}
+	//댓글 신고 AJAX endpoint
+	@PutMapping("{id}")
+	@ResponseBody
+	public String reportComment(@PathVariable int id, @RequestBody ReportedComment reportedComment,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		Comment comment = service.getCommentById(id);
+		reportedComment.setReporterId(userDetails.getId());
+		reportedComment.setOriginal(comment.getContent());
+		//reportService.createCommentReport(reportedComment);
+		return "{\"1\":1}"; //JSON
 	}
 }

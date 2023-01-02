@@ -1,0 +1,119 @@
+#notification-modal{
+    overflow: scroll;
+    width:320px;
+    height:340px;
+    position: absolute;
+    top: 80px;
+    right: -28px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    background-color:white;
+}
+
+.notification {
+    font-size: 16px;
+    border-bottom: 1px solid #EBEBEB;
+    height:60px;
+    width: 250px;
+    margin: 10px 0 10px 35px;
+    cursor:pointer;
+}
+
+.notification > p{
+    color: #8B8B8B;
+    margin :auto 0;
+    padding-top: 5px;
+}
+
+.header__notification-on{
+	position: relative;
+}
+
+#notification-btn{
+    position: relative;
+}
+
+.modal__close-btn{
+    height: 32px;
+    width: 32px;
+    border: none;
+    background: url(/images/icon/x.svg) no-repeat;
+    background-size: 32px;
+    cursor: pointer;
+    position:sticky;
+    top:10px;
+    left:280px;
+   
+}
+
+.readAll-btn{	
+	background-color: var(--main-color);
+  	cursor:pointer;
+ 	width:100px;
+ 	margin:10px 0 10px 210px;
+}
+
+.blank-div{
+	height:55px;
+	background-color:white; 
+	position: fixed;
+	border-radius:0 0 5px 5px;
+	width:310px;
+	top:365px;
+}
+
+.header__notification-on button::before {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  content: "";
+  background: url(/images/icon/notification-on.svg) center/contain no-repeat;
+}
+
+.deactivated-btn{
+	cursor: default;
+	background-color:#8B8B8B;
+}
+
+
+/* 알림 모달 */
+
+
+@media (min-width: 576px) {
+    #notification-modal {
+	  width:353px;
+	  height:360px;
+      position: absolute;
+      top: 100px;
+      right: -12px;
+    }
+    
+    .notification {
+    	font-size: 18px;
+    	 width: 300px;
+	}
+	
+	.readAll-btn{	
+		bottom: 580px;
+	  	right: 90px;
+	  	width:131px;
+	  	height:35px;
+	  	top:350px;
+	  	margin:10px 0 10px 210px;
+	}
+	
+	.modal__close-btn{
+    	left:310px;
+	}
+
+	.blank-div{
+		top:405px;
+		width:335px;
+	}
+	
+	.header__notification-on button::before {
+	  width: 32px;
+	  height: 32px;
+	}
+
+  }

@@ -7,6 +7,7 @@ import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.entity.Member;
+import com.zpop.web.entity.Participation;
 import com.zpop.web.entity.member.MyMeetingView;
 import com.zpop.web.utils.TextDateTimeCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,12 +152,12 @@ public class DefalutMemberService implements MemberService {
 
         return list;
     }
- 
 
     @Override
     public List<EvalMemberDto> getEvalMember(int meetingId) {
        
         return  dao.getEvalMember(meetingId);
     }
+
     
 }

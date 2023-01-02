@@ -30,6 +30,12 @@
   align-self: flex-end;
 }
 
+.comment__kebob{
+	position:absolute;
+	grid-area:button;
+	justify-self: flex-end;
+	margin-right:30px;
+}
 @media (min-width: 576px) {
   .comment__input {
     min-height: 9.375rem;

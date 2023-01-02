@@ -1,16 +1,7 @@
 
-export function getReply(meetingId, groupId, replyUl) {
-	const data = {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			"meetingId": meetingId,
-			"groupId": groupId
-		})
-	}
-	fetch("http://localhost:8080/meeting/reply", data)
+export function getReply(groupId, replyUl) {
+	//GET request가 디폴트
+	fetch(`/reply?groupId=${groupId}`)
 		.then(response => {
 			if (response.ok) {
 				return response;
@@ -25,6 +16,23 @@ export function getReply(meetingId, groupId, replyUl) {
 				let parentNickname = "";
 				if (r.parentNickname != null)
 					parentNickname = '@' + r.parentNickname;
+				let kebobModalWriter = `
+					<div class="modal-select comment__kebob">
+			        <div class="modal-select__contents" data-id="comment-edit">수정
+			            <span class="icon icon-edit"></span>
+			        </div>
+			        <div class="modal-select__contents" data-id="comment-delete">삭제
+			            <span class="icon icon-trash"></span>
+			        </div>
+			    	</div>	
+				`
+				let kebobModalReader = `
+					 <div class="modal-select comment__kebob">
+				        <div class="modal-select__contents" data-id="comment-report">댓글 신고
+				            <span class="icon icon-siren-red"></span>
+				        </div>
+				     </div>
+				`
 				let template = `
 					<li> 
 						<div class="profile">
@@ -32,6 +40,7 @@ export function getReply(meetingId, groupId, replyUl) {
 							<span class="profile__nickname profile__nickname">${r.nickname}</span>
 							<span class="profile__time">${r.elapsedTime}</span>
 							<button></button>
+							${r.myComment?kebobModalWriter:kebobModalReader}
 						</div>
 						<div class="reply-container">
 							<span class="reply__to">${parentNickname}</span>
@@ -49,8 +58,9 @@ export function getReply(meetingId, groupId, replyUl) {
 		});
 }
 
-export function writeReply(meetingId, writerId, groupId, parentId, replyUl, linkContainer) {
-		
+export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer) {
+		//기존에 열려있는 텍스트 박스들 닫기
+		removeTextBox("multi");
 		let template =  // text input box를 동적으로 추가 
 			`
               <div class="reply__input-container"> 
@@ -65,11 +75,10 @@ export function writeReply(meetingId, writerId, groupId, parentId, replyUl, link
                   </div>
               </div> 
                    `;
-		//클릭된 특정 답글링크의 위치아래에 inputbox추가.                 
+		//클릭된 특정 답글링크의 위치아래에 inputbox추가.    
 		linkContainer.insertAdjacentHTML("afterend", template);
 
 		document.querySelector(".register-btn").addEventListener("click", () => {
-			
 			const replyText = document.querySelector("#reply-text").value;
 			
 			if(replyText==""){
@@ -82,22 +91,25 @@ export function writeReply(meetingId, writerId, groupId, parentId, replyUl, link
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					"content": replyText,
-					"writerId": writerId,
+					"content": replyText, 
 					"meetingId": meetingId,
 					"parentCommentId": parentId,
 					"groupId": groupId
 				})
 			}
 
-				fetch("http://localhost:8080/reply", data)
+				fetch("/reply", data)
 					.then(response => {
 							if (response.ok) {
-								replyUl.parentElement.previousElementSibling.remove();
+								if(groupId == parentId) {//원댓글에 대한 답글일 경우
+									removeTextBox('single');
+									linkContainer.children[1].classList.add("hidden"); //답글갯수 감추고
+									linkContainer.children[2].classList.remove("hidden");//닫기 버튼 표출
+								}
 								linkContainer.classList.remove("hidden");
 								while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제
 									replyUl.removeChild(replyUl.firstChild);
-								getReply(meetingId, groupId, replyUl); //AJAX로 새로 렌더링
+								getReply(groupId, replyUl); //AJAX로 새로 렌더링
 							}
 							else alert("시스템 장애로 등록이 안되고 있습니다.");
 					});
@@ -114,6 +126,22 @@ function refreshReplyCount(replyUl, count){
 	replyUl.parentElement.previousElementSibling.children[1].innerHTML = "답글 " + count + "개";
 }
 
+//text-box 제거
+function removeTextBox(count) {
+	if (count == 'single'){
+		const inputBox = document.querySelector(".reply__input-container");
+			inputBox.previousElementSibling.classList.remove("hidden");	
+			inputBox.remove();
+		}
+	
+	else if (count == 'multi'){
+		const inputBoxes = document.querySelectorAll(".reply__input-container");
+		inputBoxes.forEach((item)=>{
+			item.previousElementSibling.classList.remove("hidden");	
+			item.remove();
+		});
+	}
+}
 
 //DOM추가기법으로 새 답글을 리스트 하단에 표시 (사용x)
 //function addNewReplyElement(newText, parentNickname) {

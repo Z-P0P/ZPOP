@@ -1,0 +1,115 @@
+.input__label{
+	margin-top: 30px;
+	font-weight: var(--bold);
+}
+
+
+#cancel-btn{
+    background-color: var(--dark-grey2);
+    color: var(--white);
+    margin-right: 15px;
+}
+
+#report-btn{
+    background-color:var(--main-color);
+    color:var(--white);
+}
+
+.modal__body{
+	height:450px;
+	display : flex;
+	flex-direction: column;
+}
+
+.meeting-form__input{
+    margin: 30px auto;
+}
+
+.select-box__options li{
+	height: 45px;
+}
+
+.input-text{
+	display : flex;
+	flex-direction: column;
+}
+
+.input-text > div {
+	margin: 0px auto;
+}
+
+.input-text__label{
+	margin-bottom: 10px;
+}
+
+.input-text__content{
+    margin: 0 auto;
+    min-width: 350px;
+    height:260px;
+    font-size: 18px;
+    resize: none;
+}
+
+.btn-wrapper{
+    display:flex; 
+    justify-content: center;
+    margin: 24px auto;
+}
+
+.select-box__options{
+    width: 350px;
+}
+
+.select-box--input::before {
+    right: 25px;
+    top:23px;
+}
+    
+.select-box--input > input {
+
+	min-width:350px;
+    height: 47.5px;
+
+}
+
+.input-text__content::placeholder{
+    color:#8B8B8B;
+}
+
+@media (min-width:576px) {
+	
+	.select-box--input::before {
+    right: 25px;
+    top:25px;
+	}
+	
+	.report-modal{
+    width:450px;
+    height:520px;
+	}
+
+	.button-div{
+	    height:54px;
+	    background-color: #76C1B1;
+	}
+	
+	.meeting-form__input input{
+    width: 410px;
+    height:50px;
+    margin-top:10px;
+	}
+	
+	.select-box__options{
+    width: 410px;
+	}
+	
+	.input-text__content{
+    width: 410px;
+    height: 200px;
+	}
+	
+	.select-box__options li{
+	height: 50px;
+	}
+
+}

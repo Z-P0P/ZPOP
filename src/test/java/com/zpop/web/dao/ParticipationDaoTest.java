@@ -22,7 +22,9 @@ class ParticipationDaoTest {
                 1,
                 1
         );
-        int result = participationDao.insert(testParticipation);
+        int meetingId = 1;
+        int memberId = 1; 
+        int result = participationDao.insert(memberId, memberId);
         assertThat(result).isEqualTo(1);
     }
 }

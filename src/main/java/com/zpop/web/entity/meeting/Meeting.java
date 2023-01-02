@@ -23,6 +23,7 @@ public class Meeting {
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
+    
     public Meeting() {
     }
 
@@ -118,11 +119,10 @@ public class Meeting {
 		this.commentCount = commentCount;
 	}
 
+	public void setClosedAt(Date closedAt) {
 
-	public void setClosed(Date closedAt) {
 		this.closedAt = closedAt;
 	}
-
 
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
@@ -210,14 +210,30 @@ public class Meeting {
     public Date getDeletedAt() {
         return deletedAt;
     }
-    
+
     @Override
-	public String toString() {
-		return "Meeting [id=" + id + ", regMemberId=" + regMemberId + ", categoryId=" + categoryId + ", regionId="
-				+ regionId + ", ageRangeId=" + ageRangeId + ", genderCategory=" + genderCategory + ", title=" + title
-				+ ", content=" + content + ", detailRegion=" + detailRegion + ", maxMember=" + maxMember
-				+ ", startedAt=" + startedAt + ", contact=" + contact + ", contactTypeId=" + contactTypeId
-				+ ", viewCount=" + viewCount + ", commentCount=" + commentCount + ", closedAt=" + closedAt
-				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
-	}
+
+    public String toString() {
+        return "Meeting{" +
+                "id=" + id +
+                ", regMemberId=" + regMemberId +
+                ", categoryId=" + categoryId +
+                ", regionId=" + regionId +
+                ", ageRangeId=" + ageRangeId +
+                ", contactTypeId=" + contactTypeId +
+                ", genderCategory=" + genderCategory +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", detailRegion='" + detailRegion + '\'' +
+                ", maxMember=" + maxMember +
+                ", startedAt=" + startedAt +
+                ", contact='" + contact + '\'' +
+                ", viewCount=" + viewCount +
+                ", commentCount=" + commentCount +
+                ", closedAt=" + closedAt +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", deletedAt=" + deletedAt +
+                '}';
+    }
 }
