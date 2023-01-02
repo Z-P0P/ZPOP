@@ -8,14 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 	
-	
-    <link rel="stylesheet" href="/css/member/style.css" />
-    <link rel="stylesheet" href="/css/deco.css">
-    <link rel="stylesheet" href="/css/button.css">
-    <link rel="stylesheet" href="/css/icon.css">
     <!-- component css -->
-    <link rel="stylesheet" href="/css/member/component/header.css">
-    <link rel="stylesheet" href="/css/member/component/select.css">
     <link rel="stylesheet" href="/css/member/component/profile-box.css">
     <link rel="stylesheet" href="/css/member/component/meeting-info.css">
     <link rel="stylesheet" href="/css/member/component/participant.css" >
@@ -27,6 +20,7 @@
     <link rel="stylesheet" href="/css/member/meeting/detail.css">
     <script src="/js/meeting/detail.js"></script>
     <script type="module" src="/js/comment/comment.js"></script>
+    <script type="module" src="/js/comment/edit-comment.js"></script>
 
 </head>
 <body>
@@ -44,12 +38,14 @@
                 <span class="hidden meeting-id" th:text="${meetingId}"></span>
                     <span class="meeting__title"  th:text="${dto.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
+                    <th:block th:if="${userType== 3}">		
                     		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-host}"></div>
-                    <th:block th:if="${session.member != null && userType== 2}">
-                    		<div th:replace="~{inc/meeting-detail-modal::member-participant}"></div>
                     </th:block>
-                       <th:block th:if="${session.member != null && userType== 1}">
-                    		<div th:replace="~{inc/meeting-detail-modal::member}"></div>
+                    <th:block th:if="${userType== 2}">
+                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-participant}"></div>
+                    </th:block>
+                       <th:block th:if="${userType== 1}">
+                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member}"></div>
                     </th:block>
                 </div>
                 <div class="meeting__date-container">
@@ -139,6 +135,7 @@
 				<textarea class="comment__input" name="comment-text"
 					id="comment-text" placeholder="댓글을 입력하세요."></textarea>
 				<span class="comment__btn btn btn-round" id="register-btn">등록하기</span>
+				<span class="hidden comment__btn btn btn-round" id="edit-save-btn">저장하기</span>
 			</div>
 			<ul class="comment__list">
 
@@ -147,6 +144,7 @@
 						<span class="profile__image" th:text="${comment.profileImgPath}"></span>
 						<span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
 						<span class="profile__time" th:text="${comment.elapsedTime}">3분전</span>
+						<span class="hidden comment-id" th:text="${comment.id}">3분전</span>
 						<button></button>
 		                    <th:block th:if="${comment.isMyComment}">
 		                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>

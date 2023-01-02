@@ -61,10 +61,9 @@ public class DefaultReportService implements ReportService {
 
 	@Override
 	public int[] getCommentId(int commentId, int reporterId) {
-		
+
 		int[] result = reportedCommentDao.select(commentId, reporterId);
-		
-		
+    
 		return result;
 	}
 	

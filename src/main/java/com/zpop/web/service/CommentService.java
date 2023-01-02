@@ -12,9 +12,15 @@ public interface CommentService {
 	List<CommentView> getComment(int meetingId);
 	List<CommentView> getCommentWithWriter(int memberId, int meetingId);
 	List<CommentView> getReply(int grouopId);
+	List<CommentView> getReplyWithWriter(int memberId, int groupId);
+	
+	Comment getCommentById(int id);
 	
 	int registerComment(Comment comment);
 	int registerReply(Comment comment);
+	int updateComment(Comment comment);
+	int deleteComment(Comment comment);
+	//reportComment 서비스는 별도의 ReportService 이용
 	
 	int getCountOfComment(int meetingId);
 	int getCountOfReply(int groupId);
