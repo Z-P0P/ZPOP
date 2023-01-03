@@ -1,7 +1,7 @@
 function sendAll(){
 		const notifications = document.querySelectorAll(".notification");
-		
-		if(notifications.length==1)
+		const noNotification = document.querySelector(".notification--none");
+		if(noNotification != null)
 			return;
 			
 		for(n of notifications){
@@ -9,21 +9,21 @@ function sendAll(){
 				const type = 1;
 				const readAt = true;
 				const data = {
-	                method: "POST",
-	                headers: {
-	                    "Content-Type": "application/json",
-	                },
-	                body: JSON.stringify({
+		            method: "POST",
+		            headers: {
+		                "Content-Type": "application/json",
+		            },
+		            body: JSON.stringify({
 						readAt,
-	                    type
-	              	  })
-	           	 }
-				fetch("http://localhost:8080/notification/type", data)				
-				continue;
+		                type
+	          	  })
+       	 		}
+			fetch("http://localhost:8080/notification/type", data)
 			}
-			 const id = n.getAttribute("data-id");
-			 const readAt = true;	
-			 const data = {
+			else{
+				 const id = n.getAttribute("data-id");
+				 const readAt = true;	
+				 const data = {
 	                method: "POST",
 	                headers: {
 	                    "Content-Type": "application/json",
@@ -34,6 +34,7 @@ function sendAll(){
 	                })
 	            }
 			fetch("http://localhost:8080/notification/read", data)	
+			}
 		}
 	}
 

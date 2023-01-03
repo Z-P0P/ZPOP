@@ -137,7 +137,7 @@
         <div class="report-modal__body">
          <div class="meeting-form__input">
             <label class="input__label" for="category">신고사유</label>
-            <div class="select-box select-box--input">
+            <div class="select-box select-box--input meeting-select-box">
                 <input placeholder=" 카테고리를 선택하세요" type="text" name="category">
                 <ul class="select-box__options">
                     <li value="1">사행성 글</li>
@@ -150,13 +150,13 @@
         
         <div class="input-text">
         	<div>
-            <label for ="input__content--id" class="input-text__label">상세사유 (선택)</label>
-            <textarea  id="input__content--id" placeholder="상세 내용을 적어주세요. (최대 100자)" class="input-text__content"></textarea>
+            <label for ="meeting-input__content--id" class="input-text__label">상세사유 (선택)</label>
+            <textarea  id="meeting-input__content--id" placeholder="상세 내용을 적어주세요. (최대 100자)" class="input-text__content"></textarea>
        		</div>
         </div>
         <div class="btn-wrapper">
             <span id="cancel-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round modal__close-btn report__cancel-btn">취소</span>
-            <span id="report-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round">신고하기</span>
+            <span id="report-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round meeting__report-btn">신고하기</span>
         </div>
         </div>
       </div>
@@ -171,7 +171,7 @@
         <div class="report-modal__body">
          <div class="meeting-form__input">
             <label class="input__label" for="category">신고사유</label>
-            <div class="select-box select-box--input">
+            <div class="select-box select-box--input comment-select-box">
                 <input placeholder=" 카테고리를 선택하세요" type="text" name="category">
                 <ul class="select-box__options">
                     <li value="1">욕설/유해성 문구</li>
@@ -183,13 +183,13 @@
         
         <div class="input-text">
         	<div>
-            <label for ="input__content--id" class="input-text__label">상세사유 (선택)</label>
-            <textarea  id="input__content--id" placeholder="상세 내용을 적어주세요. (최대 100자)" class="input-text__content"></textarea>
+            <label for ="comment-input__content--id" class="input-text__label">상세사유 (선택)</label>
+            <textarea  id="comment-input__content--id" placeholder="상세 내용을 적어주세요. (최대 100자)" class="input-text__content"></textarea>
        		</div>
         </div>
         <div class="btn-wrapper">
             <span id="cancel-btn" data-modal="#modal-report-comment" class="comment__btn btn btn-round modal__close-btn">취소</span>
-            <span id="report-btn" data-modal="#modal-report-comment" class="comment__btn btn btn-round">신고하기</span>
+            <span id="report-btn" data-modal="#modal-report-comment" class="comment__btn btn btn-round comment__report-btn">신고하기</span>
         </div>
         </div>
       </div>
