@@ -14,7 +14,9 @@
     <link rel="stylesheet" th:href="@{/css/color.css}">
     <link rel="stylesheet" th:href="@{/css/button.css}">
     <link rel="stylesheet" th:href="@{/css/member/member/my-profile.css}">
-    <link rel="stylesheet" href="/css/form-fixed.css">
+    <link rel="stylesheet" href="/css/popup.css">
+    <script src="/js/member/profile-edit.js"></script>
+   
 </head>
 <body>
 <main layout:fragment="content">
@@ -36,9 +38,9 @@
             <div class="input-text">
                 <!--📌to do: 닉네임 수정-->
                 <label class="input-text__label" for="input-text__content">닉네임</label>
-                <input id ="input-text__content" class="input-text__content" type="text" th:value="${session.member.nickname}">
+                <input id ="input-text__content" class="input-text__content" type="text" th:value="${member.nickname}">
             </div>
-            <span class="btn-semiround profile__btn--save ">저장하기</span>
+            <span class="btn-semiround profile__btn--save " id="showPopup">저장하기</span>
 
 
 
@@ -46,6 +48,29 @@
 
         </div>
     </div>
+
+    <div class="popup-container">
+           
+           <div class="popup__wrap-inactive" id="popup">
+             <div class="popup">
+             
+               <div class="popup__body">
+                 <div class="popup__body-content">
+                   <div class="popup__body-contentbox">
+                       <span>😀 팝업 문구를 작성해주세요요요요요요요요요요요요요요!!</span>
+                   </div>
+                   
+                 </div>
+               </div>
+               <div class="popup__foot">
+                   <span class="pop-btn close" id="close">취소 문구</span>
+                 <span class="pop-btn confirm" id="confirm">수락 문구</span>
+                
+               </div>
+             </div>
+         </div>
+         </div>
+  
 </main>
 <!--------------------my-profile end -------------------->
 </body>
