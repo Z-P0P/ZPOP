@@ -24,7 +24,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/meeting/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/comment/**").permitAll()
                             .requestMatchers("/login/**").permitAll()
-                            .requestMatchers("/admin/**").hasAnyRole(UserRole.ADMIN.getConfig())
+                            //.requestMatchers("/admin/**").hasAnyRole(UserRole.ADMIN.getConfig())
                             .anyRequest().hasRole(UserRole.USER.getConfig()))
             .logout(logout ->
                         logout
