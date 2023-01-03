@@ -8,6 +8,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import com.zpop.web.dto.*;
+import com.zpop.web.entity.*;
+import com.zpop.web.entity.comment.CommentView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,31 +21,23 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.zpop.web.dao.AgeRangeDao;
 import com.zpop.web.dao.CategoryDao;
+import com.zpop.web.dao.CommentDao;
 import com.zpop.web.dao.ContactTypeDao;
 import com.zpop.web.dao.MeetingDao;
 import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.NotificationDao;
 import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.dao.RegionDao;
-import com.zpop.web.dto.AgeRangeDto;
-import com.zpop.web.dto.CategoryDto;
-import com.zpop.web.dto.ContactTypeDto;
-import com.zpop.web.dto.MeetingDetailDto;
-import com.zpop.web.dto.MeetingParticipantsDto;
-import com.zpop.web.dto.MeetingThumbnailPagination;
-import com.zpop.web.dto.MeetingThumbnailResponse;
-import com.zpop.web.dto.RegionDto;
-import com.zpop.web.dto.RegisterMeetingRequest;
-import com.zpop.web.dto.RegisterMeetingResponse;
-import com.zpop.web.entity.Member;
-import com.zpop.web.entity.Participation;
 import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.entity.meeting.MeetingThumbnailView;
+import com.zpop.web.entity.participation.ParticipationInfoView;
+import com.zpop.web.utils.ElapsedTimeCalculator;
 import com.zpop.web.utils.TextDateTimeCalculator;
 
 @Service
@@ -66,6 +63,9 @@ public class DefaultMeetingService implements MeetingService {
 
 	@Autowired
 	private NotificationDao notificationDao;
+
+	@Autowired
+	private CommentDao commentDao;
 
 	public DefaultMeetingService() {
 	}
@@ -222,24 +222,131 @@ public class DefaultMeetingService implements MeetingService {
 		return 1;
 	}
 
-//	public int participate(Participation participation) {
-//		// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
-//		// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
-//		// 강퇴당한 사용자일 경우
-//		// 마감된 모임일 경우
-//		//		Participation participation = new Participation(participation);
-//		return participationDao.insert(participation);
-//	}
-
 	@Override
-	public MeetingDetailDto getById(int id) {
-		return dao.getDetailView(id);
-	}
+	@Transactional
+	public MeetingDetailResponse getById(int id, Integer memberId) {
+		/**
+		 * 모임 정보 조회 및 가공
+		 */ 
+		Meeting meeting = dao.get(id);
 
-	@Override
-	public List<MeetingParticipantsDto> getParticipants(int meetingId) {
+		if(meeting == null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+		
+		// 성별 변환
+		String genderCategory = "누구나";
+		switch (meeting.getGenderCategory()) {
+			case 1:
+				genderCategory = "남자 모임";
+				break;
+			case 2:
+				genderCategory = "여자 모임";
+				break;
+		}
 
-		return participationDao.getByMeetingId(meetingId);
+		// 시작날짜 변환
+		String dateTime = TextDateTimeCalculator.getTextDateTime(meeting.getStartedAt());
+
+		// 마감 여부 처리
+		boolean isClosed = false;
+		if(meeting.getClosedAt() != null)
+			isClosed = true;
+
+		// startedAt이 지났다면, 마감처리
+		Date startedAt = meeting.getStartedAt();
+		if (startedAt.before(new Date())) {
+			dao.updateClosedAt(meeting);
+			isClosed = true;
+		}
+
+		// 내 모임글인지 확인
+		boolean isMyMeeting = false;
+		if(memberId != null && meeting.getRegMemberId() == memberId)
+			isMyMeeting = true;
+		
+		// 조회수++
+		dao.increaseViewCount(id);
+
+		Category category = categoryDao.getById(meeting.getCategoryId());
+		AgeRange ageRange = ageRangeDao.get(meeting.getAgeRangeId());
+		Region region = regionDao.get(meeting.getRegionId());
+
+		/**
+		 * 참가자 정보 조회
+		 */ 
+		List<ParticipationInfoView> participations = participationDao.getParticipantInfoByMeetingId(id);
+		List<ParticipantResponse> participationsResponse = new ArrayList<>();
+		boolean hasParticipated = false; 
+
+		for (ParticipationInfoView p : participations) {
+			// 내가 참여한 모임인지 확인
+			if(memberId != null && p.getParticipantId() == memberId)
+				hasParticipated = true;
+
+			participationsResponse.add(new ParticipantResponse(
+				p.getId(),
+				p.getNickname(),
+				p.getProfileImagePath()
+			));
+		}
+
+		/**
+		 * 댓글 정보 조회 및 가공
+		 */ 
+		List<CommentView> comments = commentDao.getComment(id);
+		int commentCount = commentDao.getCountOfComment(id);
+
+		List<CommentResponse> commentsResponse = new ArrayList<>();
+
+		for(CommentView c:comments) {
+			//본인댓글인지 여부표시
+			boolean isMyComment = false;
+			if(memberId != null && c.getWriterId() == memberId)
+				isMyComment = true;
+			System.out.println(c.getId());
+			System.out.println(c.getId() + " is " + commentDao.getCountOfReply(c.getGroupId()));
+			commentsResponse.add(
+				new CommentResponse(
+					c.getId(),
+					c.getMeetingId(),
+					c.getWriterId(),
+					c.getNickname(),
+					c.getContent(),
+					c.getProfileImgPath(),
+					c.getParentCommentId(),
+					c.getGroupId(),
+					c.getCreatedAt(),
+					c.getDeletedAt(),
+					c.getParentMemberId(),
+					c.getParentNickname(),
+					c.getParentImg(),
+					ElapsedTimeCalculator.getElpasedTime(c.getCreatedAt()),
+					commentDao.getCountOfReply(c.getId()), // TODO: 답글 수 컬럼 추가하기
+					isMyComment
+			));
+		}	 
+
+		return new MeetingDetailResponse(
+			meeting.getId(),
+			meeting.getTitle(),
+			meeting.getStartedAt(),
+			dateTime,
+			meeting.getDetailRegion(),
+			meeting.getContent(),
+			category.getName(),
+			region.getName(),
+			meeting.getMaxMember(),
+			genderCategory,
+			ageRange.getType(),
+			meeting.getRegMemberId(),
+			meeting.getViewCount(),
+			commentCount,
+			isMyMeeting,
+			hasParticipated,
+			isClosed,
+			participationsResponse,
+			commentsResponse
+		);
 	}
 
 	@Override
@@ -410,7 +517,7 @@ public class DefaultMeetingService implements MeetingService {
 		
 		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
 		int maxMember = dao.getmaxMember(meetingId);
-		int count = participationDao.getparticipantsCount(meetingId);
+		int count = participationDao.countByMeetingId(meetingId);
 		int hostId = dao.getMeetingHost(meetingId);
 		int result = 0;
 		// result는 성공(1) 실패(0)
@@ -459,8 +566,8 @@ public class DefaultMeetingService implements MeetingService {
 		return userType;
 	}
 	
-    @Override
-    public boolean cancelParticipate(int id, int memberId) {
+	@Override
+	public boolean cancelParticipate(int id, int memberId) {
 
         // 모임이 존재하는지 확인한다
         Meeting foundMeeting = dao.get(id);

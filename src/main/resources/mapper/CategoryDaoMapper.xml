@@ -3,6 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.CategoryDao">
+	<select id="getById" resultType="Category">
+		SELECT *
+		FROM category
+		WHERE id = #{id};
+	</select>
+
 	<select id="getAdminViewList" resultType="AdminCategoryDto">
 		SELECT
 			category.id,

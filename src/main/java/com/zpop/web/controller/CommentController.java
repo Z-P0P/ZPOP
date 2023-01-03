@@ -52,11 +52,11 @@ public class CommentController {
 	//댓글(comment) 등록 AJAX endpoint (js에서 콜하는 함수)
 	@PostMapping()
 	@ResponseBody
-	public  String registerComment(@RequestBody Comment comment, 
+	public  boolean registerComment(@RequestBody Comment comment, 
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		comment.setWriterId(userDetails.getId());
 		service.registerComment(comment);
-		return "{\"1\":1}"; //JSON
+		return true;
 	}
 	
 	//댓글 수정 AJAX endpoint
