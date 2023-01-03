@@ -5,17 +5,20 @@ import java.util.Date;
 public class CommentView {
 	private int id;
 	private int meetingId;
+	private int writerId;
 	private String nickname;
 	private String content;
 	private String profileImgPath;
 	private int parentCommentId;
 	private int groupId;
 	private Date createdAt;
+	private Date deletedAt;
 	private int parentMemberId;
 	private String parentNickname;
 	private String parentImg;
 	private String elapsedTime;
 	private int countOfReply; //한 그룹내의 답글 수
+	private boolean isMyComment;//본인작성글 여부
 	
 	public CommentView() {
 	}
@@ -30,6 +33,10 @@ public class CommentView {
 
 	public int getMeetingId() {
 		return meetingId;
+	}
+
+	public int getWriterId() {
+		return writerId;
 	}
 
 	public String getNickname() {
@@ -54,6 +61,10 @@ public class CommentView {
 
 	public Date getCreatedAt() {
 		return createdAt;
+	}
+
+	public Date getDeletedAt() {
+		return deletedAt;
 	}
 
 	public int getParentMemberId() {
@@ -82,6 +93,14 @@ public class CommentView {
 
 	public void setCountOfReply(int countOfReply) {
 		this.countOfReply = countOfReply;
+	}
+
+	public boolean isMyComment() {
+		return isMyComment;
+	}
+
+	public void setMyComment(boolean isMyComment) {
+		this.isMyComment = isMyComment;
 	}
 
 	@Override

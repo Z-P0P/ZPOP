@@ -16,8 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -44,6 +45,210 @@ class DefaultMeetingServiceTest {
     @Mock
     private MemberDao memberDao;
 
+    // 모임 참여 취소하기 --------------------\
+    @Test
+    public void cancelParticipate_모임에_참여를_취소한다() throws ParseException {
+        //given
+        int meetingId = 1;
+        int memberId = 1;
+        Member member = new Member();
+        member.setId(memberId);
+
+        Meeting meeting = new Meeting();
+        meeting.setId(1);
+        Date futureTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            .parse("9999-01-01 11:11:11");
+        meeting.setStartedAt(futureTime);
+
+        Participation participation = new Participation();
+        participation.setParticipantId(memberId);
+        List<Participation> list = new ArrayList<>();
+        list.add(participation);
+
+        // mocking
+        given(dao.get(anyInt())).willReturn(meeting);
+        given(participationDao.getListByMeetingId(anyInt())).willReturn(list);
+
+        //when
+        boolean result = service.cancelParticipate(meetingId, memberId);
+
+        //then
+        assertThat(result).isEqualTo(true);
+
+        // verify
+       // verify(participationDao, times(1)).updateCanceledAt(participation.getId());
+    }
+
+    @Test
+    public void cancelParticipate_존해하지_않는_모임이라면_NOTFOUND() {
+        //given
+        int meetingId = 1;
+        int memberId = 1;
+        Member member = new Member();
+
+        // mocking
+        given(dao.get(anyInt())).willReturn(null);
+
+        //when
+        ResponseStatusException e = assertThrows(ResponseStatusException.class,
+            () -> service.cancelParticipate(meetingId, memberId));
+        
+        //then
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(e.getReason()).isEqualTo("존재하지 않는 모임입니다");
+    }
+
+    @Test
+    public void cancelParticipate_참여하지_않은_모임_BAD_REQUEST() {
+        //given
+        int meetingId = 1;
+        int memberId = 1;
+        Member member = new Member();
+        member.setId(memberId);
+
+        Meeting meeting = new Meeting();
+        meeting.setId(1);
+
+        Participation otherParticipation = new Participation();
+        List<Participation> list = new ArrayList<>();
+        list.add(otherParticipation);
+
+        // mocking
+        given(dao.get(anyInt())).willReturn(meeting);
+        given(participationDao.getListByMeetingId(anyInt())).willReturn(list);
+
+        //when
+        ResponseStatusException e = assertThrows(ResponseStatusException.class,
+            () -> service.cancelParticipate(meetingId, memberId));
+        
+        //then
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(e.getReason()).isEqualTo("참여한 모임에만 참여를 취소할 수 있습니다");
+    }
+
+    @Test
+    public void cancelParticipate_이미_참여_취소한_모임_BAD_REQUEST() {
+        //given
+        int meetingId = 1;
+        int memberId = 1;
+        Member member = new Member();
+        member.setId(memberId);
+
+        Meeting meeting = new Meeting();
+        meeting.setId(1);
+
+        Participation alreadyCanceledParticipation = new Participation();
+        alreadyCanceledParticipation.setCanceledAt(new Date());
+        List<Participation> list = new ArrayList<>();
+        list.add(alreadyCanceledParticipation);
+
+        // mocking
+        given(dao.get(anyInt())).willReturn(meeting);
+        given(participationDao.getListByMeetingId(anyInt())).willReturn(list);
+
+        //when
+        ResponseStatusException e = assertThrows(ResponseStatusException.class,
+            () -> service.cancelParticipate(meetingId, memberId));
+        
+        //then
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(e.getReason()).isEqualTo("참여한 모임에만 참여를 취소할 수 있습니다");
+    }
+
+    @Test
+    public void cancelParticipate_이미_kick당한_모임_BAD_REQUEST() {
+        //given
+        int meetingId = 1;
+        int memberId = 1;
+        Member member = new Member();
+        member.setId(memberId);
+
+        Meeting meeting = new Meeting();
+        meeting.setId(1);
+
+        Participation alreadyKickedParticipation = new Participation();
+        alreadyKickedParticipation.setBannedAt(new Date());
+        List<Participation> list = new ArrayList<>();
+        list.add(alreadyKickedParticipation);
+
+        // mocking
+        given(dao.get(anyInt())).willReturn(meeting);
+        given(participationDao.getListByMeetingId(anyInt())).willReturn(list);
+
+        //when
+        ResponseStatusException e = assertThrows(ResponseStatusException.class,
+            () -> service.cancelParticipate(meetingId, memberId));
+        
+        //then
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(e.getReason()).isEqualTo("참여한 모임에만 참여를 취소할 수 있습니다");
+        assertNotNull(list.get(0).getBannedAt());
+    }
+
+    @Test
+    public void cancelParticipate_마감된_모임에_참여_취소는_BAD_REQUEST_1() throws ParseException {
+        //given
+        int meetingId = 1;
+        int memberId = 1;
+        Member member = new Member();
+        member.setId(memberId);
+
+        Meeting closedMeeting = new Meeting();
+        closedMeeting.setId(1);
+        closedMeeting.setClosedAt(new Date());
+
+        Participation participation = new Participation();
+        participation.setParticipantId(memberId);
+        List<Participation> list = new ArrayList<>();
+        list.add(participation);
+
+        // mocking
+        given(dao.get(anyInt())).willReturn(closedMeeting);
+        given(participationDao.getListByMeetingId(anyInt())).willReturn(list);
+
+        //when
+        ResponseStatusException e = assertThrows(ResponseStatusException.class,
+            () -> service.cancelParticipate(meetingId, memberId));
+        
+        //then
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(e.getReason()).isEqualTo("마감된 모임에 참여를 취소할 수 없습니다");
+    }
+
+    @Test
+    public void cancelParticipate_마감된_모임에_참여_취소는_BAD_REQUEST_2() throws ParseException {
+        //given
+        int meetingId = 1;
+        int memberId = 1;
+        Member member = new Member();
+        member.setId(memberId);
+
+        Meeting closedMeeting = new Meeting();
+        closedMeeting.setId(1);
+        Date pastTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            .parse("1999-01-01 11:11:11");
+        closedMeeting.setStartedAt(pastTime);
+
+        Participation participation = new Participation();
+        participation.setParticipantId(memberId);
+        List<Participation> list = new ArrayList<>();
+        list.add(participation);
+
+        // mocking
+        given(dao.get(anyInt())).willReturn(closedMeeting);
+        given(participationDao.getListByMeetingId(anyInt())).willReturn(list);
+
+        //when
+        ResponseStatusException e = assertThrows(ResponseStatusException.class,
+            () -> service.cancelParticipate(meetingId, memberId));
+        
+        //then
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(e.getReason()).isEqualTo("마감된 모임에 참여를 취소할 수 없습니다");
+        assertTrue(closedMeeting.getStartedAt().before(new Date()));
+    }
+
+    // 삭제하기 -----------------------------
     @Test
     public void delete_존재하지_않는_모임이라면_NOT_FOUND(){
         //given
@@ -225,7 +430,40 @@ class DefaultMeetingServiceTest {
         assertThat(e.getReason()).isEqualTo("이미 강퇴된 회원입니다");
     }
 
-    // TODO: 탈퇴한 회원 테스트
+    @Test
+    public void kick_탈퇴한_회원이라면_참여취소_처리_후_NOT_FOUND() {
+        //given
+        int meetingId = 1;
+        int participantId = 1;
+        Member member = new Member();
+        member.setId(1);
+
+        Meeting meeting = new Meeting();
+        meeting.setId(1);
+        meeting.setRegMemberId(1);
+
+        Participation resignedParticipation = new Participation();
+        resignedParticipation.setParticipantId(1);
+        List<Participation> list = new ArrayList<>();
+        list.add(resignedParticipation);
+
+        Member resigendMember = new Member();
+        resigendMember.setId(999);
+        resigendMember.setResignedAt(new Date());
+
+        // mocking
+        given(dao.get(anyInt())).willReturn(meeting);
+        given(participationDao.getListByMeetingId(anyInt())).willReturn(list);
+        given(memberDao.getById(anyInt())).willReturn(resigendMember);
+
+        //when
+        ResponseStatusException e = assertThrows(ResponseStatusException.class,
+                () -> service.kick(meetingId, participantId, member));
+
+        //then
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(e.getReason()).isEqualTo("존재하지 않는 회원입니다");
+    }
 
     @Test
     public void kick_자신을_강퇴한다면_BAD_REQUEST() {
@@ -283,7 +521,6 @@ class DefaultMeetingServiceTest {
         // verify
         verify(dao, times(1)).updateClosedAt(testMeeting);
     }
-
 
     @Test
     public void close_존재하지_않는_모임이라면_NOT_FOUND() {

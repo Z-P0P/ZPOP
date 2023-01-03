@@ -8,14 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 	
-	
-    <link rel="stylesheet" href="/css/member/style.css" />
-    <link rel="stylesheet" href="/css/deco.css">
-    <link rel="stylesheet" href="/css/button.css">
-    <link rel="stylesheet" href="/css/icon.css">
     <!-- component css -->
-    <link rel="stylesheet" href="/css/member/component/header.css">
-    <link rel="stylesheet" href="/css/member/component/select.css">
     <link rel="stylesheet" href="/css/member/component/profile-box.css">
     <link rel="stylesheet" href="/css/member/component/meeting-info.css">
     <link rel="stylesheet" href="/css/member/component/participant.css" >
@@ -23,66 +16,66 @@
     <link rel="stylesheet" href="/css/member/component/reply.css" />
     <link rel="stylesheet" href="/css/member/popup.css">
     <link rel="stylesheet" href="/css/member/component/modal-2.css">
+    <link rel="stylesheet" href="/css/member/component/report-modal.css">
     <!-- detail page css -->
     <link rel="stylesheet" href="/css/member/meeting/detail.css">
     <script src="/js/meeting/detail.js"></script>
     <script type="module" src="/js/comment/comment.js"></script>
+    <script type="module" src="/js/comment/edit-comment.js"></script>
+    <script src="/js/meeting/report.js"></script>
+    <script src="/js/meeting/report-select.js" defer></script>
 
 </head>
 <body>
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
 
 <main class="main"  layout:fragment="content">
-	<span hidden class="member-id" th:text="${session.memberId}"></span>
+	<span  class="hidden member-id" th:text="${session.memberId}"></span>
     <section class="meeting">
         <div class="meeting__info">
             <div class="meeting__category-wrap">
-                <span class="meeting__category"  th:text="${dto.categoryName}">문화생활</span>
+                <span class="meeting__category"  th:text="${meeting.categoryName}">문화생활</span>
             </div>
             <div class="meeting__header">
                 <div class="meeting__title-container">
-                <span class="hidden meeting-id" th:text="${meetingId}"></span>
-                    <span class="meeting__title"  th:text="${dto.title}">한강공원에서 러닝하실 분~🙂</span>
+                <span class="hidden meeting-id" th:text="${meeting.id}"></span>
+                    <span class="meeting__title"  th:text="${meeting.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
-                    <th:block th:if="${session.member != null && memberType == 'host'}">
-                    		<div th:replace="~{inc/meeting-detail-modal::member-host}"></div>
+                    <th:block th:if="${meeting.isMyMeeting == true}">	
+                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-host}"></div>
                     </th:block>
-                    <th:block th:if="${session.member != null && memberType == 'participant'}">
-                    		<div th:replace="~{inc/meeting-detail-modal::member-participant}"></div>
+                    <th:block th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == true}">  
+                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-participant}"></div>
                     </th:block>
-                       <th:block th:if="${session.member != null && memberType == 'member'}">
+                    <th:block th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == false}">   
                     		<div th:replace="~{inc/meeting-detail-modal::member}"></div>
                     </th:block>
                 </div>
                 <div class="meeting__date-container">
                     <img class="meeting__small-calander" src="/images/icon/small-calander.svg">
-                    <span class="meeting__date"  th:text="${dto.startedAt}">11.01(일) 13:00</span>
+                    <span class="meeting__date"  th:text="${meeting.textStartedAt}">일시</span>
                 </div>
                 <div class="meeting__region-container">
                     <img class="meeting__small-location" src="/images/icon/small-location.svg" alt="">
-                    <span class="meeting__region"  th:text="${dto.regionName}">경남/부산/울산</span>
+                    <span class="meeting__region"  th:text="${meeting.regionName}">지역</span>
                 </div>
                 <div class="meeting__detail-region-wrap">
-                    <span class="meeting__detail-region"  th:text="${dto.detailRegion}">서면역 9와 3/4 이번에도 수정하면 꿀밤 날리겠습니다^^</span>
+                    <span class="meeting__detail-region"  th:text="${meeting.detailRegion}">상세장소</span>
                 </div>
             </div>
         </div>
         <div class="meeting__conetent-container">
-                    <span class="meeting__content"  th:utext="${dto.content}">
-                        한강에서 우리 함께 뛰어요~!
-                        왜냐면은 제가 달리기를너무너무 조아하하하하해하기때문이에용
-                        목표는 10km! 완주하실 분만 모집합니다~!!
-                        날씨는 좋을 예정이네요~
-                        그래도 물을 충분히 가져오시는게 좋옹아아아요~!
+                    <span class="meeting__content"  th:utext="${meeting.content}">
+                        내용
                     </span>
             <div class="meeting__tags">
-                #20대 선호
-                #+10명
-                #남자만
+                <span th:text="|#${meeting.ageRange}|">나이</span>
+                <span th:text="|#${meeting.maxMember}명|">인원</span>
+                <span th:text="|#${meeting.genderCategory}|">성별</span>
             </div>
-            <div class="meeting__views"  th:text=' ${"조회수 " + dto.viewCount}'>조회수 999회</div>
+            <div class="meeting__views"  th:text="|조회수${meeting.viewCount}|">조회수</div>
             <div class="meeting__btn">
-                <span class="btn btn-round btn-join" id="participation-btn"  data-modal="#modal-wrapper-participation">참여하기</span>
+                <span class="btn btn-round btn-join btn-action" id="participation-btn"  data-modal="#modal-wrapper-participation">참여하기</span>
             </div>
         </div>
     </section>
@@ -90,13 +83,16 @@
     <section class="participant">
         <div class="participant__num">
             <span>참가자</span>
-            <span th:text="|${#lists.size(participants)}/${dto.maxMember}|">15/56</span>
-            <span class="icon icon-arrow-up"></span>
+            <span class="participant-count" th:text="${#lists.size(meeting.participants)}">참가자수</span>
+            <span>/</span>
+            <span th:text="${meeting.maxMember}">10</span>
+            <span class="icon pointer icon-arrow-up"></span>
+            <span class="icon pointer hidden icon-arrow-down"></span>
         </div>
         <ul class="participant__list">
-            <li th:each="participant:${participants}">
+            <li th:each="participant:${meeting.participants}">
             <div class="participant__info">
-                <img src="/images/girl.svg"  
+                <img 
                     th:src="@{${participant.profileImagePath}?${participant.profileImagePath}:'/images/icon/user-profile.svg'}">
                 <span th:text="${participant.nickname}"></span>
             </div>
@@ -117,8 +113,8 @@
                         <img src="/images/icon/handshake24.svg">
                     </div>
                     <div class="modal-text">
-                        <strong th:text="${dto.title}">
-                            찬우와 월드컵 응원할 사람
+                        <strong th:text="${meeting.title}">
+                            제목
                         </strong>
                         <div class="next-line">이 모임에 참여하시겠어요?</div>
                     </div>
@@ -131,25 +127,106 @@
         </div>
     </div>
     
+    <!--------------- 모임 신고 모달 -------------------->
+    <div id="modal-report-meeting" class="modal-wrapper hidden">
+      <div class="modal">
+        <div class="modal__header">
+    
+        <span class="modal__close-btn report__close-btn icon icon-x" data-modal="#modal-report-meeting">닫기</span>
+        </div>
+        <div class="report-modal__body">
+         <div class="meeting-form__input">
+            <label class="input__label" for="category">신고사유</label>
+            <div class="select-box select-box--input meeting-select-box">
+                <input placeholder=" 카테고리를 선택하세요" type="text" name="category">
+                <ul class="select-box__options">
+                    <li value="1">사행성 글</li>
+                    <li value="2">부적절한 게시글 제목/내용</li>
+                    <li value="3">판매 권유 및 상행위 글</li>
+                    <li value="4">기타</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="input-text">
+        	<div>
+            <label for ="meeting-input__content--id" class="input-text__label">상세사유 (선택)</label>
+            <textarea  id="meeting-input__content--id" placeholder="상세 내용을 적어주세요. (최대 100자)" class="input-text__content"></textarea>
+       		</div>
+        </div>
+        <div class="btn-wrapper">
+            <span id="cancel-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round modal__close-btn report__cancel-btn">취소</span>
+            <span id="report-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round meeting__report-btn">신고하기</span>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!--------------- 댓글 신고 모달 -------------------->
+     <div id="modal-report-comment" class="modal-wrapper hidden">
+      <div class="modal">
+        <div class="modal__header">
+    
+        <span class="modal__close-btn icon icon-x" data-modal="#modal-report-comment">닫기</span>
+        </div>
+        <div class="report-modal__body">
+         <div class="meeting-form__input">
+            <label class="input__label" for="category">신고사유</label>
+            <div class="select-box select-box--input comment-select-box">
+                <input placeholder=" 카테고리를 선택하세요" type="text" name="category">
+                <ul class="select-box__options">
+                    <li value="1">욕설/유해성 문구</li>
+                    <li value="2">스팸/광고</li>
+                    <li value="3">기타</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="input-text">
+        	<div>
+            <label for ="comment-input__content--id" class="input-text__label">상세사유 (선택)</label>
+            <textarea  id="comment-input__content--id" placeholder="상세 내용을 적어주세요. (최대 100자)" class="input-text__content"></textarea>
+       		</div>
+        </div>
+        <div class="btn-wrapper">
+            <span id="cancel-btn" data-modal="#modal-report-comment" class="comment__btn btn btn-round modal__close-btn">취소</span>
+            <span id="report-btn" data-modal="#modal-report-comment" class="comment__btn btn btn-round comment__report-btn">신고하기</span>
+        </div>
+        </div>
+      </div>
+    </div>
+    
+    <!--------------- 사용자 신고 모달 -------------------->
+    
     <!--------------- 댓글 섹션 -------------------->
     <section class="comment">
-			<h2 class="comment__num" th:text="'댓글 ' + ${countOfComment}+' 개'">N</h2>
+			<h2 class="comment__num" th:text="'댓글 ' + ${meeting.commentCount}+' 개'">N</h2>
 			<div class="comment__input-container">
 				<textarea class="comment__input" name="comment-text"
 					id="comment-text" placeholder="댓글을 입력하세요."></textarea>
-				<span class="comment__btn btn btn-round" id="register-btn">등록하기</span>
+				<div class="comment__btn-container">
+					<span class="comment__btn btn btn-round btn-action" id="register-btn">등록하기</span>
+					<span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
+				</div>
 			</div>
 			<ul class="comment__list">
 
-				<li th:each="comment:${comments}">
+				<li th:each="comment:${meeting.comments}">
 					<div class="profile">
 						<span class="profile__image" th:text="${comment.profileImgPath}"></span>
-						<span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
-						<span class="profile__time" th:text="${comment.elapsedTime}">3분전</span>
-						<button></button>
-					</div> <span class="comment__content" th:text="${comment.content}">
-						이 헌법에 의한 최초의 대통령의 임기는 이 헌법시행일로부터 개시한다. 모든 국민은 거주·이전의 자유를 가진다. 대통령은
-						제1항과 제2항의 처분 또는 명령을 한 때에는 지체없이 국회에 보고하여 그 승인을 얻어야 한다. </span>
+						<span class="profile__nickname" th:text="${comment.nickname}">닉네임</span>
+						<span class="profile__time" th:text="${comment.elapsedTime}">경과시간</span>
+						<span class="hidden comment-id" th:text="${comment.id}">경과시간</span>
+						<button class="kebob"></button>
+                        <th:block th:if="${comment.isMyComment}">
+                                <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
+                        </th:block>
+                        <th:block th:if="${!comment.isMyComment}">
+                                <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::reader}"></div>
+                        </th:block>
+					</div>
+                    <span class="comment__content" th:text="${comment.content}">
+                        댓글 내용
+					</span>
 					<div class="comment__replies">
 						<span class="hidden comment-id" th:text="${comment.id}">댓글아이디</span>
 						<span class="pointer underline reply-cnt"

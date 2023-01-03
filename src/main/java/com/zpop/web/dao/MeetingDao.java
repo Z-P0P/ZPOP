@@ -14,23 +14,21 @@ import java.util.List;
 
 @Mapper
 public interface MeetingDao {
-    int insert(Meeting meeting);
+	int insert(Meeting meeting);
 
-    MeetingDetailDto getDetailView(int id); 
+	MeetingDetailDto getDetailView(int id); 
 
-    Meeting get(int id);
+	Meeting get(int id);
 
-    List<MeetingThumbnailView> getMeetingList(int id);
+	List<MeetingThumbnailView> getMeetingList(int id);
 
-    List<MeetingThumbnailView> getThumbnailViewList(MeetingThumbnailPagination pagination);
-    
-    int updateDeletedAt(Meeting meeting);
+	List<MeetingThumbnailView> getThumbnailViewList(MeetingThumbnailPagination pagination);
+	
+	int updateDeletedAt(Meeting meeting);
 
 	AdminMeetingDetailsDto getAdminDetailView(int meetingId);
 
 	List<ParticipantDto> getParticipants(int id);
-
-    void updateViewCount(int id);
 
 	List<AdminMeetingDto> getAdminViewList(int size, int offset, String keyword, String option);
 
@@ -38,8 +36,12 @@ public interface MeetingDao {
 
 	int updateClosedAt(Meeting foundMeeting);
 
-	int getMaxMember(int meetingId);
+	void increaseViewCount(int id);
 
+	int getmaxMember(int meetingId);
+	
+	int getMeetingHost(int meetingId);
+	
 	int updateContent(Meeting meeting);
 
 	int update(Meeting meeting);

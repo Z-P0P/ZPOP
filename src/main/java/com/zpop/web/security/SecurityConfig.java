@@ -15,17 +15,28 @@ public class SecurityConfig {
             .csrf().disable() //TODO: csrf
             .authorizeHttpRequests(authorize ->
                     authorize
-                            .requestMatchers(HttpMethod.GET,"/").permitAll()
-                            .requestMatchers("/css/**").permitAll()
-                            .requestMatchers("/js/**").permitAll()
-                            .requestMatchers("/images/**").permitAll()
-                            .requestMatchers("/register/**").permitAll()
-                            .requestMatchers("/search/**").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/meeting/**").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/comment/**").permitAll()
-                            .requestMatchers("/login/**").permitAll()
-                            //.requestMatchers("/admin/**").hasAnyRole(UserRole.ADMIN.getConfig())
-                            .anyRequest().hasRole(UserRole.USER.getConfig()))
+                            // meeting
+                            .requestMatchers(HttpMethod.POST, "/meeting/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.PATCH, "/meeting/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.PUT, "/meeting/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.DELETE, "/meeting/**").hasAnyRole("USER")
+                            // comment
+                            .requestMatchers(HttpMethod.POST, "/comment/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.PATCH, "/comment/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.PUT, "/comment/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.DELETE, "/comment/**").hasAnyRole("USER")
+                            // member
+                            .requestMatchers("/member/**").hasAnyRole("USER")
+                            // auth
+                            .requestMatchers("/logout").hasAnyRole("USER")
+                            // report
+                            .requestMatchers("/report/**").hasAnyRole("USER")
+                            // notification 
+                            .requestMatchers("/notification/**").hasAnyRole("USER")
+                            // admin
+                         //   .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                            .anyRequest().permitAll()
+            )
             .logout(logout ->
                         logout
                         .logoutUrl("/logout")

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.dto.admin.AdminParticipationDto;
 import com.zpop.web.entity.Participation;
+import com.zpop.web.entity.participation.ParticipationInfoView;
 
 @Mapper
 public interface ParticipationDao {
@@ -19,6 +20,21 @@ public interface ParticipationDao {
     List<Participation> getList();
     List<MeetingParticipantsDto>getByMeetingId(int meetingId);
     List<AdminParticipationDto> getAdminViewList(int size, int offset, String keyword, String option);
-    int updateBannedAt(int id);
+
+    /**
+     * 닉네임, 프로필 사진 등 참여자의 정보가 포함된 view 조회
+     * @param meetingId
+     * @return
+     */
+    List<ParticipationInfoView> getParticipantInfoByMeetingId(int meetingId);
+
+    int[] getListByParticipantId(int participantId);
+
 	int countBySearch(String keyword, String option);
+
+	int countByMeetingId(int meetingId);
+
+    int updateBannedAt(int id);
+
+    int updateCanceledAt(int id);
 }

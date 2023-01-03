@@ -7,7 +7,7 @@
         <nav>
             <ul>
                 <li class="header__main"><a class="text-hidden" href="/">홈으로 이동</a></li>
-                <li class="header__create-meeting"><a class="text-hidden" href="">모임 등록</a></li>
+                <li class="header__create-meeting"><a class="text-hidden" href="/meeting/register">모임 등록</a></li>
                 <li class="header__search-bar--pc-wrap hidden text-hidden">
                     <span class="icon icon-search">돋보기</span>
                     <input
@@ -60,20 +60,35 @@
                     />
                     데스크톱검색
                 </li>
-                <li class="header__create-meeting"><a href="">모임 등록</a></li>
+                <li class="header__create-meeting"><a href="/meeting/register">모임 등록</a></li>
                 <li class="header__search"><button class="text-hidden modal__on-btn" data-modal="#modal-search">검색</button></li>
-                <li class="header__notification"><button class="text-hidden">알림확인</button></li>
+                <li id="header-notification" class="header__notification">
+                	 <button id="notification-btn" class="text-hidden modal__on-btn" data-modal="#notification-modal">
+                        알림확인
+                    </button> 
+                	 <div id="notification-modal" class="hidden">
+                	 	<div class="button--container">
+	                        <input type="button" class="notification__close-btn modal__close-btn " data-modal="#notification-modal">
+                	 	</div>
+                        <div id="upper-blank"></div>
+                        <div class="notification-container"></div>
+                        <!-- 알림 들어가는 공간 -->
+                        <div class="blank-div">
+ 	                    	<div class="readAll-btn btn btn-round">모두 읽기</div>
+ 	                    </div>
+                    </div>
+                </li>
                 <li class="header__profile select-box">
                     <button><img alt="프로필"
                                  src="/images/icon/user-profile.svg"></button>
 <!--                    th:src="@{(${session.member.profileImagePath}?${session.member.profileImagePath}:'/images/icon/user-profile.svg')}"></button>-->
                     <ul class="select-box__options select-box__options--right select-box__options--header">
                         <!--li 말고 div 박스 전체로 -->
-                        <li><a href="/member/me">내 프로필</a></li>
-                        <li><a href="/member/me/gathering">내가 모집한 모임</a></li>
+                        <li onclick="location.href='/member/me';"><a href="/member/me">내 프로필</a></li>
+                        <li onclick="location.href='/member/me/gathering';"><a href="/member/me/gathering">내가 모집한 모임</a></li>
                         <li><a href="/member/me/meeting">내가 참여한 모임</a></li>
                         <li><a href="/member/me/meeting">모임 평가하기</a> </li>
-                        <li><a href="">로그아웃</a></li>
+                        <li onclick="location.href='/logout';"><a href="">로그아웃</a></li>
                     </ul>
                 </li>
             </ul>

@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.MeetingDao">
-	<select id="getDetailView"  resultType= "com.zpop.web.dto.MeetingDetailDto">
-        SELECT m.title, m.startedAt, m.detailRegion, m.content, m.maxMember, m.regMemberId,m.id,
-                        m.viewCount,c.name categoryName, r.name regionName
-        FROM meeting m 
-        JOIN category c on m.categoryId = c.id 
-        JOIN region r on m.regionId = r.id 
-        WHERE m.id = #{id};
-	</select>
 
-	<insert id="insert" parameterType="Meeting" useGeneratedKeys="true" keyProperty="id">        
+	<insert id="insert" parameterType="Meeting" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO meeting
-        (regMemberId, categoryId, regionId, ageRangeId, title, content, detailRegion, maxMember,
-        startedAt, contact, contactTypeId , genderCategory)
-        VALUES (#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId},
-        #{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact}, #{contactTypeId}, #{genderCategory})
+			(regMemberId, categoryId, regionId, ageRangeId, title, content, detailRegion, maxMember,
+			startedAt, contact, contactTypeId , genderCategory)
+		VALUES (#{regMemberId}, #{categoryId}, #{regionId}, #{ageRangeId},
+			#{title}, #{content}, #{detailRegion}, #{maxMember}, #{startedAt}, #{contact}, #{contactTypeId}, #{genderCategory})
     </insert>
     
     <update id="updateContent" parameterType="Meeting">
@@ -32,36 +24,38 @@
 
     <select id="getThumbnailViewList" parameterType="com.zpop.web.dto.MeetingThumbnailPagination"
         resultType="com.zpop.web.entity.meeting.MeetingThumbnailView">
-        SELECT * FROM meetingThumbnail <trim
-            prefix="WHERE" prefixOverrides="AND | OR">
-            <choose>
-                <when test="startId == 0"> id >= #{startId} </when>
-                <otherwise>
-                    <![CDATA[ id < #{startId} ]]>
-                </otherwise>
-            </choose>
-            <choose>
-                <when test="isClosed == false"> 
-                    AND closedAt IS NULL
-                </when>
-                <when test="isClosed == true"> 
-                    AND closedAt IS NOT NULL
-                </when>
-            </choose>
-            <if test="categoryId != null">
-                AND categoryId = #{categoryId}
-            </if>
-            <if test="regionIds != null">
-                AND regionId IN 
-                <foreach collection="regionIds" item="regionId" separator="," open="(" close=")">
-                    #{regionId}
-                </foreach>
-            </if>
-            <if test="keyword !=null">
-                AND title LIKE '%${keyword}%'
-            </if>
+        SELECT * FROM meetingThumbnail
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<choose>
+				<when test="startId == 0"> id >= #{startId} </when>
+					<otherwise>
+						<![CDATA[ id < #{startId} ]]>
+					</otherwise>
+			</choose>
+			<choose>
+				<when test="isClosed == false">
+					AND closedAt IS NULL
+					<![CDATA[ AND startedAt >= NOW() ]]>
+				</when>
+				<when test="isClosed == true">
+					AND closedAt IS NOT NULL
+				</when>
+			</choose>
+			<if test="categoryId != null">
+				AND categoryId = #{categoryId}
+			</if>
+			<if test="regionIds != null">
+				AND regionId IN
+				<foreach collection="regionIds" item="regionId" separator="," open="(" close=")">
+					#{regionId}
+				</foreach>
+			</if>
+			<if test="keyword !=null">
+				AND title LIKE '%${keyword}%'
+			</if>
         </trim>
-        LIMIT 0, 9; </select>
+        LIMIT 0, 9; 
+	</select>
 
     <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> 
         UPDATE meeting
@@ -75,10 +69,10 @@
         WHERE id = #{id}
     </update>
 	
-	<update id="updateViewCount" parameterType="com.zpop.web.dto.MeetingDetailDto">
-        UPDATE meeting
-        SET viewCount = viewCount + 1
-        WHERE id = #{id}
+	<update id="increaseViewCount">
+				UPDATE meeting
+				SET viewCount = viewCount + 1
+				WHERE id = #{id}
 	</update>
 	<update id="update" parameterType="Meeting">
 		UPDATE meeting
@@ -107,6 +101,7 @@
 		WHERE m.id
 		=#{id}
 	</select>
+
 	<select id="getAdminViewList" resultType="AdminMeetingDto">
 		SELECT
 		meeting.id,
@@ -174,10 +169,12 @@
 		ON meeting.contactTypeId = ct.id
 		WHERE meeting.id=#{meetingId}
 	</select>
-	    <select id="getMaxMember" resultType="int">
-    select maxMember from meeting
-    where id=#{meetingId}
-    </select>
+	
+	<select id="getmaxMember" resultType="java.lang.Integer">
+		SELECT maxMember FROM meeting
+		WHERE id = #{meetingId}
+	</select>
+</select>
     <select id="getUpdateView" resultType="UpdateMeetingViewDto">
 	    SELECT 
 			meeting.title,
@@ -206,5 +203,8 @@
 		JOIN contactType
 		ON contactType.id = meeting.contactTypeId
 		WHERE meeting.id = #{meetingId}
-    </select>
+	<select id="getMeetingHost" resultType="int">
+		SELECT regMemberId from meeting
+		where id = #{id}
+	</select>
 </mapper>

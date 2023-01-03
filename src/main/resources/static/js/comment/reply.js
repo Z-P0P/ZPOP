@@ -1,7 +1,7 @@
 
 export function getReply(groupId, replyUl) {
 	//GET request가 디폴트
-	fetch(`/comment/${groupId}/reply`)
+	fetch(`/reply?groupId=${groupId}`)
 		.then(response => {
 			if (response.ok) {
 				return response;
@@ -16,13 +16,32 @@ export function getReply(groupId, replyUl) {
 				let parentNickname = "";
 				if (r.parentNickname != null)
 					parentNickname = '@' + r.parentNickname;
+				let kebobModalWriter = `
+					<div class="modal-select comment__kebob rkb">
+			        <div class="modal-select__contents" data-id="comment-edit">수정
+			            <span class="icon icon-edit"></span>
+			        </div>
+			        <div class="modal-select__contents" data-id="comment-delete">삭제
+			            <span class="icon icon-trash"></span>
+			        </div>
+			    	</div>	
+				`
+				let kebobModalReader = `
+					 <div class="modal-select comment__kebob rkb">
+				        <div class="modal-select__contents" data-id="comment-report">답글 신고
+				            <span class="icon icon-siren-red"></span>
+				        </div>
+				     </div>
+				`
 				let template = `
 					<li> 
 						<div class="profile">
 							<span class="profile__image"></span>
 							<span class="profile__nickname profile__nickname">${r.nickname}</span>
 							<span class="profile__time">${r.elapsedTime}</span>
-							<button></button>
+							<span class="hidden reply-id">${r.id}</span>
+							<button class="rkb-btn"></button>
+							${r.myComment?kebobModalWriter:kebobModalReader}
 						</div>
 						<div class="reply-container">
 							<span class="reply__to">${parentNickname}</span>
@@ -52,8 +71,8 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
                       name="reply-input"
                       placeholder="답글을 입력하세요."></textarea>
                   <div class="reply__btn-container">
-                      <span class="reply__btn btn btn-round cancel-btn">취소하기</span>
-                      <span class="reply__btn btn btn-round register-btn">등록하기</span>
+                      <span class="reply__btn btn btn-round btn-cancle">취소하기</span>
+                      <span class="reply__btn btn btn-round btn-action register-btn">답글달기</span>
                   </div>
               </div> 
                    `;
@@ -61,7 +80,6 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 		linkContainer.insertAdjacentHTML("afterend", template);
 
 		document.querySelector(".register-btn").addEventListener("click", () => {
-			
 			const replyText = document.querySelector("#reply-text").value;
 			
 			if(replyText==""){
@@ -86,7 +104,8 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 							if (response.ok) {
 								if(groupId == parentId) {//원댓글에 대한 답글일 경우
 									removeTextBox('single');
-									linkContainer.children[2].classList.remove("hidden");
+									linkContainer.children[1].classList.add("hidden"); //답글갯수 감추고
+									linkContainer.children[2].classList.remove("hidden");//닫기 버튼 표출
 								}
 								linkContainer.classList.remove("hidden");
 								while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제
@@ -109,7 +128,7 @@ function refreshReplyCount(replyUl, count){
 }
 
 //text-box 제거
-function removeTextBox(count) {
+export function removeTextBox(count) {
 	if (count == 'single'){
 		const inputBox = document.querySelector(".reply__input-container");
 			inputBox.previousElementSibling.classList.remove("hidden");	
@@ -124,22 +143,3 @@ function removeTextBox(count) {
 		});
 	}
 }
-
-//DOM추가기법으로 새 답글을 리스트 하단에 표시 (사용x)
-//function addNewReplyElement(newText, parentNickname) {
-//	if (newText != "") {
-		//   const template = document.querySelector("#template-reply");
-		//   const sourceNode = template.content.querySelector("li");
-		//   const newNode = sourceNode.cloneNode(true);
-		//   const textSpan = newNode.querySelector('.reply__content');
-		//   const nicknameSpan = newNode.querySelector('.reply__to');
-		//   const textNode = document.createTextNode(newText);
-		//   const nicknameNode = document.createTextNode(parentNickname);
-		//   textSpan.appendChild(textNode);
-		//   nicknameSpan.appendChild(nicknameNode);
-		//   const targetNode = document.querySelector(".reply__list").lastElementChild;
-		//   targetNode.after(newNode);
-		//   document.querySelector(".reply__input-container").remove();
-
-//	}
-//}

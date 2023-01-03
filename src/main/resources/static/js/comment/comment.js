@@ -1,19 +1,34 @@
 import * as Reply from "./reply.js";
-
+import {addListenerToCommentKebob} from "./edit-comment.js";
+import {addListenerToReplyKebob} from "./edit-reply.js";
 window.addEventListener("load", () => {
 	//DOM에서 SSR로 뿌려진값들 추출 
 	const meetingId = document.querySelector(".meeting-id").innerText.trim();
 	const commentUl = document.querySelector(".comment__list");
+	const inputBox = document.querySelector(".comment__input");
 	const registerBtn = document.querySelector("#register-btn");
+	const editSaveBtn = document.querySelector("#edit-save-btn");
+	
+	//댓글케밥에 이벤트핸들러 등록
+	addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
+	
 	//새 댓글등록
-	writeComment(registerBtn, meetingId, commentUl); //댓글 등록 버튼에 이벤트 핸들러 부착
+	writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn); //댓글 등록 버튼에 이벤트 핸들러 부착
 	
 	//SSR로 뿌려진 댓글리스트 전체에 이벤트 핸들러 부착
 	commentUl.onclick = function(e) {
+		//클릭시 답글 케밥인경우 이벤트핸들러 등록
+		if(e.target.classList.contains("rkb-btn")){
+			const selectModal = e.target.nextElementSibling;
+			const replyId = e.target.previousElementSibling.innerText.trim();
+			const replyUl = e.target.parentElement.parentElement.parentElement;
+			addListenerToReplyKebob(replyId, replyUl, selectModal);
+			return;
+		}
 		//클릭시 답글 보기/쓰기 버튼이 아닌경우 리턴
 		if (!e.target.classList.contains("reply-cnt")&&
 			!e.target.classList.contains("reply-write")&&
-			!e.target.classList.contains("reply-close")) 
+			!e.target.classList.contains("reply-close"))
 			return; 
 		//DOM에서 SSR로 뿌려진값들 추출 
 		const commentId = e.target.parentElement.firstElementChild.innerText;//<span class="hidden comment-id">"
@@ -30,10 +45,10 @@ window.addEventListener("load", () => {
 				
 				replyUl.addEventListener("click",(e)=>{
 					if(e.target.classList.contains("reply-to-reply")){
-					const parentId = e.target.previousElementSibling.innerText.trim();
-					const parent = e.target.parentElement;
-					parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
-					Reply.writeReply(meetingId, commentId, parentId, replyUl, parent);
+						const parentId = e.target.previousElementSibling.innerText.trim();
+						const parent = e.target.parentElement;
+						parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
+						Reply.writeReply(meetingId, commentId, parentId, replyUl, parent);
 					} //groupId = commentId
 				});
 				replyUl.classList.add("click-handler");
@@ -76,42 +91,11 @@ function closeReplyList(replyUl, replyCnt, replyClose){
 		replyClose.classList.add("hidden")
 		replyCnt.classList.remove("hidden")
 }
-//새 댓글 등록시 SSR로 렌더링된 기존 댓글을 지우고  AJAX로 전체를 다시 렌더링함. 
-function writeComment(registerBtn, meetingId, commentUl){
-	registerBtn.addEventListener("click", () => {
-		const commentBox= document.querySelector("#comment-text");
-		const commentText = commentBox.value;
-		const data = {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				"meetingId": meetingId,
-				"content": commentText 
-			})
-		};
-		if(commentText==""){
-			 alert("댓글을 입력해주세요.");
-			 return;
-		}
-		
-		fetch("/comment", data)
-			.then(response => {
-					if (response.ok) {
-						commentBox.value = "";
-						while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
-							commentUl.removeChild(commentUl.firstChild);
-						getComment(meetingId, commentUl); //AJAX로 새로 렌더링
-					}
-					else alert("시스템 장애로 등록이 안되고 있습니다.");
-			});
-	});
-}
+
 //AJAX로 댓글 렌더링
-function getComment(meetingId, commentUl) {
+export function getComment(meetingId, commentUl) {
 	
-	fetch(`/meeting/${meetingId}/comment`)
+	fetch(`/comment?meetingId=${meetingId}`)
 		.then(response => {
 			if (response.ok) {
 				return response;
@@ -137,8 +121,8 @@ function getComment(meetingId, commentUl) {
 						</div> <span class="comment__content">${c.content}</span>
 						<div class="comment__replies underline pointer">
 							<span class="hidden comment-id">${c.id}</span> 
-							<span class="pointer underline hidden reply-cnt">${countOfReply}</span>
-							<span class="hidden pointer reply-close">닫기</span>
+							<span class="pointer underline reply-cnt">${countOfReply}</span>
+							<span class="hidden pointer hidden reply-close">닫기</span>
 							<span class="pointer underline reply-write">답글 달기</span>
 						</div>
 						<section class="reply hidden">
@@ -151,21 +135,35 @@ function getComment(meetingId, commentUl) {
 			}
 		});
 }
-//DOM추가로 새글 보여주기(사용x)
-//function addNewCommentElement(newText) {
-
-// 	if (newText != "") {
-// 		const template = document.querySelector("#template-comment");
-// 		const sourceNode = window.template.content.querySelector("li");
-// 		const newNode = sourceNode.cloneNode(true);
-// 		const textSpan = newNode.querySelector('.comment__content');
-// 		const newContent = document.createTextNode(newText);
-// 		textSpan.appendChild(newContent);
-// 		const targetNode = document.querySelector(".comment__list li:last-child");
-// 		if (targetNode == null)
-// 			template.after(newNode);
-// 		else
-// 			targetNode.after(newNode);
-// 		document.getElementById("comment-text").value = "";//플레이스홀더 되살림.
-// 	}
-// }
+//새 댓글 등록시 SSR로 렌더링된 기존 댓글을 지우고  AJAX로 전체를 다시 렌더링함. 
+function writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
+	registerBtn.addEventListener("click", () => {
+		const commentText = inputBox.value;
+		const data = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				"meetingId": meetingId,
+				"content": commentText 
+			})
+		};
+		if(commentText==""){
+			 alert("댓글을 입력해주세요.");
+			 return;
+		}
+		
+		fetch("/comment", data)
+			.then(response => {
+					if (response.ok) {
+						inputBox.value = "";
+						while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
+							commentUl.removeChild(commentUl.firstChild);
+						getComment(meetingId, commentUl); //AJAX로 새로 렌더링
+						addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
+					}
+					else alert("시스템 장애로 등록이 안되고 있습니다.");
+			});
+	});
+}
