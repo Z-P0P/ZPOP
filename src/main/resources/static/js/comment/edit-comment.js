@@ -1,16 +1,12 @@
 import {getComment} from "./comment.js";
-//수정,신고,삭제 기능 구현
-window.addEventListener("load", () => {
-   
-   const meetingId = document.querySelector(".meeting-id").innerText.trim();
-   const inputBox = document.querySelector(".comment__input");
-   const commentUl = document.querySelector(".comment__list");
-   const registerBtn = document.querySelector("#register-btn");
+//댓글 수정,신고,삭제 기능 구현
+
+
+export function addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
    const modalSelectEditList = document.querySelectorAll('[data-id="comment-edit"]');
    const modalSelectDeleteList = document.querySelectorAll('[data-id="comment-delete"]');
    const modalSelectReportList = document.querySelectorAll('[data-id="comment-report"]');
-   const editSaveBtn = document.querySelector("#edit-save-btn");
-   var commentId = 0;
+   var commentId = 0; 
    
    for(const m of modalSelectEditList)
       m.addEventListener("click",(e)=>{
@@ -22,6 +18,18 @@ window.addEventListener("load", () => {
          commentId = e.target.parentElement.previousElementSibling.previousElementSibling.innerText.trim();
          registerBtn.classList.add("hidden");
          editSaveBtn.classList.remove("hidden");
+          const template = `
+         	<span class="reply__btn btn btn-round btn-cancel cancel-btn">취소하기</span>
+         `
+         if(!editSaveBtn.classList.contains("has-cancel-sibling")){
+         	editSaveBtn.insertAdjacentHTML("beforebegin", template)
+            editSaveBtn.classList.add("has-cancel-sibling");
+         }
+         const cancelBtn = document.querySelector(".cancel-btn");
+         cancelBtn.addEventListener("click",()=>{
+			inputBox.value="";
+			inputBox.blur();
+		});
       });
    for(const m of modalSelectDeleteList)
       m.addEventListener("click",(e)=>{
@@ -45,8 +53,7 @@ window.addEventListener("load", () => {
       }
       else return;
    });   
-
-});
+}
 
 function saveEdit(meetingId, commentId,commentUl,inputBox){
    const editedText = inputBox.value;
@@ -68,6 +75,7 @@ function saveEdit(meetingId, commentId,commentUl,inputBox){
    fetch(`/comment/${commentId}`, data)
       .then(response => {
             if (response.ok) {
+			   console.log("댓글이 수정됨")	
                inputBox.value = "";
                while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
                   commentUl.removeChild(commentUl.firstChild);
@@ -91,6 +99,7 @@ function deleteComment(meetingId, commentId, commentUl){
    fetch(`/comment/${commentId}`, data)
       .then(response => {
             if (response.ok) {
+			   console.log("댓글이 삭제됨")
                while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
                   commentUl.removeChild(commentUl.firstChild);
                getComment(meetingId,commentUl)
@@ -114,6 +123,7 @@ function reportComment(commentId, reportType, reportReason){
    fetch(`/comment/${commentId}`, data)
       .then(response => {
          if (response.ok) {
+			 console.log("신고가 등록됨")
             return response;
          }
          else alert("시스템 장애로 등록이 안되고 있습니다.");

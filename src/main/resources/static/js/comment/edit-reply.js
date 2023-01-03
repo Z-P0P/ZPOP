@@ -2,19 +2,20 @@ import {getReply, removeTextBox} from "./reply.js";
 
 export function addListenerToReplyKebob(replyId, replyUl,selectModal){
    
-    if(selectModal.children[0].getAttribute("data-id")=='comment-edit'){
-	   console.log("여기")
-	   selectModal.children[0].addEventListener("click",(e)=>{
-         e.preventDefault();
-         const profile = selectModal.parentElement;
-         editReply(replyId, replyUl, profile);
-        });
-   }
-   if(selectModal.children[1].getAttribute("data-id")=='comment-delete'){
-	   selectModal.children[1].addEventListener("click",(e)=>{
-         e.preventDefault();
-         deleteReply(replyId, replyUl);
-        });
+    if(selectModal.children[1]!=null){
+	    if(selectModal.children[0].getAttribute("data-id")=='comment-edit'){
+		   selectModal.children[0].addEventListener("click",(e)=>{
+	         e.preventDefault();
+	         const profile = selectModal.parentElement;
+	         editReply(replyId, replyUl, profile);
+	        });
+	   }
+	   if(selectModal.children[1].getAttribute("data-id")=='comment-delete'){
+		   selectModal.children[1].addEventListener("click",(e)=>{
+	         e.preventDefault();
+	         deleteReply(replyId, replyUl);
+	        });
+	   }
    }
    if(selectModal.children[0].getAttribute("data-id")=='comment-report'){
 	    selectModal.addEventListener("click",(e)=>{
@@ -77,7 +78,7 @@ function saveEdit(replyId,replyUl,inputBox){
    fetch(`/reply/${replyId}`, data)
       .then(response => {
             if (response.ok) {
-				
+				console.log("답글이 수정됨")
 				return response;
             }
             else alert("시스템 장애로 등록이 안되고 있습니다.");
@@ -104,6 +105,7 @@ function deleteReply(replyId, replyUl){
    fetch(`/reply/${replyId}`, data)
       .then(response => {
             if (response.ok) {
+				console.log("답글이 삭제됨")
 				return response;
             }
             else alert("시스템 장애로 등록이 안되고 있습니다.");
@@ -131,7 +133,7 @@ function reportReply(replyId, reportType, reportReason){
    fetch(`/reply/${replyId}`, data)
       .then(response => {
          if (response.ok) {
-			 console.log("성공")
+			 console.log("신고가 등록됨")
             return response;
          }
          else alert("시스템 장애로 등록이 안되고 있습니다.");

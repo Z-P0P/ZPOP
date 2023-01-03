@@ -1,16 +1,23 @@
 import * as Reply from "./reply.js";
+import {addListenerToCommentKebob} from "./edit-comment.js";
 import {addListenerToReplyKebob} from "./edit-reply.js";
 window.addEventListener("load", () => {
 	//DOM에서 SSR로 뿌려진값들 추출 
 	const meetingId = document.querySelector(".meeting-id").innerText.trim();
 	const commentUl = document.querySelector(".comment__list");
+	const inputBox = document.querySelector(".comment__input");
 	const registerBtn = document.querySelector("#register-btn");
+	const editSaveBtn = document.querySelector("#edit-save-btn");
+	
+	//댓글케밥에 이벤트핸들러 등록
+	addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
+	
 	//새 댓글등록
 	writeComment(registerBtn, meetingId, commentUl); //댓글 등록 버튼에 이벤트 핸들러 부착
 	
 	//SSR로 뿌려진 댓글리스트 전체에 이벤트 핸들러 부착
 	commentUl.onclick = function(e) {
-		//클릭시 답글 케밥인경우
+		//클릭시 답글 케밥인경우 이벤트핸들러 등록
 		if(e.target.classList.contains("rkb-btn")){
 			const selectModal = e.target.nextElementSibling;
 			const replyId = e.target.previousElementSibling.innerText.trim();

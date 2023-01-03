@@ -71,7 +71,7 @@
     </set>
   	WHERE id = #{commentId}
   </update>
-  <update id="deleteComment" parameterType="com.zpop.web.entity.comment.Comment">
+  <update id="deleteComment" parameterType="int">
   	UPDATE comment
   	<set>
       <if test="commentId != null">

@@ -9,11 +9,11 @@ window.addEventListener('load', function(){
 	const responseType = "code";
 	const state = encodeURI(generateRandomString(10));
 	const requestUrl = `${serviceURL}?response_type=${responseType}&client_id=${clientId}&state=${state}&redirect_uri=${redirectUrl}`;
-	naverLoginBtn.onclick=function(){
-	
-		location.href=requestUrl;
-	
-	};
+//	naverLoginBtn.onclick=function(){
+//	
+//		location.href=requestUrl;
+//	
+//	};
 
 });
 
