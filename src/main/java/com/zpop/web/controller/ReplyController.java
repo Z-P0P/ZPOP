@@ -66,32 +66,32 @@ public class ReplyController {
 		return "{\"1\":1}"; //JSON
 	}
 	//댓글 수정 AJAX endpoint
-		@PatchMapping("{id}")
-		@ResponseBody
-		public int updateReply(@PathVariable int id, @RequestBody Comment editedReply,
-				@AuthenticationPrincipal ZpopUserDetails userDetails) {
-			service.updateComment(editedReply);
-			Comment reply = service.getCommentById(id);
-			return reply.getGroupId();
-		}
-		//댓글 삭제 AJAX endpoint
-		@DeleteMapping("{id}")
-		@ResponseBody
-		public int deleteReply(@PathVariable int id,
-				@AuthenticationPrincipal ZpopUserDetails userDetails) {
-			service.deleteComment(id);
-			Comment reply = service.getCommentById(id);
-			return reply.getGroupId();
-		}
-		//댓글 신고 AJAX endpoint
-		@PutMapping("{id}")
-		@ResponseBody
-		public String reportReply(@PathVariable int id, @RequestBody ReportedComment reportedReply,
-				@AuthenticationPrincipal ZpopUserDetails userDetails) {
-			Comment reply = service.getCommentById(id);
-			reportedReply.setReporterId(userDetails.getId());
-			reportedReply.setOriginal(reply.getContent());
-			reportService.createCommentReport(reportedReply);
-			return "{\"1\":1}"; //JSON
-		}
+	@PatchMapping("{id}")
+	@ResponseBody
+	public int updateReply(@PathVariable int id, @RequestBody Comment editedReply,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		service.updateComment(editedReply);
+		Comment reply = service.getCommentById(id);
+		return reply.getGroupId();
+	}
+	//댓글 삭제 AJAX endpoint
+	@DeleteMapping("{id}")
+	@ResponseBody
+	public int deleteReply(@PathVariable int id,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		service.deleteComment(id);
+		Comment reply = service.getCommentById(id);
+		return reply.getGroupId();
+	}
+	//댓글 신고 AJAX endpoint
+	@PutMapping("{id}")
+	@ResponseBody
+	public String reportReply(@PathVariable int id, @RequestBody ReportedComment reportedReply,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		Comment reply = service.getCommentById(id);
+		reportedReply.setReporterId(userDetails.getId());
+		reportedReply.setOriginal(reply.getContent());
+		reportService.createCommentReport(reportedReply);
+		return "{\"1\":1}"; //JSON
+	}
 }

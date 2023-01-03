@@ -21,9 +21,11 @@
 .btn-action {
   background-color: var(--main-color);
 }
-.cancel-btn{
-  margin-right:5px;
+
+.btn-cancel {
+  background-color: var(--grey2);
 }
+
 .btn-totop {
   display: inline-flex;
   background: url("/images/chevron.svg") no-repeat center;
