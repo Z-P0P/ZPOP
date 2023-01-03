@@ -70,8 +70,8 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
                       name="reply-input"
                       placeholder="답글을 입력하세요."></textarea>
                   <div class="reply__btn-container">
-                      <span class="reply__btn btn btn-round cancel-btn">취소하기</span>
-                      <span class="reply__btn btn btn-round register-btn">등록하기</span>
+                      <span class="reply__btn btn btn-round btn-cancle">취소하기</span>
+                      <span class="reply__btn btn btn-round btn-action register-btn">답글달기</span>
                   </div>
               </div> 
                    `;

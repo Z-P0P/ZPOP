@@ -72,7 +72,7 @@
             </div>
             <div class="meeting__views"  th:text="|조회수${meeting.viewCount}|">조회수</div>
             <div class="meeting__btn">
-                <span class="btn btn-round btn-join" id="participation-btn"  data-modal="#modal-wrapper-participation">참여하기</span>
+                <span class="btn btn-round btn-join btn-action" id="participation-btn"  data-modal="#modal-wrapper-participation">참여하기</span>
             </div>
         </div>
     </section>
@@ -130,7 +130,7 @@
 			<div class="comment__input-container">
 				<textarea class="comment__input" name="comment-text"
 					id="comment-text" placeholder="댓글을 입력하세요."></textarea>
-				<span class="comment__btn btn btn-round" id="register-btn">등록하기</span>
+				<span class="comment__btn btn btn-round btn-action" id="register-btn">등록하기</span>
 				<span class="hidden comment__btn btn btn-round" id="edit-save-btn">저장하기</span>
 			</div>
 			<ul class="comment__list">
