@@ -123,8 +123,7 @@ public class DefaultCommentService implements CommentService {
 		return affectedRow;
 	}
 	@Override
-	public int deleteComment(Comment comment) {
-		int commentId = comment.getId();
+	public int deleteComment(int commentId) {
 		int affectedRow = dao.deleteComment(commentId);
 		return affectedRow;
 	}

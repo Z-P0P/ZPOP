@@ -17,7 +17,7 @@ export function getReply(groupId, replyUl) {
 				if (r.parentNickname != null)
 					parentNickname = '@' + r.parentNickname;
 				let kebobModalWriter = `
-					<div class="modal-select comment__kebob">
+					<div class="modal-select comment__kebob rkb">
 			        <div class="modal-select__contents" data-id="comment-edit">수정
 			            <span class="icon icon-edit"></span>
 			        </div>
@@ -27,8 +27,8 @@ export function getReply(groupId, replyUl) {
 			    	</div>	
 				`
 				let kebobModalReader = `
-					 <div class="modal-select comment__kebob">
-				        <div class="modal-select__contents" data-id="comment-report">댓글 신고
+					 <div class="modal-select comment__kebob rkb">
+				        <div class="modal-select__contents" data-id="comment-report">답글 신고
 				            <span class="icon icon-siren-red"></span>
 				        </div>
 				     </div>
@@ -39,7 +39,8 @@ export function getReply(groupId, replyUl) {
 							<span class="profile__image"></span>
 							<span class="profile__nickname profile__nickname">${r.nickname}</span>
 							<span class="profile__time">${r.elapsedTime}</span>
-							<button></button>
+							<span class="hidden reply-id">${r.id}</span>
+							<button class="rkb-btn"></button>
 							${r.myComment?kebobModalWriter:kebobModalReader}
 						</div>
 						<div class="reply-container">
@@ -70,8 +71,8 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
                       name="reply-input"
                       placeholder="답글을 입력하세요."></textarea>
                   <div class="reply__btn-container">
-                      <span class="reply__btn btn btn-round cancel-btn">취소하기</span>
-                      <span class="reply__btn btn btn-round register-btn">등록하기</span>
+                      <span class="reply__btn btn btn-round btn-cancle">취소하기</span>
+                      <span class="reply__btn btn btn-round btn-action register-btn">답글달기</span>
                   </div>
               </div> 
                    `;
@@ -127,7 +128,7 @@ function refreshReplyCount(replyUl, count){
 }
 
 //text-box 제거
-function removeTextBox(count) {
+export function removeTextBox(count) {
 	if (count == 'single'){
 		const inputBox = document.querySelector(".reply__input-container");
 			inputBox.previousElementSibling.classList.remove("hidden");	
@@ -142,22 +143,3 @@ function removeTextBox(count) {
 		});
 	}
 }
-
-//DOM추가기법으로 새 답글을 리스트 하단에 표시 (사용x)
-//function addNewReplyElement(newText, parentNickname) {
-//	if (newText != "") {
-		//   const template = document.querySelector("#template-reply");
-		//   const sourceNode = template.content.querySelector("li");
-		//   const newNode = sourceNode.cloneNode(true);
-		//   const textSpan = newNode.querySelector('.reply__content');
-		//   const nicknameSpan = newNode.querySelector('.reply__to');
-		//   const textNode = document.createTextNode(newText);
-		//   const nicknameNode = document.createTextNode(parentNickname);
-		//   textSpan.appendChild(textNode);
-		//   nicknameSpan.appendChild(nicknameNode);
-		//   const targetNode = document.querySelector(".reply__list").lastElementChild;
-		//   targetNode.after(newNode);
-		//   document.querySelector(".reply__input-container").remove();
-
-//	}
-//}
