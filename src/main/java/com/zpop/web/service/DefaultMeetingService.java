@@ -276,8 +276,13 @@ public class DefaultMeetingService implements MeetingService {
 		 */ 
 		List<ParticipationInfoView> participations = participationDao.getParticipantInfoByMeetingId(id);
 		List<ParticipantResponse> participationsResponse = new ArrayList<>();
+		boolean hasParticipated = false; 
 
 		for (ParticipationInfoView p : participations) {
+			// 내가 참여한 모임인지 확인
+			if(memberId != null && p.getParticipantId() == memberId)
+				hasParticipated = true;
+
 			participationsResponse.add(new ParticipantResponse(
 				p.getId(),
 				p.getNickname(),
@@ -337,6 +342,7 @@ public class DefaultMeetingService implements MeetingService {
 			meeting.getViewCount(),
 			commentCount,
 			isMyMeeting,
+			hasParticipated,
 			isClosed,
 			participationsResponse,
 			commentsResponse

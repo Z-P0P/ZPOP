@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class ParticipationInfoView {
   private int id;
-  private int participatId;
+  private int participantId;
   private String nickname;
   private String profileImagePath;
   private Date createdAt;
@@ -15,9 +15,9 @@ public class ParticipationInfoView {
   public ParticipationInfoView() {
   }
 
-  public ParticipationInfoView(int id, int participatId, String nickname, String profileImagePath, Date createdAt, Date bannedAt, Date canceledAt, boolean isEvaluated) {
+  public ParticipationInfoView(int id, int participantId, String nickname, String profileImagePath, Date createdAt, Date bannedAt, Date canceledAt, boolean isEvaluated) {
     this.id = id;
-    this.participatId = participatId;
+    this.participantId = participantId;
     this.nickname = nickname;
     this.profileImagePath = profileImagePath;
     this.createdAt = createdAt;
@@ -34,12 +34,12 @@ public class ParticipationInfoView {
     this.id = id;
   }
 
-  public int getParticipatId() {
-    return this.participatId;
+  public int getParticipantId() {
+    return this.participantId;
   }
 
-  public void setParticipatId(int participatId) {
-    this.participatId = participatId;
+  public void setParticipantId(int participantId) {
+    this.participantId = participantId;
   }
 
   public String getNickname() {

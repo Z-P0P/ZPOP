@@ -38,14 +38,14 @@
                 <span class="hidden meeting-id" th:text="${meeting.id}"></span>
                     <span class="meeting__title"  th:text="${meeting.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
-                    <th:block th:if="${userType== 3}">		
+                    <th:block th:if="${meeting.isMyMeeting == true}">	
                     		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-host}"></div>
                     </th:block>
-                    <th:block th:if="${userType== 2}">
+                    <th:block th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == true}">  
                     		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-participant}"></div>
                     </th:block>
-                       <th:block th:if="${userType== 1}">
-                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member}"></div>
+                    <th:block th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == false}">   
+                    		<div th:replace="~{inc/meeting-detail-modal::member}"></div>
                     </th:block>
                 </div>
                 <div class="meeting__date-container">
