@@ -15,18 +15,13 @@ public class ReportedMember {
 	private Date blockedAt;
 	private Date releasedAt;
 	
-	public ReportedMember(int reportedId, int reporterId, int typeId, int adminId, String reason,
-			Date createdAt, Date processedAt, Date blockedAt, Date releasedAt) {
+	public ReportedMember(int reportedId, int reporterId, int typeId, String reason
+			) {
 
 		this.reportedId = reportedId;
 		this.reporterId = reporterId;
 		this.typeId = typeId;
-		this.adminId = adminId;
 		this.reason = reason;
-		this.createdAt = createdAt;
-		this.processedAt = processedAt;
-		this.blockedAt = blockedAt;
-		this.releasedAt = releasedAt;
 	}
 
 	public int getId() {

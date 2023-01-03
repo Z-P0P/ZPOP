@@ -16,11 +16,14 @@
     <link rel="stylesheet" href="/css/member/component/reply.css" />
     <link rel="stylesheet" href="/css/member/popup.css">
     <link rel="stylesheet" href="/css/member/component/modal-2.css">
+    <link rel="stylesheet" href="/css/member/component/report-modal.css">
     <!-- detail page css -->
     <link rel="stylesheet" href="/css/member/meeting/detail.css">
     <script src="/js/meeting/detail.js"></script>
     <script type="module" src="/js/comment/comment.js"></script>
     <script type="module" src="/js/comment/edit-comment.js"></script>
+    <script src="/js/meeting/report.js"></script>
+    <script src="/js/meeting/report-select.js" defer></script>
 
 </head>
 <body>
@@ -123,6 +126,76 @@
             </div>
         </div>
     </div>
+    
+    <!--------------- 모임 신고 모달 -------------------->
+    <div id="modal-report-meeting" class="modal-wrapper hidden">
+      <div class="modal">
+        <div class="modal__header">
+    
+        <span class="modal__close-btn report__close-btn icon icon-x" data-modal="#modal-report-meeting">닫기</span>
+        </div>
+        <div class="report-modal__body">
+         <div class="meeting-form__input">
+            <label class="input__label" for="category">신고사유</label>
+            <div class="select-box select-box--input">
+                <input placeholder=" 카테고리를 선택하세요" type="text" name="category">
+                <ul class="select-box__options">
+                    <li value="1">사행성 글</li>
+                    <li value="2">부적절한 게시글 제목/내용</li>
+                    <li value="3">판매 권유 및 상행위 글</li>
+                    <li value="4">기타</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="input-text">
+        	<div>
+            <label for ="input__content--id" class="input-text__label">상세사유 (선택)</label>
+            <textarea  id="input__content--id" placeholder="상세 내용을 적어주세요. (최대 100자)" class="input-text__content"></textarea>
+       		</div>
+        </div>
+        <div class="btn-wrapper">
+            <span id="cancel-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round modal__close-btn report__cancel-btn">취소</span>
+            <span id="report-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round">신고하기</span>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!--------------- 댓글 신고 모달 -------------------->
+     <div id="modal-report-comment" class="modal-wrapper hidden">
+      <div class="modal">
+        <div class="modal__header">
+    
+        <span class="modal__close-btn icon icon-x" data-modal="#modal-report-comment">닫기</span>
+        </div>
+        <div class="report-modal__body">
+         <div class="meeting-form__input">
+            <label class="input__label" for="category">신고사유</label>
+            <div class="select-box select-box--input">
+                <input placeholder=" 카테고리를 선택하세요" type="text" name="category">
+                <ul class="select-box__options">
+                    <li value="1">욕설/유해성 문구</li>
+                    <li value="2">스팸/광고</li>
+                    <li value="3">기타</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="input-text">
+        	<div>
+            <label for ="input__content--id" class="input-text__label">상세사유 (선택)</label>
+            <textarea  id="input__content--id" placeholder="상세 내용을 적어주세요. (최대 100자)" class="input-text__content"></textarea>
+       		</div>
+        </div>
+        <div class="btn-wrapper">
+            <span id="cancel-btn" data-modal="#modal-report-comment" class="comment__btn btn btn-round modal__close-btn">취소</span>
+            <span id="report-btn" data-modal="#modal-report-comment" class="comment__btn btn btn-round">신고하기</span>
+        </div>
+        </div>
+      </div>
+    </div>
+    
+    <!--------------- 사용자 신고 모달 -------------------->
     
     <!--------------- 댓글 섹션 -------------------->
     <section class="comment">
