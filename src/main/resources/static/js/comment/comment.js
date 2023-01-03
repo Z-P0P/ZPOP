@@ -13,7 +13,7 @@ window.addEventListener("load", () => {
 	addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
 	
 	//새 댓글등록
-	writeComment(registerBtn, meetingId, commentUl); //댓글 등록 버튼에 이벤트 핸들러 부착
+	writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn); //댓글 등록 버튼에 이벤트 핸들러 부착
 	
 	//SSR로 뿌려진 댓글리스트 전체에 이벤트 핸들러 부착
 	commentUl.onclick = function(e) {
@@ -136,8 +136,7 @@ export function getComment(meetingId, commentUl) {
 		});
 }
 //새 댓글 등록시 SSR로 렌더링된 기존 댓글을 지우고  AJAX로 전체를 다시 렌더링함. 
-function writeComment(registerBtn, meetingId, commentUl){
-	const inputBox = document.querySelector(".comment__input");
+function writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
 	registerBtn.addEventListener("click", () => {
 		const commentText = inputBox.value;
 		const data = {
@@ -162,6 +161,7 @@ function writeComment(registerBtn, meetingId, commentUl){
 						while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
 							commentUl.removeChild(commentUl.firstChild);
 						getComment(meetingId, commentUl); //AJAX로 새로 렌더링
+						addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
 					}
 					else alert("시스템 장애로 등록이 안되고 있습니다.");
 			});

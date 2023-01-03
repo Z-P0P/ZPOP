@@ -33,6 +33,7 @@
 			meetingId = #{query}
 		</if>
   	AND parentCommentId IS NULL
+  	AND deletedAt IS NULL
   </select>
   <select id="getCountOfReply" resultType="int">
   	SELECT count(id) 
@@ -41,7 +42,7 @@
 		<if test=" query != null">
 			groupId = #{query}
 		</if>
-  	
+  	AND deletedAt IS NULL
   </select>
   <select id="getCommentById" resultType= "com.zpop.web.entity.comment.Comment">
   	SELECT * FROM comment
