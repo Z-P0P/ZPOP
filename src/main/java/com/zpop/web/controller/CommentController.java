@@ -61,17 +61,19 @@ public class CommentController {
 	
 	//댓글 수정 AJAX endpoint
 	@PatchMapping("{id}")
+	@ResponseBody
 	public String updateComment(@PathVariable int id, @RequestBody Comment comment,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		service.updateComment(comment);
-		return "comment/comment";
+		return "{\"1\":1}"; //JSON
 	}
 	//댓글 삭제 AJAX endpoint
 	@DeleteMapping("{id}")
-	public String deleteComment(@PathVariable int id, @RequestBody Comment comment,
+	@ResponseBody
+	public String deleteComment(@PathVariable int id, 
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		service.deleteComment(comment);
-		return "comment/comment";
+		service.deleteComment(id);
+		return "{\"1\":1}"; //JSON
 	}
 	//댓글 신고 AJAX endpoint
 	@PutMapping("{id}")
@@ -81,7 +83,7 @@ public class CommentController {
 		Comment comment = service.getCommentById(id);
 		reportedComment.setReporterId(userDetails.getId());
 		reportedComment.setOriginal(comment.getContent());
-		//reportService.createCommentReport(reportedComment);
+		reportService.createCommentReport(reportedComment);
 		return "{\"1\":1}"; //JSON
 	}
 }

@@ -28,9 +28,7 @@
   font-size: 1rem;
 }
 
-.reply__btn {
-  margin-left:5px;
-}
+
 @media (min-width: 576px) {
   .reply__input {
     min-height: 9.375rem;

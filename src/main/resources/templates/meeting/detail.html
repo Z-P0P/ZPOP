@@ -27,7 +27,7 @@
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
 
 <main class="main"  layout:fragment="content">
-	<span hidden class="member-id" th:text="${session.memberId}"></span>
+	<span  class="hidden member-id" th:text="${session.memberId}"></span>
     <section class="meeting">
         <div class="meeting__info">
             <div class="meeting__category-wrap">
@@ -130,8 +130,10 @@
 			<div class="comment__input-container">
 				<textarea class="comment__input" name="comment-text"
 					id="comment-text" placeholder="댓글을 입력하세요."></textarea>
-				<span class="comment__btn btn btn-round btn-action" id="register-btn">등록하기</span>
-				<span class="hidden comment__btn btn btn-round" id="edit-save-btn">저장하기</span>
+				<div class="comment__btn-container">
+					<span class="comment__btn btn btn-round btn-action" id="register-btn">등록하기</span>
+					<span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
+				</div>
 			</div>
 			<ul class="comment__list">
 
@@ -141,13 +143,13 @@
 						<span class="profile__nickname" th:text="${comment.nickname}">닉네임</span>
 						<span class="profile__time" th:text="${comment.elapsedTime}">경과시간</span>
 						<span class="hidden comment-id" th:text="${comment.id}">경과시간</span>
-						<button></button>
-		                    <th:block th:if="${comment.isMyComment}">
-		                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
-		                    </th:block>
-		                       <th:block th:if="${!comment.isMyComment}">
-		                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::reader}"></div>
-		                    </th:block>
+						<button class="kebob"></button>
+                        <th:block th:if="${comment.isMyComment}">
+                                <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
+                        </th:block>
+                        <th:block th:if="${!comment.isMyComment}">
+                                <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::reader}"></div>
+                        </th:block>
 					</div>
                     <span class="comment__content" th:text="${comment.content}">
                         댓글 내용
