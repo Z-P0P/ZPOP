@@ -5,6 +5,7 @@ window.addEventListener(("load"), function () {
   const pathParam = location.pathname;
   const ENTER_KEY_CODE = 13;
 
+
   handleBackArrowBtn();
   // 검색 페이지가 아니라면 searchBar에 hidden 추가
   handleDesktopSearchBar();

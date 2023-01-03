@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -26,14 +25,13 @@ import com.zpop.web.dto.MeetingDetailDto;
 import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.dto.RegisterMeetingRequest;
 import com.zpop.web.dto.RegisterMeetingResponse;
-import com.zpop.web.entity.Member;
 import com.zpop.web.entity.comment.CommentView;
 import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.CommentService;
 import com.zpop.web.service.MeetingService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/meeting")
@@ -148,5 +146,18 @@ public class MeetingController {
 		service.participate(meetingId, memberId);
 		
 		return "meeting/detail";
+	}
+
+	@GetMapping("/{id}/contact")
+	@ResponseBody
+	public String getContact(@PathVariable int id,
+		    @AuthenticationPrincipal ZpopUserDetails userDetails) {
+
+		if(userDetails == null)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
+
+		String contact = service.getContact(id, userDetails.getId());
+
+		return contact;
 	}
 }

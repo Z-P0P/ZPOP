@@ -30,10 +30,10 @@
            <!-- <input type="file"> 추가해야함 -->
             <div class="profile__image--no-photo .icon"></div>
         </div>
-        <span class="profile__nickname" th:text="${session.member.nickname}">닉네임</span>
+        <span class="profile__nickname" th:text="${member.nickname}">닉네임</span>
 
         <div class="profile__fame">
-            <span th:text="'인기도: '+${session.member.fame}+' 점'">인기도: 99점</span>
+            <span th:text="'인기도: '+${member.fame}+' 점'">인기도: 99점</span>
             <span class="deco-img-star "></span>
         </div>
 
@@ -52,6 +52,7 @@
 
 
     </div>
+
    </div>
 </main>
     <!--------------------my-profile end -------------------->

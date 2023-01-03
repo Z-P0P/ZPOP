@@ -66,6 +66,9 @@ export default function (e) {
     requestMeetings(url).then((meetings) => {
       removeMeetings();
       insertMeetings(meetings);
+      if (meetings.length === 0) {
+        showResultNone();
+      }
     });
   }
 }
