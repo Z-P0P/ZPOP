@@ -87,7 +87,6 @@ public interface MeetingService {
 	 */
 	boolean cancelParticipate(int id, int memberId);
 
-	void updateViewCount(int id);
 
 	/**
 	 * 참여자를 내보내기.
@@ -139,7 +138,5 @@ public interface MeetingService {
 	RegisterMeetingResponse getActiveOptions();
 
 	int register(RegisterMeetingRequest dto, List<MultipartFile> images, String realPath) throws FileNotFoundException, IOException;
-
-	int getUserType(int memberId, int meetingId);
 
 }

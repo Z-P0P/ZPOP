@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.zpop.web.dto.*;
 import com.zpop.web.entity.*;
@@ -303,8 +302,7 @@ public class DefaultMeetingService implements MeetingService {
 			boolean isMyComment = false;
 			if(memberId != null && c.getWriterId() == memberId)
 				isMyComment = true;
-			System.out.println(c.getId());
-			System.out.println(c.getId() + " is " + commentDao.getCountOfReply(c.getGroupId()));
+
 			commentsResponse.add(
 				new CommentResponse(
 					c.getId(),
@@ -403,12 +401,6 @@ public class DefaultMeetingService implements MeetingService {
 		dao.updateDeletedAt(foundMeeting);
 
 		return true;
-	}
-
-	@Override
-	public void updateViewCount(int id) {
-		dao.updateViewCount(id);
-
 	}
 
 	@Override
@@ -540,30 +532,6 @@ public class DefaultMeetingService implements MeetingService {
 			result = 1;
 		}	
 		return result;
-	}
-	@Override
-	public int getUserType(int memberId, int meetingId) {
-		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
-		int hostId = dao.getMeetingHost(meetingId);
-		int userType = 0;
-		// userType
-		// 0--> 일반(비로그인)
-		// 1 --> 일반(로그인)
-		// 2--> 참여자 
-		// 3--> 호스트
-		if(memberId == hostId) {
-			userType = 3;
-		}
-		else if(isMemberParticipated (memberId,participants)){
-			userType = 2;
-		}
-		else if(memberId != 0) {
-			userType = 1;
-		}
-		else {
-			userType = 0;
-		}
-		return userType;
 	}
 	
 	@Override
