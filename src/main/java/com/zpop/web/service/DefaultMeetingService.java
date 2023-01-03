@@ -505,7 +505,26 @@ public class DefaultMeetingService implements MeetingService {
 
 		if (meeting.getRegMemberId() != regMemberId) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
-			@Override
+		}
+
+		// 수정된 내용 update
+		dao.update(dto.toEntity());
+		
+		// 가지고온 image에 모임 id를 넣어줌 
+		List<MeetingFile> images = dto.getImages();
+		images.forEach(image->image.setMeetingId(meetingId));
+		
+		// 가지고온 image를 제외한 나머지를 제거함
+		meetingFileDao.deleteAllExcept(images);
+		
+		// 가지고온 image를 업데이트 함
+		if (!images.isEmpty()) {
+			meetingFileDao.updateAllMeetingId(images);			
+		}
+		return true;	
+	}
+
+	@Override
 	public int getUserType(int memberId, int meetingId) {
 		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
 		int hostId = dao.getMeetingHost(meetingId);
@@ -528,23 +547,6 @@ public class DefaultMeetingService implements MeetingService {
 			userType = 0;
 		}
 		return userType;
-	}
-		// 수정된 내용 update
-		dao.update(dto.toEntity());
-		
-		// 가지고온 image에 모임 id를 넣어줌 
-		List<MeetingFile> images = dto.getImages();
-		images.forEach(image->image.setMeetingId(meetingId));
-		
-		// 가지고온 image를 제외한 나머지를 제거함
-		meetingFileDao.deleteAllExcept(images);
-		
-		// 가지고온 image를 업데이트 함
-		if (!images.isEmpty()) {
-			meetingFileDao.updateAllMeetingId(images);			
-		}
-
-		return true;
 	}
 
 	@Override
@@ -620,12 +622,5 @@ public class DefaultMeetingService implements MeetingService {
         //participationDao.updateCanceledAt(participationInfo.getId());
 
         return true;
-    }
-
-	private void createNotification(int memberId, String url, int type) {
-		notificationDao.insertCommentNotification(memberId, url, type);
 	}
-
-	
-    
 }

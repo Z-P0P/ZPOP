@@ -4,11 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import com.zpop.web.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.Nullable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,24 +17,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
-import com.zpop.web.dto.MeetingDetailDto;
 import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.dto.RegisterMeetingRequest;
 import com.zpop.web.dto.RegisterMeetingResponse;
 import com.zpop.web.dto.RegisterMeetingViewResponse;
 import com.zpop.web.dto.UpdateMeetingRequest;
 import com.zpop.web.dto.UpdateMeetingViewDto;
-import com.zpop.web.entity.MeetingFile;
-import com.zpop.web.entity.Member;
-import com.zpop.web.entity.comment.CommentView;
 import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.CommentService;
 import com.zpop.web.service.MeetingService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.server.ResponseStatusException;
 import jakarta.validation.Valid;
 
 @Controller
