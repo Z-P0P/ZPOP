@@ -75,7 +75,10 @@
             </div>
             <div class="meeting__views"  th:text="|조회수${meeting.viewCount}|">조회수</div>
             <div class="meeting__btn">
-                <span class="btn btn-round btn-join btn-action" id="participation-btn"  data-modal="#modal-wrapper-participation">참여하기</span>
+                <span th:if="${meeting.isIsClosed() == true}" class="btn btn-round btn-join btn-cancle">모집완료</span>
+                <span th:unless="${meeting.isIsClosed() == true}" th:if="${meeting.isMyMeeting == true}" class="btn btn-round btn-join btn-action" id="btn-close" data-modal="">마감하기</span>
+                <span th:unless="${meeting.isIsClosed() == true}" th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == false} " class="btn btn-round btn-join btn-action" id="participation-btn"  data-modal="#modal-wrapper-participation">참여하기</span>
+                <span th:unless="${meeting.isIsClosed() == true}" th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == true}" class="btn btn-round btn-join btn-action" id="btn-" data-modal="">참여취소</span>
             </div>
         </div>
     </section>
