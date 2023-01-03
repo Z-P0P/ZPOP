@@ -1,6 +1,7 @@
 package com.zpop.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zpop.web.dto.RequestCommentReportDto;
-import com.zpop.web.dto.RequestMeetingReportDto;
-import com.zpop.web.dto.RequestMemberReportDto;
+import com.zpop.web.entity.ReportedComment;
+import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.ReportService;
 
 @Controller
@@ -29,7 +30,9 @@ public class ReportedCommentController {
 
 	@PostMapping("/comment-test")
 	@ResponseBody
-	public String comment(@RequestBody RequestCommentReportDto dto) {
+	public String comment(@RequestBody RequestCommentReportDto dto,
+			@AuthenticationPrincipal ZpopUserDetails userDetails
+			) {
 		
 		int reportTypeId = Integer.parseInt(dto.getReportType());
 		String reportReason = dto.getReportReason();
@@ -40,8 +43,14 @@ public class ReportedCommentController {
 			System.out.println("중복 신고하였습니다");
 		}
 		// 자신의 댓글 신고
-		
-		//reportService.createCommentReport(reportTypeId,reportReason);
+		ReportedComment rm = new ReportedComment(
+				userDetails.getId(),
+				1,
+				reportTypeId,
+				reportReason,
+				"original" // original
+				);
+		reportService.createCommentReport(rm);
 
 		return "report/comment";
 
