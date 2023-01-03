@@ -19,23 +19,14 @@ public class DefaultNotificationService implements NotificationService {
 	private NotificationDao dao;
 	
 	@Override
-	public List<Notification> getNotification() {
+	public List<Notification> getNotificationByMemberId(int memberId) {
 		
-		int testMemberId = 3;
-		List<Notification> list = dao.getList();
-		List<Notification> unreadList = new ArrayList();
+		List<Notification> notificationList = dao.getListByMemberId(memberId);
 		
-		for(Notification n : list) {
+		for(Notification n : notificationList) {
 			n.setElapsedTime(ElapsedTimeCalculator.getElpasedTime(n.getCreatedAt()));
 		}
-		
-		for(Notification n : list) {
-			if(n.getMemberId()==testMemberId) {
-				unreadList.add(n);
-			}
-		}
-		
-		return unreadList;
+		return notificationList;
 	}
 
 	@Override
@@ -46,8 +37,8 @@ public class DefaultNotificationService implements NotificationService {
 	}
 
 	@Override
-	public void updateByType(Date readAt, int type) {
-		dao.updateByType(readAt, type);
+	public void updateByType(int memberId, Date readAt, int type) {
+		dao.updateByType(memberId, readAt, type);
 		
 	}
 	
