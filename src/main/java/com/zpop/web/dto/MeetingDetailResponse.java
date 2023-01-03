@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class MeetingDetailResponse {
+    private int id;
     private String title;
     private Date startedAt;
     private String textStartedAt;
@@ -26,7 +27,8 @@ public class MeetingDetailResponse {
     public MeetingDetailResponse() {
     }
 
-    public MeetingDetailResponse(String title, Date startedAt, String textStartedAt, String detailRegion, String content, String categoryName, String regionName, int maxMember, String genderCategory, String ageRange, int regMemberId, int viewCount, int commentCount, boolean isMyMeeting, boolean isClosed, List<ParticipantResponse> participants, List<CommentResponse> comments) {
+    public MeetingDetailResponse(int id, String title, Date startedAt, String textStartedAt, String detailRegion, String content, String categoryName, String regionName, int maxMember, String genderCategory, String ageRange, int regMemberId, int viewCount, int commentCount, boolean isMyMeeting, boolean isClosed, List<ParticipantResponse> participants, List<CommentResponse> comments) {
+        this.id = id;
         this.title = title;
         this.startedAt = startedAt;
         this.textStartedAt = textStartedAt;
@@ -44,6 +46,14 @@ public class MeetingDetailResponse {
         this.isClosed = isClosed;
         this.participants = participants;
         this.comments = comments;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

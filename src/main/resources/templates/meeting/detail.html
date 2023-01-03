@@ -35,7 +35,7 @@
             </div>
             <div class="meeting__header">
                 <div class="meeting__title-container">
-                <span class="hidden meeting-id" th:text="${meetingId}"></span>
+                <span class="hidden meeting-id" th:text="${meeting.id}"></span>
                     <span class="meeting__title"  th:text="${meeting.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
                     <th:block th:if="${userType== 3}">		

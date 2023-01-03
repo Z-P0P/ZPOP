@@ -322,6 +322,7 @@ public class DefaultMeetingService implements MeetingService {
 		}	 
 
 		return new MeetingDetailResponse(
+			meeting.getId(),
 			meeting.getTitle(),
 			meeting.getStartedAt(),
 			dateTime,
