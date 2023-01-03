@@ -5,8 +5,8 @@
 <mapper namespace="com.zpop.web.dao.ReportedCommentDao">
 
 	<insert id="insert" parameterType="ReportedComment">
-		INSERT INTO reportedComment (commentId,reporterId,adminId,typeId,reason,original,createdAt,processedAt,blockedAt,releasedAt) 
-		VALUES(#{commentId},#{reporterId},#{adminId},#{typeId},#{reason},#{original},#{createdAt},#{processedAt},#{blockedAt},#{releasedAt});
+		INSERT INTO reportedComment (commentId,reporterId,typeId,reason,original,processedAt,blockedAt,releasedAt) 
+		VALUES(#{commentId},#{reporterId},#{typeId},#{reason},#{original},#{processedAt},#{blockedAt},#{releasedAt});
 	</insert>
 
 	<select id="getAdminViewList" resultType="AdminReportedCommentDto">
