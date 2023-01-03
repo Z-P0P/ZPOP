@@ -3,6 +3,7 @@ package com.zpop.web.dao;
 import com.zpop.web.dto.MeetingDetailDto;
 import com.zpop.web.dto.MeetingThumbnailPagination;
 import com.zpop.web.dto.ParticipantDto;
+import com.zpop.web.dto.UpdateMeetingViewDto;
 import com.zpop.web.dto.admin.AdminMeetingDetailsDto;
 import com.zpop.web.dto.admin.AdminMeetingDto;
 import com.zpop.web.entity.meeting.Meeting;
@@ -40,5 +41,9 @@ public interface MeetingDao {
 	int getMaxMember(int meetingId);
 
 	int updateContent(Meeting meeting);
+
+	int update(Meeting meeting);
+
+	UpdateMeetingViewDto getUpdateView(int id);
 }
 
