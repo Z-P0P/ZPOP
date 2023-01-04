@@ -153,3 +153,18 @@
   height: 41px;
   background-image: url(/images/icon/excellent.svg);
 }
+
+.icon-done{
+	width:100px;
+	height:100px;
+	background-size:contain;
+	background-image:url(/images/icon/done-240.svg);
+}
+
+.icon-cancel{
+	width:100px;
+	height:100px;
+	background-size:contain;	
+	background-image:url(/images/icon/cancel-240.png);
+	cursor:default;
+}

@@ -2,7 +2,7 @@ import quillGenerator from "../utils/quill-generator.js";
 
 
 window.addEventListener("load", function() {
-
+	
 	const quill = quillGenerator("#editor", {
 		theme: 'snow',
 		modules: {
@@ -20,7 +20,7 @@ window.addEventListener("load", function() {
 					//커스텀 image툴바 onclick handler
 					image: imageHandler,
 				}
-			},
+			}
 		}
 	});
 	const fileUploadInput = document.getElementById("fileUpload");
@@ -82,11 +82,12 @@ window.addEventListener("load", function() {
 		//if (isBlanked) return;
 
 
-		const submitURL = '/meeting/register';
+		const meetingId = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+		const submitURL = `/meeting/update/${meetingId}`;
 		const parser = new DOMParser();
 		const quillContentDOM = parser.parseFromString(quill.root.innerHTML, 'text/html').body;
 		const attachedImages = quillContentDOM.querySelectorAll('img');
-
+		
 		count = 0;
 		let images = [];
 		attachedImages.forEach(image => {
@@ -101,15 +102,13 @@ window.addEventListener("load", function() {
 
 		const content = quillContentDOM.innerHTML;
 		data.content = content;
-
+	
 		const option = {
-			method: "POST",
+			method: "PUT",
 			headers: {"Content-Type": "application/json"},
 			body: JSON.stringify(data),
 		}
-	
-		console.log(data);
-		
+
 		// 추후 예외처리 필요함
 		showModal();
 		if (isRequesting) {
@@ -121,15 +120,12 @@ window.addEventListener("load", function() {
 			.then(response => {
 				console.log(response);
 				if (response.ok) {
-					return response.json();
+					showSuccess(meetingId);
 				}
 				else {
 					showError();
 					isRequesting = false;
 				}
-			})
-			.then(data => {
-				showSuccess(data.meetingId);
 			})
 			.catch(() => {
 				showError();
@@ -137,45 +133,6 @@ window.addEventListener("load", function() {
 			})
 	});
 });
-
-/*
-// 이미지 파일이름 설정 시 붙는 날짜,시간을 반환
-function getDateTime() {
-	let now = new Date();
-	let year = now.getFullYear();
-	let month = now.getMonth() + 1;
-	let day = now.getDate();
-	let hour = now.getHours();
-	let minute = now.getMinutes();
-	let second = now.getSeconds();
-	let millisecond = now.getMilliseconds();
-
-	if (month.toString().length == 1) {
-		month = '0' + month;
-	}
-	if (day.toString().length == 1) {
-		day = '0' + day;
-	}
-	if (hour.toString().length == 1) {
-		hour = '0' + hour;
-	}
-	if (minute.toString().length == 1) {
-		minute = '0' + minute;
-	}
-	if (second.toString().length == 1) {
-		second = '0' + second;
-	}
-	if (millisecond.toString().length == 1) {
-		millisecond = '00' + second;
-	}
-	if (millisecond.toString().length == 2) {
-		millisecond = '0' + second;
-	}
-
-	let dateTime = `${year}${month}${day}_${hour}${minute}${second}${millisecond}`;
-	return dateTime;
-}
-*/
 
 function showModal(isRequesting) {
 	const registerMeetingModal = document.querySelector("#modal-register-meeting");
