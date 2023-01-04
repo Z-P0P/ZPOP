@@ -74,6 +74,13 @@
 				SET viewCount = viewCount + 1
 				WHERE id = #{id}
 	</update>
+
+	<update id="increaseCommentCount">
+		UPDATE meeting
+		SET commentCount = commentCount + 1
+		WHERE id = #{id}
+	</update>
+
 	<update id="update" parameterType="Meeting">
 		UPDATE meeting
         SET 
