@@ -34,13 +34,15 @@ public class SecurityConfig {
                             // notification 
                             .requestMatchers("/notification/**").hasAnyRole("USER")
                             // admin
-                         //   .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                            //   .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                             .anyRequest().permitAll()
             )
             .logout(logout ->
                         logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/"));
+                        .logoutSuccessUrl("/")
+            ).exceptionHandling().authenticationEntryPoint(new ZpopAuthenticationEntryPoint());
+
 
         return http.build();
     }

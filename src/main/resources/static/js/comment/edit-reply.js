@@ -20,7 +20,9 @@ export function addListenerToReplyKebob(replyId, replyUl,selectModal){
    if(selectModal.children[0].getAttribute("data-id")=='comment-report'){
 	    selectModal.addEventListener("click",(e)=>{
          e.preventDefault();
-         reportReply(replyId, 3, "그냥 맘에 안듬");//신고유형&이유 모달 붙여야함.
+         //view의 댓글번호를 모달로 전달함. 이후는 report.js에서 처리(임우빈)
+         const modal = document.querySelector("#modal-report-comment");
+         modal.setAttribute("data-id",commentId);
       });
    }
 }
@@ -116,30 +118,4 @@ function deleteReply(replyId, replyUl){
               replyUl.removeChild(replyUl.firstChild);
           getReply(json,replyUl) //json값은 백단에서 받아오는 groupId
 	  });
-}
-function reportReply(replyId, reportType, reportReason){
-   const data = {
-      method: "PUT",
-      headers: {
-         "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-         "commentId": replyId,
-         "typeId":reportType,
-         "reason":reportReason
-      })
-   };
-   
-   fetch(`/reply/${replyId}`, data)
-      .then(response => {
-         if (response.ok) {
-			 console.log("신고가 등록됨")
-            return response;
-         }
-         else alert("시스템 장애로 등록이 안되고 있습니다.");
-      })
-      .then(data=>data.json())
-      .then(json=>{
-         
-      });
 }

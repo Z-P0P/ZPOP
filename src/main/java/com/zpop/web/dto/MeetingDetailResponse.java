@@ -162,35 +162,28 @@ public class MeetingDetailResponse {
         this.commentCount = commentCount;
     }
 
-    public boolean isIsMyMeeting() {
+    public boolean isMyMeeting() {
         return this.isMyMeeting;
     }
 
-    public boolean getIsMyMeeting() {
-        return this.isMyMeeting;
-    }
-
-    public void setIsMyMeeting(boolean isMyMeeting) {
+   
+    public void setMyMeeting(boolean isMyMeeting) {
         this.isMyMeeting = isMyMeeting;
     }
 
-    public boolean getHasParticipated() {
+    public boolean hasParticipated() {
         return this.hasParticipated;
     }
 
-    public void setHasParticipated(boolean hasParticipated) {
+    public void setParticipated(boolean hasParticipated) {
         this.hasParticipated = hasParticipated;
     }
 
-    public boolean isIsClosed() {
+    public boolean isClosed() {
         return this.isClosed;
     }
 
-    public boolean getIsClosed() {
-        return this.isClosed;
-    }
-
-    public void setIsClosed(boolean isClosed) {
+    public void setClosed(boolean isClosed) {
         this.isClosed = isClosed;
     }
 

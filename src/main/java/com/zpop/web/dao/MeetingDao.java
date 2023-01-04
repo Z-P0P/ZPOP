@@ -36,10 +36,10 @@ public interface MeetingDao {
 
 	int updateClosedAt(Meeting foundMeeting);
 
-	void increaseViewCount(int id);
+	int increaseViewCount(int id);
 
-	int getmaxMember(int meetingId);
-	
+	int increaseCommentCount(int id);
+
 	int getMeetingHost(int meetingId);
 	
 	int updateContent(Meeting meeting);

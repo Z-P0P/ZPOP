@@ -1,9 +1,11 @@
 package com.zpop.web.dto;
 
 public class MeetingParticipantsDto {
+	
 	private int memberId; 
 	private String nickname;
 	private String profileImagePath;
+	
 	public String getProfileImagePath() {
 		return profileImagePath;
 	}

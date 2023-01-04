@@ -98,7 +98,7 @@ function sendAll(){
 		const headerNotification = document.querySelector("#header-notification");
 		const container = document.querySelector(".notification-container");
 		const type = [];
-		
+		if(!notificationBtn) return;
 		 fetch("http://localhost:8080/notification")
 		            .then((response) => {
 						return response.json();
@@ -138,7 +138,7 @@ function sendAll(){
 									count++;
 							
 							let template = `
-							<div class="notification eval-div" data-type ="1" data-url="/report/comment">😃 평가하지 않은 모임이 ${count}개 있어요 !<p>이동하기</p></div>
+							<div class="notification eval-div" data-type ="1" data-url="/member/me/meeting">😃 평가하지 않은 모임이 ${count}개 있어요 !<p>이동하기</p></div>
 							`;
 							container.insertAdjacentHTML('afterbegin',template);
 						    const evalDiv = document.querySelector(".eval-div");

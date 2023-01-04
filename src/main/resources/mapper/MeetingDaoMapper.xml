@@ -59,13 +59,15 @@
 
     <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> 
         UPDATE meeting
-        deletedAt=CURRENT_TIMESTAMP()
+        SET
+        deletedAt=NOW()
         WHERE id = #{id}
     </update>
 
     <update id="updateClosedAt" parameterType="com.zpop.web.entity.meeting.Meeting">
         UPDATE meeting
-        closedAt=CURRENT_TIMESTAMP()
+        SET
+        closedAt=NOW()
         WHERE id = #{id}
     </update>
 	
@@ -74,6 +76,13 @@
 				SET viewCount = viewCount + 1
 				WHERE id = #{id}
 	</update>
+
+	<update id="increaseCommentCount">
+		UPDATE meeting
+		SET commentCount = commentCount + 1
+		WHERE id = #{id}
+	</update>
+
 	<update id="update" parameterType="Meeting">
 		UPDATE meeting
         SET 
@@ -144,6 +153,7 @@
 			</if>
 		</where>
 	</select>
+
 	<select id="getAdminDetailView"
 		resultType="AdminMeetingDetailsDto">
 		SELECT
@@ -169,29 +179,25 @@
 		ON meeting.contactTypeId = ct.id
 		WHERE meeting.id=#{meetingId}
 	</select>
-	
-	<select id="getmaxMember" resultType="java.lang.Integer">
-		SELECT maxMember FROM meeting
-		WHERE id = #{meetingId}
-	</select>
-    <select id="getUpdateView" resultType="UpdateMeetingViewDto">
-	    SELECT 
+
+	<select id="getUpdateView" resultType="UpdateMeetingViewDto">
+		SELECT 
 			meeting.title,
-		    meeting.startedAt,
-		    meeting.detailRegion,
-		    meeting.content,
-		    meeting.categoryId,
-		    category.name AS categoryName,
-		    meeting.regionId,
-		    region.name AS regionName,
-		    meeting.genderCategory,
-		    meeting.ageRangeId,
-		    meeting.contact,
-		    ageRange.type AS ageRangeType,
-		    meeting.contactTypeId,
-		    contactType.name AS contactTypeName,
-		    meeting.maxMember,
-		    meeting.regMemberId
+			meeting.startedAt,
+			meeting.detailRegion,
+			meeting.content,
+			meeting.categoryId,
+			category.name AS categoryName,
+			meeting.regionId,
+			region.name AS regionName,
+			meeting.genderCategory,
+			meeting.ageRangeId,
+			meeting.contact,
+			ageRange.type AS ageRangeType,
+			meeting.contactTypeId,
+			contactType.name AS contactTypeName,
+			meeting.maxMember,
+			meeting.regMemberId
 		FROM meeting 
 		JOIN category
 		ON category.id = meeting.categoryId
@@ -203,6 +209,7 @@
 		ON contactType.id = meeting.contactTypeId
 		WHERE meeting.id = #{meetingId}
 	</select>
+
 	<select id="getMeetingHost" resultType="int">
 		SELECT regMemberId from meeting
 		where id = #{id}

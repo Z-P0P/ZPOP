@@ -162,15 +162,11 @@ public class CommentResponse {
     this.countOfReply = countOfReply;
   }
 
-  public boolean isIsMyComment() {
+  public boolean isMyComment() {
     return this.isMyComment;
   }
 
-  public boolean getIsMyComment() {
-    return this.isMyComment;
-  }
-
-  public void setIsMyComment(boolean isMyComment) {
+  public void setMyComment(boolean isMyComment) {
     this.isMyComment = isMyComment;
   }
 

@@ -1,21 +1,24 @@
 window.addEventListener("load", function() {
 
 	const participationBtn = document.querySelector("#participation-btn");
-	const meetingId = document.querySelector(".meeting-id").innerText.trim();
+	const meetingId = document.querySelector(".meeting-id").dataset.id;
 	const btnModalParticipate = document.querySelector(".btn-modal-right");
 	const participantUl = document.querySelector(".participant__list");
 	const participantCount = document.querySelector(".participant-count");
 	const arrowUp = document.querySelector(".icon-arrow-up");
 	const arrowDown = document.querySelector(".icon-arrow-down");
-	
-	participationBtn.onclick = function(e) {
-		e.preventDefault();
-		const modal = document.querySelector(e.target.getAttribute("data-modal"));
-		if (!modal.classList.contains("hidden")) {
-			modal.classList.add("hidden");
-			return;
+
+	if(participationBtn) {
+		// 참여 확인 모달
+		participationBtn.onclick = function(e) {
+			e.preventDefault();
+			const modal = document.querySelector(e.target.getAttribute("data-modal"));
+			if (!modal.classList.contains("hidden")) {
+				modal.classList.add("hidden");
+				return;
+			}
+			modal.classList.remove("hidden");
 		}
-		modal.classList.remove("hidden");
 	}
 
 	function hideModalByButton(e) {
@@ -48,29 +51,30 @@ window.addEventListener("load", function() {
 
 	btnModalParticipate.onclick = function() {
 		const data = {
-			method: "POST", 
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				"meetingId": meetingId,
-			})
-		}
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        meetingId: meetingId,
+      }),
+    };
 
-      	fetch(`/meeting/participate/${meetingId}`,data)
-         .then((response) => {
-            if (response.ok) {
-               console.log("성공");
-            	document.querySelector("#modal-wrapper-participation").classList.add("hidden");
-             	while(participantUl.hasChildNodes()) //기존 참여자아이콘 한개씩 삭제
-					participantUl.removeChild(participantUl.firstChild);
-				getParticipant();			
-            }
-            else alert("시스템 장애로 등록이 안되고 있습니다.");
-            })
-	        .catch((error) => {
-            console.error('실패:', error);
-         });
+    fetch(`/meeting/${meetingId}/participate`, data)
+      .then((response) => {
+        if (response.ok) {
+          document
+            .querySelector("#modal-wrapper-participation")
+            .classList.add("hidden");
+          while (participantUl.hasChildNodes())
+            //기존 참여자아이콘 한개씩 삭제
+            participantUl.removeChild(participantUl.firstChild);
+          getParticipant();
+        } else alert("시스템 장애로 등록이 안되고 있습니다.");
+      })
+      .catch((error) => {
+        console.error("실패:", error);
+      });
 	}
 	
 	function getParticipant(){

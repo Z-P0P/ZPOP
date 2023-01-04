@@ -2,7 +2,13 @@ package com.zpop.web.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.zpop.web.dto.MeetingDetailResponse;
 import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.dto.RegisterMeetingRequest;
 import com.zpop.web.dto.RegisterMeetingResponse;
@@ -37,8 +44,6 @@ import jakarta.validation.Valid;
 public class MeetingController {
 	@Autowired
 	private MeetingService service;
-	@Autowired
-	private CommentService commentService;
 	
 	@GetMapping("/register")
 	public String registerView(Model model) {
@@ -95,6 +100,21 @@ public class MeetingController {
 		
 		return "/meeting/update";
 	}
+
+	@GetMapping("/{id}")
+	public String detailView(@PathVariable int id, Model model, 
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		Integer memberId = null;
+
+		if(userDetails != null)
+			memberId = userDetails.getId();
+
+		MeetingDetailResponse meetingDetail = service.getById(id, memberId);
+
+		model.addAttribute("meeting", meetingDetail);
+
+		return "meeting/detail";
+		}
 	
 	@PutMapping("/update/{id}")
 	@ResponseBody()
@@ -115,34 +135,27 @@ public class MeetingController {
 		}
 	}
 
-	
-
-	@GetMapping("{meetingId}/comment")
-	@ResponseBody
-	public List<MeetingParticipantsDto> getParticipant(@PathVariable int meetingId){
-		// List<MeetingParticipantsDto> list = service.getParticipants(meetingId);
-		return null;
-	}
-	
-
 	//참여자목록 AJAX endpoint(js가 콜하는 함수)
 	@GetMapping("{meetingId}/participant")
 	@ResponseBody
 	public List<MeetingParticipantsDto> getParticipant(@PathVariable int meetingId){
-		// List<MeetingParticipantsDto> list = service.getParticipants(meetingId);
-		return null;
+		List<MeetingParticipantsDto> list = service.getParticipants(meetingId);
+		return list;
 	}
 	
 	//참여 AJAX endpoint (js에서 콜하는 함수)
-	@PostMapping("/participate/{meetingId}")
+	@PostMapping("/{meetingId}/participate")
 	@ResponseBody
-	public String participate(@PathVariable int meetingId, 
+	public Map<String, Object> participate(@PathVariable int meetingId,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		
+		//TODO: 임시로 MAP 리턴함
 		int memberId = userDetails.getId();
 		service.participate(meetingId, memberId);
-		
-		return "meeting/detail";
+
+		Map<String, Object> result = new HashMap<>();
+		result.put("success", true);
+
+		return result;
 	}
 
 	@GetMapping("/{id}/contact")
@@ -157,4 +170,5 @@ public class MeetingController {
 
 		return contact;
 	}
+	
 }

@@ -8,16 +8,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.zpop.web.dto.*;
 import com.zpop.web.entity.*;
 import com.zpop.web.entity.comment.CommentView;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -40,8 +35,6 @@ import com.zpop.web.entity.meeting.MeetingThumbnailView;
 import com.zpop.web.entity.participation.ParticipationInfoView;
 import com.zpop.web.utils.ElapsedTimeCalculator;
 import com.zpop.web.utils.TextDateTimeCalculator;
-
-import jakarta.validation.Valid;
 
 @Service
 public class DefaultMeetingService implements MeetingService {
@@ -252,8 +245,7 @@ public class DefaultMeetingService implements MeetingService {
 			boolean isMyComment = false;
 			if(memberId != null && c.getWriterId() == memberId)
 				isMyComment = true;
-			System.out.println(c.getId());
-			System.out.println(c.getId() + " is " + commentDao.getCountOfReply(c.getGroupId()));
+
 			commentsResponse.add(
 				new CommentResponse(
 					c.getId(),
@@ -355,12 +347,6 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public void updateViewCount(int id) {
-		dao.updateViewCount(id);
-
-	}
-
-	@Override
 	public boolean kick(int id, int participantId, Member member) {
 		Meeting foundMeeting = dao.get(id);
 
@@ -445,50 +431,51 @@ public class DefaultMeetingService implements MeetingService {
 
 		return true;
 	}
-	
-	/************************* 참여 관련 로직 **********************/
-	// 주최자가 참여한 경우 -> host ID랑 MemberId랑 같을 경우
-	// 참여하기를 눌렀는데 모임의 아이디가 없을 경우
-	// 강퇴당한 사용자일 경우
-	// 마감된 모임일 경우
-//		3. 로그인을 하지 않은 사용자가 참여하기 버튼을 누른 경우 -> 로그인 모달이 나와야됨.
-//		4. 내가 이미 참여한 모임일 경우
-	public static boolean isMemberParticipated(int memberId, List<Participation> participants) {
-        for(Participation p : participants) {
-           if(p.getParticipantId()== memberId) {
-              return true;
-           }
-        }
-        return false;
-     }
 	@Override
-	public int participate(int meetingId, int memberId) {
-		
-		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
-		int maxMember = dao.getmaxMember(meetingId);
-		int count = participationDao.countByMeetingId(meetingId);
-		int hostId = dao.getMeetingHost(meetingId);
-		int result = 0;
-		// result는 성공(1) 실패(0)
-		
-		// for each에서 앞에 오는것은 무조건 타입
-		// Java List에서 null체크를 할 때는 isEmpty()를 사용한다.
-		if (!participants.isEmpty()) {//개발중엔 임시로 null check필요
-			if(maxMember <= count)
-				return 0;
-			if(isMemberParticipated (memberId,participants)) {
-				return 0;
-			}
-			participationDao.insert(meetingId, memberId);
-			createNotification(hostId, "/meeting/"+meetingId,2);
-			result = 1;
+	@Transactional
+	public boolean participate(int id, int memberId) {
+
+		Meeting foundMeeting = dao.get(id);
+
+		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+		// 주최자가 자기 자신 모임에 참여할 때
+		if (foundMeeting.getRegMemberId() == memberId)
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 참여한 모임입니다");
+
+		boolean isClosedMeeting = isClosedMeeting(foundMeeting);
+		if(isClosedMeeting)
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "마감된 모임에 참여 할 수 없습니다");
+
+		List<Participation> participants = participationDao.getListByMeetingId(id);
+		for(Participation p : participants) {
+			if(p.getParticipantId() != memberId)
+				continue;
+
+			if(p.getBannedAt() != null)
+				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 모임에 참여할 수 없습니다");
+			if(p.getParticipantId() == memberId)
+				throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 참여한 모임입니다");
 		}
-		else {
-			participationDao.insert(meetingId, memberId);
-			createNotification(hostId, "/meeting/"+meetingId,2);
-			result = 1;
-		}	
-		return result;
+
+		int maxMember = foundMeeting.getMaxMember();
+		int hostId = foundMeeting.getRegMemberId();
+		int participantCount = participationDao.countByMeetingId(id);
+
+		// 현재 참여자 수 & 최대인원 비교 확인
+		if(participantCount >= maxMember)
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 마감된 모임입니다");
+
+		// 참여 성공
+		participationDao.insert(id, memberId);
+		// 참여 처리 후 참여자 수에 따른 마감 처리
+		int resultCount = participationDao.countByMeetingId(id);
+		if(resultCount >= maxMember)
+			dao.updateClosedAt(foundMeeting);
+
+		createNotification(hostId, "/meeting/"+ id,2);
+
+		return true;
 	}
 
 	@Override
@@ -522,31 +509,6 @@ public class DefaultMeetingService implements MeetingService {
 			meetingFileDao.updateAllMeetingId(images);			
 		}
 		return true;	
-	}
-
-	@Override
-	public int getUserType(int memberId, int meetingId) {
-		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
-		int hostId = dao.getMeetingHost(meetingId);
-		int userType = 0;
-		// userType
-		// 0--> 일반(비로그인)
-		// 1 --> 일반(로그인)
-		// 2--> 참여자 
-		// 3--> 호스트
-		if(memberId == hostId) {
-			userType = 3;
-		}
-		else if(isMemberParticipated (memberId,participants)){
-			userType = 2;
-		}
-		else if(memberId != 0) {
-			userType = 1;
-		}
-		else {
-			userType = 0;
-		}
-		return userType;
 	}
 
 	@Override
@@ -612,15 +574,36 @@ public class DefaultMeetingService implements MeetingService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "참여한 모임에만 참여를 취소할 수 있습니다");
 
         // 마감된 모임은 참여를 취소할 수 없다
-        Date currentTime = new Date();
-        Date meetingStartedAt = foundMeeting.getStartedAt();
-
-        if(foundMeeting.getClosedAt() != null ||
-            currentTime.after(meetingStartedAt))
+		boolean isClosedMeeting = isClosedMeeting(foundMeeting);
+		if(isClosedMeeting)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "마감된 모임에 참여를 취소할 수 없습니다");
         
         //participationDao.updateCanceledAt(participationInfo.getId());
 
         return true;
+	}
+
+	/**
+	 *  모임의 closedAt || startedAt을 확인하여 마감된 모임인지 확인한다.
+	 */
+	private boolean isClosedMeeting(Meeting meeting) {
+		Date currentTime = new Date();
+		Date meetingStartedAt = meeting.getStartedAt();
+
+		if(meeting.getClosedAt() != null ||
+				currentTime.after(meetingStartedAt))
+			return true;
+
+		return false;
+	}
+
+	@Override
+	public List<MeetingParticipantsDto> getParticipants(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private void createNotification(int memberId, String url, int type) {
+		notificationDao.insertCommentNotification(memberId, url, type);
 	}
 }
