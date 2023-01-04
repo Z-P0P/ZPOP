@@ -16,7 +16,7 @@
     <!-- detail page css -->
     <link rel="stylesheet" href="/css/member/meeting/detail.css">
 </th:block>	
- <head>
+
  <th:block layout:fragment="js">   
     <script src="/js/meeting/detail.js"></script>
     <script type="module" src="/js/comment/comment.js"></script>
@@ -24,7 +24,7 @@
     <script src="/js/meeting/report.js"></script>
     <script src="/js/meeting/report-select.js" defer></script>
 </th:block>	
-</head>
+
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
 
 <main class="main"  layout:fragment="content">
@@ -71,10 +71,10 @@
             </div>
             <div class="meeting__views"  th:text="|조회수${meeting.viewCount}|">조회수</div>
             <div class="meeting__btn">
-                <span th:if="${meeting.isClosed == true}" class="btn btn-round btn-join btn-cancel">모집완료</span>
+                <span th:if="${meeting.isClosed == true}" class="btn btn-round btn-join btn-dead" >모집완료</span>
                 <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == true}" class="btn btn-round btn-join btn-action modal__on-btn" id="btn-close" data-modal="#modal-wrapper-close">마감하기</span>
-                <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == false} " class="btn btn-round btn-join btn-action modal__on-btn" id="participation-btn"  data-modal="#modal-wrapper-participation">참여하기</span>
-                <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == true}" class="btn btn-round btn-join btn-action" id="btn-cancel-participation" data-modal="">참여취소</span>
+                <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == false} " class="btn btn-round btn-join btn-action modal__on-btn" id="btn-participation"  data-modal="#modal-wrapper-participation">참여하기</span>
+                <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == true}" class="btn btn-round btn-join btn-action modal__on-btn" id="btn-cancel-participation" data-modal="#modal-wrapper-cancel">참여취소</span>
             </div>
         </div>
     </section>
@@ -120,11 +120,29 @@
                 </div>
                 <div class="btn-modal">
                     <div class="btn-modal-left  modal__close-btn pointer" data-modal="#modal-wrapper-participation">다음에 할래요</div>
-                    <div class="btn-modal-right modal__close-btn pointer" data-modal="#modal-wrapper-participation">참여하기</div>
+                    <div class="btn-modal-right modal__close-btn pointer" id="participate-confirm" data-modal="#modal-wrapper-participation">참여하기</div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- -------------참여 취소 모달----------------------->
+    	<div class="popup-container modal-wrapper hidden" id="modal-wrapper-cancel">
+		<div class="popup__wrap-inactive" id="popup">
+			<div class="popup">
+				<div class="popup__body">
+					<div class="popup__body-content">
+						<div class="popup__body-contentbox">
+							<span>모집을 마감하시겠습니까?</span>
+						</div>
+					</div>
+				</div>
+				<div class="popup__foot">
+					<span class="pop-btn close modal__close-btn" id="close-cancel" data-modal="#modal-wrapper-close">취소</span> 
+					<span class="pop-btn confirm modal__close-btn" id="close-confirm" data-modal="#modal-wrapper-close">확인</span>
+				</div>
+			</div>
+		</div>
+	</div>
     <!-- -------------모임 마감 모달----------------------->
     	<div class="popup-container modal-wrapper hidden" id="modal-wrapper-close">
 		<div class="popup__wrap-inactive" id="popup">
@@ -137,8 +155,8 @@
 					</div>
 				</div>
 				<div class="popup__foot">
-					<span class="pop-btn close" id="close">취소</span> 
-					<span class="pop-btn confirm" id="confirm">확인</span>
+					<span class="pop-btn close modal__close-btn" id="close-cancel" data-modal="#modal-wrapper-close">취소</span> 
+					<span class="pop-btn confirm modal__close-btn" id="close-confirm" data-modal="#modal-wrapper-close">확인</span>
 				</div>
 			</div>
 		</div>

@@ -1,35 +1,21 @@
 window.addEventListener("load", function() {
 
-	const participationBtn = document.querySelector("#participation-btn");
 	const meetingId = document.querySelector(".meeting-id").dataset.id;
-	const btnModalParticipate = document.querySelector(".btn-modal-right");
+	const btnParticipate = document.querySelector("#btn-participation");//참여하기 버튼
+	const btnModalParticipate = document.querySelector("#participate-confirm");//참여하기 모달 우측 버튼
+	const btnMeetingClose = document.querySelector("#btn-close");//마감하기 버튼
+	const btnModalClose = document.querySelector("#close-confirm");//마감하기 모달 우측 버튼
 	const participantUl = document.querySelector(".participant__list");
 	const participantCount = document.querySelector(".participant-count");
 	const arrowUp = document.querySelector(".icon-arrow-up");
 	const arrowDown = document.querySelector(".icon-arrow-down");
-
-	if(participationBtn) {
-		// 참여 확인 모달
-		participationBtn.onclick = function(e) {
-			e.preventDefault();
-			const modal = document.querySelector(e.target.getAttribute("data-modal"));
-			if (!modal.classList.contains("hidden")) {
-				modal.classList.add("hidden");
-				return;
-			}
-			modal.classList.remove("hidden");
-		}
-	}
-
-	function hideModalByButton(e) {
-		e.preventDefault();
-		const modal = document.querySelector(e.target.getAttribute("data-modal"));
-		modal.classList.add("hidden");
-	}
-	const modalCloseBtns = document.querySelectorAll(".modal__close-btn");
-	for (closeBtn of modalCloseBtns) {
-		closeBtn.onclick = hideModalByButton;
-	}
+	btnModalParticipate.addEventListener("click", (e)=>{
+		participate(meetingId, btnParticipate,participantUl);
+	});
+	
+	btnModalClose.addEventListener("click",(e)=>{
+		closeMeeting(meetingId,btnMeetingClose);
+	});
 	
 	const meetingTitleHambugerIcon = document.querySelector(".meeting__title-hambuger-icon");
 	
@@ -49,16 +35,18 @@ window.addEventListener("load", function() {
 		e.target.previousElementSibling.classList.remove("hidden");
 	});
 
-	btnModalParticipate.onclick = function() {
-		const data = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        meetingId: meetingId,
-      }),
-    };
+	
+});
+function participate(meetingId, btnParticipate, participantUl){
+	const data = {
+	      method: "POST",
+	      headers: {
+	        "Content-Type": "application/json",
+	      },
+	      body: JSON.stringify({
+	        meetingId: meetingId,
+	      }),
+      };
 
     fetch(`/meeting/${meetingId}/participate`, data)
       .then((response) => {
@@ -69,39 +57,64 @@ window.addEventListener("load", function() {
           while (participantUl.hasChildNodes())
             //기존 참여자아이콘 한개씩 삭제
             participantUl.removeChild(participantUl.firstChild);
-          getParticipant();
+          getParticipant(meetingId, participantUl);
         } else alert("시스템 장애로 등록이 안되고 있습니다.");
       })
       .catch((error) => {
         console.error("실패:", error);
       });
-	}
+}
+function closeMeeting(meetingId, btnMeetingClose){
 	
-	function getParticipant(){
-		fetch(`/meeting/${meetingId}/participant`)
+	const data = {
+	      method: "PATCH",
+	      headers: {
+	        "Content-Type": "application/json",
+	      },
+	      body: JSON.stringify({
+	        meetingId: meetingId,
+	      }),
+      };
+	fetch(`/meeting/${meetingId}/close`,data)
 		.then(response => {
-			if (response.ok) {
+            if (response.ok) {
 				return response;
-			}
-			else console.log(response)
-		})
-		.then(data => data.json())
-		.then(participants => {
-			let count = participants.length;
-			participantCount.innerText = count;
-			for (const p of participants) {
-				let template = `
-					<li>
-			            <div class="participant__info">
-			                <img src="/images/girl.svg">  
-			                <span>${p.nickname}</span>
-			            </div>
-		            </li>
-				`
-				participantUl.insertAdjacentHTML("beforeend", template);
+            }
+            else alert("시스템 장애로 등록이 안되고 있습니다.");
+      	})
+      	.then(data => data.json())
+		.then(result => {
+			if(result){
+				console.log("미팅이 마감됨")
+				btnMeetingClose.remove();
+				const template = `<span class="btn btn-round btn-join btn-dead">모집완료</span>`;
+				document.querySelector(".meeting__btn").insertAdjacentHTML("afterbegin", template);
 			}
 		});
-		
-	}
-
-})
+}
+function getParticipant(meetingId, participantUl){
+	fetch(`/meeting/${meetingId}/participant`)
+	.then(response => {
+		if (response.ok) {
+			return response;
+		}
+		else console.log(response)
+	})
+	.then(data => data.json())
+	.then(participants => {
+		console.log(getParticipant)
+		let count = participants.length;
+		participantCount.innerText = count;
+		for (const p of participants) {
+			let template = `
+				<li>
+		            <div class="participant__info">
+		                <img src="/images/girl.svg">  
+		                <span>${p.nickname}</span>
+		            </div>
+	            </li>
+			`
+			participantUl.insertAdjacentHTML("beforeend", template);
+		}
+	});
+}
