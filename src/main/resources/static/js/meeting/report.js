@@ -100,7 +100,7 @@ window.addEventListener("load", (e)=>{
 			   }
 	 	
 	            const data = {
-	                method: "PUT",
+	                method: "POST",
 	                headers: {
 	                    "Content-Type": "application/json",
 	                },

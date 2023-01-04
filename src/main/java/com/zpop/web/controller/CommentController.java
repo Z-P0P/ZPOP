@@ -77,7 +77,7 @@ public class CommentController {
 		return "{\"1\":1}"; //JSON
 	}
 	//댓글 신고 AJAX endpoint
-	@PutMapping("{id}")
+	@PostMapping("{id}")
 	@ResponseBody
 	public String reportComment(@PathVariable("id") int id, 
 			@RequestBody ReportedComment reportedComment,

@@ -64,7 +64,7 @@ public class ReportController {
 	}
 	
 	//댓글 신고 AJAX endpoint
-	@PutMapping("comment/{id}")
+	@PostMapping("comment/{id}")
 	@ResponseBody
 	public String reportComment(@PathVariable("id") int id, 
 			@RequestBody ReportedComment reportedComment,
