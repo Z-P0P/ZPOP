@@ -21,12 +21,12 @@ export function addListenerToCommentKebob(meetingId,commentUl,inputBox,registerB
          const cancelBtn = document.querySelector(".cancel-btn");
          cancelBtn.classList.remove("hidden");
          cancelBtn.addEventListener("click",()=>{
-			inputBox.value="";
-			inputBox.blur();
-			registerBtn.classList.remove("hidden");
-         	editSaveBtn.classList.add("hidden");
-         	cancelBtn.classList.add("hidden");
-		});
+         inputBox.value="";
+         inputBox.blur();
+         registerBtn.classList.remove("hidden");
+            editSaveBtn.classList.add("hidden");
+            cancelBtn.classList.add("hidden");
+      });
       });
    for(const m of modalSelectDeleteList)
       m.addEventListener("click",(e)=>{
@@ -74,7 +74,7 @@ function saveEdit(meetingId, commentId,commentUl,inputBox){
    fetch(`/comment/${commentId}`, data)
       .then(response => {
             if (response.ok) {
-			   console.log("댓글이 수정됨")	
+            console.log("댓글이 수정됨")   
                inputBox.value = "";
                while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
                   commentUl.removeChild(commentUl.firstChild);
@@ -98,7 +98,7 @@ function deleteComment(commentId,meetingId,commentUl,inputBox,registerBtn,editSa
    fetch(`/comment/${commentId}`, data)
       .then(response => {
             if (response.ok) {
-			   console.log("댓글이 삭제됨")
+            console.log("댓글이 삭제됨")
                while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
                   commentUl.removeChild(commentUl.firstChild);
                getComment(meetingId,commentUl)
@@ -107,3 +107,4 @@ function deleteComment(commentId,meetingId,commentUl,inputBox,registerBtn,editSa
             else alert("시스템 장애로 등록이 안되고 있습니다.");
       });
 }
+

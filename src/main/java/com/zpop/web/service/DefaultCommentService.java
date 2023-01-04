@@ -90,6 +90,9 @@ public class DefaultCommentService implements CommentService {
 	public int registerComment(Comment comment) {
 		
 		int affectedRow = dao.insertComment(comment);
+
+		meetingDao.increaseCommentCount(comment.getMeetingId());
+
 		// 댓글 알림 생성
 		int regMemberId = getRegMemberId(comment.getMeetingId());
 		createCommentNotification(regMemberId,"/meeting/"+comment.getMeetingId(),3);
@@ -100,6 +103,9 @@ public class DefaultCommentService implements CommentService {
 	@Override
 	public int registerReply(Comment comment) {
 		int affectedRow = dao.insertReply(comment);
+
+		meetingDao.increaseCommentCount(comment.getMeetingId());
+
 		int regMemberId = getRegMemberId(comment.getMeetingId());
 		createCommentNotification(regMemberId,"/meeting/"+comment.getMeetingId(),4);
 		return affectedRow;
