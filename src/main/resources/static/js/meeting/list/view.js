@@ -67,14 +67,14 @@ export const insertMeeting = function (meetingData) {
 
 export const hideLoading = function () {
   const loading = document.querySelector(".lds-roller");
-  if (loading.style.visibility === "hidden") return;
-  loading.style.visibility = "hidden";
+  if (loading.classList.contains ("v-hidden")) return;
+  loading.classList.add("v-hidden");
 };
 
 export const showLoading = function () {
   const loading = document.querySelector(".lds-roller");
-  if (loading.style.visibility === "visible") return;
-  loading.style.visibility = "visible";
+  if (!loading.classList.contains ("v-hidden")) return;
+  loading.classList.remove("v-hidden");
 };
 
 export const showResultNone = function () {

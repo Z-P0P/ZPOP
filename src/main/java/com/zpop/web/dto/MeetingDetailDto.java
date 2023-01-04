@@ -33,9 +33,11 @@ public class MeetingDetailDto {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
 	public Date getStartedAt() {
 		return startedAt;
 	}
+	
 	public void setStartedAt(Date startedAt) {
 		this.startedAt = startedAt;
 	}

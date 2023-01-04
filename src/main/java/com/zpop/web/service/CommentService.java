@@ -19,13 +19,10 @@ public interface CommentService {
 	int registerComment(Comment comment);
 	int registerReply(Comment comment);
 	int updateComment(Comment comment);
-	int deleteComment(Comment comment);
+	int deleteComment(int id);
 	//reportComment 서비스는 별도의 ReportService 이용
 	
 	int getCountOfComment(int meetingId);
 	int getCountOfReply(int groupId);
 	
-	// 댓글 알림 생성
-	void createCommentNotification(int memberId, String url, int type);
-
 }

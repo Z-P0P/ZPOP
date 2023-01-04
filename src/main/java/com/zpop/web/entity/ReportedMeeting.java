@@ -11,26 +11,21 @@ public class ReportedMeeting {
 	private int adminId;
 	private String reason;
 	private String originalTitle;
-	private String field;
+	private String original;
 	private Date createdAt;
 	private Date processedAt;
 	private Date blockedAt;
 	private Date releasedAt;
 	
-	public ReportedMeeting(int meetingId, int reporterId, int typeId, int adminId, String reason,
-			String originalTitle, String field, Date createdAt, Date processedAt, Date blockedAt, Date releasedAt) {
+	public ReportedMeeting(int meetingId, int reporterId, int typeId, String reason,
+			String originalTitle, String original) {
 	
 		this.meetingId = meetingId;
 		this.reporterId = reporterId;
 		this.typeId = typeId;
-		this.adminId = adminId;
 		this.reason = reason;
 		this.originalTitle = originalTitle;
-		this.field = field;
-		this.createdAt = createdAt;
-		this.processedAt = processedAt;
-		this.blockedAt = blockedAt;
-		this.releasedAt = releasedAt;
+		this.original = original;
 	}
 
 	public int getId() {
@@ -89,12 +84,14 @@ public class ReportedMeeting {
 		this.originalTitle = originalTitle;
 	}
 	
-	public String getField() {
-		return field;
+
+
+	public String getOriginal() {
+		return original;
 	}
 
-	public void setField(String field) {
-		this.field = field;
+	public void setOriginal(String original) {
+		this.original = original;
 	}
 
 	public Date getCreatedAt() {

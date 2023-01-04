@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zpop.web.dao.MeetingDao">
-	<select id="getDetailView"  resultType= "com.zpop.web.dto.MeetingDetailDto">
-		SELECT m.title, m.startedAt, m.detailRegion, m.content, m.maxMember, m.regMemberId,m.id,
-										m.viewCount,c.name categoryName, r.name regionName
-		FROM meeting m
-		JOIN category c on m.categoryId = c.id
-		JOIN region r on m.regionId = r.id
-		WHERE m.id = #{id};
-	</select>
 
 	<insert id="insert" parameterType="Meeting" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO meeting
@@ -77,10 +69,26 @@
         WHERE id = #{id}
     </update>
 	
-	<update id="updateViewCount" parameterType="com.zpop.web.dto.MeetingDetailDto">
+	<update id="increaseViewCount">
 				UPDATE meeting
 				SET viewCount = viewCount + 1
 				WHERE id = #{id}
+	</update>
+	<update id="update" parameterType="Meeting">
+		UPDATE meeting
+        SET 
+        	categoryId=#{categoryId}, 
+        	regionId=#{regionId}, 
+        	ageRangeId=#{ageRangeId}, 
+        	contactTypeId=#{contactTypeId}, 
+        	genderCategory=#{genderCategory},
+        	title=#{title}, 
+        	content=#{content}, 
+        	detailRegion=#{detailRegion}, 
+        	maxMember=#{maxMember}, 
+        	startedAt=#{startedAt}, 
+        	contact=#{contact}
+        WHERE id = #{id}
 	</update>
 
 	<select id="getMeetingList"
@@ -136,6 +144,7 @@
 			</if>
 		</where>
 	</select>
+
 	<select id="getAdminDetailView"
 		resultType="AdminMeetingDetailsDto">
 		SELECT
@@ -161,10 +170,35 @@
 		ON meeting.contactTypeId = ct.id
 		WHERE meeting.id=#{meetingId}
 	</select>
-	
-	<select id="getmaxMember" resultType="java.lang.Integer">
-		SELECT maxMember FROM meeting
-		WHERE id = #{meetingId}
+
+	<select id="getUpdateView" resultType="UpdateMeetingViewDto">
+		SELECT 
+			meeting.title,
+			meeting.startedAt,
+			meeting.detailRegion,
+			meeting.content,
+			meeting.categoryId,
+			category.name AS categoryName,
+			meeting.regionId,
+			region.name AS regionName,
+			meeting.genderCategory,
+			meeting.ageRangeId,
+			meeting.contact,
+			ageRange.type AS ageRangeType,
+			meeting.contactTypeId,
+			contactType.name AS contactTypeName,
+			meeting.maxMember,
+			meeting.regMemberId
+		FROM meeting 
+		JOIN category
+		ON category.id = meeting.categoryId
+		JOIN region
+		ON region.id = meeting.regionId
+		JOIN ageRange
+		ON ageRange.id = meeting.ageRangeId
+		JOIN contactType
+		ON contactType.id = meeting.contactTypeId
+		WHERE meeting.id = #{meetingId}
 	</select>
 
 	<select id="getMeetingHost" resultType="int">

@@ -14,7 +14,9 @@
   display: flex;
   flex-direction: column;
 }
-
+.cancel-btn{
+  margin-right:5px;
+}
 .comment__input {
   border: none;
   resize: none;
@@ -25,11 +27,13 @@
   margin: 1rem 0;
   font-size: 1rem;
 }
-
-.comment__btn {
-  align-self: flex-end;
+.comment__btn-container{
+	display:inline-flex;
+	align-self:flex-end;
 }
-
+.comment__btn {
+	align-self: flex-end;
+}
 .comment__kebob{
 	position:absolute;
 	grid-area:button;

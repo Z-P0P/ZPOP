@@ -1,30 +1,70 @@
 package com.zpop.web.dto;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.zpop.web.entity.MeetingFile;
 import com.zpop.web.entity.meeting.Meeting;
+
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 public class RegisterMeetingRequest {
 
 	private int regMemberId;
+	
+	@Positive
 	private int categoryId;
+	
+	@Positive
 	private int regionId;
+	
+	@Positive
 	private int ageRangeId;
+	
+	@Positive
 	private int contactTypeId;
+	
+	@PositiveOrZero
 	private int genderCategory;
+	
+	@NotNull
+	@NotBlank
 	private String title;
+	
+	@NotNull
+	@NotBlank
 	private String content;
+	
+	@NotNull
+	@NotBlank
 	private String detailRegion;
+	
+	@Positive
 	private int maxMember;
-	private Date startedAt;
+	
+	@DateTimeFormat(pattern= "yyyy-MM-dd'T'HH:mm")
+	@NotNull
+	@Future
+	private LocalDateTime startedAt;
+	
+	@NotNull
+	@NotBlank
 	private String contact;
 	
-	
-	
+	private List<MeetingFile> images;
+
 	
 	public RegisterMeetingRequest(int regMemberId, int categoryId, int regionId, int ageRangeId, int contactTypeId,
-			int genderCategory, String title, String content, String detailRegion, int maxMember, Date startedAt,
-			String contact) {
+			int genderCategory, String title, String content, String detailRegion, int maxMember, LocalDateTime startedAt,
+			String contact, List<MeetingFile> images) {
 		this.regMemberId = regMemberId;
 		this.categoryId = categoryId;
 		this.regionId = regionId;
@@ -37,12 +77,14 @@ public class RegisterMeetingRequest {
 		this.maxMember = maxMember;
 		this.startedAt = startedAt;
 		this.contact = contact;
+		this.images = images;
 	}
 
 
 	public Meeting toEntity() {// DTO -> ENTITY HH:MM -> HH:MM:SS
+		Date date = Date.from(startedAt.atZone(ZoneId.systemDefault()).toInstant());
 		return new Meeting(getRegMemberId(), getCategoryId(), getRegionId(), getAgeRangeId(),getContactTypeId(),getGenderCategory(),getTitle(), getContent(),
-				getDetailRegion(), getMaxMember(), getStartedAt(), getContact());
+				getDetailRegion(), getMaxMember(), date, getContact());
 	}
 
 	public int getRegMemberId() {
@@ -85,20 +127,12 @@ public class RegisterMeetingRequest {
 	}
 
 
-	public Date getStartedAt() { //{hello  : world} -> 딕셔너리
+	public LocalDateTime getStartedAt() { //{hello  : world} -> 딕셔너리
 		return startedAt;
 	}
 
 	public String getContact() {
 		return contact;
-	}
-
-	@Override
-	public String toString() {
-		return "RegisterMeetingRequest [regMemberId=" + regMemberId + ", categoryId=" + categoryId + ", regionId="
-				+ regionId + ", ageRangeId=" + ageRangeId + ", contactTypeId=" + contactTypeId + ", genderCategory="
-				+ genderCategory + ", title=" + title + ", content=" + content + ", detailRegion=" + detailRegion
-				+ ", maxMember=" + maxMember + ", startedAt=" + startedAt + ", contact=" + contact + "]";
 	}
 
 	public int getContactTypeId() {
@@ -117,4 +151,23 @@ public class RegisterMeetingRequest {
 		this.content = content;
 	}
 
+
+	public List<MeetingFile> getImages() {
+		return images;
+	}
+
+	public void setImages(List<MeetingFile> images) {
+		this.images = images;
+	}
+
+
+	@Override
+	public String toString() {
+		return "RegisterMeetingRequest [regMemberId=" + regMemberId + ", categoryId=" + categoryId + ", regionId="
+				+ regionId + ", ageRangeId=" + ageRangeId + ", contactTypeId=" + contactTypeId + ", genderCategory="
+				+ genderCategory + ", title=" + title + ", content=" + content + ", detailRegion=" + detailRegion
+				+ ", maxMember=" + maxMember + ", startedAt=" + startedAt + ", contact=" + contact + ", images="
+				+ images + "]";
+	}
+	
 }

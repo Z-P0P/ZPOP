@@ -16,8 +16,9 @@ export function getReply(groupId, replyUl) {
 				let parentNickname = "";
 				if (r.parentNickname != null)
 					parentNickname = '@' + r.parentNickname;
+				//글 작성자를 위한 케밥메뉴
 				let kebobModalWriter = `
-					<div class="modal-select comment__kebob">
+					<div class="modal-select comment__kebob rkb">
 			        <div class="modal-select__contents" data-id="comment-edit">수정
 			            <span class="icon icon-edit"></span>
 			        </div>
@@ -26,20 +27,21 @@ export function getReply(groupId, replyUl) {
 			        </div>
 			    	</div>	
 				`
+				//일반가입자를 위한 케밥메뉴
 				let kebobModalReader = `
-					 <div class="modal-select comment__kebob">
-				        <div class="modal-select__contents" data-id="comment-report">댓글 신고
+					 <div class="modal-select comment__kebob rkb">
+				        <div class="modal-select__contents" data-id="comment-report">답글 신고
 				            <span class="icon icon-siren-red"></span>
 				        </div>
 				     </div>
 				`
 				let template = `
-					<li> 
+					<li data-id="${r.id}"> 
 						<div class="profile">
 							<span class="profile__image"></span>
 							<span class="profile__nickname profile__nickname">${r.nickname}</span>
 							<span class="profile__time">${r.elapsedTime}</span>
-							<button></button>
+							<button class="rkb-btn"></button>
 							${r.myComment?kebobModalWriter:kebobModalReader}
 						</div>
 						<div class="reply-container">
@@ -47,9 +49,7 @@ export function getReply(groupId, replyUl) {
 							<span class="reply__content">${r.content}</span>
 						</div>
 						<div class="reply__replies">
-							<span class="hidden">${r.id}</span>
 							<span class="pointer underline reply-to-reply" >답글 달기</span> 
-							<span class="hidden">${r.groupId}</span>
 						</div>
 					</li>
 				`
@@ -70,14 +70,15 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
                       name="reply-input"
                       placeholder="답글을 입력하세요."></textarea>
                   <div class="reply__btn-container">
-                      <span class="reply__btn btn btn-round cancel-btn">취소하기</span>
-                      <span class="reply__btn btn btn-round register-btn">등록하기</span>
+                      <span class="reply__btn btn btn-round btn-cancel cancel-btn">취소하기</span>
+                      <span class="reply__btn btn btn-round btn-action register-btn">등록하기</span>
                   </div>
               </div> 
                    `;
 		//클릭된 특정 답글링크의 위치아래에 inputbox추가.    
 		linkContainer.insertAdjacentHTML("afterend", template);
-
+		const inputBox = document.querySelector("#reply-text");
+		inputBox.focus();
 		document.querySelector(".register-btn").addEventListener("click", () => {
 			const replyText = document.querySelector("#reply-text").value;
 			
@@ -103,8 +104,8 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 							if (response.ok) {
 								if(groupId == parentId) {//원댓글에 대한 답글일 경우
 									removeTextBox('single');
-									linkContainer.children[1].classList.add("hidden"); //답글갯수 감추고
-									linkContainer.children[2].classList.remove("hidden");//닫기 버튼 표출
+									linkContainer.children[0].classList.add("hidden"); //답글갯수 감추고
+									linkContainer.children[1].classList.remove("hidden");//닫기 버튼 표출
 								}
 								linkContainer.classList.remove("hidden");
 								while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제
@@ -123,11 +124,11 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 
 //답글 갯수 갱신
 function refreshReplyCount(replyUl, count){
-	replyUl.parentElement.previousElementSibling.children[1].innerHTML = "답글 " + count + "개";
+	replyUl.parentElement.previousElementSibling.children[0].innerHTML = "답글 " + count + "개";
 }
 
-//text-box 제거
-function removeTextBox(count) {
+//text-area 제거
+export function removeTextBox(count) {
 	if (count == 'single'){
 		const inputBox = document.querySelector(".reply__input-container");
 			inputBox.previousElementSibling.classList.remove("hidden");	
@@ -142,22 +143,3 @@ function removeTextBox(count) {
 		});
 	}
 }
-
-//DOM추가기법으로 새 답글을 리스트 하단에 표시 (사용x)
-//function addNewReplyElement(newText, parentNickname) {
-//	if (newText != "") {
-		//   const template = document.querySelector("#template-reply");
-		//   const sourceNode = template.content.querySelector("li");
-		//   const newNode = sourceNode.cloneNode(true);
-		//   const textSpan = newNode.querySelector('.reply__content');
-		//   const nicknameSpan = newNode.querySelector('.reply__to');
-		//   const textNode = document.createTextNode(newText);
-		//   const nicknameNode = document.createTextNode(parentNickname);
-		//   textSpan.appendChild(textNode);
-		//   nicknameSpan.appendChild(nicknameNode);
-		//   const targetNode = document.querySelector(".reply__list").lastElementChild;
-		//   targetNode.after(newNode);
-		//   document.querySelector(".reply__input-container").remove();
-
-//	}
-//}

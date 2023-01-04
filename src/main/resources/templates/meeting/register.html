@@ -7,6 +7,7 @@
 	rel="stylesheet">
 <link rel="stylesheet" href="/css/member/meeting/create.css">
 <link rel="stylesheet" href="/css/loading.css"/>
+<link rel="stylesheet" href="/css/icon.css"/>
 
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script type="module" src="/js/meeting/register.js"></script>
@@ -80,9 +81,9 @@
 						<div class="select-box select-box--input">
 							<span id="gender-category">성별을 선택하세요.</span>
 							<ul class="select-box__options">
-								<li data-id=1>남녀 모두</li>
-								<li data-id=2>남자만 </li>
-								<li data-id=3>여자만</li>
+								<li data-id=0>남녀 모두</li>
+								<li data-id=1>남자만 </li>
+								<li data-id=2>여자만</li>
 							</ul>
 							<input class="hidden" type="text" name="genderCategory">
 						</div>
@@ -158,18 +159,19 @@
 			<div class="modal__header">
 				<span class="modal__close-btn icon icon-x" data-modal="#modal-register-meeting">닫기</span>
 			</div>
-			<div class="modal__body">
-				<div class="lds-roller">
+			<div class="modal__body register-status">
+				<div class="lds-roller register-status__icon">
 					<div></div><div></div><div></div><div></div>
 					<div></div><div></div><div></div><div></div>
 				</div>
-				<div class="modal-login__nickname-form input-text">
-					<div>게시글을 등록하고 있어요!</div>
-					<span class="btn btn-semiround" id="set-nickname-btn">등록 중</span>
+				<div class="register-status__text">
+					<div class="register-status__message">게시글을 등록하고 있어요!</div>
+					<a class="register-status__btn btn btn-semiround" href="#">등록 중</a>
 				</div>
 			</div>
 		</div>
 	</div>
+	<input type="file" id="fileUpload" class="hidden">	
 	</main>
 </body>
 <script>

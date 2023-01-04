@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zpop.web.dto.RequestCommentReportDto;
 import com.zpop.web.entity.ReportedComment;
 import com.zpop.web.entity.comment.Comment;
 import com.zpop.web.entity.comment.CommentView;
@@ -51,36 +52,45 @@ public class CommentController {
 	
 	//댓글(comment) 등록 AJAX endpoint (js에서 콜하는 함수)
 	@PostMapping()
-	public  String registerComment(@RequestBody Comment comment, 
+	@ResponseBody
+	public  boolean registerComment(@RequestBody Comment comment, 
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		comment.setWriterId(userDetails.getId());
 		service.registerComment(comment);
-		return "comment/comment";
+		return true;
 	}
 	
 	//댓글 수정 AJAX endpoint
 	@PatchMapping("{id}")
+	@ResponseBody
 	public String updateComment(@PathVariable int id, @RequestBody Comment comment,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		service.updateComment(comment);
-		return "comment/comment";
+		return "{\"1\":1}"; //JSON
 	}
 	//댓글 삭제 AJAX endpoint
 	@DeleteMapping("{id}")
-	public String deleteComment(@PathVariable int id, @RequestBody Comment comment,
+	@ResponseBody
+	public String deleteComment(@PathVariable int id, 
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		service.deleteComment(comment);
-		return "comment/comment";
+		service.deleteComment(id);
+		return "{\"1\":1}"; //JSON
 	}
 	//댓글 신고 AJAX endpoint
-	@PutMapping("{id}")
+	@PostMapping("{id}")
 	@ResponseBody
-	public String reportComment(@PathVariable int id, @RequestBody ReportedComment reportedComment,
+	public String reportComment(@PathVariable int id, 
+			@RequestBody ReportedComment reportedComment,
+			@RequestBody RequestCommentReportDto dto,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		
 		Comment comment = service.getCommentById(id);
+		reportedComment.setCommentId(id);
 		reportedComment.setReporterId(userDetails.getId());
+		reportedComment.setTypeId(Integer.parseInt(dto.getReportType()));
+		reportedComment.setReason(dto.getReportReason());
 		reportedComment.setOriginal(comment.getContent());
-		//reportService.createCommentReport(reportedComment);
+		reportService.createCommentReport(reportedComment);
 		return "{\"1\":1}"; //JSON
 	}
 }

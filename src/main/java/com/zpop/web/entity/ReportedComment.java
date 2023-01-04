@@ -16,18 +16,13 @@ public class ReportedComment {
 	private Date blockedAt;
 	private Date releasedAt;
 	
-	public ReportedComment(int commentId, int reporterId, int adminId, int typeId, String reason,
-			String original, Date createdAt, Date processedAt, Date blockedAt, Date releasedAt) {
+	public ReportedComment(int commentId, int reporterId, int typeId, String reason,
+			String original) {
 		this.commentId = commentId;
 		this.reporterId = reporterId;
-		this.adminId = adminId;
 		this.typeId = typeId;
 		this.reason = reason;
 		this.original = original;
-		this.createdAt = createdAt;
-		this.processedAt = processedAt;
-		this.blockedAt = blockedAt;
-		this.releasedAt = releasedAt;
 	}
 
 	public int getId() {

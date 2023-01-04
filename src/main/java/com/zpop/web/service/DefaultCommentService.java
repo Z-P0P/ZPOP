@@ -123,15 +123,13 @@ public class DefaultCommentService implements CommentService {
 		return affectedRow;
 	}
 	@Override
-	public int deleteComment(Comment comment) {
-		int commentId = comment.getId();
+	public int deleteComment(int commentId) {
 		int affectedRow = dao.deleteComment(commentId);
 		return affectedRow;
 	}
 	
 	// 새로운 댓글 생성시 알림 생성을 위한 메서드
-	@Override
-	public void createCommentNotification(int memberId, String url, int type) {
+	private void createCommentNotification(int memberId, String url, int type) {
 		notificationDao.insertCommentNotification(memberId, url, type);
 	}
 	

@@ -1,7 +1,6 @@
 #notification-modal{
-    overflow: scroll;
     width:320px;
-    height:340px;
+    min-height:300px;
     position: absolute;
     top: 80px;
     right: -28px;
@@ -19,6 +18,16 @@
     cursor:pointer;
 }
 
+.notification--none{
+	font-size: 20px; 
+	border:none; 
+	cursor:default; 
+	height:240px; 
+	line-height: 250px; 
+	text-align: center; 
+	color:#8B8B8B
+}
+
 .notification > p{
     color: #8B8B8B;
     margin :auto 0;
@@ -33,33 +42,35 @@
     position: relative;
 }
 
-.modal__close-btn{
-    height: 32px;
-    width: 32px;
-    border: none;
-    background: url(/images/icon/x.svg) no-repeat;
-    background-size: 32px;
-    cursor: pointer;
-    position:sticky;
-    top:10px;
-    left:280px;
-   
+.notification-container{
+	overflow:scroll;
+	height:260px;
+	position: static;
+	-ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.notification-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+
+.button--container{
+	display:flex;
 }
 
 .readAll-btn{	
 	background-color: var(--main-color);
   	cursor:pointer;
  	width:100px;
- 	margin:10px 0 10px 210px;
+ 	margin:10px 0 10px 205px;
 }
 
 .blank-div{
-	height:55px;
+	height:60px;
 	background-color:white; 
-	position: fixed;
-	border-radius:0 0 5px 5px;
-	width:310px;
-	top:365px;
+	position: relative;
+	border-radius: 0 0 5px 5px;
+/*	top : 280px;*/
 }
 
 .header__notification-on button::before {
@@ -75,11 +86,20 @@
 	background-color:#8B8B8B;
 }
 
+.notification__close-btn{
+	 height: 32px;
+    width: 32px;
+    border: none;
+    background: url(/images/icon/x.svg) no-repeat;
+    background-size: 32px;
+    cursor: pointer;
+    margin:10px 0 0 284px;
+}
 
-/* 알림 모달 */
-
+/* 알림 모달 모바일 반응형 */
 
 @media (min-width: 576px) {
+	
     #notification-modal {
 	  width:353px;
 	  height:360px;
@@ -90,30 +110,22 @@
     
     .notification {
     	font-size: 18px;
-    	 width: 300px;
+    	width: 280px;
 	}
 	
 	.readAll-btn{	
-		bottom: 580px;
-	  	right: 90px;
 	  	width:131px;
 	  	height:35px;
-	  	top:350px;
-	  	margin:10px 0 10px 210px;
-	}
-	
-	.modal__close-btn{
-    	left:310px;
+	  	margin:10px 0 10px 205px;
 	}
 
-	.blank-div{
-		top:405px;
-		width:335px;
+	.header__notification-on button::before {
+	    width: 32px;
+	    height: 32px;
 	}
 	
-	.header__notification-on button::before {
-	  width: 32px;
-	  height: 32px;
+	.notification__close-btn{
+		margin:10px 0 0 310px;
 	}
 
   }

@@ -26,6 +26,23 @@ public class Meeting {
     
     public Meeting() {
     }
+    
+    public Meeting(int id, int regMemberId, int categoryId, int regionId, int ageRangeId, int contactTypeId, int genderCategory, String title, String content, String detailRegion, int maxMember, Date startedAt, String contact) {
+        this.id = id;
+    	this.regMemberId = regMemberId;
+        this.categoryId = categoryId;
+        this.regionId = regionId;
+        this.ageRangeId = ageRangeId;
+        this.contactTypeId = contactTypeId;
+        this.genderCategory = genderCategory;
+        this.title = title;
+        this.content = content;
+        this.detailRegion = detailRegion;
+        this.maxMember = maxMember;
+        this.startedAt = startedAt;
+        this.contact = contact;
+    }
+    
 
     public Meeting(int regMemberId, int categoryId, int regionId, int ageRangeId, int contactTypeId, int genderCategory, String title, String content, String detailRegion, int maxMember, Date startedAt, String contact) {
         this.regMemberId = regMemberId;

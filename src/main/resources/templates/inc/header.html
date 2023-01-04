@@ -67,12 +67,12 @@
                         알림확인
                     </button> 
                 	 <div id="notification-modal" class="hidden">
-                        <input type="button" class="modal__close-btn" data-modal="#notification-modal">
+                	 	<div class="button--container">
+	                        <input type="button" class="notification__close-btn modal__close-btn " data-modal="#notification-modal">
+                	 	</div>
                         <div id="upper-blank"></div>
-                        
+                        <div class="notification-container"></div>
                         <!-- 알림 들어가는 공간 -->
-                        
-                        <div style="height:50px;"></div>
                         <div class="blank-div">
  	                    	<div class="readAll-btn btn btn-round">모두 읽기</div>
  	                    </div>
@@ -84,11 +84,11 @@
 <!--                    th:src="@{(${session.member.profileImagePath}?${session.member.profileImagePath}:'/images/icon/user-profile.svg')}"></button>-->
                     <ul class="select-box__options select-box__options--right select-box__options--header">
                         <!--li 말고 div 박스 전체로 -->
-                        <li onclick="location.href='/member/me';"><a href="/member/me">내 프로필</a></li>
-                        <li onclick="location.href='/member/me/gathering';"><a href="/member/me/gathering">내가 모집한 모임</a></li>
+                        <li><a href="/member/me">내 프로필</a></li>
+                        <li><a href="/member/me/gathering">내가 모집한 모임</a></li>
                         <li><a href="/member/me/meeting">내가 참여한 모임</a></li>
                         <li><a href="/member/me/meeting">모임 평가하기</a> </li>
-                        <li onclick="location.href='/logout';"><a href="">로그아웃</a></li>
+                        <li><a href="/logout">로그아웃</a></li>
                     </ul>
                 </li>
             </ul>

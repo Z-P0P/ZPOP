@@ -1,7 +1,7 @@
 function sendAll(){
 		const notifications = document.querySelectorAll(".notification");
-		
-		if(notifications.length==1)
+		const noNotification = document.querySelector(".notification--none");
+		if(noNotification != null)
 			return;
 			
 		for(n of notifications){
@@ -9,21 +9,21 @@ function sendAll(){
 				const type = 1;
 				const readAt = true;
 				const data = {
-	                method: "POST",
-	                headers: {
-	                    "Content-Type": "application/json",
-	                },
-	                body: JSON.stringify({
+		            method: "POST",
+		            headers: {
+		                "Content-Type": "application/json",
+		            },
+		            body: JSON.stringify({
 						readAt,
-	                    type
-	              	  })
-	           	 }
-				fetch("http://localhost:8080/notification/type", data)				
-				continue;
+		                type
+	          	  })
+       	 		}
+			fetch("http://localhost:8080/notification/type", data)
 			}
-			 const id = n.getAttribute("data-id");
-			 const readAt = true;	
-			 const data = {
+			else{
+				 const id = n.getAttribute("data-id");
+				 const readAt = true;	
+				 const data = {
 	                method: "POST",
 	                headers: {
 	                    "Content-Type": "application/json",
@@ -34,6 +34,7 @@ function sendAll(){
 	                })
 	            }
 			fetch("http://localhost:8080/notification/read", data)	
+			}
 		}
 	}
 
@@ -42,7 +43,8 @@ function sendAll(){
 		const notificationCancelBtn = document.querySelector(".readAll-btn");
 		const upperBlank = document.querySelector("#upper-blank");
 		const notifications = document.querySelectorAll(".notification");
-		//알림이 모두 없애기
+		const container = document.querySelector(".notification-container");
+		//알림 모두 없애기
 		headerNotification.classList.remove("header__notification-on");
 		headerNotification.classList.add("header__notification");
 		
@@ -50,8 +52,8 @@ function sendAll(){
 			n.remove();	
 		
 		// 안내문구 추가
-		let template=`<div class="notification" style="font-size: 20px; border:none; cursor:default; height:250px; line-height: 250px; text-align: center; color:#8B8B8B;">알림이 없습니다!</div>`;
-		upperBlank.insertAdjacentHTML("afterend",template);
+		let template=`<div class="notification notification--none";">받은 알림이 없네요!</div>`;
+		container.insertAdjacentHTML("afterbegin",template);
 		notificationCancelBtn.classList.add("deactivated-btn");
 		notificationCancelBtn.innerHTML="모두 읽음";
 	}
@@ -94,6 +96,7 @@ function sendAll(){
 		const modalCloseBtn = document.querySelector(".modal-close-btn-div");
 		const upperBlank = document.querySelector("#upper-blank");
 		const headerNotification = document.querySelector("#header-notification");
+		const container = document.querySelector(".notification-container");
 		const type = [];
 		
 		 fetch("http://localhost:8080/notification")
@@ -118,24 +121,15 @@ function sendAll(){
 							
 							if(d.type!=1){
 								let div = document.createElement("DIV");
+								
 								div.classList.add("notification");
 								div.onclick = readOne;
 								div.innerHTML=`${typeStatement}<p>${d.elapsedTime}</p>`;
 								div.setAttribute("data-id",d.id);
 								div.setAttribute("data-url",d.url);
-								upperBlank.insertAdjacentElement('afterend', div);
+								container.insertAdjacentElement('afterbegin', div);
 							}
 						}
-						
-						// 알림 아이콘 변경 
-						const notification = document.querySelectorAll(".notification");
-						if(notification.length!=0){
-							headerNotification.classList.remove("header__notification");
-							headerNotification.classList.add("header__notification-on");
-						}
-						else if(notification.length==0)
-							readAll();
-						
 						
 					if(type.includes(1)){
 							var count = 0;
@@ -144,9 +138,9 @@ function sendAll(){
 									count++;
 							
 							let template = `
-							<div class="notification eval-div" data-type ="1" data-url="/report/comment">😃 평가하지 않은 모임이 ${count}개 있어요 !<p>이동하기</p></div>
+							<div class="notification eval-div" data-type ="1" data-url="/member/me/meeting">😃 평가하지 않은 모임이 ${count}개 있어요 !<p>이동하기</p></div>
 							`;
-							upperBlank.insertAdjacentHTML('afterend',template);
+							container.insertAdjacentHTML('afterbegin',template);
 						    const evalDiv = document.querySelector(".eval-div");
 							evalDiv.addEventListener("click",(e)=>{
 								e.preventDefault();
@@ -176,6 +170,14 @@ function sendAll(){
 								
 							});
 						}
+							// 알림 아이콘 변경 
+					const notification = document.querySelectorAll(".notification");
+					if(notification.length!=0){
+						headerNotification.classList.remove("header__notification");
+						headerNotification.classList.add("header__notification-on");
+					}
+					else if(notification.length==0)
+						readAll();
 					})
 		  			.catch((error) => console.log(error));
         

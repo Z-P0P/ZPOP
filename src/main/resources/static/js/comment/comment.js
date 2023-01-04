@@ -1,21 +1,38 @@
 import * as Reply from "./reply.js";
+import {addListenerToCommentKebob} from "./edit-comment.js";
+import {addListenerToReplyKebob} from "./edit-reply.js";
+
 window.addEventListener("load", () => {
 	//DOM에서 SSR로 뿌려진값들 추출 
-	const meetingId = document.querySelector(".meeting-id").innerText.trim();
+	const meetingId = document.querySelector(".meeting-id").dataset.id;
 	const commentUl = document.querySelector(".comment__list");
+	const inputBox = document.querySelector(".comment__input");
 	const registerBtn = document.querySelector("#register-btn");
+	const editSaveBtn = document.querySelector("#edit-save-btn");
+	
+	//댓글케밥에 이벤트핸들러 등록
+	addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
+	
 	//새 댓글등록
-	writeComment(registerBtn, meetingId, commentUl); //댓글 등록 버튼에 이벤트 핸들러 부착
+	writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn); //댓글 등록 버튼에 이벤트 핸들러 부착
 	
 	//SSR로 뿌려진 댓글리스트 전체에 이벤트 핸들러 부착
 	commentUl.onclick = function(e) {
+		//클릭시 답글 케밥인경우 이벤트핸들러 등록
+		if(e.target.classList.contains("rkb-btn")){
+			const selectModal = e.target.nextElementSibling;
+			const replyId = e.target.closest("li").dataset.id;
+			const replyUl = e.target.closest("ul");
+			addListenerToReplyKebob(replyId, replyUl, selectModal);
+			return;
+		}
 		//클릭시 답글 보기/쓰기 버튼이 아닌경우 리턴
 		if (!e.target.classList.contains("reply-cnt")&&
 			!e.target.classList.contains("reply-write")&&
-			!e.target.classList.contains("reply-close")) 
+			!e.target.classList.contains("reply-close"))
 			return; 
 		//DOM에서 SSR로 뿌려진값들 추출 
-		const commentId = e.target.parentElement.firstElementChild.innerText;//<span class="hidden comment-id">"
+		const commentId = e.target.closest("li").dataset.id;
 		const replyUl = e.target.parentElement.nextElementSibling.children[0];//<ul class="reply__list">
 		const replySection = replyUl.parentElement;// <section class="reply hidden">
 		//각 댓글별로 답글 조회
@@ -29,10 +46,10 @@ window.addEventListener("load", () => {
 				
 				replyUl.addEventListener("click",(e)=>{
 					if(e.target.classList.contains("reply-to-reply")){
-					const parentId = e.target.previousElementSibling.innerText.trim();
-					const parent = e.target.parentElement;
-					parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
-					Reply.writeReply(meetingId, commentId, parentId, replyUl, parent);
+						const parentId = e.target.closest("li").dataset.id;
+						const parent = e.target.parentElement;
+						parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
+						Reply.writeReply(meetingId, commentId, parentId, replyUl, parent);
 					} //groupId = commentId
 				});
 				replyUl.classList.add("click-handler");
@@ -55,9 +72,9 @@ window.addEventListener("load", () => {
 		if(e.target.classList.contains("reply-write")){
 			const parent = e.target.parentElement;
 			parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
-			const parentId = parent.children[0].innerText.trim();
-			const groupId = parentId; //원댓글에 대한 답글은 groupId와 parentId가 동일
-			Reply.writeReply(meetingId, groupId, parentId, replyUl, parent);
+			const commentId = e.target.closest("li").dataset.id;
+			const groupId = commentId; //원댓글에 대한 답글은 groupId와 commentId가 동일
+			Reply.writeReply(meetingId, groupId, commentId, replyUl, parent);
 			replySection.classList.remove("hidden");//<section class="reply hidden">
 		}
 		if(e.target.classList.contains("reply-close")){
@@ -120,8 +137,7 @@ export function getComment(meetingId, commentUl) {
 		});
 }
 //새 댓글 등록시 SSR로 렌더링된 기존 댓글을 지우고  AJAX로 전체를 다시 렌더링함. 
-function writeComment(registerBtn, meetingId, commentUl){
-	const inputBox = document.querySelector(".comment__input");
+function writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
 	registerBtn.addEventListener("click", () => {
 		const commentText = inputBox.value;
 		const data = {
@@ -146,6 +162,7 @@ function writeComment(registerBtn, meetingId, commentUl){
 						while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
 							commentUl.removeChild(commentUl.firstChild);
 						getComment(meetingId, commentUl); //AJAX로 새로 렌더링
+						addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
 					}
 					else alert("시스템 장애로 등록이 안되고 있습니다.");
 			});

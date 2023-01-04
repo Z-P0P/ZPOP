@@ -1,12 +1,9 @@
 package com.zpop.web.service;
 
-import com.zpop.web.dto.MeetingThumbnailResponse;
-import com.zpop.web.dto.RegisterMeetingRequest;
-import com.zpop.web.dto.RegisterMeetingResponse;
+import com.zpop.web.dto.*;
 import com.zpop.web.entity.Member;
+import com.zpop.web.entity.MeetingFile;
 
-import com.zpop.web.dto.MeetingDetailDto;
-import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.entity.Participation;
 
 import com.zpop.web.entity.meeting.Meeting;
@@ -58,7 +55,7 @@ public interface MeetingService {
 	 * @param id 모임 아이디
 	 * @return {@link MeetingDetailDto}
 	 */
-	MeetingDetailDto getById(int id);
+	MeetingDetailResponse getById(int id, Integer memberId);
 
 	List<MeetingParticipantsDto> getParticipants(int id);
 
@@ -75,7 +72,22 @@ public interface MeetingService {
 	 */
 	String getContact(int id, int memberId);
 
-	int participate(int meetingId, int memberId);
+	/**
+	 * 모임에 참여하기.
+	 *
+	 * 멤버가 해당 id의 모임에 대해 참여한다.
+	 * 만약 존재하지 않는 id의 모임이거나, 모임이 이미 삭제 되었다면 참여할 수 없다.
+	 * 마감된 모임에 참여할 수 없다.
+	 * kick 당한 멤버 id는 모임에 참여할 수 없다.
+	 * 이미 참여한 {@link Participation 참여자}인지 확인 후, 이미 참여했다면 참여할 수 없다.
+	 * 멤버 id가 주최자 id와 같다면, 참여할 수 없다.
+	 * 참여 완료후 참여자수가 최대 인원수와 같거나 큰 경우, 모임을 마감 처리한다.
+	 *
+	 * @param id 모임 아이디
+	 * @param memberId 멤버 아이디
+	 * @return 성공 여부
+	 */
+	boolean participate(int id, int memberId);
 
 	/**
 	 * 모임 참여를 취소하기.
@@ -93,7 +105,6 @@ public interface MeetingService {
 	 */
 	boolean cancelParticipate(int id, int memberId);
 
-	void updateViewCount(int id);
 
 	/**
 	 * 참여자를 내보내기.
@@ -142,10 +153,14 @@ public interface MeetingService {
 	 */
 	boolean delete(int id, Member member);  //TODO: 시큐리티
 
-	RegisterMeetingResponse getActiveOptions();
+	RegisterMeetingViewResponse getActiveOptions();
 
-	int register(RegisterMeetingRequest dto, List<MultipartFile> images, String realPath) throws FileNotFoundException, IOException;
-
-	int getUserType(int memberId, int meetingId);
+	RegisterMeetingResponse register(RegisterMeetingRequest dto) throws FileNotFoundException, IOException;
+			
+	boolean updateMeeting(UpdateMeetingRequest dto) throws IOException;
+			
+	UpdateMeetingViewDto getUpdateMeetingView(int id);
+			
+	MeetingFile uploadFile(MultipartFile file, String path) throws IOException;
 
 }
