@@ -79,16 +79,13 @@ public class CommentController {
 	//댓글 신고 AJAX endpoint
 	@PostMapping("{id}")
 	@ResponseBody
-	public String reportComment(@PathVariable int id, 
+	public String reportComment(@PathVariable("id") int id, 
 			@RequestBody ReportedComment reportedComment,
-			@RequestBody RequestCommentReportDto dto,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		
 		Comment comment = service.getCommentById(id);
 		reportedComment.setCommentId(id);
 		reportedComment.setReporterId(userDetails.getId());
-		reportedComment.setTypeId(Integer.parseInt(dto.getReportType()));
-		reportedComment.setReason(dto.getReportReason());
 		reportedComment.setOriginal(comment.getContent());
 		reportService.createCommentReport(reportedComment);
 		return "{\"1\":1}"; //JSON

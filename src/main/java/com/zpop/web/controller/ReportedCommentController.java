@@ -34,7 +34,7 @@ public class ReportedCommentController {
 			@AuthenticationPrincipal ZpopUserDetails userDetails
 			) {
 		
-		int reportTypeId = Integer.parseInt(dto.getReportType());
+		int reportTypeId = (dto.getReportType());
 		String reportReason = dto.getReportReason();
 		
 		// 중복 신고 
