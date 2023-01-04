@@ -9,7 +9,7 @@ function addHTML(target){
 window.addEventListener("load", (e)=>{
 	
 	const meetingReportBtn = document.querySelector(".meeting__report-btn");
-	const commentReportBtn = document.querySelector(".comment__report-btn");
+	const commentReportBtn = document.querySelector(".comment__report-btn");//신고모달 우측 버튼
 	const memberReportBtn = document.querySelector(".member__report-btn");
 	const selectBoxAll = document.querySelectorAll(".select-box");
 	const meetingSelectBoxInput = document.querySelector(".meeting-select-box > input");

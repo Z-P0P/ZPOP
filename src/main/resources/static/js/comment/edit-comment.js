@@ -38,15 +38,9 @@ export function addListenerToCommentKebob(meetingId,commentUl,inputBox,registerB
       m.addEventListener("click",(e)=>{
          e.preventDefault();
          commentId = e.target.closest("li").dataset.id;
+         //view의 댓글번호를 모달로 전달함. 이후는 report.js에서 처리(임우빈)
          const modal = document.querySelector("#modal-report-comment");
          modal.setAttribute("data-id",commentId);
-         //modal.dataset.id = commentId;
-         
-         
-         
-         
-         //모달에 값을 넘기는 로직
-        // reportComment(commentId, 3, "그냥 맘에 안듬");
       });
    }   
    
@@ -113,29 +107,4 @@ function deleteComment(commentId,meetingId,commentUl,inputBox,registerBtn,editSa
             else alert("시스템 장애로 등록이 안되고 있습니다.");
       });
 }
-function reportComment(commentId, reportType, reportReason){
-   const data = {
-      method: "PUT",
-      headers: {
-         "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-         "commentId": commentId,
-         "typeId":reportType,
-         "reason":reportReason
-      })
-   };
-   
-   fetch(`/comment/${commentId}`, data)
-      .then(response => {
-         if (response.ok) {
-          console.log("신고가 등록됨")
-            return response;
-         }
-         else alert("시스템 장애로 등록이 안되고 있습니다.");
-      })
-      .then(data=>data.json())
-      .then(json=>{
-         
-      });
-}
+
