@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.zpop.web.dto.MeetingDetailResponse;
 import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.dto.RegisterMeetingRequest;
 import com.zpop.web.dto.RegisterMeetingResponse;
@@ -101,6 +102,21 @@ public class MeetingController {
 		
 		return "/meeting/update";
 	}
+
+	@GetMapping("/{id}")
+	public String detailView(@PathVariable int id, Model model, 
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		Integer memberId = null;
+
+		if(userDetails != null)
+			memberId = userDetails.getId();
+
+		MeetingDetailResponse meetingDetail = service.getById(id, memberId);
+
+		model.addAttribute("meeting", meetingDetail);
+
+		return "meeting/detail";
+		}
 	
 	@PutMapping("/update/{id}")
 	@ResponseBody()

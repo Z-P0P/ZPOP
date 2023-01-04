@@ -37,7 +37,7 @@
             </div>
             <div class="meeting__header">
                 <div class="meeting__title-container">
-                    <span class="meeting__title"  th:text="${dto.title}">한강공원에서 러닝하실 분~🙂</span>
+                    <span class="meeting__title"  th:text="${meeting.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
                     <th:block th:if="${meeting.isMyMeeting == true}">	
                     		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-host}"></div>
@@ -211,7 +211,7 @@
 				</div>
 			</div>
 			<ul class="comment__list">
-				<li th:attr="data-id=${comment.id}" th:each="comment:${comments}">
+				<li th:attr="data-id=${comment.id}" th:each="comment:${meeting.comments}">
 					<div class="profile">
 						<span class="profile__image" th:text="${comment.profileImgPath}"></span>
 						<span class="profile__nickname" th:text="${comment.nickname}">닉네임</span>
