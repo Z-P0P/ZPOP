@@ -20,7 +20,8 @@
     <select id="getMyGathering" parameterType="com.zpop.web.entity.Member"
             resultType="com.zpop.web.entity.member.MyMeetingView">
         SELECT * FROM myMeetingView
-        WHERE regMemberId = #{id} </select>
+        WHERE regMemberId = #{id}
+		AND   participantId = #{id}</select>
     <select id="getList" resultType= "Member">
     	SELECT *
     	FROM member
