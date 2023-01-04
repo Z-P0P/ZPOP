@@ -58,8 +58,11 @@ window.addEventListener("load", (e)=>{
                     reportReason : meetingReportReason
                 })
             }
-
-            fetch("http://localhost:8080/report/meeting-test", data)
+			
+			const id = 5;
+//			const id = document.querySelector(".meeting-id").dataset.id;
+//			console.log(id);
+            fetch(`http://localhost:8080/report/${id}`, data)
             .then((response)=>{
 				const reasonValue = document.querySelector("#meeting-input__content--id");
 				const modal = document.querySelector('#modal-report-meeting');

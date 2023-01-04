@@ -31,7 +31,7 @@
 
 <main class="main"  layout:fragment="content">
 	<span  class="hidden member-id" th:text="${session.memberId}"></span>
-    <section class="meeting">
+    <section th:attr="data-id=${meetingId}" class="meeting meeting-id">
         <div class="meeting__info">
             <div class="meeting__category-wrap">
                 <span class="meeting__category"  th:text="${meeting.categoryName}">문화생활</span>
