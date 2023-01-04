@@ -98,7 +98,7 @@ function sendAll(){
 		const headerNotification = document.querySelector("#header-notification");
 		const container = document.querySelector(".notification-container");
 		const type = [];
-		
+		if(!notificationBtn) return;
 		 fetch("http://localhost:8080/notification")
 		            .then((response) => {
 						return response.json();
