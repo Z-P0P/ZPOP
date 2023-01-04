@@ -44,8 +44,6 @@ import jakarta.validation.Valid;
 public class MeetingController {
 	@Autowired
 	private MeetingService service;
-	@Autowired
-	private CommentService commentService;
 	
 	@GetMapping("/register")
 	public String registerView(Model model) {
