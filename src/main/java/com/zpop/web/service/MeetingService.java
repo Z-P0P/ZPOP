@@ -56,6 +56,8 @@ public interface MeetingService {
 	 */
 	MeetingDetailResponse getById(int id, Integer memberId);
 
+	List<MeetingParticipantsDto> getParticipants(int id);
+
 	/**
 	 * 모임 연락처 얻기.
 	 *
@@ -69,7 +71,22 @@ public interface MeetingService {
 	 */
 	String getContact(int id, int memberId);
 
-	int participate(int meetingId, int memberId);
+	/**
+	 * 모임에 참여하기.
+	 *
+	 * 멤버가 해당 id의 모임에 대해 참여한다.
+	 * 만약 존재하지 않는 id의 모임이거나, 모임이 이미 삭제 되었다면 참여할 수 없다.
+	 * 마감된 모임에 참여할 수 없다.
+	 * kick 당한 멤버 id는 모임에 참여할 수 없다.
+	 * 이미 참여한 {@link Participation 참여자}인지 확인 후, 이미 참여했다면 참여할 수 없다.
+	 * 멤버 id가 주최자 id와 같다면, 참여할 수 없다.
+	 * 참여 완료후 참여자수가 최대 인원수와 같거나 큰 경우, 모임을 마감 처리한다.
+	 *
+	 * @param id 모임 아이디
+	 * @param memberId 멤버 아이디
+	 * @return 성공 여부
+	 */
+	boolean participate(int id, int memberId);
 
 	/**
 	 * 모임 참여를 취소하기.

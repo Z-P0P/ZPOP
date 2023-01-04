@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.zpop.web.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,20 +113,23 @@ public class MeetingController {
 	@GetMapping("{meetingId}/participant")
 	@ResponseBody
 	public List<MeetingParticipantsDto> getParticipant(@PathVariable int meetingId){
-		// List<MeetingParticipantsDto> list = service.getParticipants(meetingId);
-		return null;
+		List<MeetingParticipantsDto> list = service.getParticipants(meetingId);
+		return list;
 	}
 	
 	//참여 AJAX endpoint (js에서 콜하는 함수)
-	@PostMapping("/participate/{meetingId}")
+	@PostMapping("/{meetingId}/participate")
 	@ResponseBody
-	public String participate(@PathVariable int meetingId, 
+	public Map<String, Object> participate(@PathVariable int meetingId,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		
+		//TODO: 임시로 MAP 리턴함
 		int memberId = userDetails.getId();
 		service.participate(meetingId, memberId);
-		
-		return "meeting/detail";
+
+		Map<String, Object> result = new HashMap<>();
+		result.put("success", true);
+
+		return result;
 	}
 
 	@GetMapping("/{id}/contact")
