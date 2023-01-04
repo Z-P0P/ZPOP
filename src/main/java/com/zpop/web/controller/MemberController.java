@@ -1,7 +1,12 @@
 package com.zpop.web.controller;
 
-import java.util.List;
-
+import com.zpop.web.dto.EvalMemberDto;
+import com.zpop.web.dto.MyMeetingResponse;
+import com.zpop.web.entity.Member;
+import com.zpop.web.security.ZpopUserDetails;
+import com.zpop.web.service.MeetingService;
+import com.zpop.web.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,6 +23,7 @@ import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.MemberService;
 
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /*****
  * 1. 다른 사용자 프로필 조회 --> 모달 url 불필요 2. 마이 프로필 페이지 진입 (/member/me) --> 페이지 3.
@@ -37,14 +43,15 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 
-	// 다른 사용자 프로필 조회 (return 경로 임시)
-	@GetMapping("{id}")
-	public String getMember(@PathVariable("id") int id, Model model) {
-		Member member = service.getById(id);
-		model.addAttribute("member", member);
-		return "member/my-profile";
+    @Autowired
+    private MeetingService meetingService;
 
-	}
+//    @GetMapping("{id}")
+//    public String getMember(@PathVariable ("id") int id, Model model){
+//        Member member = service.getById(id);
+//        model.addAttribute("member", member);
+//        return "member/my-profile";
+//	}
 
 	// 마이페이지 진입
 	@GetMapping("/me")
@@ -74,10 +81,21 @@ public class MemberController {
 	public String getMeeting(@AuthenticationPrincipal ZpopUserDetails userDetails, Model model) {
 		List<MyMeetingResponse> meetings = service.getMyMeeting(userDetails.getId());
 		model.addAttribute("meetings", meetings);
-		return "member/my-meeting";
-	}
+        return "member/my-meeting";
+    }
+
+    @ResponseBody
+    @GetMapping("/eval/{dataId}")
+    public List<EvalMemberDto> getParticipants(@PathVariable("dataId") int meetingId)
+    { List<EvalMemberDto> participant = service.getEvalMember(meetingId) ;
+  
+        return participant;
+    }
+
+
 	// 권한 확인
 
+	//내가모집한 모임 조회
 	@GetMapping("/me/gathering")
 	public String getGathering(@AuthenticationPrincipal ZpopUserDetails userDetails, Model model) {
 		List<MyMeetingResponse> meetings = service.getMyGathering(userDetails.getId());

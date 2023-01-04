@@ -137,6 +137,7 @@ public class Meeting {
 	}
 
 	public void setClosedAt(Date closedAt) {
+
 		this.closedAt = closedAt;
 	}
 
@@ -228,6 +229,7 @@ public class Meeting {
     }
 
     @Override
+
     public String toString() {
         return "Meeting{" +
                 "id=" + id +
