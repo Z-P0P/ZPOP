@@ -2,6 +2,7 @@ package com.zpop.web.service;
 
 import com.zpop.web.dto.*;
 import com.zpop.web.entity.Member;
+import com.zpop.web.entity.MeetingFile;
 
 import com.zpop.web.entity.Participation;
 
@@ -136,9 +137,15 @@ public interface MeetingService {
 	 */
 	boolean delete(int id, Member member);  //TODO: 시큐리티
 
-	RegisterMeetingResponse getActiveOptions();
+	RegisterMeetingViewResponse getActiveOptions();
 
-	int register(RegisterMeetingRequest dto, List<MultipartFile> images, String realPath) throws FileNotFoundException, IOException;
+	RegisterMeetingResponse register(RegisterMeetingRequest dto) throws FileNotFoundException, IOException;
+			
+	boolean updateMeeting(UpdateMeetingRequest dto) throws IOException;
+			
+	UpdateMeetingViewDto getUpdateMeetingView(int id);
+			
+	MeetingFile uploadFile(MultipartFile file, String path) throws IOException;
 
 	int getUserType(int memberId, int meetingId);
 

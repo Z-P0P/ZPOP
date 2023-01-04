@@ -30,6 +30,7 @@ import com.zpop.web.dao.CategoryDao;
 import com.zpop.web.dao.CommentDao;
 import com.zpop.web.dao.ContactTypeDao;
 import com.zpop.web.dao.MeetingDao;
+import com.zpop.web.dao.MeetingFileDao;
 import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.NotificationDao;
 import com.zpop.web.dao.ParticipationDao;
@@ -39,6 +40,8 @@ import com.zpop.web.entity.meeting.MeetingThumbnailView;
 import com.zpop.web.entity.participation.ParticipationInfoView;
 import com.zpop.web.utils.ElapsedTimeCalculator;
 import com.zpop.web.utils.TextDateTimeCalculator;
+
+import jakarta.validation.Valid;
 
 @Service
 public class DefaultMeetingService implements MeetingService {
@@ -60,6 +63,9 @@ public class DefaultMeetingService implements MeetingService {
 
 	@Autowired
 	private MemberDao memberDao;
+
+	@Autowired
+	private MeetingFileDao meetingFileDao;
 
 	@Autowired
 	private NotificationDao notificationDao;
@@ -126,100 +132,43 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public int register(RegisterMeetingRequest dto, List<MultipartFile> images, String realPath) throws IOException {
-
-		if (dto.getCategoryId() == 0) {
-			// 카테고리 입력 x
-		}
-		if (dto.getRegionId() == 0) {
-			// 지역 입력 x
-		}
-
-		if (dto.getAgeRangeId() == 0) {
-			// 연령 입력 x
-		}
-
-		if (dto.getContactTypeId() == 0) {
-			// 연락방법 입력 x
-		}
-
-		if (dto.getGenderCategory() == 0) {
-			// 성별 입력 x
-		}
-
-		if (dto.getTitle().equals("")) {
-			// 제목 입력 x
-		}
-
-		if (dto.getContent().equals("")) {
-			// 내용 입력 x
-		}
-
-		if (dto.getMaxMember() < 2) {
-			// 인원 미입력
-		}
-
-		if (dto.getStartedAt() == null) {
-			// 시작시간 입력 x
-		}
-
-		if (dto.getStartedAt().before(new Date())) {
-			// 현재시간보다 과거 시간을 입력
-		}
-
-		if (dto.getDetailRegion().equals("")) {
-			// 상세 지역 미입력
-		}
-
-		if (dto.getContact().equals("")) {
-			// 연락처 미입력
-		}
+	@Transactional
+	public RegisterMeetingResponse register(RegisterMeetingRequest dto) throws IOException {
 
 		Meeting meeting = dto.toEntity();
 		dao.insert(meeting);
 		int meetingId = meeting.getId();
-		System.out.println(meetingId + " " + meeting.getRegMemberId());
-		int participation = participationDao.insert(meetingId, meeting.getRegMemberId());
 
-		realPath += File.separator + String.valueOf(meetingId);
+		// 주최자를 참여자로 넣음
+		participationDao.insert(meetingId, meeting.getRegMemberId());
 
+		List<MeetingFile> images = dto.getImages();
+		images.forEach(image -> image.setMeetingId(meetingId));
+		meetingFileDao.updateAllMeetingId(images);
+		//
+		
+		
+		/* 모든 image 태그의 data-id = ${image의 id} 추가, 파일 경로에 모임글 id 추가
 		Document doc = Jsoup.parse(dto.getContent());
 		Elements imageTags = doc.select("img");
-		for (Element tag : imageTags) {
+
+		for (int i = 0; i < imageTags.size(); i++) {
+			Element tag = imageTags.get(i);
+			MeetingFile image = meetingImages.get(i);
 			String src = tag.attr("src");
-			src = File.separator + "images" + File.separator + String.valueOf(meetingId) + File.separator
-					+ src;
+			src = File.separator + "images" + File.separator + String.valueOf(meetingId) + File.separator + src;
 			tag.attr("src", src);
+			System.out.println(image.toString());
+			tag.attr("data-id", String.valueOf(image.getId()));
 		}
 
-		if (images != null) {
-			for (MultipartFile image : images) {
+		meeting.setContent(doc.body().html());
+		System.out.println(doc.body().html());
+		dao.updateContent(meeting);
+		*/
+		
+		return new RegisterMeetingResponse(meetingId);
 
-				File pathFile = new File(realPath);
-				if (!pathFile.exists()) {
-					pathFile.mkdirs();
-				}
-
-				String completePath = realPath + File.separator + image.getOriginalFilename();
-				System.out.println(completePath);
-				InputStream fis = image.getInputStream();
-				OutputStream fos = new FileOutputStream(completePath);
-
-				byte[] buf = new byte[1024];
-				int size = 0;
-				while ((size = fis.read(buf)) > 0) {
-					fos.write(buf, 0, size);
-				}
-
-				fos.close();
-				fis.close();
-			}
-			meeting.setContent(doc.body().html());
-			System.out.println(doc.body().html());
-			dao.updateContent(meeting);
-		}
-
-		return 1;
 	}
 
 	@Override
@@ -459,14 +408,14 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public RegisterMeetingResponse getActiveOptions() {
+	public RegisterMeetingViewResponse getActiveOptions() {
 
 		List<RegionDto> regions = regionDao.getActiveList();
 		List<CategoryDto> categories = categoryDao.getActiveList();
 		List<ContactTypeDto> contactTypes = contactTypeDao.getActiveList();
 		List<AgeRangeDto> ageRanges = ageRangeDao.getActiveList();
 
-		return new RegisterMeetingResponse(regions, categories, contactTypes, ageRanges);
+		return new RegisterMeetingViewResponse(regions, categories, contactTypes, ageRanges);
 	}
 
 	@Override
@@ -541,6 +490,40 @@ public class DefaultMeetingService implements MeetingService {
 		}	
 		return result;
 	}
+
+	@Override
+	@Transactional
+	public boolean updateMeeting(UpdateMeetingRequest dto) throws IOException {
+
+		int meetingId = dto.getMeetingId();
+		int regMemberId = dto.getRegMemberId();
+
+		Meeting meeting = dao.get(meetingId);
+		if (meeting == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "모임글이 없습니다.");
+		}
+
+		if (meeting.getRegMemberId() != regMemberId) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+		}
+
+		// 수정된 내용 update
+		dao.update(dto.toEntity());
+		
+		// 가지고온 image에 모임 id를 넣어줌 
+		List<MeetingFile> images = dto.getImages();
+		images.forEach(image->image.setMeetingId(meetingId));
+		
+		// 가지고온 image를 제외한 나머지를 제거함
+		meetingFileDao.deleteAllExcept(images);
+		
+		// 가지고온 image를 업데이트 함
+		if (!images.isEmpty()) {
+			meetingFileDao.updateAllMeetingId(images);			
+		}
+		return true;	
+	}
+
 	@Override
 	public int getUserType(int memberId, int meetingId) {
 		List<Participation> participants = participationDao.getListByMeetingId(meetingId);
@@ -565,7 +548,39 @@ public class DefaultMeetingService implements MeetingService {
 		}
 		return userType;
 	}
-	
+
+	@Override
+	public UpdateMeetingViewDto getUpdateMeetingView(int id) {
+		return dao.getUpdateView(id);
+	}
+
+	@Override
+	public MeetingFile uploadFile(MultipartFile file, String path) throws IOException {
+
+		File pathFile = new File(path);
+		if (!pathFile.exists()) {
+			pathFile.mkdirs();
+		}
+
+		String completePath = path + File.separator + file.getOriginalFilename();
+		System.out.println(completePath);
+		InputStream fis = file.getInputStream();
+		OutputStream fos = new FileOutputStream(completePath);
+
+		byte[] buf = new byte[1024];
+		int size = 0;
+		while ((size = fis.read(buf)) > 0) {
+			fos.write(buf, 0, size);
+		}
+
+		fos.close();
+		fis.close();
+		MeetingFile meetingFile = new MeetingFile(file.getOriginalFilename());
+		meetingFileDao.insert(meetingFile);
+		return meetingFile;
+	}
+
+
 	@Override
 	public boolean cancelParticipate(int id, int memberId) {
 
@@ -607,12 +622,5 @@ public class DefaultMeetingService implements MeetingService {
         //participationDao.updateCanceledAt(participationInfo.getId());
 
         return true;
-    }
-
-	private void createNotification(int memberId, String url, int type) {
-		notificationDao.insertCommentNotification(memberId, url, type);
 	}
-
-	
-    
 }

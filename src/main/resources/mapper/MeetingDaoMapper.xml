@@ -74,6 +74,22 @@
 				SET viewCount = viewCount + 1
 				WHERE id = #{id}
 	</update>
+	<update id="update" parameterType="Meeting">
+		UPDATE meeting
+        SET 
+        	categoryId=#{categoryId}, 
+        	regionId=#{regionId}, 
+        	ageRangeId=#{ageRangeId}, 
+        	contactTypeId=#{contactTypeId}, 
+        	genderCategory=#{genderCategory},
+        	title=#{title}, 
+        	content=#{content}, 
+        	detailRegion=#{detailRegion}, 
+        	maxMember=#{maxMember}, 
+        	startedAt=#{startedAt}, 
+        	contact=#{contact}
+        WHERE id = #{id}
+	</update>
 
 	<select id="getMeetingList"
 		resultType="com.zpop.web.entity.meeting.MeetingThumbnailView">
@@ -158,7 +174,35 @@
 		SELECT maxMember FROM meeting
 		WHERE id = #{meetingId}
 	</select>
-
+    <select id="getUpdateView" resultType="UpdateMeetingViewDto">
+	    SELECT 
+			meeting.title,
+		    meeting.startedAt,
+		    meeting.detailRegion,
+		    meeting.content,
+		    meeting.categoryId,
+		    category.name AS categoryName,
+		    meeting.regionId,
+		    region.name AS regionName,
+		    meeting.genderCategory,
+		    meeting.ageRangeId,
+		    meeting.contact,
+		    ageRange.type AS ageRangeType,
+		    meeting.contactTypeId,
+		    contactType.name AS contactTypeName,
+		    meeting.maxMember,
+		    meeting.regMemberId
+		FROM meeting 
+		JOIN category
+		ON category.id = meeting.categoryId
+		JOIN region
+		ON region.id = meeting.regionId
+		JOIN ageRange
+		ON ageRange.id = meeting.ageRangeId
+		JOIN contactType
+		ON contactType.id = meeting.contactTypeId
+		WHERE meeting.id = #{meetingId}
+	</select>
 	<select id="getMeetingHost" resultType="int">
 		SELECT regMemberId from meeting
 		where id = #{id}
