@@ -30,16 +30,14 @@
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
 
 <main class="main"  layout:fragment="content">
-	<span  class="hidden member-id" th:text="${session.memberId}"></span>
-    <section class="meeting">
+    <section th:attr="data-id=${meetingId}" class="meeting meeting-id">
         <div class="meeting__info">
             <div class="meeting__category-wrap">
                 <span class="meeting__category"  th:text="${meeting.categoryName}">문화생활</span>
             </div>
             <div class="meeting__header">
                 <div class="meeting__title-container">
-                <span class="hidden meeting-id" th:text="${meeting.id}"></span>
-                    <span class="meeting__title"  th:text="${meeting.title}">한강공원에서 러닝하실 분~🙂</span>
+                    <span class="meeting__title"  th:text="${dto.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
                     <th:block th:if="${meeting.isMyMeeting == true}">	
                     		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-host}"></div>
@@ -204,18 +202,17 @@
 				<textarea class="comment__input" name="comment-text"
 					id="comment-text" placeholder="댓글을 입력하세요."></textarea>
 				<div class="comment__btn-container">
+					<span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
 					<span class="comment__btn btn btn-round btn-action" id="register-btn">등록하기</span>
 					<span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
 				</div>
 			</div>
 			<ul class="comment__list">
-
-				<li th:each="comment:${meeting.comments}">
+				<li th:attr="data-id=${comment.id}" th:each="comment:${comments}">
 					<div class="profile">
 						<span class="profile__image" th:text="${comment.profileImgPath}"></span>
 						<span class="profile__nickname" th:text="${comment.nickname}">닉네임</span>
 						<span class="profile__time" th:text="${comment.elapsedTime}">경과시간</span>
-						<span class="hidden comment-id" th:text="${comment.id}">경과시간</span>
 						<button class="kebob"></button>
                         <th:block th:if="${comment.isMyComment}">
                                 <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
@@ -228,7 +225,6 @@
                         댓글 내용
 					</span>
 					<div class="comment__replies">
-						<span class="hidden comment-id" th:text="${comment.id}">댓글아이디</span>
 						<span class="pointer underline reply-cnt"
 							th:classappend="(${comment.countOfReply}==0)? 'hidden'"
 							th:text="'답글 ' + ${comment.countOfReply}+'개'"></span> <span
