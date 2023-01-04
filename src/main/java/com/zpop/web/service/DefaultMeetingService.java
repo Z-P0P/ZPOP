@@ -236,7 +236,6 @@ public class DefaultMeetingService implements MeetingService {
 		 * 댓글 정보 조회 및 가공
 		 */ 
 		List<CommentView> comments = commentDao.getComment(id);
-		int commentCount = commentDao.getCountOfComment(id);
 
 		List<CommentResponse> commentsResponse = new ArrayList<>();
 
@@ -281,7 +280,7 @@ public class DefaultMeetingService implements MeetingService {
 			ageRange.getType(),
 			meeting.getRegMemberId(),
 			meeting.getViewCount(),
-			commentCount,
+			meeting.getCommentCount(),
 			isMyMeeting,
 			hasParticipated,
 			isClosed,
