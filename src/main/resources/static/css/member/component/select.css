@@ -85,8 +85,13 @@
 }
 
 .select-box__options--header > li {
+  padding: 0;
+}
+
+.select-box__options--header > li > a{
   padding: 10px 15px;
 }
+
 
 .select-box__options > li:hover {
   background-color: var(--main-color);

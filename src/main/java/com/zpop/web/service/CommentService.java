@@ -25,7 +25,4 @@ public interface CommentService {
 	int getCountOfComment(int meetingId);
 	int getCountOfReply(int groupId);
 	
-	// 댓글 알림 생성
-	void createCommentNotification(int memberId, String url, int type);
-
 }

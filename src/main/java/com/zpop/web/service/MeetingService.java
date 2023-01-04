@@ -1,12 +1,9 @@
 package com.zpop.web.service;
 
-import com.zpop.web.dto.MeetingThumbnailResponse;
-import com.zpop.web.dto.RegisterMeetingRequest;
-import com.zpop.web.dto.RegisterMeetingResponse;
+import com.zpop.web.dto.*;
 import com.zpop.web.entity.Member;
+import com.zpop.web.entity.MeetingFile;
 
-import com.zpop.web.dto.MeetingDetailDto;
-import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.entity.Participation;
 
 import com.zpop.web.entity.meeting.Meeting;
@@ -58,9 +55,7 @@ public interface MeetingService {
 	 * @param id 모임 아이디
 	 * @return {@link MeetingDetailDto}
 	 */
-	MeetingDetailDto getById(int id);
-
-	List<MeetingParticipantsDto> getParticipants(int id);
+	MeetingDetailResponse getById(int id, Integer memberId);
 
 	/**
 	 * 모임 연락처 얻기.
@@ -142,9 +137,15 @@ public interface MeetingService {
 	 */
 	boolean delete(int id, Member member);  //TODO: 시큐리티
 
-	RegisterMeetingResponse getActiveOptions();
+	RegisterMeetingViewResponse getActiveOptions();
 
-	int register(RegisterMeetingRequest dto, List<MultipartFile> images, String realPath) throws FileNotFoundException, IOException;
+	RegisterMeetingResponse register(RegisterMeetingRequest dto) throws FileNotFoundException, IOException;
+			
+	boolean updateMeeting(UpdateMeetingRequest dto) throws IOException;
+			
+	UpdateMeetingViewDto getUpdateMeetingView(int id);
+			
+	MeetingFile uploadFile(MultipartFile file, String path) throws IOException;
 
 	int getUserType(int memberId, int meetingId);
 

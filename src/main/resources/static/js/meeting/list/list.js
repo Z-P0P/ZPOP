@@ -17,7 +17,7 @@ window.addEventListener("load", function () {
   }
 
   // 지역
-  const regions = document.querySelectorAll(".select-box__options > li");
+  const regions = document.querySelectorAll(".region-category .select-box__options > li");
   for (const region of regions) {
     region.onclick = onClickRegion;
   }
