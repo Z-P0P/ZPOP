@@ -10,45 +10,46 @@
 <link rel="stylesheet" href="/css/icon.css"/>
 
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<script type="module" src="/js/meeting/register.js"></script>
+<script type="module" src="/js/meeting/update.js"></script>
 </head>
 <body>
 	<main layout:fragment="content">
 		<div class="meeting-form-container">
 			<form class="meeting-form" action="meeting/register">
-				<h1 class="meeting-form__title">모임 등록하기</h1>
+				<h1 class="meeting-form__title">모임 수정하기</h1>
 				<fieldset class="meeting-form__default-info">
 					<legend>1. 모임 기본 정보를 입력해주세요.</legend>
 					<div class="meeting-form__input" id="category-input">
 						<label class="input__label" for="category">카테고리</label>
 						<div class="select-box select-box--input">
-							<span id="category-id">카테고리를 선택하세요</span>	
+							<span id="category-id" th:text="${meetingDetail.categoryName}">카테고리를 선택하세요</span>	
 							<ul class="select-box__options">
 								<li th:each="category:${response.categories}" 
 								th:data-id="${category.id}"
 								th:text="${category.name}">밥/카페</li>
 							</ul>
-							<input class="hidden" type="text" name="categoryId">
+							<input class="hidden" type="text" name="categoryId" th:value="${meetingDetail.categoryId}">
 						</div>
 						<span class="input__message"></span>
 					</div>
 					<div class="meeting-form__input" id="started-at-input">
 						<label class="input__label" for="category">날짜/시간</label>
 						<div class="input-text__content-wrapper">
-							<input type="datetime-local" class="input-text__content"  id="startedAt" name="startedAt">
+							<input type="datetime-local" class="input-text__content"  id="startedAt" name="startedAt"
+							th:value="${meetingDetail.startedAt}">
 						</div>
 						<span class="input__message"></span>
 					</div>
 					<div class="meeting-form__input" id="region-input">
 						<label class="input__label" for="category">지역</label>
 						<div class="select-box select-box--input">
-							<span id="region-id">지역을 선택하세요.</span>
+							<span id="region-id" th:text="${meetingDetail.regionName}">지역을 선택하세요.</span>
 							<ul class="select-box__options" id="select-box">
 								<li th:each="region:${response.regions}"
 								th:data-id="${region.id}"
 								th:text="${region.name}">서울</li>
 							</ul>
-							<input class="hidden" type="text" name="regionId">
+							<input class="hidden" type="text" name="regionId" th:value="${meetingDetail.regionId}">
 						</div>
 						<span class="input__message"></span>
 					</div>
@@ -58,7 +59,7 @@
 							<div class="input-text__content-wrapper">
 								<input class="input-text__content" type="text"
 									placeholder="상세장소를 입력해주세요"  
-									id="detailRegion" name="detailRegion">
+									id="detailRegion" name="detailRegion" th:value="${meetingDetail.detailRegion}">
 							</div>
 							<span class="input__message"></span>
 						</div>
@@ -66,33 +67,38 @@
 					<div class="meeting-form__input" id="age-range-input">
 						<label class="input__label" for="category">연령대</label>
 						<div class="select-box select-box--input">
-							<span id="age-range" >연령대를 선택해주세요.</span>
+							<span id="age-range" th:text="${meetingDetail.ageRangeType}" >연령대를 선택해주세요.</span>
 							<ul class="select-box__options">
 								<li th:each="ageRange:${response.ageRanges}"
 								th:data-id="${ageRange.id}"
 								th:text="${ageRange.type}">10 대</li>
 							</ul>
-							<input class="hidden" type="text" name=ageRangeId>
+							<input class="hidden" type="text" name=ageRangeId
+							th:value="${meetingDetail.ageRangeId}">
 						</div>
 						<span class="input__message"></span>
 					</div>
 					<div class="meeting-form__input" id="gender-category-input">
 						<label class="input__label" for="category">성별</label>
 						<div class="select-box select-box--input">
-							<span id="gender-category">성별을 선택하세요.</span>
+							<span id="gender-category"
+							th:text="${meetingDetail.genderCategory == 0?
+							'남녀 모두' : meetingDetail.genderCategory == 1?
+							'남자만' : '여자만'}">성별을 선택하세요.</span>
 							<ul class="select-box__options">
 								<li data-id=0>남녀 모두</li>
 								<li data-id=1>남자만 </li>
 								<li data-id=2>여자만</li>
 							</ul>
-							<input class="hidden" type="text" name="genderCategory">
+							<input class="hidden" type="text" name="genderCategory"
+							th:value="${meetingDetail.genderCategory}">
 						</div>
 						<span class="input__message"></span>
 					</div>
 					<div class="meeting-form__input" id="max-member-input">
 						<label class="input__label" for="category">모집 인원</label>
 						<div class="select-box select-box--input">
-							<span id="maxMember">모집인원을 선택하세요.</span>
+							<span id="maxMember" th:text="|${meetingDetail.maxMember} 명|">모집인원을 선택하세요.</span>
 							<ul class="select-box__options">
 								<li data-id="2">2 명</li>
 								<li data-id="3">3 명</li>
@@ -100,25 +106,29 @@
 								<li data-id="5">5 명</li>
 								<li data-id="6">6 명</li>
 							</ul>
-							<input class="hidden" type="text" name="maxMember">
+							<input class="hidden" type="text" name="maxMember"
+							th:value="${meetingDetail.maxMember}">
 						</div>
 						<span class="input__message"></span>
 					</div>
 					<div class="meeting-form__input" id="contact-type-input">
 						<label class="input__label" for="category">연락방법</label>
 						<div class="select-box select-box--input">
-							<span id="contactTypeId">연락 방법을 선택하세요.</span>
+							<span id="contactTypeId"
+							th:text="${meetingDetail.contactTypeName}">연락 방법을 선택하세요.</span>
 							<ul class="select-box__options" >
 								<li th:each="contactType:${response.contactTypes}"
 								th:data-id="${contactType.id}"
 								th:text="${contactType.name}">카카오톡 오픈 채팅</li>
 							</ul>
-							<input class="hidden" type="text" name="contactTypeId">
+							<input class="hidden" type="text" name="contactTypeId"
+							th:value="${meetingDetail.contactTypeId}">
 						</div>
 						<span class="input__message"></span>
 						<div class="input-text__content-wrapper" id="contact-input">
 							<input class="input-text__content"
-								type="text" placeholder="오픈채팅방 링크" name="contact"  id="contact">
+								type="text" placeholder="오픈채팅방 링크" name="contact"  id="contact"
+								th:value="${meetingDetail.contact}">
 						</div>
 						<span class="input__message"></span>					
 					</div>
@@ -130,27 +140,20 @@
 						<div
 							class="input-text__content-wrapper input-text__content-wrapper--error">
 							<input id="meeting-title" class="input-text__content" type="text"
-								placeholder="제목을 입력해주세요" name="title">
+								placeholder="제목을 입력해주세요" name="title" th:value="${meetingDetail.title}">
 						</div>
 						<span class="input__message"></span>
 					</div>
 					<div class="meeting-form__input">
 						<label class="input-text__label" for="">내용</label>
-						<div id="editor">
-							<p>우리의 모임에 대해 소개해주세요!</p>
-							<p>
-								내용이 <strong>자세하면</strong> <u>참여할 확률</u>이 높아져요.
-							</p>
-							<p>
-								<br>
-							</p>
+						<div id="editor" th:utext="${meetingDetail.content}">
 						</div>
 					</div>
 				</fieldset>
 				<div class="meeting-form__buttons">
 					<button class="btn btn-round">취소</button>
 					<button id="register-btn" class="btn btn-round btn-action"
-						type="submit">등록하기</button>
+						type="submit">수정하기</button>
 				</div>
 			</form>
 		</div>
@@ -171,7 +174,7 @@
 			</div>
 		</div>
 	</div>
-	<input type="file" id="fileUpload" class="hidden">	
+	<input type="file" id="fileUpload" class="hidden">
 	</main>
 </body>
 <script>

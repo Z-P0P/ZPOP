@@ -1,9 +1,10 @@
 import * as Reply from "./reply.js";
 import {addListenerToCommentKebob} from "./edit-comment.js";
 import {addListenerToReplyKebob} from "./edit-reply.js";
+
 window.addEventListener("load", () => {
 	//DOM에서 SSR로 뿌려진값들 추출 
-	const meetingId = document.querySelector(".meeting-id").innerText.trim();
+	const meetingId = document.querySelector(".meeting-id").dataset.id;
 	const commentUl = document.querySelector(".comment__list");
 	const inputBox = document.querySelector(".comment__input");
 	const registerBtn = document.querySelector("#register-btn");
@@ -20,8 +21,8 @@ window.addEventListener("load", () => {
 		//클릭시 답글 케밥인경우 이벤트핸들러 등록
 		if(e.target.classList.contains("rkb-btn")){
 			const selectModal = e.target.nextElementSibling;
-			const replyId = e.target.previousElementSibling.innerText.trim();
-			const replyUl = e.target.parentElement.parentElement.parentElement;
+			const replyId = e.target.closest("li").dataset.id;
+			const replyUl = e.target.closest("ul");
 			addListenerToReplyKebob(replyId, replyUl, selectModal);
 			return;
 		}
@@ -31,7 +32,7 @@ window.addEventListener("load", () => {
 			!e.target.classList.contains("reply-close"))
 			return; 
 		//DOM에서 SSR로 뿌려진값들 추출 
-		const commentId = e.target.parentElement.firstElementChild.innerText;//<span class="hidden comment-id">"
+		const commentId = e.target.closest("li").dataset.id;
 		const replyUl = e.target.parentElement.nextElementSibling.children[0];//<ul class="reply__list">
 		const replySection = replyUl.parentElement;// <section class="reply hidden">
 		//각 댓글별로 답글 조회
@@ -45,7 +46,7 @@ window.addEventListener("load", () => {
 				
 				replyUl.addEventListener("click",(e)=>{
 					if(e.target.classList.contains("reply-to-reply")){
-						const parentId = e.target.previousElementSibling.innerText.trim();
+						const parentId = e.target.closest("li").dataset.id;
 						const parent = e.target.parentElement;
 						parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
 						Reply.writeReply(meetingId, commentId, parentId, replyUl, parent);
@@ -71,9 +72,9 @@ window.addEventListener("load", () => {
 		if(e.target.classList.contains("reply-write")){
 			const parent = e.target.parentElement;
 			parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
-			const parentId = parent.children[0].innerText.trim();
-			const groupId = parentId; //원댓글에 대한 답글은 groupId와 parentId가 동일
-			Reply.writeReply(meetingId, groupId, parentId, replyUl, parent);
+			const commentId = e.target.closest("li").dataset.id;
+			const groupId = commentId; //원댓글에 대한 답글은 groupId와 commentId가 동일
+			Reply.writeReply(meetingId, groupId, commentId, replyUl, parent);
 			replySection.classList.remove("hidden");//<section class="reply hidden">
 		}
 		if(e.target.classList.contains("reply-close")){

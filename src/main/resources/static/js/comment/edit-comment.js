@@ -11,36 +11,33 @@ export function addListenerToCommentKebob(meetingId,commentUl,inputBox,registerB
    for(const m of modalSelectEditList)
       m.addEventListener("click",(e)=>{
          e.preventDefault();
-         const text = e.target.parentElement.parentElement.nextElementSibling.innerText.trim();
+         const text = e.target.closest("li").querySelector(".comment__content").innerText.trim();
          inputBox.focus();
          inputBox.value= "";
          inputBox.value = text+ " ";
-         commentId = e.target.parentElement.previousElementSibling.previousElementSibling.innerText.trim();
+         commentId = e.target.closest("li").dataset.id;
          registerBtn.classList.add("hidden");
          editSaveBtn.classList.remove("hidden");
-          const template = `
-         	<span class="reply__btn btn btn-round btn-cancel cancel-btn">취소하기</span>
-         `
-         if(!editSaveBtn.classList.contains("has-cancel-sibling")){
-         	editSaveBtn.insertAdjacentHTML("beforebegin", template)
-            editSaveBtn.classList.add("has-cancel-sibling");
-         }
          const cancelBtn = document.querySelector(".cancel-btn");
+         cancelBtn.classList.remove("hidden");
          cancelBtn.addEventListener("click",()=>{
 			inputBox.value="";
 			inputBox.blur();
+			registerBtn.classList.remove("hidden");
+         	editSaveBtn.classList.add("hidden");
+         	cancelBtn.classList.add("hidden");
 		});
       });
    for(const m of modalSelectDeleteList)
       m.addEventListener("click",(e)=>{
          e.preventDefault();
-         commentId = e.target.parentElement.previousElementSibling.previousElementSibling.innerText.trim();
-         deleteComment(meetingId, commentId, commentUl);
+         commentId = e.target.closest("li").dataset.id;
+         deleteComment(commentId,meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
       });
    for(const m of modalSelectReportList){
       m.addEventListener("click",(e)=>{
          e.preventDefault();
-         commentId = e.target.parentElement.previousElementSibling.previousElementSibling.innerText.trim();
+         commentId = e.target.closest("li").dataset.id;
          reportComment(commentId, 3, "그냥 맘에 안듬");
       });
    }   
@@ -85,7 +82,7 @@ function saveEdit(meetingId, commentId,commentUl,inputBox){
       });
 }
 
-function deleteComment(meetingId, commentId, commentUl){
+function deleteComment(commentId,meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
    const data = {
       method: "DELETE",
       headers: {
@@ -103,6 +100,7 @@ function deleteComment(meetingId, commentId, commentUl){
                while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
                   commentUl.removeChild(commentUl.firstChild);
                getComment(meetingId,commentUl)
+               addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
             }
             else alert("시스템 장애로 등록이 안되고 있습니다.");
       });

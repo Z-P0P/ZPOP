@@ -5,6 +5,11 @@
 .hidden {
   display: none !important;
 }
+
+.v-hidden{
+	visibility:hidden !important;
+}
+
 .pointer{
 	cursor:pointer
 }

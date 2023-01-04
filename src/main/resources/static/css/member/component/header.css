@@ -194,6 +194,7 @@
 }
 
 .header__profile .select-box__options--header a{
+  display: inline-block;
 	width:100%;
 }
 

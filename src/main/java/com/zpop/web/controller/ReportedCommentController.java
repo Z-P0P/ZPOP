@@ -42,10 +42,13 @@ public class ReportedCommentController {
 		if(reportedComments.length > 0) {
 			System.out.println("중복 신고하였습니다");
 		}
+		
+		System.out.println(reportTypeId);
+		System.out.println(reportReason);
 		// 자신의 댓글 신고
 		ReportedComment rm = new ReportedComment(
-				userDetails.getId(),
 				1,
+				userDetails.getId(),
 				reportTypeId,
 				reportReason,
 				"original" // original
