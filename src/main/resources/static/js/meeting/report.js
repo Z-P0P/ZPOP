@@ -162,6 +162,7 @@ window.addEventListener("load", (e)=>{
 	                    reportReason : memberReportReason
 	                })
 	            }
+				// ============== 테스트용 =====================
 				const memberId = 5;
 	            fetch(`/report/member/${memberId}`, data)
 	            .then((response)=>{
