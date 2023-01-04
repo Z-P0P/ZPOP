@@ -3,8 +3,6 @@ package com.zpop.web.controller;
 import java.io.IOException;
 import java.util.Map;
 
-import com.zpop.web.security.UserSecurityService;
-import com.zpop.web.security.ZpopUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +12,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +22,8 @@ import com.zpop.web.dao.NotificationDao;
 import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.dao.SocialTypeDao;
 import com.zpop.web.entity.Member;
+import com.zpop.web.security.UserSecurityService;
+import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.LoginService;
 
 import jakarta.servlet.http.HttpSession;
@@ -94,11 +93,13 @@ public class LoginController {
 			int participantId = member.getId();
 			int[] participantIds = participationDao.getListByParticipantId(participantId);
 			
-			if(participantIds[0] != 0)
-				createNotification(participantIds[0],"meeting/evaluation",1);
+			if(participantIds!=null)
+				for(int p : participantIds)
+					createNotification(participantIds[0],"member/me/meeting",1);
+			
+
 
 		} catch (ArrayIndexOutOfBoundsException e) {
-
 		    System.err.println("Error: the array is empty!");
 		}
 
