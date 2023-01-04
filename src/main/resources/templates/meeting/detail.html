@@ -143,9 +143,8 @@
 				<li th:attr="data-id=${comment.id}" th:each="comment:${comments}">
 					<div class="profile">
 						<span class="profile__image" th:text="${comment.profileImgPath}"></span>
-						<span class="profile__nickname" th:text="${comment.nickname}">찬우몬</span>
-						<span class="profile__time" th:text="${comment.elapsedTime}">3분전</span>
-						<span class="hidden comment-id" th:text="${comment.id}">id</span>
+						<span class="profile__nickname" th:text="${comment.nickname}">닉네임</span>
+						<span class="profile__time" th:text="${comment.elapsedTime}">경과시간</span>
 						<button class="kebob"></button>
 		                    <th:block th:if="${comment.isMyComment}">
 		                    		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
