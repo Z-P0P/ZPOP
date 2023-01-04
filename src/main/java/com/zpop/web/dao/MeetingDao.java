@@ -38,8 +38,6 @@ public interface MeetingDao {
 
 	void increaseViewCount(int id);
 
-	int getmaxMember(int meetingId);
-	
 	int getMeetingHost(int meetingId);
 	
 	int updateContent(Meeting meeting);

@@ -7,15 +7,18 @@ window.addEventListener("load", function() {
 	const participantCount = document.querySelector(".participant-count");
 	const arrowUp = document.querySelector(".icon-arrow-up");
 	const arrowDown = document.querySelector(".icon-arrow-down");
-	
-	participationBtn.onclick = function(e) {
-		e.preventDefault();
-		const modal = document.querySelector(e.target.getAttribute("data-modal"));
-		if (!modal.classList.contains("hidden")) {
-			modal.classList.add("hidden");
-			return;
+
+	if(participationBtn) {
+		// 참여 확인 모달
+		participationBtn.onclick = function(e) {
+			e.preventDefault();
+			const modal = document.querySelector(e.target.getAttribute("data-modal"));
+			if (!modal.classList.contains("hidden")) {
+				modal.classList.add("hidden");
+				return;
+			}
+			modal.classList.remove("hidden");
 		}
-		modal.classList.remove("hidden");
 	}
 
 	function hideModalByButton(e) {
@@ -57,10 +60,9 @@ window.addEventListener("load", function() {
 			})
 		}
 
-      	fetch(`/meeting/participate/${meetingId}`,data)
+      	fetch(`/meeting/${meetingId}/participate`, data)
          .then((response) => {
             if (response.ok) {
-               console.log("성공");
             	document.querySelector("#modal-wrapper-participation").classList.add("hidden");
              	while(participantUl.hasChildNodes()) //기존 참여자아이콘 한개씩 삭제
 					participantUl.removeChild(participantUl.firstChild);

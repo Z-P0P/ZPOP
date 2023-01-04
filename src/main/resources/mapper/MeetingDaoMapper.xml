@@ -144,6 +144,7 @@
 			</if>
 		</where>
 	</select>
+
 	<select id="getAdminDetailView"
 		resultType="AdminMeetingDetailsDto">
 		SELECT
@@ -169,29 +170,25 @@
 		ON meeting.contactTypeId = ct.id
 		WHERE meeting.id=#{meetingId}
 	</select>
-	
-	<select id="getmaxMember" resultType="java.lang.Integer">
-		SELECT maxMember FROM meeting
-		WHERE id = #{meetingId}
-	</select>
-    <select id="getUpdateView" resultType="UpdateMeetingViewDto">
-	    SELECT 
+
+	<select id="getUpdateView" resultType="UpdateMeetingViewDto">
+		SELECT 
 			meeting.title,
-		    meeting.startedAt,
-		    meeting.detailRegion,
-		    meeting.content,
-		    meeting.categoryId,
-		    category.name AS categoryName,
-		    meeting.regionId,
-		    region.name AS regionName,
-		    meeting.genderCategory,
-		    meeting.ageRangeId,
-		    meeting.contact,
-		    ageRange.type AS ageRangeType,
-		    meeting.contactTypeId,
-		    contactType.name AS contactTypeName,
-		    meeting.maxMember,
-		    meeting.regMemberId
+			meeting.startedAt,
+			meeting.detailRegion,
+			meeting.content,
+			meeting.categoryId,
+			category.name AS categoryName,
+			meeting.regionId,
+			region.name AS regionName,
+			meeting.genderCategory,
+			meeting.ageRangeId,
+			meeting.contact,
+			ageRange.type AS ageRangeType,
+			meeting.contactTypeId,
+			contactType.name AS contactTypeName,
+			meeting.maxMember,
+			meeting.regMemberId
 		FROM meeting 
 		JOIN category
 		ON category.id = meeting.categoryId
@@ -203,6 +200,7 @@
 		ON contactType.id = meeting.contactTypeId
 		WHERE meeting.id = #{meetingId}
 	</select>
+
 	<select id="getMeetingHost" resultType="int">
 		SELECT regMemberId from meeting
 		where id = #{id}
