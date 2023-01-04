@@ -30,7 +30,7 @@
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
 
 <main class="main"  layout:fragment="content">
-    <section th:attr="data-id=${meetingId}" class="meeting meeting-id">
+    <section th:attr="data-id=${meeting.id}" class="meeting meeting-id">
         <div class="meeting__info">
             <div class="meeting__category-wrap">
                 <span class="meeting__category"  th:text="${meeting.categoryName}">문화생활</span>
