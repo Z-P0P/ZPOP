@@ -1,3 +1,10 @@
+function addCompleteModal(){
+	const reportCompleteModal = document.querySelector(".report-modal-wrapper");
+	const reportCompleteBtn = document.querySelector(".report-complete__btn");
+	reportCompleteModal.classList.remove("hidden");
+	reportCompleteBtn.onclick = ()=> reportCompleteModal.classList.add("hidden");
+}
+
 function addHTML(target){
 			 	
 	let template=`
@@ -68,6 +75,7 @@ window.addEventListener("load", (e)=>{
 				meetingSelectBoxInput.value = null;
 				reportType = 0;
 				modal.classList.add("hidden");
+				addCompleteModal();
 			})
         })
         
@@ -120,6 +128,7 @@ window.addEventListener("load", (e)=>{
 					commentSelectBoxInput.value = null;
 					reportType = 0;
 					modal.classList.add("hidden");
+					addCompleteModal();
 				})
 	        })
 	        
@@ -172,6 +181,7 @@ window.addEventListener("load", (e)=>{
 					memberSelectBoxInput.value = null;
 					reportType = 0;
 					modal.classList.add("hidden");
+					addCompleteModal();
 				})
 	        })
 })
