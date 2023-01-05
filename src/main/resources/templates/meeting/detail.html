@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
  layout:decorate="~{inc/layout}">
- <head>
+
   <title>ZPOP | 모임</title>
     
   <th:block layout:fragment="css">
@@ -18,11 +18,12 @@
       <!-- detail page css -->
       <link rel="stylesheet" href="/css/member/meeting/detail.css">
   </th:block>	
- 
+  <th:block layout:fragment="js">
     <script src="/js/meeting/detail.js"></script>
     <script type="module" src="/js/comment/comment.js"></script>
     <script type="module" src="/js/comment/edit-comment.js"></script>
     <script src="/js/meeting/report.js"></script>
+  </th:block>	
 
 
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
