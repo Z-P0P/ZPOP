@@ -32,7 +32,7 @@
 	<update id="updateAllMeetingId" parameterType="java.util.List">
 		<foreach item="item" index="index" collection="list"
 			separator=";">
-			UPDATE meetingFileD
+			UPDATE meetingFile
 			SET meetingId=#{item.meetingId}
 			WHERE id=#{item.id}
 		</foreach>
