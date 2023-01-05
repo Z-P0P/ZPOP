@@ -9,6 +9,11 @@
 			(meetingId, participantId)
 			VALUES (#{meetingId}, #{memberId})
 	</insert>
+	<update id="updateHasEvaluated">
+		 UPDATE participation SET hasEvaluated = 1
+		 WHERE meetingId = #{meetingId}
+		 AND participantId = #{participantId}
+	</update>
 
 	<select id="get" resultType= "com.zpop.web.entity.Participation">
 			SELECT *
@@ -59,7 +64,7 @@
 		WHERE participantId=#{participantId}
 		AND bannedAt IS NULL
 		AND canceledAt IS NULL
-		AND isEvaluated = FALSE
+		AND hasEvaluated = FALSE
 	</select>
 
 	<select id="countByMeetingId" resultType="int">

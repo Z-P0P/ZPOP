@@ -1,28 +1,18 @@
 package com.zpop.web.controller;
 
+import com.zpop.web.dto.EvalDto;
 import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.entity.Member;
 import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.MeetingService;
 import com.zpop.web.service.MemberService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.zpop.web.dto.MyMeetingResponse;
-import com.zpop.web.dto.ParticipantDto;
-import com.zpop.web.entity.Member;
-import com.zpop.web.security.ZpopUserDetails;
-import com.zpop.web.service.MemberService;
-
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
 
 /*****
@@ -80,6 +70,8 @@ public class MemberController {
 	@GetMapping("/me/meeting")
 	public String getMeeting(@AuthenticationPrincipal ZpopUserDetails userDetails, Model model) {
 		List<MyMeetingResponse> meetings = service.getMyMeeting(userDetails.getId());
+		Member member = service.getById(userDetails.getId());
+		model.addAttribute("member", member);
 		model.addAttribute("meetings", meetings);
         return "member/my-meeting";
     }
@@ -92,6 +84,21 @@ public class MemberController {
         return participant;
     }
 
+	@ResponseBody
+	@PostMapping("/rate")
+	public void hello(@RequestBody EvalDto dto, @AuthenticationPrincipal ZpopUserDetails userDetails) {
+		System.out.println(dto);
+		if (userDetails == null){
+			// 로그인해야됨
+		}
+
+		int evaluatorId = userDetails.getId();
+		dto.setEvaluatorId(evaluatorId);
+
+		service.getEvalData(dto);
+
+//		return meetingTitle;
+	}
 
 	// 권한 확인
 

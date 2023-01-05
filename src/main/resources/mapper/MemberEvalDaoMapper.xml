@@ -14,11 +14,11 @@
         evaluateeId,
         result)
         VALUES
-        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
-            #{element.meetingId},
+        <foreach collection="list" item="element" separator=",">
+            (#{element.meetingId},
             #{element.evaluatorId},
             #{element.evaluateeId},
-            #{element.result}
+            #{element.result})
         </foreach>
     </insert>
     <select id="getAdminViewList" resultType="AdminMemberEvalDto">
