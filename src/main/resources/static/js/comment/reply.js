@@ -79,7 +79,7 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 		linkContainer.insertAdjacentHTML("afterend", template);
 		const inputBox = document.querySelector("#reply-text");
 		inputBox.focus();
-		document.querySelector(".register-btn").addEventListener("click", () => {
+		document.querySelector(".reply__btn.register-btn").addEventListener("click", () => {
 			const replyText = document.querySelector("#reply-text").value;
 			
 			if(replyText==""){
@@ -116,10 +116,11 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 					});
 		});//end of registerBtn event handler
 		//취소버튼에 이벤트핸들러 부착 
-		document.querySelector(".cancel-btn").addEventListener("click",()=>{
-			document.querySelector(".reply__input-container").remove();
-			linkContainer.classList.remove("hidden");
-		});
+		//document.querySelector(".reply__btn.cancel-btn").addEventListener("click",()=>{
+		//console.log(document.querySelector(".reply__btn.cancel-btn"))
+		//	document.querySelector(".reply__input-container").remove();
+		//	linkContainer.classList.remove("hidden");
+		//});
 }
 
 //답글 갯수 갱신

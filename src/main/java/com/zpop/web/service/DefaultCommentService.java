@@ -107,7 +107,7 @@ public class DefaultCommentService implements CommentService {
 	public int registerReply(Comment comment) {
 		int affectedRow = dao.insertReply(comment);
 
-		meetingDao.increaseCommentCount(comment.getMeetingId());
+		//meetingDao.increaseCommentCount(comment.getMeetingId());
 
 		int commentId = comment.getParentCommentId();
 		Comment parentComment = dao.getCommentById(commentId);
