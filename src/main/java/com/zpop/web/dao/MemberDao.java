@@ -2,6 +2,7 @@ package com.zpop.web.dao;
 
 import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.entity.Member;
+import com.zpop.web.entity.MemberEval;
 import com.zpop.web.entity.member.MyMeetingView;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -31,4 +32,5 @@ public interface MemberDao {
 	List<MyMeetingView> getMyGathering(int memberId);
 
 	List<EvalMemberDto> getEvalMember(int meetingId);
+	int updateFameAll(List<MemberEval> evals);
 }

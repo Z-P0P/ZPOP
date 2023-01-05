@@ -65,7 +65,7 @@ public class CommentController {
 	@ResponseBody
 	public String updateComment(@PathVariable int id, @RequestBody Comment comment,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		service.updateComment(comment);
+		service.updateComment(comment, userDetails.getId());
 		return "{\"1\":1}"; //JSON
 	}
 	//댓글 삭제 AJAX endpoint
@@ -73,7 +73,7 @@ public class CommentController {
 	@ResponseBody
 	public String deleteComment(@PathVariable int id, 
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		service.deleteComment(id);
+		service.deleteComment(id, userDetails.getId());
 		return "{\"1\":1}"; //JSON
 	}
 	//댓글 신고 AJAX endpoint

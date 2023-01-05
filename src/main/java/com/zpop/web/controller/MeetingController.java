@@ -2,16 +2,9 @@ package com.zpop.web.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.zpop.web.dto.*;
-import com.zpop.web.entity.Member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +24,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.zpop.web.dto.MeetingDetailResponse;
+import com.zpop.web.dto.ParticipantResponse;
+import com.zpop.web.dto.RegisterMeetingRequest;
+import com.zpop.web.dto.RegisterMeetingResponse;
+import com.zpop.web.dto.RegisterMeetingViewResponse;
+import com.zpop.web.dto.UpdateMeetingRequest;
+import com.zpop.web.dto.UpdateMeetingViewDto;
+import com.zpop.web.entity.Member;
 import com.zpop.web.security.ZpopUserDetails;
-import com.zpop.web.service.CommentService;
 import com.zpop.web.service.MeetingService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -152,7 +152,16 @@ public class MeetingController {
 
 		return result;
 	}
-
+	//참여취소 AJAX endpoint(js에서 콜하는 함수)
+	@DeleteMapping("/{meetingId}/leave")
+	@ResponseBody
+	public boolean cancelParticipate(@PathVariable int meetingId,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		int memberId = userDetails.getId();
+		boolean result = service.cancelParticipate(meetingId, memberId);
+		return result;
+		
+	}
 	@GetMapping("/{id}/contact")
 	@ResponseBody
 	public String getContact(@PathVariable int id, @AuthenticationPrincipal ZpopUserDetails userDetails) {
@@ -164,48 +173,17 @@ public class MeetingController {
 
 		return contact;
 	}
-
-	@GetMapping("/list")
-	public String getListView(Model model) {
-		List<MeetingThumbnailResponse> meetings = service.getList();
-
-		model.addAttribute("meetings", meetings);
-
-		return "meeting/list";
-	}
-
-	@GetMapping("/api/list")
+	
+	@PatchMapping("/{id}/close")
 	@ResponseBody
-	public List<MeetingThumbnailResponse> getList(@RequestParam(required = false, defaultValue = "0") int start,
-			@RequestParam(required = false) String keyword, @RequestParam(required = false) Integer category,
-			@RequestParam(required = false) String regions, @RequestParam(required = false) Boolean isClosed) {
-		List<MeetingThumbnailResponse> meetings = service.getList(start, keyword, category, regions, isClosed);
-
-		return meetings;
-	}
-
-	@DeleteMapping("/{id}")
-	@ResponseBody
-	public boolean delete(@PathVariable(name = "id") int id, @AuthenticationPrincipal ZpopUserDetails userDetails) {
-		int memberId = userDetails.getId();
-		boolean result = service.delete(id, memberId);
-		return result;
-	}
-
-	@DeleteMapping("/{id}/participant/{participantId}")
-	@ResponseBody
-	public boolean kick(@PathVariable(name = "id") int id, @PathVariable(name = "participantId") int participantId , 
+	public boolean closeMeeting(@PathVariable int id,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		int memberId = userDetails.getId();
-		boolean result = service.kick(id, participantId, memberId);
+		Member member = new Member();
+		member.setId(userDetails.getId());
+		boolean result = service.close(id, member);
 		return result;
+		
 	}
-
-	@PatchMapping("/close/{id}")
-	@ResponseBody
-	public boolean close(@PathVariable(name = "id") int id , @AuthenticationPrincipal ZpopUserDetails userDetails) {
-		int memberId = userDetails.getId();
-		return service.close(id, memberId);
-	}
-
+	
+	
 }
