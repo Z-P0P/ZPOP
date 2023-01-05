@@ -1,9 +1,12 @@
 package com.zpop.web.service;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.zpop.web.dao.CommentDao;
 import com.zpop.web.dao.MeetingDao;
@@ -125,15 +128,43 @@ public class DefaultCommentService implements CommentService {
 		return countOfReply;
 	}
 	@Override
-	public int updateComment(Comment comment) {
+	public int updateComment(Comment comment, int memberId) {
+		// 존재하는 댓글인지 확인
 		int commentId = comment.getId();
+		Comment foundComment = dao.getCommentById(commentId);
+		if(foundComment == null || foundComment.getDeletedAt() != null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다");
+
+		// 권한 확인
+		if(foundComment.getWriterId() != memberId)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
+
+		// 댓글 업데이트. 업데이트가 제대로 되었는지 확인
 		String content = comment.getContent();
 		int affectedRow = dao.updateComment(commentId, content);
+		if(affectedRow == 0)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다");
+
 		return affectedRow;
 	}
+
 	@Override
-	public int deleteComment(int commentId) {
+	@Transactional
+	public int deleteComment(int commentId, int memberId) {
+		// 존재하는 댓글인지 확인
+		Comment comment = dao.getCommentById(commentId);
+		if(comment == null || comment.getDeletedAt() != null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다");
+
+		// 권한 확인
+		if(comment.getWriterId() != memberId)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
+
+		// 댓글 삭제. 삭제가 제대로 되었는지 확인
 		int affectedRow = dao.deleteComment(commentId);
+		if(affectedRow == 0)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다");
+		
 		return affectedRow;
 	}
 	
