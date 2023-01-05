@@ -178,7 +178,7 @@ function sendAll(){
 					else if(notification.length==0)
 						readAll();
 					})
-		  			.catch((error) => console.log(error));
+		  			
         
         // 모두 읽기 버튼
         notificationCancelBtn.addEventListener("click",(e)=>{

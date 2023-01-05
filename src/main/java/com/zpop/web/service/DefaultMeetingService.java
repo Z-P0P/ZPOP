@@ -151,12 +151,12 @@ public class DefaultMeetingService implements MeetingService {
 			String src = tag.attr("src");
 			src = File.separator + "images" + File.separator + String.valueOf(meetingId) + File.separator + src;
 			tag.attr("src", src);
-			System.out.println(image.toString());
+			
 			tag.attr("data-id", String.valueOf(image.getId()));
 		}
 
 		meeting.setContent(doc.body().html());
-		System.out.println(doc.body().html());
+		
 		dao.updateContent(meeting);
 		*/
 		
@@ -236,7 +236,6 @@ public class DefaultMeetingService implements MeetingService {
 		 * 댓글 정보 조회 및 가공
 		 */ 
 		List<CommentView> comments = commentDao.getComment(id);
-		int commentCount = commentDao.getCountOfComment(id);
 
 		List<CommentResponse> commentsResponse = new ArrayList<>();
 
@@ -281,7 +280,7 @@ public class DefaultMeetingService implements MeetingService {
 			ageRange.getType(),
 			meeting.getRegMemberId(),
 			meeting.getViewCount(),
-			commentCount,
+			meeting.getCommentCount(),
 			isMyMeeting,
 			hasParticipated,
 			isClosed,
@@ -441,7 +440,7 @@ public class DefaultMeetingService implements MeetingService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
 		// 주최자가 자기 자신 모임에 참여할 때
 		if (foundMeeting.getRegMemberId() == memberId)
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 참여한 모임입니다");
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "회원님이 생성한 모임입니다");
 
 		boolean isClosedMeeting = isClosedMeeting(foundMeeting);
 		if(isClosedMeeting)
@@ -525,7 +524,7 @@ public class DefaultMeetingService implements MeetingService {
 		}
 
 		String completePath = path + File.separator + file.getOriginalFilename();
-		System.out.println(completePath);
+		
 		InputStream fis = file.getInputStream();
 		OutputStream fos = new FileOutputStream(completePath);
 
@@ -577,8 +576,7 @@ public class DefaultMeetingService implements MeetingService {
 		boolean isClosedMeeting = isClosedMeeting(foundMeeting);
 		if(isClosedMeeting)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "마감된 모임에 참여를 취소할 수 없습니다");
-        
-        //participationDao.updateCanceledAt(participationInfo.getId());
+        participationDao.updateCanceledAt(participationInfo.getId());
 
         return true;
 	}
@@ -598,9 +596,26 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public List<MeetingParticipantsDto> getParticipants(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ParticipantResponse> getParticipants(int id) {
+		Meeting meeting = dao.get(id);
+		if (meeting == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "모임이 없습니다");
+		}
+
+		List<ParticipationInfoView> list = participationDao.getParticipantInfoByMeetingId(id);
+		List<ParticipantResponse> participants = new ArrayList<>();
+
+		for (ParticipationInfoView p : list) {
+			// 취소 or 내보낸 당한 참여자는 스킵
+			if(p.getCanceledAt() != null || p.getBannedAt() !=null)
+				continue;
+
+			ParticipantResponse participant =
+					new ParticipantResponse(p.getId(), p.getNickname(), p.getProfileImagePath());
+			participants.add(participant);
+		}
+
+		return participants;
 	}
 
 	private void createNotification(int memberId, String url, int type) {

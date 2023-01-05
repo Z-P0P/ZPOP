@@ -175,6 +175,6 @@ function getHolidays(year){
     return response.json();
   })
   .then(data => {
-    console.log(data);
+    
   });
 }

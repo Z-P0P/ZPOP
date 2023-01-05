@@ -10,6 +10,18 @@
 	visibility:hidden !important;
 }
 
+.z-idx-1 {
+  z-index: 100;
+}
+
+.z-idx-2 {
+  z-index: 200;
+}
+
+.z-idx-3 {
+  z-index: 300;
+}
+
 .pointer{
 	cursor:pointer
 }
