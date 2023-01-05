@@ -281,12 +281,12 @@
     <!--------------- 댓글 섹션 -------------------->
     <section class="comment">
 			<h2 class="comment__num" th:text="'댓글 ' + ${meeting.commentCount}+' 개'">N</h2>
-			<div class="comment__input-container">
+			<div class="comment__input-container ">
 				<textarea class="comment__input" name="comment-text"
 					id="comment-text" placeholder="댓글을 입력하세요."></textarea>
 				<div class="comment__btn-container">
 					<span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
-					<span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="">등록하기</span>
+					<span class="comment__btn btn btn-round btn-action modal__on-btn" data-modal="#dummy-modal" id="register-btn">등록하기</span>
 					<span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
 				</div>
 			</div>
@@ -312,7 +312,7 @@
 							th:classappend="(${comment.countOfReply}==0)? 'hidden'"
 							th:text="'답글 ' + ${comment.countOfReply}+'개'"></span> 
 						<span class="hidden pointer reply-close">닫기</span> 
-						<span class="pointer underline reply-write modal__on-btn" data-modal="">답글 달기</span>
+						<span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal">답글 달기</span>
 					</div>
 					<section class="reply hidden">
 						<ul class="reply__list">
@@ -321,6 +321,7 @@
 					</section>
 				</li>
 			</ul>
+			<div class="hidden" id="dummy-modal"></div>
 		</section>
     </main>
 </html>

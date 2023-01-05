@@ -224,7 +224,8 @@ public class DefaultMeetingService implements MeetingService {
 			// 내가 참여한 모임인지 확인
 			if(memberId != null && p.getParticipantId() == memberId)
 				hasParticipated = true;
-
+			if(p.getCanceledAt() != null || p.getBannedAt() != null)
+				continue;
 			participationsResponse.add(new ParticipantResponse(
 				p.getId(),
 				p.getNickname(),
@@ -607,7 +608,7 @@ public class DefaultMeetingService implements MeetingService {
 
 		for (ParticipationInfoView p : list) {
 			// 취소 or 내보낸 당한 참여자는 스킵
-			if(p.getCanceledAt() != null || p.getBannedAt() !=null)
+			if(p.getCanceledAt() != null || p.getBannedAt() != null)
 				continue;
 
 			ParticipantResponse participant =
@@ -621,4 +622,5 @@ public class DefaultMeetingService implements MeetingService {
 	private void createNotification(int memberId, String url, int type) {
 		notificationDao.insertCommentNotification(memberId, url, type);
 	}
+	
 }
