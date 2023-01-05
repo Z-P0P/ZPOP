@@ -93,7 +93,7 @@ public class DefalutMemberService implements MemberService {
                     canRate
             );
 
-            System.out.println(mt);
+            
             list.add(mt);
 
         }
@@ -146,7 +146,7 @@ public class DefalutMemberService implements MemberService {
                     m.getRegMemberId(),
                     canRate
             );
-            System.out.println(mt);
+            
             list.add(mt);
         }
 

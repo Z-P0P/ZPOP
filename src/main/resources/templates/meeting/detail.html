@@ -70,7 +70,7 @@
                 <span th:text="|#${meeting.genderCategory}|">성별</span>
             </div>
             <div class="meeting__views"  th:text="|조회수${meeting.viewCount}|">조회수</div>
-            <div class="meeting__btn">
+            <div class="meeting__btn z-idx-2">
                 <span th:if="${meeting.isClosed == true}" class="btn btn-round btn-join btn-cancel">모집완료</span>
                 <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == true}" class="btn btn-round btn-join btn-action modal__on-btn" id="btn-close" data-modal="#modal-wrapper-close">마감하기</span>
                 <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == false} " class="btn btn-round btn-join btn-action modal__on-btn" id="participation-btn"  data-modal="#modal-wrapper-participation">참여하기</span>
@@ -100,7 +100,7 @@
     </section>
 			
    <!------ 참여 모달 ------>
-     <div class="modal-2 hidden" id="modal-wrapper-participation">
+     <div class="modal-2 hidden z-idx-1" id="modal-wrapper-participation">
 
         <div class="modal-participation">
             <div class="modal__header">
@@ -125,8 +125,10 @@
             </div>
         </div>
     </div>
-    <!-- -------------모임 마감 모달------------------------>
-    	<div class="popup-container modal-wrapper hidden" id="modal-wrapper-close">
+
+    <!-- -------------모임 마감 모달----------------------->
+    	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-wrapper-close">
+
 		<div class="popup__wrap-inactive" id="popup">
 			<div class="popup">
 				<div class="popup__body">
@@ -143,8 +145,10 @@
 			</div>
 		</div>
 	</div>
-    <!--------------- 모임 신고 모달------------------------>
-    <div id="modal-report-meeting" class="modal-wrapper hidden modal-report">
+
+    <!--------------- 모임 신고 모달----------------------->
+    <div id="modal-report-meeting" class="modal-wrapper hidden z-idx-1 modal-report">
+
       <div class="modal">
         <div class="modal__header">
     
@@ -178,7 +182,8 @@
       </div>
     </div>
     <!--------------- 댓글 신고 모달 -------------------->
-     <div id="modal-report-comment" class="modal-wrapper hidden modal-report">
+
+     <div id="modal-report-comment" class="modal-wrapper hidden z-idx-1 modal-report">
       <div class="modal">
         <div class="modal__header">
     
@@ -212,7 +217,8 @@
     </div>
     
     <!--------------- 사용자 신고 모달 -------------------->
-      <div id="modal-report-member" class="modal-wrapper hidden modal-report">
+
+      <div id="modal-report-member" class="modal-wrapper hidden z-idx-1 modal-report">
       <div class="modal">
         <div class="modal__header">
             <span class="modal__close-btn icon icon-x" data-modal="#modal-report-member">닫기</span>

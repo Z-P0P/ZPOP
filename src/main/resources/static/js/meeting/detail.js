@@ -34,7 +34,7 @@ window.addEventListener("load", function() {
 	const meetingTitleHambugerIcon = document.querySelector(".meeting__title-hambuger-icon");
 	
 	meetingTitleHambugerIcon.onclick = function(e){
-		console.log("햄버거 버튼입니다");
+		
 		
 	}
 		
@@ -83,7 +83,7 @@ window.addEventListener("load", function() {
 			if (response.ok) {
 				return response;
 			}
-			else console.log(response)
+			
 		})
 		.then(data => data.json())
 		.then(participants => {

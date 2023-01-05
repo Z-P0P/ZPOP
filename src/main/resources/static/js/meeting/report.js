@@ -119,7 +119,7 @@ window.addEventListener("load", (e)=>{
 	            }
 				
 				const commentId = document.querySelector("#modal-report-comment").dataset.id;
-				console.log(commentId);
+				
 	            fetch(`/report/comment/${commentId}`, data)
 	            .then((response)=>{
 					const reasonValue = document.querySelector("#comment-input__content--id");
