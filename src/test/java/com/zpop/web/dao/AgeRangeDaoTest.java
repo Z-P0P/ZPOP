@@ -27,6 +27,6 @@ class AgeRangeDaoTest {
     void get_list_테스트() {
         List<AgeRange> ageRanges = ageRangeDao.getList();
         for (AgeRange a : ageRanges)
-            
+            System.out.println(a.getId());
     }
 }
