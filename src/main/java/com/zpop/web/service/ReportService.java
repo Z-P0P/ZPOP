@@ -8,8 +8,8 @@ public interface ReportService {
 	
 	void createMeetingReport(ReportedMeeting reportedMeeting);
 	void createMemberReport(ReportedMember reportedMember);
-	void createCommentReport(ReportedComment reportedComment);
+	boolean createCommentReport(ReportedComment reportedComment);
 	
-	int[] getCommentId(int commentId, int reporterId);
-	
+	int[] getReportedCommentId(int commentId, int reporterId);
+	int[] getReportedMeetingId(int meetingId, int reporterId);
 }
