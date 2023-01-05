@@ -7,7 +7,7 @@ window.addEventListener("load", function() {
 	const participantCount = document.querySelector(".participant-count");
 	const arrowUp = document.querySelector(".icon-arrow-up");
 	const arrowDown = document.querySelector(".icon-arrow-down");
-
+	const copyBtn = document.querySelector(".modal-select__contents.copy")
 	if(participationBtn) {
 		// 참여 확인 모달
 		participationBtn.onclick = function(e) {
@@ -31,6 +31,30 @@ window.addEventListener("load", function() {
 		closeBtn.onclick = hideModalByButton;
 	}
 	
+	// URL 복사 함수
+
+	
+	copyBtn.onclick = function(e){
+		var url = '';
+		var textarea = document.createElement("textarea");
+//		var spanElem = document.createElement("span");
+		document.body.appendChild(textarea);
+		url = window.document.location.href;
+		textarea.value = url;
+		textarea.select();
+		document.execCommand("copy");
+		document.body.removeChild(textarea);
+		alert("복사되었습니다")
+//		spanElem.innerHTML = "Copied";
+//		copyBtn.appendChild(spanElem);
+//		
+//		setTimeout(function(){
+//			spanElem.innerHTML = "";
+//		}, 1000);
+//		e.clearSelection();
+	}
+	
+	
 	const meetingTitleHambugerIcon = document.querySelector(".meeting__title-hambuger-icon");
 	
 	meetingTitleHambugerIcon.onclick = function(e){
@@ -48,7 +72,7 @@ window.addEventListener("load", function() {
 		e.target.classList.add("hidden");
 		e.target.previousElementSibling.classList.remove("hidden");
 	});
-
+	
 	btnModalParticipate.onclick = function() {
 		const data = {
       method: "POST",
