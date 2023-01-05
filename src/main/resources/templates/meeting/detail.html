@@ -18,15 +18,11 @@
       <!-- detail page css -->
       <link rel="stylesheet" href="/css/member/meeting/detail.css">
   </th:block>	
-
-
-
  <th:block layout:fragment="js">   
     <script src="/js/meeting/detail.js"></script>
     <script type="module" src="/js/comment/comment.js"></script>
     <script type="module" src="/js/comment/edit-comment.js"></script>
     <script src="/js/meeting/report.js"></script>
-    <script src="/js/meeting/report-select.js" defer></script>
 </th:block>	
 
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
@@ -182,13 +178,14 @@
          <div class="meeting-form__input">
             <label class="input__label" for="category">신고사유</label>
             <div class="select-box select-box--input meeting-select-box">
-                <input placeholder=" 카테고리를 선택하세요" type="text" name="category">
+                <span class="meeting-span">카테고리를 선택하세요</span>
                 <ul class="select-box__options">
-                    <li value="1">사행성 글</li>
-                    <li value="2">부적절한 게시글 제목/내용</li>
-                    <li value="3">판매 권유 및 상행위 글</li>
-                    <li value="4">기타</li>
+                    <li data-id="1">사행성 글</li>
+                    <li data-id="2">부적절한 게시글 제목/내용</li>
+                    <li data-id="3">판매 권유 및 상행위 글</li>
+                    <li data-id="4">기타</li>
                 </ul>
+                <input class="hidden" type="text">
             </div>
         </div>
         
@@ -217,12 +214,13 @@
          <div class="meeting-form__input">
             <label class="input__label" for="category">신고사유</label>
             <div class="select-box select-box--input comment-select-box">
-                <input placeholder=" 카테고리를 선택하세요" type="text" name="category">
+                <span class="comment-span">카테고리를 선택하세요</span>
                 <ul class="select-box__options">
-                    <li value="1">욕설/유해성 문구</li>
-                    <li value="2">스팸/광고</li>
-                    <li value="3">기타</li>
+                    <li data-id="1">욕설/유해성 문구</li>
+                    <li data-id="2">스팸/광고</li>
+                    <li data-id="3">기타</li>
                 </ul>
+                <input class="hidden" type="text">
             </div>
         </div>
         
@@ -251,12 +249,13 @@
          <div class="meeting-form__input">
             <label class="input__label" for="category">신고사유</label>
             <div class="select-box select-box--input comment-select-box">
-                <input placeholder=" 카테고리를 선택하세요" type="text" name="category">
+                <span class="member-span">카테고리를 선택하세요</span>
                 <ul class="select-box__options">
-                    <li value="1">부적절한 닉네임</li>
-                    <li value="2">물건 판매 권유 등 상행위</li>
-                    <li value="3">기타</li>
+                    <li data-id="1">부적절한 닉네임</li>
+                    <li data-id="2">물건 판매 권유 등 상행위</li>
+                    <li data-id="3">기타</li>
                 </ul>
+                <input class="hidden" type="text">
             </div>
         </div>
         

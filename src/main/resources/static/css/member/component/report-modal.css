@@ -76,17 +76,21 @@
     top:18px;
 }
     
-.modal-report .select-box--input > input {
+.modal-report .select-box--input > span {
 	border: 0.125rem solid #EBEBEB;
 	min-width:350px;
     height: 47.5px;
 	border-radius: 0.3125rem;
 	cursor:pointer;
-	text-indent: 10px;
+	color:#8B8B8B;
 }
 
 .modal-report .input-text__content::placeholder{
     color:#8B8B8B;
+}
+
+.modal-report .select-box--input > span.select-span{
+	color:black;
 }
 
 .report-complete {
@@ -145,7 +149,7 @@
 	    background-color: #76C1B1;
 	}
 	
-	.modal-report .meeting-form__input input{
+	.modal-report .meeting-form__input span{
     width: 410px;
     height:50px;
 	}

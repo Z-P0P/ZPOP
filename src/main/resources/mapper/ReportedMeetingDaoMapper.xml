@@ -34,5 +34,11 @@
 		SELECT count(id)
 		FROM reportedMeeting;
 	</select>
+	
+	<select id="getReportedMeetingId" resultType="Integer">
+		SELECT id from reportedMeeting
+		WHERE meetingId = #{meetingId}
+		AND reporterId = #{reporterId}
+	</select>
 
 </mapper>

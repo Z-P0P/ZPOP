@@ -1,3 +1,27 @@
+function initCommentModal(){
+	const commentSelectBoxSpan = document.querySelector(".comment-select-box > span");
+	const reasonValue = document.querySelector("#comment-input__content--id");
+	reasonValue.value='';
+	commentSelectBoxSpan.innerHTML="카테고리를 선택하세요";
+	reportType = 0;
+}
+
+function initMemberModal(){
+	const memberSelectBoxSpan = document.querySelector(".member-select-box > span");
+	const reasonValue = document.querySelector("#member-input__content--id");
+	reasonValue.value='';
+	memberSelectBoxSpan.innerHTML="카테고리를 선택하세요";
+	reportType = 0;
+}
+
+function initMeetingModal(){
+	const meetingSelectBoxSpan = document.querySelector(".meeting-select-box > span");
+	const reasonValue = document.querySelector("#meeting-input__content--id");
+	reasonValue.value='';
+	meetingSelectBoxSpan.innerHTML="카테고리를 선택하세요";
+	reportType = 0;
+}
+
 function addCompleteModal(){
 	const reportCompleteModal = document.querySelector(".report-modal-wrapper");
 	const reportCompleteBtn = document.querySelector(".report-complete__btn");
@@ -18,37 +42,39 @@ window.addEventListener("load", (e)=>{
 	const meetingReportBtn = document.querySelector(".meeting__report-btn");
 	const commentReportBtn = document.querySelector(".comment__report-btn");//신고모달 우측 버튼
 	const memberReportBtn = document.querySelector(".member__report-btn");
-	const selectBoxAll = document.querySelectorAll(".select-box");
 	const meetingSelectBoxInput = document.querySelector(".meeting-select-box > input");
 	const commentSelectBoxInput = document.querySelector(".comment-select-box > input");
 	const memberSelectBoxInput = document.querySelector(".member-select-box > input");
+	const meetingSpan = document.querySelector(".meeting-span");
+	const commentSpan = document.querySelector(".comment-span");
+	const memberSpan = document.querySelector(".member-span");
 	var reportType = 0;
+	
+	meetingSpan.onclick = function(e){
+		e.preventDefault();
+		e.target.classList.add("select-span");
+	}
+	commentSpan.onclick = function(e){
+		e.preventDefault();
+		e.target.classList.add("select-span");
+	}
+	memberSpan.onclick = function(e){
+		e.preventDefault();
+		e.target.classList.add("select-span");
+	}
 	
 	// 모임 신고 
 	
     meetingReportBtn.addEventListener("click",(e) => {
             e.preventDefault();
-            
-		    switch(meetingSelectBoxInput.value){
-				 	 case null: reportType = 0;
-				   	break; 
-				     case "사행성 글": reportType = 1;
-				   	break; 
-				   	 case "부적절한 게시글 제목/내용": reportType = 2;
-				   	break; 
-				   	 case "판매 권유 및 상행위 글": reportType = 3;
-				   	break; 
-				   	 case "기타": reportType = 4;
-				   	break; 
-			   }
- 		
+          
           const meetingReportReason = document.querySelector("#meeting-input__content--id").value;
           const alertStatement = document.querySelector("#alert-statement");
+		  reportType = parseInt(meetingSelectBoxInput.value);
           
- 		  if(alertStatement!=null){
+ 		  if(alertStatement!=null)
 			   alertStatement.remove();
-		   }
- 		  
+		   
  		  if(reportType==0){
 			   const reportReasonLabel = document.querySelector(".input__label");
 			   addHTML(reportReasonLabel);
@@ -69,38 +95,35 @@ window.addEventListener("load", (e)=>{
 			const id = document.querySelector(".meeting-id").dataset.id;
             fetch(`/report/meeting/${id}`, data)
             .then((response)=>{
-				const reasonValue = document.querySelector("#meeting-input__content--id");
-				const modal = document.querySelector('#modal-report-meeting');
-				reasonValue.value='';
-				meetingSelectBoxInput.value = null;
-				reportType = 0;
-				modal.classList.add("hidden");
-				addCompleteModal();
+				return response;
+			})
+			.then(data=>data.json())
+			.then(result =>{
+				if(result){
+					initMeetingModal();
+					addCompleteModal();
+				}
+				else{
+					const completeContent = document.querySelector(".report-complete-content");
+					completeContent.innerHTML = "중복 신고는 불가능합니다";
+					initMeetingModal();
+					addCompleteModal();
+				}
 			})
         })
         
      // 댓글 신고
         
      commentReportBtn.addEventListener("click",(e) => {
-	            e.preventDefault();
-			    switch(commentSelectBoxInput.value){
-					 	 case null: reportType = 0;
-					   	break; 
-					     case "욕설/유해성 문구": reportType = 1;
-					   	break; 
-					   	 case "스팸/광고": reportType = 2;
-					   	break; 
-					   	 case "기타": reportType = 3;
-					   	break; 
-				   }
-	 		
+	          e.preventDefault();
+			    
 	          const commentReportReason = document.querySelector("#comment-input__content--id").value;
 	          const alertStatement = document.querySelector("#alert-statement");
-	          
-	 		  if(alertStatement!=null){
+			  reportType = parseInt(commentSelectBoxInput.value);  
+	 		
+	 		  if(alertStatement!=null)
 				   alertStatement.remove();
-			   }
-	 		  
+			   
 	 		  if(reportType==0){
 				   const reportReasonLabel = document.querySelector(".input__label");
 				   addHTML(reportReasonLabel);
@@ -119,16 +142,22 @@ window.addEventListener("load", (e)=>{
 	            }
 				
 				const commentId = document.querySelector("#modal-report-comment").dataset.id;
-				
 	            fetch(`/report/comment/${commentId}`, data)
 	            .then((response)=>{
-					const reasonValue = document.querySelector("#comment-input__content--id");
-					const modal = document.querySelector('#modal-report-comment');
-					reasonValue.value='';
-					commentSelectBoxInput.value = null;
-					reportType = 0;
-					modal.classList.add("hidden");
-					addCompleteModal();
+					return response;
+				})
+				.then(data=>data.json())
+				.then(result =>{
+					if(result){
+						initCommentModal();
+						addCompleteModal();
+					}
+					else{
+						const completeContent = document.querySelector(".report-complete-content");
+						completeContent.innerHTML = "중복 신고는 불가능합니다";
+						initCommentModal();
+						addCompleteModal();
+					}
 				})
 	        })
 	        
@@ -137,23 +166,13 @@ window.addEventListener("load", (e)=>{
        memberReportBtn.addEventListener("click",(e) => {
 	            e.preventDefault();
 	            
-			    switch(memberSelectBoxInput.value){
-					 	 case null: reportType = 0;
-					   	break; 
-					   	 case "부적절한 닉네임": reportType = 1;
-					   	break; 
-					     case "물건 판매 권유 등 상행위": reportType = 2;
-					   	break; 
-					   	 case "기타": reportType = 3;
-					   	break; 
-				   }
-	 		
 	          const memberReportReason = document.querySelector("#member-input__content--id").value;
 	          const alertStatement = document.querySelector("#alert-statement");
+			  reportType = parseInt(memberSelectBoxInput.value);
 	          
-	 		  if(alertStatement!=null){
+	 		  if(alertStatement!=null)
 				   alertStatement.remove();
-			   }
+			   
 	 		  
 	 		  if(reportType==0){
 				   const reportReasonLabel = document.querySelector(".input__label");
@@ -171,17 +190,24 @@ window.addEventListener("load", (e)=>{
 	                    reportReason : memberReportReason
 	                })
 	            }
-				// ============== 테스트용 =====================
+				// ============== 테스트용 id =====================
 				const memberId = 5;
 	            fetch(`/report/member/${memberId}`, data)
-	            .then((response)=>{
-					const reasonValue = document.querySelector("#member-input__content--id");
-					const modal = document.querySelector('#modal-eval-notification');
-					reasonValue.value='';
-					memberSelectBoxInput.value = null;
-					reportType = 0;
-					modal.classList.add("hidden");
-					addCompleteModal();
+	             .then((response)=>{
+					return response;
+				})
+				.then(data=>data.json())
+				.then(result =>{
+					if(result){
+						initMemberModal();
+						addCompleteModal();
+					}
+					else{
+						const completeContent = document.querySelector(".report-complete-content");
+						completeContent.innerHTML = "중복 신고는 불가능합니다";
+						initMemberModal();
+						addCompleteModal();
+					}
 				})
 	        })
 })

@@ -3,6 +3,7 @@ package com.zpop.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,65 +38,81 @@ public class ReportController {
 	@Autowired
 	MeetingDao meetingDao;
 	
+	//모임신고
 	@PostMapping("meeting/{id}")
 	@ResponseBody
-	public String meeting(
+	public boolean meeting(
 			@PathVariable("id") int id,
 			@RequestBody RequestMeetingReportDto dto,
 			@AuthenticationPrincipal ZpopUserDetails userDetails
 			) {
+		boolean result;
 		
-		int reportTypeId = Integer.parseInt(dto.getReportType());
-		String reportReason = dto.getReportReason();
-		Meeting meeting = meetingDao.get(id);
 		
-		ReportedMeeting rp = new ReportedMeeting(
-								id, // meetingId
-								userDetails.getId(), // reporterId
-								reportTypeId, // reportTypeId
-								reportReason, // reportReason
-								meeting.getTitle(), // originalTitle
-								meeting.getContent() // original
-								);
-		reportService.createMeetingReport(rp);
-
-		return "report/meeting";
-
+		int[] list = reportService.getReportedMeetingId(id, userDetails.getId());
+		if(list.length==0) {
+			int reportTypeId = Integer.parseInt(dto.getReportType());
+			String reportReason = dto.getReportReason();
+			Meeting meeting = meetingDao.get(id);
+			
+			ReportedMeeting rp = new ReportedMeeting(
+					id, // meetingId
+					userDetails.getId(), // reporterId
+					reportTypeId, // reportTypeId
+					reportReason, // reportReason
+					meeting.getTitle(), // originalTitle
+					meeting.getContent() // original
+					);
+			reportService.createMeetingReport(rp);
+			result = true;
+		}
+		else {
+			result = false;
+		}
+		return result;
 	}
 	
 	//댓글 신고 AJAX endpoint
 	@PostMapping("comment/{id}")
 	@ResponseBody
-	public String reportComment(@PathVariable("id") int id, 
+	public boolean reportComment(@PathVariable("id") int id, 
 			@RequestBody ReportedComment reportedComment,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		boolean result;
+		Comment comment = commentService.getCommentById(id);
 		
 		// 중복 신고 
-		int[] reportedComments = reportService.getCommentId(1,1);
-		if(reportedComments.length > 0) {
-			System.out.println("중복 신고하였습니다");
+		int[] reportedComments = reportService.getReportedCommentId(id,userDetails.getId());
+		
+		if(reportedComments.length == 0) {
+			reportedComment.setCommentId(id);
+			reportedComment.setReporterId(userDetails.getId());
+			reportedComment.setOriginal(comment.getContent());
+			reportService.createCommentReport(reportedComment);
+			result = true;
+		}
+		else {
+			result = false;
 		}
 		
-		Comment comment = commentService.getCommentById(id);
-		reportedComment.setCommentId(id);
-		reportedComment.setReporterId(userDetails.getId());
-		reportedComment.setOriginal(comment.getContent());
-		reportService.createCommentReport(reportedComment);
-		return "{\"1\":1}"; //JSON
+		return result; //JSON
 	}
 	
-	@PostMapping("/member/{id}")
+	// 사용자 신고
+	@PostMapping("/member/{memberId}")
 	@ResponseBody
-	public String member(@RequestBody ReportedMember reportedMember) {
+	public boolean member(
+			@PathVariable("memberId") int memberId,
+			@RequestBody ReportedMember reportedMember,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		boolean result;
 		
-//		int reportTypeId = Integer.parseInt(dto.getReportType());
-//		String reportReason = dto.getReportReason();
-		
+		// 피신고자, 신고자, 유형, 사유
+		reportedMember.setReportedId(memberId);
+		reportedMember.setReporterId(userDetails.getId());
 		reportService.createMemberReport(reportedMember);
+		result = true;
 
-		return "report/member";
-
+		return result;
 	}
-	
-	
 }

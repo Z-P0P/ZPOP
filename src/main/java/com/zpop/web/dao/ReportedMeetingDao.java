@@ -16,4 +16,6 @@ public interface ReportedMeetingDao {
 	
 	int insert(ReportedMeeting reportedMeeting);
 	
+	int[] getReportedMeetingId(int meetingId, int reporterId);
+	
 }
