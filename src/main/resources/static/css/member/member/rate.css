@@ -94,7 +94,6 @@
 div.btn.btn-semiround {
     
     display: flex;
-    margin-top: 34px;
     font-size: 18px;
     font-weight: bold;
     width: 310px;
@@ -106,6 +105,8 @@ div.btn.btn-semiround {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 /* -------반응형 적용 -------*/
@@ -136,9 +137,9 @@ div.btn.btn-semiround {
     input[type=range]::-webkit-slider-thumb {
         margin-top:-10px;
     }
-    div.btn.btn-semiround{
+/*     div.btn.btn-semiround{
         margin-bottom: 30px;
-    }
+    } */
 
 }
 

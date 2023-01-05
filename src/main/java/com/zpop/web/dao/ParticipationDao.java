@@ -1,13 +1,12 @@
 package com.zpop.web.dao;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
-
 import com.zpop.web.dto.MeetingParticipantsDto;
 import com.zpop.web.dto.admin.AdminParticipationDto;
 import com.zpop.web.entity.Participation;
 import com.zpop.web.entity.participation.ParticipationInfoView;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface ParticipationDao {
@@ -37,4 +36,5 @@ public interface ParticipationDao {
     int updateBannedAt(int id);
 
     int updateCanceledAt(int id);
+    int updateHasEvaluated(int meetingId, int participantId);
 }

@@ -9,6 +9,11 @@
 			(meetingId, participantId)
 			VALUES (#{meetingId}, #{memberId})
 	</insert>
+	<update id="updateHasEvaluated">
+		 UPDATE participation SET hasEvaluated = 1
+		 WHERE meetingId = #{meetingId}
+		 AND participantId = #{participantId}
+	</update>
 
 	<select id="get" resultType= "com.zpop.web.entity.Participation">
 			SELECT *

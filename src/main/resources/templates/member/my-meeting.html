@@ -15,29 +15,15 @@
   <script src="/js/member/my-meeting.js"></script>
 </head>
 <body>
-<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    //웹페이지가 로드가 완료 후에 해당 함수를 실행합니다.
-    // 'background', 'linear-gradient(to right, dodgerblue 0%, dodgerblue '+ val +'%, #d5d4d3 ' + val + '%, #d5d4d3 100%)'
-    var val = 50;
-    $('input[type=range]').css('background', 'linear-gradient(to right, #62B3B9 0%, #62B3B9 '+ val +'%, #ebebeb ' + val + '%, #ebebeb 100%)');
-    $('input[type=range]').on('input', function(){
-      var val = $('input[type=range]').val();
-      $('input[type=range]').css('background', 'linear-gradient(to right, #62B3B9 0%, #62B3B9 '+ val +'%, #ebebeb ' + val + '%, #ebebeb 100%)');
-    });
-  });
-
-</script>
 <main layout:fragment="content" class="main" >
 
   <!--📌to do: 뒤로가기 있는 헤더 적용 -->
 
   <section class="main__content">
     <div class="title-container">
-      <span class="icon icon-handshake">icon</span>
-      <h3 class="my-meeting__title"> 내가 참여한 모임</h3>
+      <span>🤝🏻</span>
+      <h3 class="my-meeting__title">내가 참여한 모임</h3>
     </div>
     <ul id="meetings" class="meetings">
       <li th:each="meeting : ${meetings}" th:attr="data-id=${meeting.meetingId}" >
@@ -102,10 +88,11 @@
 <!-- //th:each="meeting : ${meetings}" -->
         <!-------------------------평가하기 조건O--------------------------------------->
             <!--📌to do: 평가 완료되었을 때, 평가 완료로 버튼 변경하기-->
-          <div class="meeting__info-rate" th:if="${meeting.canRate}">
-          <div th:attr="data-id=${meeting.meetingId}" class="modal__on-btn btn btn-semiround rate" data-modal="#modal-eval-notification">평가하기</div>
-          </div>
+            <div class="meeting__info-rate" th:if="${meeting.canRate}">
+              <div th:attr="data-id=${meeting.meetingId}" class="modal__on-btn btn btn-semiround rate" data-modal="#modal-eval-notification">평가하기</div>
+              </div>
         </a>
+   
       </li>
     </ul>
   </section>
@@ -124,7 +111,7 @@
         <span class="modal__close-btn icon icon-x" data-modal="#modal-eval-notification">닫기</span>
       </div>
 
-      <div class="modal__body">
+      <div class="modal__body" th:attr="data-id=${member.id}">
        <!--  <template id="title"> -->
       <!--   <div class="rate-container">
 
