@@ -1,0 +1,54 @@
+* {
+  box-sizing: border-box;
+  outline: none;
+}
+
+body,
+ul,
+ol,
+li,
+p,
+h1,
+h2,
+h3 {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  background: none;
+  border: none;
+}
+
+ul,
+li,
+button {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  padding-inline-start: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit; /* 확인 필요 */
+}
+
+body,
+html {
+  font-family: Pretendard;
+}
+
+legend {
+  display: table;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}

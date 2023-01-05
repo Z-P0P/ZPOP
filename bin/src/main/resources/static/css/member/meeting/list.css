@@ -1,0 +1,185 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+.banner-container{
+  width: 100%;
+  height: 96px;
+  padding:none;
+  margin:auto;
+  overflow:hidden;
+  position:relative;
+}
+
+.banner{
+	display:flex;
+}
+
+
+@media (min-width: 576px) {
+  .banner{
+	display:flex;
+  }
+}
+
+.banner > img{
+	flex: 0 0 100%;
+	width: 100%;
+	height: 96px;
+	object-fit: cover;
+	object-position: 50% 50%;
+	float:left;
+}
+
+
+@media (min-width: 576px) {
+  .banner > img{
+	object-fit: cover;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  .banner > img {
+    object-fit: cover;
+  }
+}
+
+.banner__btn{
+	opacity:0;
+	width:40px;
+	height:40px;
+	border-radius:20px;
+	position:absolute;
+	top:50%;
+	transform:translateY(-50%);
+	background-color:var(--light-grey1);
+	transition:opacity 0.3s;
+}
+
+.banner-container:hover .banner__btn{
+	opacity: 0.7;
+}
+
+.banner__btn--left{
+	left: 10px;
+}
+
+.banner__btn--right{
+	right:10px;
+	background-position: 60% 50%;
+}
+
+
+@media (min-width: 576px) {
+  .banner-container, .banner > img{
+    height: 160px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .banner-container, .banner > img {
+    height: 255px;
+  }
+}
+
+.main__header {
+  max-width: 350px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* @media (min-width: 576px) {
+  .main__header {
+    max-width: 768px;
+  }
+} */
+
+@media (min-width: 768px) {
+  .main__header {
+    justify-content: center;
+    flex-direction: column;
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .main__header {
+    max-width: 1200px;
+  }
+}
+
+.meeting__options {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin: 1rem auto;
+  column-gap: 10px;
+}
+
+@media (min-width: 1200px) {
+  .meeting__options {
+    justify-content: flex-start;
+  }
+}
+
+.meeting-activate-option {
+  display: flex;
+  align-items: center;
+  margin-left:auto;
+}
+
+.meeting-activate-option > span {
+  margin-right: 1rem;
+  font-weight: var(--bold);
+  color: var(--main-color);
+}
+
+@media (min-width: 768px) {
+  .meeting-activate-option > span {
+    font-size: 18px;
+    color: var(--main-color);
+  }
+}
+
+.main__content {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.region-category {
+  display: none;
+  width: 220px;
+}
+
+@media (min-width: 1200px) {
+  .region-category {
+    display: inline-block;
+  }
+}
+
+.region-category > .select-box{
+	margin-top:0;
+}
+
+
+.result-none {
+  padding: 80px 0;
+}
+
+@media (min-width: 768px) {
+  .result-none {
+    font-size: 20px;
+  }
+}
+
+.lds-roller {
+  margin: 2rem auto;
+}

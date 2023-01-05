@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zpop.web.dao.MeetingFileDao">
+	<select id="getList"
+		resultType="com.zpop.web.entity.MeetingFile">
+		SELECT *
+		FROM meetingFile
+		WHERE meetingId=#{meetingId}
+	</select>
+	<insert id="insertAll" parameterType="java.util.List">
+		INSERT INTO meetingFile (name, meetingId)
+		VALUES
+		<foreach collection="list" item="item" separator=",">
+			(#{item.name}, #{item.meetingId})
+		</foreach>
+	</insert>
+	<insert id="insert" parameterType="MeetingFile"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO meetingFile(name)
+		VALUES (#{name})
+	</insert>
+	<delete id="deleteAll">
+		UPDATE meetingFile
+		SET deletedAt = CURRENT_TIMESTAMP
+		<foreach item="item" index="index" collection="list"
+			open="WHERE id NOT IN (" separator="," close=")">
+			#{item.id}
+		</foreach>
+	</delete>
+	<update id="updateAllMeetingId" parameterType="java.util.List">
+		<foreach item="item" index="index" collection="list"
+			separator=";">
+			UPDATE meetingFileD
+			SET meetingId=#{item.meetingId}
+			WHERE id=#{item.id}
+		</foreach>
+	</update>
+	<delete id="deleteAllExcept" parameterType="java.util.List">
+		UPDATE meetingFile
+		SET deletedAt=CURRENT_TIMESTAMP
+		<if test="list != null and !list.isEmpty()">
+			<foreach item="item" index="index" collection="list"
+				open="WHERE meetingId NOT IN(" close=")" separator=",">
+				#{item.id}
+			</foreach>
+		</if>
+	</delete>
+</mapper>
+

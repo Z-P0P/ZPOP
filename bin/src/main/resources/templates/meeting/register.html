@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{inc/layout}">
+<head>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/member/meeting/create.css">
+<link rel="stylesheet" href="/css/loading.css"/>
+<link rel="stylesheet" href="/css/icon.css"/>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script type="module" src="/js/meeting/register.js"></script>
+</head>
+<body>
+	<main layout:fragment="content">
+		<div class="meeting-form-container">
+			<form class="meeting-form" action="meeting/register">
+				<h1 class="meeting-form__title">모임 등록하기</h1>
+				<fieldset class="meeting-form__default-info">
+					<legend>1. 모임 기본 정보를 입력해주세요.</legend>
+					<div class="meeting-form__input" id="category-input">
+						<label class="input__label" for="category">카테고리</label>
+						<div class="select-box select-box--input">
+							<span id="category-id">카테고리를 선택하세요</span>	
+							<ul class="select-box__options">
+								<li th:each="category:${response.categories}" 
+								th:data-id="${category.id}"
+								th:text="${category.name}">밥/카페</li>
+							</ul>
+							<input class="hidden" type="text" name="categoryId">
+						</div>
+						<span class="input__message"></span>
+					</div>
+					<div class="meeting-form__input" id="started-at-input">
+						<label class="input__label" for="category">날짜/시간</label>
+						<div class="input-text__content-wrapper">
+							<input type="datetime-local" class="input-text__content"  id="startedAt" name="startedAt">
+						</div>
+						<span class="input__message"></span>
+					</div>
+					<div class="meeting-form__input" id="region-input">
+						<label class="input__label" for="category">지역</label>
+						<div class="select-box select-box--input">
+							<span id="region-id">지역을 선택하세요.</span>
+							<ul class="select-box__options" id="select-box">
+								<li th:each="region:${response.regions}"
+								th:data-id="${region.id}"
+								th:text="${region.name}">서울</li>
+							</ul>
+							<input class="hidden" type="text" name="regionId">
+						</div>
+						<span class="input__message"></span>
+					</div>
+					<div class="meeting-form__input">
+						<label class="input-text__label" for="">상세장소</label>
+						<div class="input-text">
+							<div class="input-text__content-wrapper">
+								<input class="input-text__content" type="text"
+									placeholder="상세장소를 입력해주세요"  
+									id="detailRegion" name="detailRegion">
+							</div>
+							<span class="input__message"></span>
+						</div>
+					</div>
+					<div class="meeting-form__input" id="age-range-input">
+						<label class="input__label" for="category">연령대</label>
+						<div class="select-box select-box--input">
+							<span id="age-range" >연령대를 선택해주세요.</span>
+							<ul class="select-box__options">
+								<li th:each="ageRange:${response.ageRanges}"
+								th:data-id="${ageRange.id}"
+								th:text="${ageRange.type}">10 대</li>
+							</ul>
+							<input class="hidden" type="text" name=ageRangeId>
+						</div>
+						<span class="input__message"></span>
+					</div>
+					<div class="meeting-form__input" id="gender-category-input">
+						<label class="input__label" for="category">성별</label>
+						<div class="select-box select-box--input">
+							<span id="gender-category">성별을 선택하세요.</span>
+							<ul class="select-box__options">
+								<li data-id=0>남녀 모두</li>
+								<li data-id=1>남자만 </li>
+								<li data-id=2>여자만</li>
+							</ul>
+							<input class="hidden" type="text" name="genderCategory">
+						</div>
+						<span class="input__message"></span>
+					</div>
+					<div class="meeting-form__input" id="max-member-input">
+						<label class="input__label" for="category">모집 인원</label>
+						<div class="select-box select-box--input">
+							<span id="maxMember">모집인원을 선택하세요.</span>
+							<ul class="select-box__options">
+								<li data-id="2">2 명</li>
+								<li data-id="3">3 명</li>
+								<li data-id="4">4 명</li>
+								<li data-id="5">5 명</li>
+								<li data-id="6">6 명</li>
+							</ul>
+							<input class="hidden" type="text" name="maxMember">
+						</div>
+						<span class="input__message"></span>
+					</div>
+					<div class="meeting-form__input" id="contact-type-input">
+						<label class="input__label" for="category">연락방법</label>
+						<div class="select-box select-box--input">
+							<span id="contactTypeId">연락 방법을 선택하세요.</span>
+							<ul class="select-box__options" >
+								<li th:each="contactType:${response.contactTypes}"
+								th:data-id="${contactType.id}"
+								th:text="${contactType.name}">카카오톡 오픈 채팅</li>
+							</ul>
+							<input class="hidden" type="text" name="contactTypeId">
+						</div>
+						<span class="input__message"></span>
+						<div class="input-text__content-wrapper" id="contact-input">
+							<input class="input-text__content"
+								type="text" placeholder="오픈채팅방 링크" name="contact"  id="contact">
+						</div>
+						<span class="input__message"></span>					
+					</div>
+				</fieldset>
+				<fieldset class="meeting-form__details">
+					<legend>2. 모임에 대해 소개해주세요.</legend>
+					<div class="meeting-form__input input-text">
+						<label class="input-text__label" for="">제목</label>
+						<div
+							class="input-text__content-wrapper input-text__content-wrapper--error">
+							<input id="meeting-title" class="input-text__content" type="text"
+								placeholder="제목을 입력해주세요" name="title">
+						</div>
+						<span class="input__message"></span>
+					</div>
+					<div class="meeting-form__input">
+						<label class="input-text__label" for="">내용</label>
+						<div id="editor">
+							<p>우리의 모임에 대해 소개해주세요!</p>
+							<p>
+								내용이 <strong>자세하면</strong> <u>참여할 확률</u>이 높아져요.
+							</p>
+							<p>
+								<br>
+							</p>
+						</div>
+					</div>
+				</fieldset>
+				<div class="meeting-form__buttons">
+					<button class="btn btn-round">취소</button>
+					<button id="register-btn" class="btn btn-round btn-action"
+						type="submit">등록하기</button>
+				</div>
+			</form>
+		</div>
+		<div id="modal-register-meeting" class="modal-wrapper hidden">
+		<div class="modal">
+			<div class="modal__header">
+				<span class="modal__close-btn icon icon-x" data-modal="#modal-register-meeting">닫기</span>
+			</div>
+			<div class="modal__body register-status">
+				<div class="lds-roller register-status__icon">
+					<div></div><div></div><div></div><div></div>
+					<div></div><div></div><div></div><div></div>
+				</div>
+				<div class="register-status__text">
+					<div class="register-status__message">게시글을 등록하고 있어요!</div>
+					<a class="register-status__btn btn btn-semiround" href="#">등록 중</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="file" id="fileUpload" class="hidden">	
+	</main>
+</body>
+<script>
+
+
+
+//     let toolbarOptions = ['bold', 'italic', 'underline', 'strike', 'link', 'image'];
+//     var quill = new Quill('#editor', {
+//       theme: 'snow',
+//       modules: {
+//         toolbar: toolbarOptions,
+//       },
+//     });
+//     var form = document.querySelector("form");
+//     var hiddenInput = document.querySelector('#hiddenInput');
+
+//     form.addEventListener('submit', function(e){
+//         hiddenInput.value = quill.root.innerHTML;
+//     });
+
+</script>
+<script src="/static/js/member/select.js"></script>
+<style>
+.ql-toolbar, .ql-snow {
+	border-radius: 5px;
+	border: 2px solid var(- -light-grey1) !important;
+}
+
+.ql-editor {
+	min-height: 500px;
+	font-size: 1.125rem;
+}
+</style>
+</html>

@@ -1,0 +1,163 @@
+#notification-modal{
+    width:320px;
+    min-height:300px;
+    position: absolute;
+    top: 80px;
+    right: -28px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    background-color:white;
+}
+
+.notification {
+    font-size: 16px;
+    border-bottom: 1px solid #EBEBEB;
+    height:60px;
+    width: 250px;
+    margin: 10px 0 10px 35px;
+    cursor:pointer;
+}
+
+.notification--none{
+	font-size: 20px; 
+	border:none; 
+	cursor:default; 
+	height:240px; 
+	line-height: 250px; 
+	text-align: center; 
+	color:#8B8B8B
+}
+
+.notification > p{
+    color: #8B8B8B;
+    margin :auto 0;
+    padding-top: 5px;
+}
+
+.header__notification-on{
+	position: relative;
+}
+
+#notification-btn{
+    position: relative;
+}
+
+.notification-container{
+	overflow:scroll;
+	height:260px;
+	position: static;
+	-ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.notification-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+
+.button--container{
+	display:flex;
+}
+
+.readAll-btn{	
+	background-color: var(--main-color);
+  	cursor:pointer;
+ 	width:100px;
+ 	margin:10px 0 10px 205px;
+}
+
+.blank-div{
+	height:60px;
+	background-color:white; 
+	position: relative;
+	border-radius: 0 0 5px 5px;
+/*	top : 280px;*/
+}
+
+.header__notification-on button::before {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  content: "";
+  background: url(/images/icon/notification-on.svg) center/contain no-repeat;
+}
+
+.deactivated-btn{
+	cursor: default;
+	background-color:#8B8B8B;
+}
+
+.notification__close-btn{
+	 height: 32px;
+    width: 32px;
+    border: none;
+    background: url(/images/icon/x.svg) no-repeat;
+    background-size: 32px;
+    cursor: pointer;
+    margin:10px 0 0 284px;
+}
+
+.report-complete {
+    font-weight: var(--font-regular);
+    font-size: 16px;
+    height: fit-content;
+    width: 200px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 15px 0px #00000033;
+  }
+
+  
+.report-complete-content{
+    line-height: 40px;
+    height: 40px;
+    padding: 10px 0px 10px 0px;
+    text-align: center;
+    border-bottom: 1px solid lightgray;
+    
+  }
+
+  .report-complete__btn {
+    padding: 10px 0px 10px 0px;
+    text-align: center;    
+    border-radius: 0px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.report-complete__btn:hover{
+    color:white;
+    background-color: #62b3b9;
+}
+
+/* 알림 모달 모바일 반응형 */
+
+@media (min-width: 576px) {
+	
+    #notification-modal {
+	  width:353px;
+	  height:360px;
+      position: absolute;
+      top: 100px;
+      right: -12px;
+    }
+    
+    .notification {
+    	font-size: 18px;
+    	width: 280px;
+	}
+	
+	.readAll-btn{	
+	  	width:131px;
+	  	height:35px;
+	  	margin:10px 0 10px 205px;
+	}
+
+	.header__notification-on button::before {
+	    width: 32px;
+	    height: 32px;
+	}
+	
+	.notification__close-btn{
+		margin:10px 0 0 310px;
+	}
+
+  }

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <!----------------------- 메인 화면 헤더(로그인 O)---------------->
+    <header class="header" th:fragment="member-header">
+        <h1 class="text-hidden">ZPOP</h1>
+        <nav>
+            <ul>
+                <li class="header__main"><a class="text-hidden" href="/">홈으로 이동</a></li>
+                <li class="header__search-bar--pc-wrap hidden text-hidden">
+                    <span class="icon icon-search">돋보기</span>
+                    <input
+                    class="header__search-content--pc"
+                    type="text"
+                    />
+                    데스크톱검색
+                </li>
+                <li class="header__create-meeting"><a href="/meeting/register">모임 등록</a></li>
+                <li class="header__search"><button class="text-hidden modal__on-btn" data-modal="#modal-search">검색</button></li>
+                <li id="header-notification" class="header__notification">
+                	 <button id="notification-btn" class="text-hidden modal__on-btn" data-modal="#notification-modal">
+                        알림확인
+                    </button> 
+                	 <div id="notification-modal" class="hidden">
+                	 	<div class="button--container">
+	                        <input type="button" class="notification__close-btn modal__close-btn " data-modal="#notification-modal">
+                	 	</div>
+                        <div id="upper-blank"></div>
+                        <div class="notification-container"></div>
+                        <!-- 알림 들어가는 공간 -->
+                        <div class="blank-div">
+ 	                    	<div class="readAll-btn btn btn-round">모두 읽기</div>
+ 	                    </div>
+                    </div>
+                </li>
+                <li class="header__profile select-box">
+                    <button><img alt="프로필"
+                                 src="/images/icon/user-profile.svg"></button>
+<!--                    th:src="@{(${session.member.profileImagePath}?${session.member.profileImagePath}:'/images/icon/user-profile.svg')}"></button>-->
+                    <ul class="select-box__options select-box__options--right select-box__options--header">
+                        <!--li 말고 div 박스 전체로 -->
+                        <li><a href="/member/me">내 프로필</a></li>
+                        <li><a href="/member/me/gathering">내가 모집한 모임</a></li>
+                        <li><a href="/member/me/meeting">내가 참여한 모임</a></li>
+                        <li><a href="/member/me/meeting">모임 평가하기</a> </li>
+                        <li><a href="/logout">로그아웃</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!----------------------- 메인 화면 헤더(로그인 X)---------------->
+	    <header th:fragment="anonymous-header" class="header">
+	        <h1 class="text-hidden">ZPOP</h1>
+	        <nav>
+	            <ul>
+	                <li class="header__main"><a class="text-hidden" href="/">홈으로 이동</a></li>
+	                <li class="header__create-meeting"><a class="text-hidden" href="/meeting/register">모임 등록</a></li>
+	                <li class="header__search-bar--pc-wrap hidden text-hidden">
+	                    <span class="icon icon-search">돋보기</span>
+	                    <input
+	                    class="header__search-content--pc"
+	                    type="text"
+	                    />
+	                    데스크톱검색
+	                </li>
+	                <li class="header__search"><button class="text-hidden modal__on-btn" data-modal="#modal-search">검색</button></li>
+	                <li class="header__login">
+						<button class="modal__on-btn" data-modal="#modal-login">로그인</button>
+						<div id="modal-login" class="modal-wrapper hidden">
+							<div class="modal">
+								<div class="modal__header">
+									<span class="modal__close-btn icon icon-x"
+										data-modal="#modal-login">닫기</span>
+								</div>
+								<div class="modal__body">
+									<div class="logo-img">
+										<img src="/images/logo/logo-modal.svg" alt="" class="src">
+									</div>
+									<div class="login-btn-container">
+										<a class="login-btn login-btn--kakao text-hidden"
+											id="kakao-login-btn"
+											href="javascript:Kakao.Auth.authorize({redirectUri: 'http://localhost:8080/login/oauth/kakao'})">카카오
+											로그인 버튼</a> 
+										<a class="login-btn login-btn--naver text-hidden"
+											id="naver-login-btn" href="javascript:void(0)">네이버 로그인 버튼</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</li>
+	            </ul>
+	        </nav>
+	    </header>
+	</body>
+</html>
