@@ -3,12 +3,15 @@ import {addListenerToCommentKebob} from "./edit-comment.js";
 import {addListenerToReplyKebob} from "./edit-reply.js";
 
 window.addEventListener("load", () => {
-	//DOM에서 SSR로 뿌려진값들 추출 
+	 
 	const meetingId = document.querySelector(".meeting-id").dataset.id;
 	const commentUl = document.querySelector(".comment__list");
 	const inputBox = document.querySelector(".comment__input");
 	const registerBtn = document.querySelector("#register-btn");
 	const editSaveBtn = document.querySelector("#edit-save-btn");
+	const replyWriteSpanList = document.querySelectorAll(".reply-write");
+	//로그인시 
+	if(document.querySelector("#header-notification")){
 	
 	//댓글케밥에 이벤트핸들러 등록
 	addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
@@ -31,7 +34,7 @@ window.addEventListener("load", () => {
 			!e.target.classList.contains("reply-write")&&
 			!e.target.classList.contains("reply-close"))
 			return; 
-		//DOM에서 SSR로 뿌려진값들 추출 
+		
 		const commentId = e.target.closest("li").dataset.id;
 		const replyUl = e.target.parentElement.nextElementSibling.children[0];//<ul class="reply__list">
 		const replySection = replyUl.parentElement;// <section class="reply hidden">
@@ -82,6 +85,13 @@ window.addEventListener("load", () => {
 			closeReplyList(replyUl, replyCnt, e.target);
 		}
 	};
+	
+	}//비로그인시 버튼이벤트를 로그인창으로 바꿈.
+	else{
+		registerBtn.dataset.modal = "#modal-login";
+		for(const span of replyWriteSpanList)
+			span.dataset.modal = "#modal-login";
+	}
 });
 //닫기버튼에 부착된 이벤트핸들러
 function closeReplyList(replyUl, replyCnt, replyClose){
@@ -151,7 +161,7 @@ function writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
 			})
 		};
 		if(commentText==""){
-			 alert("댓글을 입력해주세요.");
+			 console.log("댓글을 입력해주세요.");
 			 return;
 		}
 		
