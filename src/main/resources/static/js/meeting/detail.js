@@ -1,5 +1,17 @@
 window.addEventListener("load", function() {
-
+	//비로그인시 버튼 비활성화
+		const participation = document.querySelector("#btn-participation");
+		const cancelParticipation = document.querySelector("#btn-cancel-participation");
+		const closeMeeting = document.querySelector("#btn-close");
+	if(!document.querySelector("#header-notification")){
+		if(participation)
+			participation.dataset.modal = "#modal-login";
+		if(cancelParticipation)
+			cancelParticipation.dataset.modal = "#modal-login";
+		if(closeMeeting)
+			closeMeeting.dataset.modal =  "#modal-login";
+	}
+	
 	const meetingId = document.querySelector(".meeting-id").dataset.id;
 	const btnModalParticipate = document.querySelector("#participate-confirm");//참여하기 모달 우측 버튼
 	const btnModalCancelParticipation = document.querySelector("#cancel-confirm");//취소 모달 우측 버튼
@@ -11,12 +23,11 @@ window.addEventListener("load", function() {
 	const arrowDown = document.querySelector(".icon-arrow-down");
 	
 	btnModalParticipate.addEventListener("click", ()=>{
-			participate(meetingId, participantUl,participantCount);
-		
+			participate(meetingId, participantUl,participantCount, modalOfParticipate);
 	});
 	
 	btnModalCancelParticipation.addEventListener("click",()=>{
-		 	cancelParticipate(meetingId, participantUl,participantCount);
+		 	cancelParticipate(meetingId, participantUl,participantCount,modalOfCancel);
 	});
 	
 	btnModalMeetingClose.addEventListener("click",()=>{
@@ -44,7 +55,7 @@ window.addEventListener("load", function() {
 	
 });
 
-function participate(meetingId, participantUl,participantCount){
+function participate(meetingId, participantUl,participantCount,modalOfParticipate){
 	const data = {
 	      method: "POST",
 	      headers: {
@@ -67,7 +78,7 @@ function participate(meetingId, participantUl,participantCount){
           const btnParticipate = document.querySelector("#btn-participation");//참여하기 버튼
           btnParticipate.innerText = "참여취소";
           btnParticipate.id = "btn-cancel-participation";
-          btnParticipate.dataset.modal = "#modal-wrapper-cancel";
+          btnParticipate.dataset.modal = modalOfParticipate;
           
         } else alert("시스템 장애로 등록이 안되고 있습니다.");
       })
@@ -76,7 +87,7 @@ function participate(meetingId, participantUl,participantCount){
       });
 }
 
-function cancelParticipate(meetingId, participantUl,participantCount){
+function cancelParticipate(meetingId, participantUl, participantCount, modalOfCancel){
 	const data = {
 	      method: "DELETE",
 	      headers: {
@@ -95,7 +106,6 @@ function cancelParticipate(meetingId, participantUl,participantCount){
       })
       .then(data =>data.json())
 	  .then(result => {
-		  console.log(result)
 		  if(result){
 			  console.log("참여취소완료")
 	          while (participantUl.hasChildNodes())//기존 참여자아이콘 한개씩 삭제
@@ -105,7 +115,7 @@ function cancelParticipate(meetingId, participantUl,participantCount){
 	          const btnCancelParticipate = document.querySelector("#btn-cancel-participation");//참여취소하기 버튼
 	          btnCancelParticipate.innerText = "참여하기";
           	  btnCancelParticipate.id = "btn-participation";
-          	  btnCancelParticipate.dataset.modal = "#modal-wrapper-participation";
+          	  btnCancelParticipate.dataset.modal = modalOfCancel;
 		  }
 	  })
       .catch((error) => {
