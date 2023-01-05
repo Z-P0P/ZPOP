@@ -158,7 +158,7 @@ function getParticipant(meetingId, participantUl,participantCount){
 			let template = `
 				<li>
 		            <div class="participant__info">
-		                <img src="/images/girl.svg">  
+		                <img src="/images/icon/user-profile.svg">  
 		                <span>${p.nickname}</span>
 		            </div>
 	            </li>
