@@ -59,7 +59,7 @@
 		WHERE participantId=#{participantId}
 		AND bannedAt IS NULL
 		AND canceledAt IS NULL
-		AND isEvaluated = FALSE
+		AND hasEvaluated = FALSE
 	</select>
 
 	<select id="countByMeetingId" resultType="int">
