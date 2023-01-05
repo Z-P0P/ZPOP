@@ -165,6 +165,9 @@ public class DefaultCommentService implements CommentService {
 		if(affectedRow == 0)
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다");
 		
+		// 모임 댓글 수 감소
+		meetingDao.decreaseCommentCount(comment.getMeetingId());
+		
 		return affectedRow;
 	}
 	
