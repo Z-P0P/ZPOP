@@ -253,15 +253,14 @@ class DefaultMeetingServiceTest {
     public void delete_존재하지_않는_모임이라면_NOT_FOUND(){
         //given
         int meetingId = 1;
-        Member member = new Member();
-        member.setId(1);
+        int hostId = 1;
 
         // mocking
         given(dao.get(anyInt())).willReturn(null);
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.delete(meetingId, member));
+            () -> service.delete(meetingId, hostId));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -272,13 +271,12 @@ class DefaultMeetingServiceTest {
     public void kick_참여자를_내보낸다() {
         //given
         int meetingId = 1;
-        int participantId = 9999;
-        Member member = new Member();
-        member.setId(1);
+        int participantId = 999;
+        int hostId = 1;
 
         Meeting meeting = new Meeting();
         meeting.setId(1);
-        meeting.setRegMemberId(1);
+        meeting.setRegMemberId(hostId);
 
         Participation participation = new Participation();
         participation.setParticipantId(participantId);
@@ -291,7 +289,7 @@ class DefaultMeetingServiceTest {
         given(memberDao.getById(anyInt())).willReturn(new Member());
 
         // when
-        boolean result = service.kick(meetingId, participantId, member);
+        boolean result = service.kick(meetingId, participantId, hostId);
 
         // then
         assertThat(result).isEqualTo(true);
@@ -299,19 +297,20 @@ class DefaultMeetingServiceTest {
         // verify
         verify(participationDao, times(1)).updateBannedAt(anyInt());
     }
+
     @Test
     public void kick_존재하지_않는_모임이라면_NOT_FOUND() {
         //given
         int meetingId = 1;
-        int participantId = 1;
-        Member member = new Member();
+        int participantId = 999;
+        int hostId = 1;
 
         // mocking
         given(dao.get(anyInt())).willReturn(null);
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.kick(meetingId, participantId, member));
+            () -> service.kick(meetingId, participantId, hostId));
         
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -321,10 +320,9 @@ class DefaultMeetingServiceTest {
     public void kick_권한이_없다면_FORBIDDEN() {
         //given
         int meetingId = 1;
-        int participantId = 1;
-        Member member = new Member();
-        member.setId(1);
-            
+        int participantId = 999;
+        int hostId = 1;
+
         Meeting meeting = new Meeting();
         meeting.setId(1);
         meeting.setRegMemberId(9999);
@@ -334,7 +332,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.kick(meetingId, participantId, member));
+            () -> service.kick(meetingId, participantId, hostId));
         
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
@@ -344,13 +342,12 @@ class DefaultMeetingServiceTest {
     public void kick_모임에_참여하지_않은_회원이라면_NOTFOUND() {
         //given
         int meetingId = 1;
-        int participantId = 1;
-        Member member = new Member();
-        member.setId(1);
+        int participantId = 999;
+        int hostId = 1;
 
         Meeting meeting = new Meeting();
         meeting.setId(1);
-        meeting.setRegMemberId(1);
+        meeting.setRegMemberId(hostId);
 
         Participation otherParticipation = new Participation();
         List<Participation> list = new ArrayList<>();
@@ -362,7 +359,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.kick(meetingId, participantId, member));
+            () -> service.kick(meetingId, participantId, hostId));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -373,13 +370,12 @@ class DefaultMeetingServiceTest {
     public void kick_참여를_취소한_회원이라면_NOTFOUND() {
         //given
         int meetingId = 1;
-        int participantId = 1;
-        Member member = new Member();
-        member.setId(1);
+        int participantId = 999;
+        int hostId = 1;
 
         Meeting meeting = new Meeting();
         meeting.setId(1);
-        meeting.setRegMemberId(1);
+        meeting.setRegMemberId(hostId);
 
         Participation canceledParticipation = new Participation();
         canceledParticipation.setCanceledAt(new Date());
@@ -392,7 +388,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> service.kick(meetingId, participantId, member));
+                () -> service.kick(meetingId, participantId, hostId));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -403,16 +399,15 @@ class DefaultMeetingServiceTest {
     public void kick_이미_강퇴된_회원이라면_CONFLICT() {
         //given
         int meetingId = 1;
-        int participantId = 1;
-        Member member = new Member();
-        member.setId(1);
+        int participantId = 999;
+        int hostId = 1;
 
         Meeting meeting = new Meeting();
         meeting.setId(1);
-        meeting.setRegMemberId(1);
+        meeting.setRegMemberId(hostId);
 
         Participation bannedParticipation = new Participation();
-        bannedParticipation.setParticipantId(1);
+        bannedParticipation.setParticipantId(participantId);
         bannedParticipation.setBannedAt(new Date());
         List<Participation> list = new ArrayList<>();
         list.add(bannedParticipation);
@@ -423,7 +418,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> service.kick(meetingId, participantId, member));
+                () -> service.kick(meetingId, participantId, hostId));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
@@ -434,21 +429,20 @@ class DefaultMeetingServiceTest {
     public void kick_탈퇴한_회원이라면_참여취소_처리_후_NOT_FOUND() {
         //given
         int meetingId = 1;
-        int participantId = 1;
-        Member member = new Member();
-        member.setId(1);
+        int participantId = 999;
+        int hostId = 1;
 
         Meeting meeting = new Meeting();
         meeting.setId(1);
         meeting.setRegMemberId(1);
 
         Participation resignedParticipation = new Participation();
-        resignedParticipation.setParticipantId(1);
+        resignedParticipation.setParticipantId(participantId);
         List<Participation> list = new ArrayList<>();
         list.add(resignedParticipation);
 
         Member resigendMember = new Member();
-        resigendMember.setId(999);
+        resigendMember.setId(participantId);
         resigendMember.setResignedAt(new Date());
 
         // mocking
@@ -458,7 +452,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> service.kick(meetingId, participantId, member));
+                () -> service.kick(meetingId, participantId, hostId));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -470,15 +464,14 @@ class DefaultMeetingServiceTest {
         //given
         int meetingId = 1;
         int participantId = 1;
-        Member member = new Member();
-        member.setId(1);
+        int hostId = participantId;
 
         Meeting meeting = new Meeting();
         meeting.setId(1);
-        meeting.setRegMemberId(1);
+        meeting.setRegMemberId(hostId);
 
         Participation selfParticipation = new Participation();
-        selfParticipation.setParticipantId(1);
+        selfParticipation.setParticipantId(participantId);
         List<Participation> list = new ArrayList<>();
         list.add(selfParticipation);
 
@@ -489,7 +482,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> service.kick(meetingId, participantId, member));
+                () -> service.kick(meetingId, participantId, hostId));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -502,39 +495,37 @@ class DefaultMeetingServiceTest {
         //given
         Date notStartedTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
                 .parse("9999-01-01 11:11:11");
-        Meeting testMeeting = new Meeting();
-        testMeeting.setStartedAt(notStartedTime);
-        testMeeting.setRegMemberId(1);
+        Meeting meeting = new Meeting();
+        meeting.setStartedAt(notStartedTime);
+        meeting.setRegMemberId(1);
 
-        Member testMember = new Member();
-        testMember.setId(1);
+        int hostId = 1;
 
         // mocking
-        given(dao.get(anyInt())).willReturn(testMeeting);
+        given(dao.get(anyInt())).willReturn(meeting);
 
         //when
-        boolean result = service.close(testMeeting.getId(), testMember);
+        boolean result = service.close(meeting.getId(), hostId);
 
         //then
         assertThat(result).isEqualTo(true);
 
         // verify
-        verify(dao, times(1)).updateClosedAt(testMeeting);
+        verify(dao, times(1)).updateClosedAt(meeting);
     }
 
     @Test
     public void close_존재하지_않는_모임이라면_NOT_FOUND() {
         //given
-        int testMeetingId = 1;
-        Member testMember = new Member();
-        testMember.setId(1);
+        int meetingId = 1;
+        int hostId = 1;
 
         // mocking
         given(dao.get(anyInt())).willReturn(null);
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.close(testMeetingId, testMember));
+            () -> service.close(meetingId, hostId));
         
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -543,8 +534,7 @@ class DefaultMeetingServiceTest {
     @Test
     public void close_권한이_없다면_FORBIDDEN() {
         //given
-        Member member = new Member();
-        member.setId(1);
+        int hostId = 1;
 
         Meeting meeting = new Meeting();
         meeting.setId(1);
@@ -555,7 +545,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.close(meeting.getId(), member));
+            () -> service.close(meeting.getId(), hostId));
         
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
@@ -564,19 +554,18 @@ class DefaultMeetingServiceTest {
     @Test
     public void close_이미_마감된_모임이라면_CONFLICT() throws ParseException {
         //given
-        Member member = new Member();
-        member.setId(1);
+        int hostId = 1;
 
         Meeting meeting = new Meeting();
         meeting.setClosedAt(new Date());
-        meeting.setRegMemberId(1);
+        meeting.setRegMemberId(hostId);
 
         // mocking
         given(dao.get(anyInt())).willReturn(meeting);
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.close(meeting.getId(), member));
+            () -> service.close(meeting.getId(), hostId));
         
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
@@ -585,21 +574,20 @@ class DefaultMeetingServiceTest {
     @Test
     public void close_이미_시작된_모임이라면_마감처리_후_CONFLICT() throws ParseException {
         //given
+        int hostId = 1;
+
         Date pastTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             .parse("1999-01-01 11:11:11");
         Meeting meeting = new Meeting();
         meeting.setStartedAt(pastTime);
-        meeting.setRegMemberId(1);
-
-        Member member = new Member();
-        member.setId(1);
+        meeting.setRegMemberId(hostId);
 
         // mocking
         given(dao.get(anyInt())).willReturn(meeting);
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.close(meeting.getId(), member));
+            () -> service.close(meeting.getId(), hostId));
         
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
