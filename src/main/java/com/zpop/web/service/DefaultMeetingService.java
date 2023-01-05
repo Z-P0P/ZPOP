@@ -314,23 +314,21 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public boolean delete(int id, Member member) {
+	public boolean delete(int id, int hostId) {
 
 		Meeting foundMeeting = dao.get(id);
 
 		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
 
-		int memberId = member.getId();
-
-		if (foundMeeting.getRegMemberId() != memberId)
+		if (foundMeeting.getRegMemberId() != hostId)
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
 
 		List<Participation> participations = participationDao.getListByMeetingId(id);
 
 		for (Participation p : participations) {
 			// 주최자 자기 자신 제외
-			if (p.getParticipantId() == memberId)
+			if (p.getParticipantId() == hostId)
 				continue;
 
 			Date bannedAt = p.getBannedAt();
@@ -346,15 +344,14 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public boolean kick(int id, int participantId, Member member) {
+	public boolean kick(int id, int participantId, int hostId) {
 		Meeting foundMeeting = dao.get(id);
 
 		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
 
-		int memberId = member.getId();
 
-		if (foundMeeting.getRegMemberId() != memberId)
+		if (foundMeeting.getRegMemberId() != hostId)
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
 
 		List<Participation> participations = participationDao.getListByMeetingId(id);
@@ -384,7 +381,7 @@ public class DefaultMeetingService implements MeetingService {
 		}
 
 		// 자기자신을 강퇴하려 할 때
-		if (kickTargetMemberId == member.getId())
+		if (kickTargetMemberId == hostId)
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 내보낼 수 없습니다");
 
 		participationDao.updateBannedAt(kickTarget.getId());
@@ -404,16 +401,15 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public boolean close(int id, Member member) {
+	public boolean close(int id, int hostId) {
 
 		Meeting foundMeeting = dao.get(id);
 
 		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
 
-		int memberId = member.getId();
 
-		if (foundMeeting.getRegMemberId() != memberId)
+		if (foundMeeting.getRegMemberId() != hostId)
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
 
 		if (foundMeeting.getClosedAt() != null)

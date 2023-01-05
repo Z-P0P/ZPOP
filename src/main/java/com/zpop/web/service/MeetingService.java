@@ -131,7 +131,7 @@ public interface MeetingService {
 	 * @param hostId 주최자 아이디  
 	 * @return 성공 여부
 	 */
-	boolean kick(int id, int participantId, Member member); //TODO: 시큐리티
+	boolean kick(int id, int participantId, int hostId); //TODO: 시큐리티
 
 	/**
 	 * 모임을 마감하기.
@@ -146,7 +146,7 @@ public interface MeetingService {
 	 * @param hostId 주최자 아이디
 	 * @return 성공 여부
 	 */
-	boolean close(int id, Member member);  //TODO: 시큐리티
+	boolean close(int id, int hostId);  //TODO: 시큐리티
 
 	/**
 	 * 모임 삭제하기.
@@ -160,7 +160,7 @@ public interface MeetingService {
 	 * @param hostId 주최자 아이디
 	 * @return 성공 여부
 	 */
-	boolean delete(int id, Member member);  //TODO: 시큐리티
+	boolean delete(int id, int hostId);
 
 	RegisterMeetingViewResponse getActiveOptions();
 
