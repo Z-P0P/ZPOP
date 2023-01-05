@@ -23,9 +23,10 @@
 
 	<select id="getListByMeetingId"
 		resultType="com.zpop.web.entity.Participation">
-		SELECT participantId
+		SELECT *
 		FROM participation
 		WHERE meetingId=#{id}
+		AND canceledAt IS NULL
 	</select>
 
 	<select id="getList"
@@ -56,6 +57,7 @@
 		SELECT *
 		FROM participationInfo
 		WHERE meetingId = #{meetingId}
+		
 	</select>
     
 	<select id="getListByParticipantId" resultType="int">

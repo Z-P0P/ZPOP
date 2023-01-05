@@ -10,23 +10,29 @@ public class ParticipationInfoView {
   private Date createdAt;
   private Date bannedAt;
   private Date canceledAt;
-  private boolean isEvaluated;
+  private boolean hasEvaluated;
 
   public ParticipationInfoView() {
   }
 
-  public ParticipationInfoView(int id, int participantId, String nickname, String profileImagePath, Date createdAt, Date bannedAt, Date canceledAt, boolean isEvaluated) {
-    this.id = id;
-    this.participantId = participantId;
-    this.nickname = nickname;
-    this.profileImagePath = profileImagePath;
-    this.createdAt = createdAt;
-    this.bannedAt = bannedAt;
-    this.canceledAt = canceledAt;
-    this.isEvaluated = isEvaluated;
-  }
 
-  public int getId() {
+
+  public ParticipationInfoView(int id, int participantId, String nickname, String profileImagePath, Date createdAt,
+		Date bannedAt, Date canceledAt, boolean hasEvaluated) {
+	super();
+	this.id = id;
+	this.participantId = participantId;
+	this.nickname = nickname;
+	this.profileImagePath = profileImagePath;
+	this.createdAt = createdAt;
+	this.bannedAt = bannedAt;
+	this.canceledAt = canceledAt;
+	this.hasEvaluated = hasEvaluated;
+}
+
+
+
+public int getId() {
     return this.id;
   }
 
@@ -82,16 +88,14 @@ public class ParticipationInfoView {
     this.canceledAt = canceledAt;
   }
 
-  public boolean isIsEvaluated() {
-    return this.isEvaluated;
-  }
+public boolean hasEvaluated() {
+	return hasEvaluated;
+}
 
-  public boolean getIsEvaluated() {
-    return this.isEvaluated;
-  }
+public void setEvaluated(boolean hasEvaluated) {
+	this.hasEvaluated = hasEvaluated;
+}
 
-  public void setIsEvaluated(boolean isEvaluated) {
-    this.isEvaluated = isEvaluated;
-  }
+ 
 
 }
