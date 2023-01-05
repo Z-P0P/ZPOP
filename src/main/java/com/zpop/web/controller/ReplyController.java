@@ -70,7 +70,7 @@ public class ReplyController {
 	@ResponseBody
 	public int updateReply(@PathVariable int id, @RequestBody Comment editedReply,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		service.updateComment(editedReply);
+		service.updateComment(editedReply, userDetails.getId());
 		Comment reply = service.getCommentById(id);
 		return reply.getGroupId();
 	}
@@ -79,7 +79,7 @@ public class ReplyController {
 	@ResponseBody
 	public int deleteReply(@PathVariable int id,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		service.deleteComment(id);
+		service.deleteComment(id, userDetails.getId());
 		Comment reply = service.getCommentById(id);
 		return reply.getGroupId();
 	}

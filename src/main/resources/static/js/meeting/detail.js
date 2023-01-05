@@ -1,9 +1,20 @@
 window.addEventListener("load", function() {
-
+	//비로그인시 버튼 비활성화
+		const btnParticipation = document.querySelector("#btn-participation");
+		const btnCancelParticipation = document.querySelector("#btn-cancel-participation");
+		const btnCloseMeeting = document.querySelector("#btn-close");
+	if(!document.querySelector("#header-notification")){
+		if(btnParticipation)
+			btnParticipation.dataset.modal = "#modal-login";
+		if(btnCancelParticipation)
+			btnCancelParticipation.dataset.modal = "#modal-login";
+		if(btnCloseMeeting)
+			btnCloseMeeting.dataset.modal =  "#modal-login";
+	}
+	
 	const meetingId = document.querySelector(".meeting-id").dataset.id;
 	const btnModalParticipate = document.querySelector("#participate-confirm");//참여하기 모달 우측 버튼
 	const btnModalCancelParticipation = document.querySelector("#cancel-confirm");//취소 모달 우측 버튼
-	const btnMeetingClose = document.querySelector("#btn-close");//모임마감하기 버튼
 	const btnModalMeetingClose = document.querySelector("#close-confirm");//마감 모달 우측 버튼
 	const participantUl = document.querySelector(".participant__list");
 	const participantCount = document.querySelector("#participant-count");
@@ -11,8 +22,7 @@ window.addEventListener("load", function() {
 	const arrowDown = document.querySelector(".icon-arrow-down");
 	
 	btnModalParticipate.addEventListener("click", ()=>{
-			participate(meetingId, participantUl,participantCount);
-		
+			participate(meetingId, participantUl, participantCount);
 	});
 	
 	btnModalCancelParticipation.addEventListener("click",()=>{
@@ -76,7 +86,7 @@ function participate(meetingId, participantUl,participantCount){
       });
 }
 
-function cancelParticipate(meetingId, participantUl,participantCount){
+function cancelParticipate(meetingId, participantUl, participantCount){
 	const data = {
 	      method: "DELETE",
 	      headers: {
@@ -95,7 +105,6 @@ function cancelParticipate(meetingId, participantUl,participantCount){
       })
       .then(data =>data.json())
 	  .then(result => {
-		  console.log(result)
 		  if(result){
 			  console.log("참여취소완료")
 	          while (participantUl.hasChildNodes())//기존 참여자아이콘 한개씩 삭제
@@ -158,7 +167,7 @@ function getParticipant(meetingId, participantUl,participantCount){
 			let template = `
 				<li>
 		            <div class="participant__info">
-		                <img src="/images/icon/user-profile.svg">  
+		                <img src="/images/girl.svg">  
 		                <span>${p.nickname}</span>
 		            </div>
 	            </li>
