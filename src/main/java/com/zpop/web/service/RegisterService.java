@@ -45,7 +45,7 @@ public class RegisterService {
 	public Map<String, Object> checkNicknameValid(String nickname) {
 		Map<String, Object> result = new HashMap<>();
 		boolean isRegexMatch = Pattern.matches(nicknamePattern, nickname);
-		System.out.println(isRegexMatch);
+		
 		if (nickname.isBlank() || nickname.isEmpty() || 
 				nickname.length() > MAX_NICKNAME_LENGTH
 				|| !isRegexMatch) {

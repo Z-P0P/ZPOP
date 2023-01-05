@@ -17,7 +17,7 @@ const AdminList = function(listSize) {
 	for (let i = 0; i < listContents.length; i++) {
 		listContents[i].onclick = () => {
 			this.clickedListNum = i;
-			console.log(this.clickedListNum);
+			
 		}
 	}
 }
@@ -30,13 +30,13 @@ AdminList.prototype.clickCheckBox = function() {
 	else {
 		this.checkedIds[id] = true;
 	}
-	console.log(`${id}는 ${this.checkedIds[id]} 입니다.`);
+	
 	return this.checkedIds[id];
 }
 
 AdminList.prototype.searchListClickHandler = function(e) {
 	const target = e.target;
-	console.log("눌렸음");
+	
 
 	if (target.tagName == "INPUT" && target.getAttribute('type') == "checkbox") {
 		if (target.parentElement.classList.contains("table-bar__left-container")) {
@@ -64,7 +64,7 @@ AdminList.prototype.clickCheckBoxAll = function() {
 		});
 		checkbox.dispatchEvent(event);
 	})
-	console.log('모두 체크되었습니다.');
+	
 }
 
 AdminList.prototype.getDetail = function() {
@@ -75,7 +75,7 @@ AdminList.prototype.getDetail = function() {
 	fetch(url)
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
+			
 			this.updateDetails(data);
 		});
 };

@@ -151,12 +151,12 @@ public class DefaultMeetingService implements MeetingService {
 			String src = tag.attr("src");
 			src = File.separator + "images" + File.separator + String.valueOf(meetingId) + File.separator + src;
 			tag.attr("src", src);
-			System.out.println(image.toString());
+			
 			tag.attr("data-id", String.valueOf(image.getId()));
 		}
 
 		meeting.setContent(doc.body().html());
-		System.out.println(doc.body().html());
+		
 		dao.updateContent(meeting);
 		*/
 		
@@ -524,7 +524,7 @@ public class DefaultMeetingService implements MeetingService {
 		}
 
 		String completePath = path + File.separator + file.getOriginalFilename();
-		System.out.println(completePath);
+		
 		InputStream fis = file.getInputStream();
 		OutputStream fos = new FileOutputStream(completePath);
 

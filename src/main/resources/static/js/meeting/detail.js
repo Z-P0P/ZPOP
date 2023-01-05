@@ -26,7 +26,7 @@ window.addEventListener("load", function() {
 	const meetingTitleHambugerIcon = document.querySelector(".meeting__title-hambuger-icon");
 	
 	meetingTitleHambugerIcon.onclick = function(e){
-		console.log("햄버거 버튼입니다");
+		
 		
 	}
 		
@@ -137,6 +137,7 @@ function closeMeeting(meetingId, btnMeetingClose){
 				btnMeetingClose.remove();
 				const template = `<span class="btn btn-round btn-join btn-dead">모집완료</span>`;
 				document.querySelector(".meeting__btn").insertAdjacentHTML("afterbegin", template);
+        
 			}
 		});
 }

@@ -18,8 +18,8 @@ public interface CommentService {
 	
 	int registerComment(Comment comment);
 	int registerReply(Comment comment);
-	int updateComment(Comment comment);
-	int deleteComment(int id);
+	int updateComment(Comment comment, int memberId);
+	int deleteComment(int id, int memberId);
 	//reportComment 서비스는 별도의 ReportService 이용
 	
 	int getCountOfComment(int meetingId);

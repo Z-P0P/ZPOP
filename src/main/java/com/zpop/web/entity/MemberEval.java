@@ -10,6 +10,13 @@ public class MemberEval {
     private int result;
     private Timestamp createdAt;
 
+    public MemberEval (int meetingId, int evaluatorId, int evaluateeId, int result){
+        this.meetingId = meetingId;
+        this.evaluatorId =evaluatorId;
+        this.evaluateeId = evaluateeId;
+        this.result = result;
+    }
+    
     public int getId() {
         return this.id;
     }
@@ -56,6 +63,18 @@ public class MemberEval {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return "MemberEval{" +
+                "id=" + id +
+                ", meetingId=" + meetingId +
+                ", evaluatorId=" + evaluatorId +
+                ", evaluateeId=" + evaluateeId +
+                ", result=" + result +
+                ", createdAt=" + createdAt +
+                '}';
     }
 
 }

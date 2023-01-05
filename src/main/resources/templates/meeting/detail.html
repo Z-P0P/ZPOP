@@ -2,20 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org"
  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
  layout:decorate="~{inc/layout}">
+ <head>
+  <title>ZPOP | 모임</title>
+    
+  <th:block layout:fragment="css">
+      <!-- component css -->
+      <link rel="stylesheet" href="/css/member/component/profile-box.css">
+      <link rel="stylesheet" href="/css/member/component/meeting-info.css">
+      <link rel="stylesheet" href="/css/member/component/participant.css" >
+      <link rel="stylesheet" href="/css/member/component/comment.css" />
+      <link rel="stylesheet" href="/css/member/component/reply.css" />
 
-<th:block layout:fragment="css">
-    <!-- component css -->
-    <link rel="stylesheet" href="/css/member/component/profile-box.css">
-    <link rel="stylesheet" href="/css/member/component/meeting-info.css">
-    <link rel="stylesheet" href="/css/member/component/participant.css" >
-    <link rel="stylesheet" href="/css/member/component/comment.css" />
-    <link rel="stylesheet" href="/css/member/component/reply.css" />
+      <link rel="stylesheet" href="/css/member/component/modal-2.css">
+      <link rel="stylesheet" href="/css/member/component/report-modal.css">
+      <!-- detail page css -->
+      <link rel="stylesheet" href="/css/member/meeting/detail.css">
+  </th:block>	
 
-    <link rel="stylesheet" href="/css/member/component/modal-2.css">
-    <link rel="stylesheet" href="/css/member/component/report-modal.css">
-    <!-- detail page css -->
-    <link rel="stylesheet" href="/css/member/meeting/detail.css">
-</th:block>	
+
 
  <th:block layout:fragment="js">   
     <script src="/js/meeting/detail.js"></script>
@@ -70,7 +74,8 @@
                 <span th:text="|#${meeting.genderCategory}|">성별</span>
             </div>
             <div class="meeting__views"  th:text="|조회수${meeting.viewCount}|">조회수</div>
-            <div class="meeting__btn">
+
+            <div class="meeting__btn z-idx-2">
                 <span th:if="${meeting.isClosed == true}" class="btn btn-round btn-join btn-dead" >모집완료</span>
                 <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == true}" class="btn btn-round btn-join btn-action modal__on-btn" id="btn-close" data-modal="#modal-wrapper-close">마감하기</span>
                 <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == false} " class="btn btn-round btn-join btn-action modal__on-btn " id="btn-participation"  data-modal="#modal-wrapper-participation">참여하기</span>
@@ -100,7 +105,7 @@
     </section>
 			
    <!------ 참여 모달 ------>
-     <div class="modal-2 hidden" id="modal-wrapper-participation">
+     <div class="modal-2 hidden z-idx-1" id="modal-wrapper-participation">
 
         <div class="modal-participation">
             <div class="modal__header">
@@ -125,8 +130,9 @@
             </div>
         </div>
     </div>
+
     <!-- -------------참여 취소 모달----------------------->
-    	<div class="popup-container modal-wrapper hidden" id="modal-wrapper-cancel">
+    	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-wrapper-cancel">
 		<div class="popup__wrap-inactive" id="popup">
 			<div class="popup">
 				<div class="popup__body">
@@ -143,8 +149,10 @@
 			</div>
 		</div>
 	</div>
+
     <!-- -------------모임 마감 모달----------------------->
-    	<div class="popup-container modal-wrapper hidden" id="modal-wrapper-close">
+    	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-wrapper-close">
+
 		<div class="popup__wrap-inactive" id="popup">
 			<div class="popup">
 				<div class="popup__body">
@@ -161,8 +169,10 @@
 			</div>
 		</div>
 	</div>
+
     <!--------------- 모임 신고 모달----------------------->
-    <div id="modal-report-meeting" class="modal-wrapper hidden">
+    <div id="modal-report-meeting" class="modal-wrapper hidden z-idx-1 modal-report">
+
       <div class="modal">
         <div class="modal__header">
     
@@ -196,7 +206,8 @@
       </div>
     </div>
     <!--------------- 댓글 신고 모달 -------------------->
-     <div id="modal-report-comment" class="modal-wrapper hidden">
+
+     <div id="modal-report-comment" class="modal-wrapper hidden z-idx-1 modal-report">
       <div class="modal">
         <div class="modal__header">
     
@@ -230,7 +241,8 @@
     </div>
     
     <!--------------- 사용자 신고 모달 -------------------->
-      <div id="modal-report-member" class="modal-wrapper hidden">
+
+      <div id="modal-report-member" class="modal-wrapper hidden z-idx-1 modal-report">
       <div class="modal">
         <div class="modal__header">
             <span class="modal__close-btn icon icon-x" data-modal="#modal-report-member">닫기</span>
@@ -260,6 +272,13 @@
         </div>
         </div>
       </div>
+    </div>
+    <!--신고 완료하였습니다 모달 -->
+    <div class="modal-wrapper hidden report-modal-wrapper">
+     <div class="report-complete">
+        <div class="report-complete-content">신고가 완료되었습니다</div>
+        <div class="report-complete__btn">확인</div>
+    </div>
     </div>
     <!--------------- 댓글 섹션 -------------------->
     <section class="comment">

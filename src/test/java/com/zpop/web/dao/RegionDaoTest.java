@@ -20,13 +20,14 @@ class RegionDaoTest {
     @Test
     void get_테스트() {
         Region region = regionDao.get(1);
-        System.out.println(region.getName());
+        
     }
 
     @Test
     void get_list_테스트() {
         List<Region> regions = regionDao.getList();
         for (Region r : regions)
-            System.out.println(r.getName());
+            System.out.println(r.getId());
+        
     }
 }

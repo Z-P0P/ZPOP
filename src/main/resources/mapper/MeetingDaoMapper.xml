@@ -83,6 +83,12 @@
 		WHERE id = #{id}
 	</update>
 
+	<update id="decreaseCommentCount">
+		UPDATE meeting
+		SET commentCount = commentCount - 1
+		WHERE id = #{id}
+	</update>
+
 	<update id="update" parameterType="Meeting">
 		UPDATE meeting
         SET 
