@@ -139,4 +139,23 @@ public class MyMeetingView {
     public void setRegMemberId(int regMemberId) {
         this.regMemberId = regMemberId;
     }
+
+    @Override
+    public String toString() {
+        return "MyMeetingView{" +
+                "categoryName='" + categoryName + '\'' +
+                ", regionName='" + regionName + '\'' +//
+                ", startedAt=" + startedAt +
+                ", title='" + title + '\'' +
+                ", age='" + age + '\'' +
+                ", maxMember=" + maxMember +
+                ", genderCategory=" + genderCategory +
+                ", closedAt=" + closedAt +
+                ", viewCount=" + viewCount +
+                ", commentCount=" + commentCount +
+                ", meetingId=" + meetingId +
+                ", participantId=" + participantId +
+                ", regMemberId=" + regMemberId +
+                '}';
+    }
 }

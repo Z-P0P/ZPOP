@@ -109,9 +109,9 @@
 
               <div class="meeting__info">
                 <ul class="meeting__tags">
-                  <li th:text="|#${meeting.ageRange}|">연령대</li>
-                  <li th:text="|#${meeting.maxMember}명|">인원</li>
-                  <li th:text="|#${meeting.genderCategory}|">성별</li>
+                  <li th:text="${meeting.ageRange}">연령대</li>
+                  <li th:text="${meeting.maxMember}+명">인원</li>
+                  <li th:text="${meeting.genderCategory}">성별</li>
                 </ul>
                 <div class="meeting__info-detail">
                   <div
