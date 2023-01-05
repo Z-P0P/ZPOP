@@ -19,6 +19,7 @@ body {
   --font-small: 0.875rem; /* 14 */
 
   /* Font weight */
+  --extra-bold: 800;
   --bold: 700;
   --semi-bold: 600;
   --medium: 500;

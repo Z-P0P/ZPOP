@@ -59,13 +59,15 @@
 
     <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> 
         UPDATE meeting
-        SET deletedAt=CURRENT_TIMESTAMP()
+        SET
+        deletedAt=NOW()
         WHERE id = #{id}
     </update>
 
     <update id="updateClosedAt" parameterType="com.zpop.web.entity.meeting.Meeting">
         UPDATE meeting
-        SET closedAt=CURRENT_TIMESTAMP()
+        SET
+        closedAt=NOW()
         WHERE id = #{id}
     </update>
 	
@@ -74,6 +76,19 @@
 				SET viewCount = viewCount + 1
 				WHERE id = #{id}
 	</update>
+
+	<update id="increaseCommentCount">
+		UPDATE meeting
+		SET commentCount = commentCount + 1
+		WHERE id = #{id}
+	</update>
+
+	<update id="decreaseCommentCount">
+		UPDATE meeting
+		SET commentCount = commentCount - 1
+		WHERE id = #{id}
+	</update>
+
 	<update id="update" parameterType="Meeting">
 		UPDATE meeting
         SET 

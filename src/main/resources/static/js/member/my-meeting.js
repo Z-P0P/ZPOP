@@ -3,7 +3,6 @@
 window.addEventListener("load", function () {
   
 
-
   const rateBtns = document.querySelectorAll(".rate");
         // let modalBtn = document.querySelector("#rateBtn");
         const rateUi = document.querySelector(".modal__body");
@@ -92,7 +91,6 @@ window.addEventListener("load", function () {
           /* =====================   ♻ template rendering done ❗ ======================= */
               
 
-
               showModalByButton(e).then(res=>{
                 e.preventDefault()
                 const rangeInputs = document.querySelectorAll('input[type="range"]');
@@ -171,13 +169,8 @@ window.addEventListener("load", function () {
                   hideModalByButton(e);
                   // reqRate(meetingTitle);
                 }
-                
-               
-             
 
               }); 
-              
-           
                         });  //fetch 요청 완료
                   } //showRateModal 종료
 

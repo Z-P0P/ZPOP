@@ -6,7 +6,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+<title>ZPOP | 간단한 소모임, 집합</title>
+<link rel="shortcut icon" href="/images/logo/logo-no-text.svg" />
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
 	rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -15,24 +16,28 @@
 <link rel="stylesheet" href="/css/button.css">
 <link rel="stylesheet" href="/css/icon.css" />
 <link rel="stylesheet" href="/css/form.css">
+<link rel="stylesheet" href="/css/member/popup.css">
 <link rel="stylesheet" href="/css/member/component/login.css">
 <link rel="stylesheet" href="/css/member/component/modal.css" />
 <link rel="stylesheet" href="/css/member/component/header.css">
 <link rel="stylesheet" href="/css/member/component/select.css">
 <link rel="stylesheet" href="/css/member/component/notification-modal.css">
+<link rel="stylesheet" href="/css/member/component/input.css">
+<th:block layout:fragment="css"></th:block>
+
+
 <script src="/js/header.js"></script>
 <script src="/js/member/select.js"></script>
 <script src="/js/member/modal.js"></script>
+<script src="/js/header.js" defer></script>
 <script src="/js/member/login.js"></script>
 <script src="/js/member/notification.js"></script>
-<script src="/js/header.js" defer></script>
 <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
 	integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx"
 	crossorigin="anonymous"></script>
-<script
-	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"
-	charset="utf-8"></script>
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+	<th:block layout:fragment="js"></th:block>
 
 </head>
 <body>

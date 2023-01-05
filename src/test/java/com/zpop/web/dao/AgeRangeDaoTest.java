@@ -20,13 +20,13 @@ class AgeRangeDaoTest {
     @Test
     void get_테스트() {
         AgeRange ageRange = ageRangeDao.get(1);
-        System.out.println(ageRange.getType());
+        
     }
 
     @Test
     void get_list_테스트() {
         List<AgeRange> ageRanges = ageRangeDao.getList();
         for (AgeRange a : ageRanges)
-            System.out.println(a.getType());
+            System.out.println(a.getId());
     }
 }
