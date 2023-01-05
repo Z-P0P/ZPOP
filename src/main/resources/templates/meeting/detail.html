@@ -125,8 +125,10 @@
             </div>
         </div>
     </div>
+
     <!-- -------------모임 마감 모달----------------------->
     	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-wrapper-close">
+
 		<div class="popup__wrap-inactive" id="popup">
 			<div class="popup">
 				<div class="popup__body">
@@ -143,8 +145,10 @@
 			</div>
 		</div>
 	</div>
+
     <!--------------- 모임 신고 모달----------------------->
-    <div id="modal-report-meeting" class="modal-wrapper hidden z-idx-1">
+    <div id="modal-report-meeting" class="modal-wrapper hidden z-idx-1 modal-report">
+
       <div class="modal">
         <div class="modal__header">
     
@@ -178,7 +182,8 @@
       </div>
     </div>
     <!--------------- 댓글 신고 모달 -------------------->
-     <div id="modal-report-comment" class="modal-wrapper hidden z-idx-1">
+
+     <div id="modal-report-comment" class="modal-wrapper hidden z-idx-1 modal-report">
       <div class="modal">
         <div class="modal__header">
     
@@ -212,7 +217,8 @@
     </div>
     
     <!--------------- 사용자 신고 모달 -------------------->
-      <div id="modal-report-member" class="modal-wrapper hidden z-idx-1">
+
+      <div id="modal-report-member" class="modal-wrapper hidden z-idx-1 modal-report">
       <div class="modal">
         <div class="modal__header">
             <span class="modal__close-btn icon icon-x" data-modal="#modal-report-member">닫기</span>
@@ -242,6 +248,13 @@
         </div>
         </div>
       </div>
+    </div>
+    <!--신고 완료하였습니다 모달 -->
+    <div class="modal-wrapper hidden report-modal-wrapper">
+     <div class="report-complete">
+        <div class="report-complete-content">신고가 완료되었습니다</div>
+        <div class="report-complete__btn">확인</div>
+    </div>
     </div>
     <!--------------- 댓글 섹션 -------------------->
     <section class="comment">
