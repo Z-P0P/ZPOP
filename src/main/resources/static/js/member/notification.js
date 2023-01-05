@@ -18,7 +18,7 @@ function sendAll(){
 		                type
 	          	  })
        	 		}
-			fetch("http://localhost:8080/notification/type", data)
+			fetch("/notification/type", data)
 			}
 			else{
 				 const id = n.getAttribute("data-id");
@@ -33,7 +33,7 @@ function sendAll(){
 	                    readAt
 	                })
 	            }
-			fetch("http://localhost:8080/notification/read", data)	
+			fetch("/notification/read", data)	
 			}
 		}
 	}
@@ -84,7 +84,7 @@ function sendAll(){
                 })
             }
 			
-		fetch("http://localhost:8080/notification/read", data)
+		fetch("/notification/read", data)
 		.then(response=>{
 			window.location.href=deleteTarget.getAttribute("data-url");
 		})
@@ -99,7 +99,7 @@ function sendAll(){
 		const container = document.querySelector(".notification-container");
 		const type = [];
 		if(!notificationBtn) return;
-		 fetch("http://localhost:8080/notification")
+		 fetch("/notification")
 		            .then((response) => {
 						return response.json();
 					})

@@ -72,4 +72,12 @@
       		</if>
       	</where>
     </select>
+	<update id="updateFameAll" parameterType="java.util.List">
+		<foreach item="item" index="index" collection="list"
+				 separator=";">
+			UPDATE member
+			SET fame=fame+#{item.result}
+			WHERE id=#{item.evaluateeId}
+		</foreach>
+	</update>
 </mapper>

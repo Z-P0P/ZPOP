@@ -53,18 +53,26 @@ public class DefaultReportService implements ReportService {
 	}
 
 	@Override
-	public void createCommentReport(ReportedComment reportedComment) {
-	
+	public boolean createCommentReport(ReportedComment reportedComment) {
+		
 		reportedCommentDao.insert(reportedComment);
 		
+		return true;
 	}
 
 	@Override
-	public int[] getCommentId(int commentId, int reporterId) {
+	public int[] getReportedCommentId(int commentId, int reporterId) {
 
 		int[] result = reportedCommentDao.select(commentId, reporterId);
     
 		return result;
 	}
-	
+
+	@Override
+	public int[] getReportedMeetingId(int meetingId, int reporterId) {
+		
+		int[] list = reportedMeetingDao.getReportedMeetingId(meetingId, reporterId);
+		
+		return list;
+	}
 }

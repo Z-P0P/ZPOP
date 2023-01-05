@@ -3,7 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
     <!--💛글상세보기, 참여자-->
-    <div class="modal-select"  th:fragment="member-participant">
+    <div class="modal-select z-idx-1"  th:fragment="member-participant">
         <div class="modal-select__contents copy">복사하기
             <span class="icon icon-copy"></span>
         </div>
@@ -17,7 +17,7 @@
     <!--💛글상세보기, 주최자-->
 
 
-    <div class="modal-select" th:fragment="member-host">
+    <div class="modal-select z-idx-1" th:fragment="member-host">
         <div class="modal-select__contents copy">복사 하기
             <span class="icon icon-copy"></span>
         </div>
@@ -30,7 +30,7 @@
     </div>
 
     <!--💛글상세보기, 기본유저-->
-    <div class="modal-select" th:fragment="member">
+    <div class="modal-select z-idx-1" th:fragment="member">
         <div class="modal-select__contents copy">복사 하기
             <span class="icon icon-copy"></span>
         </div>
@@ -41,7 +41,7 @@
 
 
     <!-- 💚 댓글 (작성자)-->
-    <div class="modal-select comment__kebob" th:fragment="writer">
+    <div class="modal-select comment__kebob z-idx-1" th:fragment="writer">
         <div class="modal-select__contents" data-id="comment-edit">수정
             <span class="icon icon-edit"></span>
         </div>
@@ -51,9 +51,9 @@
     </div>
 
     <!-- 💚 댓글 (기본유저)-->
-    <div class="modal-select comment__kebob" th:fragment="reader">
+    <div class="modal-select comment__kebob z-idx-1" th:fragment="reader">
 
-        <div class="modal-select__contents modal__on-btn" data-id="comment-report" data-modal="#modal-report-comment">댓글 신고
+        <div class="modal-select__contents modal__on-btn " data-id="comment-report" data-modal="#modal-report-comment">댓글 신고
             <span class="icon icon-siren-red"></span>
         </div>
     </div>

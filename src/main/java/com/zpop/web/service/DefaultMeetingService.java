@@ -440,7 +440,7 @@ public class DefaultMeetingService implements MeetingService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
 		// 주최자가 자기 자신 모임에 참여할 때
 		if (foundMeeting.getRegMemberId() == memberId)
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 참여한 모임입니다");
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "회원님이 생성한 모임입니다");
 
 		boolean isClosedMeeting = isClosedMeeting(foundMeeting);
 		if(isClosedMeeting)
@@ -576,8 +576,7 @@ public class DefaultMeetingService implements MeetingService {
 		boolean isClosedMeeting = isClosedMeeting(foundMeeting);
 		if(isClosedMeeting)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "마감된 모임에 참여를 취소할 수 없습니다");
-        
-        //participationDao.updateCanceledAt(participationInfo.getId());
+        participationDao.updateCanceledAt(participationInfo.getId());
 
         return true;
 	}

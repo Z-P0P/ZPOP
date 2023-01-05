@@ -2,22 +2,19 @@ package com.zpop.web.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.zpop.web.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,8 +23,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.zpop.web.dto.MeetingDetailResponse;
+import com.zpop.web.dto.ParticipantResponse;
+import com.zpop.web.dto.RegisterMeetingRequest;
+import com.zpop.web.dto.RegisterMeetingResponse;
+import com.zpop.web.dto.RegisterMeetingViewResponse;
+import com.zpop.web.dto.UpdateMeetingRequest;
+import com.zpop.web.dto.UpdateMeetingViewDto;
+import com.zpop.web.entity.Member;
 import com.zpop.web.security.ZpopUserDetails;
-import com.zpop.web.service.CommentService;
 import com.zpop.web.service.MeetingService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -151,7 +155,16 @@ public class MeetingController {
 
 		return result;
 	}
-
+	//참여취소 AJAX endpoint(js에서 콜하는 함수)
+	@DeleteMapping("/{meetingId}/leave")
+	@ResponseBody
+	public boolean cancelParticipate(@PathVariable int meetingId,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		int memberId = userDetails.getId();
+		boolean result = service.cancelParticipate(meetingId, memberId);
+		return result;
+		
+	}
 	@GetMapping("/{id}/contact")
 	@ResponseBody
 	public String getContact(@PathVariable int id,
@@ -164,5 +177,17 @@ public class MeetingController {
 
 		return contact;
 	}
+	
+	@PatchMapping("/{id}/close")
+	@ResponseBody
+	public boolean closeMeeting(@PathVariable int id,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		Member member = new Member();
+		member.setId(userDetails.getId());
+		boolean result = service.close(id, member);
+		return result;
+		
+	}
+	
 	
 }
