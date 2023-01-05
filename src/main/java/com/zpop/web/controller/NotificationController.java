@@ -25,13 +25,6 @@ public class NotificationController {
 	
 	@Autowired NotificationService service;
 	
-
-	@GetMapping("/test")
-	public String notificationTest() {
-		
-		return"notification/notification-modal";
-	}
-	
 	@GetMapping
 	@ResponseBody
 	public  List<Notification> getList(
