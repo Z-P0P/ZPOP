@@ -70,7 +70,7 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
                       name="reply-input"
                       placeholder="답글을 입력하세요."></textarea>
                   <div class="reply__btn-container">
-                      <span class="reply__btn btn btn-round btn-cancel cancel-btn">취소하기</span>
+                      <span class="reply__btn btn btn-round btn-cancel cancel-btn" id="reply-cancel">취소하기</span>
                       <span class="reply__btn btn btn-round btn-action register-btn">등록하기</span>
                   </div>
               </div> 
@@ -116,11 +116,10 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 					});
 		});//end of registerBtn event handler
 		//취소버튼에 이벤트핸들러 부착 
-		//document.querySelector(".reply__btn.cancel-btn").addEventListener("click",()=>{
-		//console.log(document.querySelector(".reply__btn.cancel-btn"))
-		//	document.querySelector(".reply__input-container").remove();
-		//	linkContainer.classList.remove("hidden");
-		//});
+		document.querySelector("#reply-cancel").addEventListener("click",()=>{
+			document.querySelector(".reply__input-container").remove();
+			linkContainer.classList.remove("hidden");
+		});
 }
 
 //답글 갯수 갱신

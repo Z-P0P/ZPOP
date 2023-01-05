@@ -41,8 +41,8 @@ function editReply(replyId, replyUl, profile){
                       class="reply__input"
                       name="reply-input"></textarea>
                   <div class="reply__btn-container">
-                      <span class="reply__btn btn btn-round cancel-btn">취소하기</span>
-                      <span class="reply__btn btn btn-round save-reply-edit"  >저장하기</span>
+                      <span class="reply__btn btn btn-round btn-cancel cancel-btn" id="edit-reply-cancel">취소하기</span>
+                      <span class="reply__btn btn btn-round btn-action save-reply-edit"  >저장하기</span>
                   </div>
               </div> 
                    `;
@@ -57,6 +57,12 @@ function editReply(replyId, replyUl, profile){
 		const editSaveBtn = document.querySelector(".save-reply-edit");
 		editSaveBtn.addEventListener("click",()=>{
 			saveEdit(replyId,replyUl,inputBox);
+		});
+		
+		document.querySelector("#edit-reply-cancel").addEventListener("click",()=>{
+			document.querySelector(".reply__input-container").remove();
+			linkContainer.classList.remove("hidden");
+			replyContainer.classList.remove("hidden");
 		});
 }
 
