@@ -40,6 +40,8 @@ public interface MeetingDao {
 
 	int increaseCommentCount(int id);
 
+	int decreaseCommentCount(int id);
+
 	int getMeetingHost(int meetingId);
 	
 	int updateContent(Meeting meeting);
