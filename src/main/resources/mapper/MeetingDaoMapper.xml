@@ -59,13 +59,13 @@
 
     <update id="updateDeletedAt" parameterType="com.zpop.web.entity.meeting.Meeting"> 
         UPDATE meeting
-        deletedAt=CURRENT_TIMESTAMP()
+        SET deletedAt=CURRENT_TIMESTAMP()
         WHERE id = #{id}
     </update>
 
     <update id="updateClosedAt" parameterType="com.zpop.web.entity.meeting.Meeting">
         UPDATE meeting
-        closedAt=CURRENT_TIMESTAMP()
+        SET closedAt=CURRENT_TIMESTAMP()
         WHERE id = #{id}
     </update>
 	
