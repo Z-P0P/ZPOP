@@ -73,7 +73,7 @@
             <div class="meeting__btn">
                 <span th:if="${meeting.isClosed == true}" class="btn btn-round btn-join btn-dead" >모집완료</span>
                 <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == true}" class="btn btn-round btn-join btn-action modal__on-btn" id="btn-close" data-modal="#modal-wrapper-close">마감하기</span>
-                <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == false} " class="btn btn-round btn-join btn-action modal__on-btn" id="btn-participation"  data-modal="#modal-wrapper-participation">참여하기</span>
+                <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == false} " class="btn btn-round btn-join btn-action modal__on-btn " id="btn-participation"  data-modal="#modal-wrapper-participation">참여하기</span>
                 <span th:unless="${meeting.isClosed == true}" th:if="${meeting.isMyMeeting == false and meeting.hasParticipated == true}" class="btn btn-round btn-join btn-action modal__on-btn" id="btn-cancel-participation" data-modal="#modal-wrapper-cancel">참여취소</span>
             </div>
         </div>
@@ -82,7 +82,7 @@
     <section class="participant">
         <div class="participant__num">
             <span>참가자</span>
-            <span class="participant-count" th:text="${#lists.size(meeting.participants)}">참가자수</span>
+            <span id="participant-count" th:text="${#lists.size(meeting.participants)}">참가자수</span>
             <span>/</span>
             <span th:text="${meeting.maxMember}">10</span>
             <span class="icon pointer icon-arrow-up"></span>
@@ -132,13 +132,13 @@
 				<div class="popup__body">
 					<div class="popup__body-content">
 						<div class="popup__body-contentbox">
-							<span>모집을 마감하시겠습니까?</span>
+							<span>참여를 취소하시겠습니까?</span>
 						</div>
 					</div>
 				</div>
 				<div class="popup__foot">
-					<span class="pop-btn close modal__close-btn" id="close-cancel" data-modal="#modal-wrapper-close">취소</span> 
-					<span class="pop-btn confirm modal__close-btn" id="close-confirm" data-modal="#modal-wrapper-close">확인</span>
+					<span class="pop-btn close modal__close-btn" id="cancel-cancel" data-modal="#modal-wrapper-cancel">취소</span> 
+					<span class="pop-btn confirm modal__close-btn" id="cancel-confirm" data-modal="#modal-wrapper-cancel">확인</span>
 				</div>
 			</div>
 		</div>

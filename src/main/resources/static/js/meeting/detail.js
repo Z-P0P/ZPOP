@@ -1,19 +1,25 @@
 window.addEventListener("load", function() {
 
 	const meetingId = document.querySelector(".meeting-id").dataset.id;
-	const btnParticipate = document.querySelector("#btn-participation");//참여하기 버튼
 	const btnModalParticipate = document.querySelector("#participate-confirm");//참여하기 모달 우측 버튼
-	const btnMeetingClose = document.querySelector("#btn-close");//마감하기 버튼
-	const btnModalClose = document.querySelector("#close-confirm");//마감하기 모달 우측 버튼
+	const btnModalCancelParticipation = document.querySelector("#cancel-confirm");//취소 모달 우측 버튼
+	const btnMeetingClose = document.querySelector("#btn-close");//모임마감하기 버튼
+	const btnModalMeetingClose = document.querySelector("#close-confirm");//마감 모달 우측 버튼
 	const participantUl = document.querySelector(".participant__list");
-	const participantCount = document.querySelector(".participant-count");
+	const participantCount = document.querySelector("#participant-count");
 	const arrowUp = document.querySelector(".icon-arrow-up");
 	const arrowDown = document.querySelector(".icon-arrow-down");
-	btnModalParticipate.addEventListener("click", (e)=>{
-		participate(meetingId, btnParticipate,participantUl);
+	
+	btnModalParticipate.addEventListener("click", ()=>{
+			participate(meetingId, participantUl,participantCount);
+		
 	});
 	
-	btnModalClose.addEventListener("click",(e)=>{
+	btnModalCancelParticipation.addEventListener("click",()=>{
+		 	cancelParticipate(meetingId, participantUl,participantCount);
+	});
+	
+	btnModalMeetingClose.addEventListener("click",()=>{
 		closeMeeting(meetingId,btnMeetingClose);
 	});
 	
@@ -37,7 +43,8 @@ window.addEventListener("load", function() {
 
 	
 });
-function participate(meetingId, btnParticipate, participantUl){
+
+function participate(meetingId, participantUl,participantCount){
 	const data = {
 	      method: "POST",
 	      headers: {
@@ -51,15 +58,56 @@ function participate(meetingId, btnParticipate, participantUl){
     fetch(`/meeting/${meetingId}/participate`, data)
       .then((response) => {
         if (response.ok) {
-          document
-            .querySelector("#modal-wrapper-participation")
-            .classList.add("hidden");
-          while (participantUl.hasChildNodes())
-            //기존 참여자아이콘 한개씩 삭제
+		  console.log("참여등록완료")
+          document.querySelector("#modal-wrapper-participation").classList.add("hidden");
+          while (participantUl.hasChildNodes())//기존 참여자아이콘 한개씩 삭제
             participantUl.removeChild(participantUl.firstChild);
-          getParticipant(meetingId, participantUl);
+          getParticipant(meetingId, participantUl, participantCount);//참여자 목록 refresh
+          
+          const btnParticipate = document.querySelector("#btn-participation");//참여하기 버튼
+          btnParticipate.innerText = "참여취소";
+          btnParticipate.id = "btn-cancel-participation";
+          btnParticipate.dataset.modal = "#modal-wrapper-cancel";
+          
         } else alert("시스템 장애로 등록이 안되고 있습니다.");
       })
+      .catch((error) => {
+        console.error("실패:", error);
+      });
+}
+
+function cancelParticipate(meetingId, participantUl,participantCount){
+	const data = {
+	      method: "DELETE",
+	      headers: {
+	        "Content-Type": "application/json",
+	      },
+	      body: JSON.stringify({
+	        meetingId: meetingId,
+	      }),
+      };
+
+    fetch(`/meeting/${meetingId}/leave`, data)
+      .then((response) => {
+        if (response.ok) {
+			return response;
+        } else alert("시스템 장애로 등록이 안되고 있습니다.");
+      })
+      .then(data =>data.json())
+	  .then(result => {
+		  console.log(result)
+		  if(result){
+			  console.log("참여취소완료")
+	          while (participantUl.hasChildNodes())//기존 참여자아이콘 한개씩 삭제
+	            participantUl.removeChild(participantUl.firstChild);
+	          getParticipant(meetingId, participantUl,participantCount);//참여자 목록 refresh
+	          
+	          const btnCancelParticipate = document.querySelector("#btn-cancel-participation");//참여취소하기 버튼
+	          btnCancelParticipate.innerText = "참여하기";
+          	  btnCancelParticipate.id = "btn-participation";
+          	  btnCancelParticipate.dataset.modal = "#modal-wrapper-participation";
+		  }
+	  })
       .catch((error) => {
         console.error("실패:", error);
       });
@@ -92,17 +140,17 @@ function closeMeeting(meetingId, btnMeetingClose){
 			}
 		});
 }
-function getParticipant(meetingId, participantUl){
+function getParticipant(meetingId, participantUl,participantCount){
+	
 	fetch(`/meeting/${meetingId}/participant`)
 	.then(response => {
 		if (response.ok) {
 			return response;
 		}
-		else console.log(response)
+		else console.log("시스템 장애로 등록이 안되고 있습니다.")
 	})
 	.then(data => data.json())
 	.then(participants => {
-		console.log(getParticipant)
 		let count = participants.length;
 		participantCount.innerText = count;
 		for (const p of participants) {
