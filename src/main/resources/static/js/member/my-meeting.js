@@ -71,7 +71,7 @@ window.addEventListener("load",
               //기다리기 dom 로드? 생성 ?비동기
               // showModalByButton(e).then(res=>{
               //   const input = document.querySelector("input[type=range]");
-              //   console.log(input);
+              
               // }); 
               
               const rangeInputs = document.querySelectorAll('input[type="range"]');

@@ -59,7 +59,7 @@ public class NaverLoginService implements LoginService{
 				.block();
 		
 		if (response.getError() != null) {
-			System.out.println("토큰 요청 중 에러가 발생하였음");
+			
 		}
 		
 		return response.getAccessToken();

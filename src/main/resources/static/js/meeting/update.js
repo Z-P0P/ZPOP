@@ -66,7 +66,7 @@ window.addEventListener("load", function() {
 				data[input.name] = input.value;
 			}
 		})
-		console.log(data);
+		
 
 
 		let count = 0;
@@ -112,13 +112,13 @@ window.addEventListener("load", function() {
 		// 추후 예외처리 필요함
 		showModal();
 		if (isRequesting) {
-			console.log('중복 요청입니다');
+			
 			return;
 		}
 		isRequesting = true;
 		fetch(submitURL, option)
 			.then(response => {
-				console.log(response);
+				
 				if (response.ok) {
 					showSuccess(meetingId);
 				}
@@ -176,12 +176,12 @@ function imageHandler() {
 	const fileUploadInput = document.getElementById("fileUpload");
 	let event = new MouseEvent("click", { bubbles: true });
 	fileUploadInput.dispatchEvent(event);
-	console.log('클릭되었음');
+	
 }
 
 function fileUploadHandler(e) {
 	let input = this.files[0];
-	console.log(input);
+	
 	if (!input) {
 		return 
 	}
@@ -202,7 +202,7 @@ function fileUploadHandler(e) {
 	fetch(uploadUrl, option)
 	.then(response => response.json())
 	.then(data=>{
-		console.log(data)
+		
 		const selection = window.getSelection();
 		const range = selection.getRangeAt(0);
 		let imageTag = document.createElement('IMG');
