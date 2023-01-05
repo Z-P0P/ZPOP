@@ -236,7 +236,6 @@ public class DefaultMeetingService implements MeetingService {
 		 * 댓글 정보 조회 및 가공
 		 */ 
 		List<CommentView> comments = commentDao.getComment(id);
-		int commentCount = commentDao.getCountOfComment(id);
 
 		List<CommentResponse> commentsResponse = new ArrayList<>();
 
@@ -281,7 +280,7 @@ public class DefaultMeetingService implements MeetingService {
 			ageRange.getType(),
 			meeting.getRegMemberId(),
 			meeting.getViewCount(),
-			commentCount,
+			meeting.getCommentCount(),
 			isMyMeeting,
 			hasParticipated,
 			isClosed,
@@ -598,9 +597,26 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public List<MeetingParticipantsDto> getParticipants(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ParticipantResponse> getParticipants(int id) {
+		Meeting meeting = dao.get(id);
+		if (meeting == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "모임이 없습니다");
+		}
+
+		List<ParticipationInfoView> list = participationDao.getParticipantInfoByMeetingId(id);
+		List<ParticipantResponse> participants = new ArrayList<>();
+
+		for (ParticipationInfoView p : list) {
+			// 취소 or 내보낸 당한 참여자는 스킵
+			if(p.getCanceledAt() != null || p.getBannedAt() !=null)
+				continue;
+
+			ParticipantResponse participant =
+					new ParticipantResponse(p.getId(), p.getNickname(), p.getProfileImagePath());
+			participants.add(participant);
+		}
+
+		return participants;
 	}
 
 	private void createNotification(int memberId, String url, int type) {

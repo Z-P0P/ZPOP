@@ -106,8 +106,11 @@ public class DefaultCommentService implements CommentService {
 
 		meetingDao.increaseCommentCount(comment.getMeetingId());
 
-		int regMemberId = getRegMemberId(comment.getMeetingId());
-		createCommentNotification(regMemberId,"/meeting/"+comment.getMeetingId(),4);
+		int commentId = comment.getParentCommentId();
+		Comment parentComment = dao.getCommentById(commentId);
+		int writerId = parentComment.getWriterId();
+		
+		createCommentNotification(writerId,"/meeting/"+comment.getMeetingId(),4);
 		return affectedRow;
 	}
 	

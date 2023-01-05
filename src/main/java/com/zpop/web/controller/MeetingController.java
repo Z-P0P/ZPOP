@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.zpop.web.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.zpop.web.dto.MeetingDetailResponse;
-import com.zpop.web.dto.MeetingParticipantsDto;
-import com.zpop.web.dto.RegisterMeetingRequest;
-import com.zpop.web.dto.RegisterMeetingResponse;
-import com.zpop.web.dto.RegisterMeetingViewResponse;
-import com.zpop.web.dto.UpdateMeetingRequest;
-import com.zpop.web.dto.UpdateMeetingViewDto;
-import com.zpop.web.entity.Member;
 import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.MeetingService;
 
@@ -135,8 +128,8 @@ public class MeetingController {
 	//참여자목록 AJAX endpoint(js가 콜하는 함수)
 	@GetMapping("{meetingId}/participant")
 	@ResponseBody
-	public List<MeetingParticipantsDto> getParticipant(@PathVariable int meetingId){
-		List<MeetingParticipantsDto> list = service.getParticipants(meetingId);
+	public List<ParticipantResponse> getParticipant(@PathVariable int meetingId){
+		List<ParticipantResponse> list = service.getParticipants(meetingId);
 		return list;
 	}
 	

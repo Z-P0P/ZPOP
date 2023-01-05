@@ -16,13 +16,20 @@
     <link rel="stylesheet" href="/css/member/component/meeting-category.css" />
     <link rel="stylesheet" href="/css/member/meeting/list.css" />
     <script type="module" src="/js/meeting/list/list.js" defer></script>
+    <script type="module" src="/js/meeting/list/banner.js" defer></script>
 
 
   </head>
   <body>
     <main layout:fragment="content" class="main">
-      <div class="banner">
-      	<img alt="" src="/images/banner-pc.png">
+      <div class="banner-container">
+      	<div class="banner">
+      		<img alt="" src="/images/banner-pc.png">
+      		<img alt="" src="/images/banner-pc-1.png">
+      		<img alt="" src="/images/banner-pc-2.png">
+      	</div>
+   		<div class="banner__btn banner__btn--left icon icon-arrow-left"></div>
+    	<div class="banner__btn banner__btn--right icon icon-arrow-right"></div>
       </div>
 
       <!-----------------------modal 추가--------------------------->

@@ -57,7 +57,16 @@ public interface MeetingService {
 	 */
 	MeetingDetailResponse getById(int id, Integer memberId);
 
-	List<MeetingParticipantsDto> getParticipants(int id);
+	/**
+	 * 참여자 목록 조회하기.
+	 *
+	 * 해당 id의 모임의 참여자 목록을 조회한다.
+	 * 존재하지 않는 id의 모임이면 조회할 수 없다.
+	 *
+	 * @param id
+	 * @return 참여자 목록
+	 */
+	List<ParticipantResponse> getParticipants(int id);
 
 	/**
 	 * 모임 연락처 얻기.
