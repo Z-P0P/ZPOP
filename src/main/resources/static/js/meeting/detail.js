@@ -33,7 +33,7 @@ window.addEventListener("load", function() {
 	});
 
 	btnModalMeetingClose.addEventListener("click", () => {
-		closeMeeting(meetingId, btnMeetingClose);
+		closeMeeting(meetingId, btnCloseMeeting);
 	});
 
 	const meetingTitleHambugerIcon = document.querySelector(".meeting__title-hambuger-icon");
