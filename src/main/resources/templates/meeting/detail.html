@@ -111,28 +111,46 @@
             <div class="modal__header">
                 <span class="modal__x-icon pointer modal__close-btn" data-modal="#modal-wrapper-participation"></span>
             </div>
-            <div class="modal__body">
-                <div class="modal-participation-content">
-                    <div class="modal-icon">
-                        <img src="/images/icon/handshake24.svg">
-                    </div>
-                    <div class="modal-text">
-                        <strong th:text="${meeting.title}">
-                            제목
-                        </strong>
-                        <div class="next-line">이 모임에 참여하시겠어요?</div>
-                    </div>
-                </div>
-                <div class="btn-modal">
-                    <div class="btn-modal-left  modal__close-btn pointer" data-modal="#modal-wrapper-participation">다음에 할래요</div>
-                    <div class="btn-modal-right modal__close-btn pointer" id="participate-confirm" data-modal="#modal-wrapper-participation">참여하기</div>
+            <div class="modal__body-container">
+	            <div class="modal__body">
+		            <div class="modal-participation-content-container">
+			            <div class="modal-participation-content">
+		                    <div class="modal-icon">
+		                        <img src="/images/icon/handshake24.svg">
+		                    </div>
+		                    <div class="modal-text">
+		                        <strong th:text="${meeting.title}">
+		                            제목
+		                        </strong>
+		                        <div class="next-line">이 모임에 참여하시겠어요?</div>
+		                    </div>
+		                </div>
+		                <div class="btn-modal">
+		                    <div class="btn-modal-left  modal__close-btn pointer" data-modal="#modal-wrapper-participation">다음에 할래요</div>
+		                    <div class="btn-modal-right pointer" id="participate-confirm">참여하기</div>
+		                </div>
+	                </div>
+	                <div class="modal-participation-content-container">
+		                <div class="participation-status__icon">
+		                	<div class="lds-roller">
+								<div></div><div></div><div></div><div></div>
+								<div></div><div></div><div></div><div></div>
+							</div>
+		                </div>
+						<div class="participation-status__text">
+							<div class="participation-status__message"></div>
+							<input type=text readonly class="input-text input-text__content hidden">
+							<a class="input__message hidden"></a>
+						</div>
+						<div class="btn btn-semiround btn-action hidden modal__close-btn" data-modal="#modal-wrapper-participation">닫기</div>
+					</div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- -------------참여 취소 모달----------------------->
-    	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-wrapper-cancel">
+   	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-wrapper-cancel">
 		<div class="popup__wrap-inactive" id="popup">
 			<div class="popup">
 				<div class="popup__body">
@@ -146,7 +164,7 @@
 					<span class="pop-btn close modal__close-btn" id="cancel-cancel" data-modal="#modal-wrapper-cancel">취소</span> 
 					<span class="pop-btn confirm modal__close-btn" id="cancel-confirm" data-modal="#modal-wrapper-cancel">확인</span>
 				</div>
-			</div>
+            </div>
 		</div>
 	</div>
 

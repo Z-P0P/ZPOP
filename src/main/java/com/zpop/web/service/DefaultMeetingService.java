@@ -436,7 +436,7 @@ public class DefaultMeetingService implements MeetingService {
 	}
 	@Override
 	@Transactional
-	public boolean participate(int id, int memberId) {
+	public String participate(int id, int memberId) {
 
 		Meeting foundMeeting = dao.get(id);
 
@@ -454,10 +454,9 @@ public class DefaultMeetingService implements MeetingService {
 		for(Participation p : participants) {
 			if(p.getParticipantId() != memberId)
 				continue;
-
 			if(p.getBannedAt() != null)
 				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 모임에 참여할 수 없습니다");
-			if(p.getParticipantId() == memberId)
+			if(p.getParticipantId() == memberId && p.getCanceledAt() == null)
 				throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 참여한 모임입니다");
 		}
 
@@ -478,7 +477,7 @@ public class DefaultMeetingService implements MeetingService {
 
 		createNotification(hostId, "/meeting/"+ id,2);
 
-		return true;
+		return foundMeeting.getContact();
 	}
 
 	@Override
