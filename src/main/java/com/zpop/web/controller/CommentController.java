@@ -37,11 +37,18 @@ public class CommentController {
 	//댓글(comment)불러오기 AJAX endpoint (js에서 콜하는 함수)
 	@GetMapping()
 	@ResponseBody
-	public  Map<String, Object> getComment(@RequestParam int meetingId) {
-		
-		List<CommentView> comments = service.getComment(meetingId);
+	public  Map<String, Object> getComment(@RequestParam int meetingId,
+			 @AuthenticationPrincipal ZpopUserDetails userDetails) {
+		List<CommentView> comments = null;
+		int memberId = 0;
+		if(userDetails!=null)
+			memberId = userDetails.getId();
+		if(memberId != 0)
+			comments = service.getCommentWithWriter(memberId, meetingId);
+		else
+			comments = service.getComment(meetingId);
 		int countOfComment = service.getCountOfComment(meetingId);
-		
+
 		Map<String,Object> dto = new HashMap<>();
 		dto.put("status",200);
 		dto.put("resultObject",comments);

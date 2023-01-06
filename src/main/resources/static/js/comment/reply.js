@@ -18,19 +18,19 @@ export function getReply(groupId, replyUl) {
 					parentNickname = '@' + r.parentNickname;
 				//글 작성자를 위한 케밥메뉴
 				let kebobModalWriter = `
-					<div class="modal-select comment__kebob rkb">
-			        <div class="modal-select__contents" data-id="comment-edit">수정
+					<div class="modal-select comment__kebob z-idx-1 hidden" id="comment-${r.id}">
+			        <div class="modal-select__contents" data-id="comment-edit" data-modal="#dummy-modal">수정
 			            <span class="icon icon-edit"></span>
 			        </div>
-			        <div class="modal-select__contents" data-id="comment-delete">삭제
+			        <div class="modal-select__contents" data-id="comment-delete" data-modal="#modal-delete-comment">삭제
 			            <span class="icon icon-trash"></span>
 			        </div>
 			    	</div>	
 				`
 				//일반가입자를 위한 케밥메뉴
 				let kebobModalReader = `
-					 <div class="modal-select comment__kebob rkb">
-				        <div class="modal-select__contents" data-id="comment-report">답글 신고
+					 <div class="modal-select comment__kebob z-idx-1 hidden">
+				        <div class="modal-select__contents" data-id="comment-report" data-modal="#modal-report-comment">답글 신고
 				            <span class="icon icon-siren-red"></span>
 				        </div>
 				     </div>
@@ -41,7 +41,7 @@ export function getReply(groupId, replyUl) {
 							<span class="profile__image"></span>
 							<span class="profile__nickname profile__nickname">${r.nickname}</span>
 							<span class="profile__time">${r.elapsedTime}</span>
-							<button class="rkb-btn"></button>
+							<button "modal__on-btn kebob"></button>
 							${r.myComment?kebobModalWriter:kebobModalReader}
 						</div>
 						<div class="reply-container">
