@@ -21,7 +21,8 @@ window.addEventListener("load", function() {
 	const participantCount = document.querySelector("#participant-count");
 	const arrowUp = document.querySelector(".icon-arrow-up");
 	const arrowDown = document.querySelector(".icon-arrow-down");
-	const copyBtn = document.querySelector(".modal-select__contents.copy")	
+	const copyBtn = document.querySelector(".modal-select__contents--copy");
+	const copyMessage = this.document.querySelector(".modal-select__message");	
 	btnModalParticipate.addEventListener("click", ()=>{
 		participate(meetingId, participantUl, participantCount);
 		const modalParticipationCloseBtn = document.querySelectorAll("[data-modal='#modal-wrapper-participation']");
@@ -43,21 +44,17 @@ window.addEventListener("load", function() {
 	copyBtn.onclick = function(e){
 		var url = '';
 		var textarea = document.createElement("textarea");
-//		var spanElem = document.createElement("span");
 		document.body.appendChild(textarea);
 		url = window.document.location.href;
 		textarea.value = url;
 		textarea.select();
 		document.execCommand("copy");
 		document.body.removeChild(textarea);
-		alert("복사되었습니다")
-//		spanElem.innerHTML = "Copied";
-//		copyBtn.appendChild(spanElem);
-//		
-//		setTimeout(function(){
-//			spanElem.innerHTML = "";
-//		}, 1000);
-//		e.clearSelection();
+		
+		if(copyMessage.classList.contains("hidden")){
+			copyMessage.classList.remove("hidden");
+		}
+	
 	}
 	
 	

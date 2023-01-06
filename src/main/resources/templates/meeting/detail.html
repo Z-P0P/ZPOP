@@ -37,7 +37,7 @@
                 <span class="meeting__category"  th:text="${meeting.categoryName}">문화생활</span>
             </div>
             <div class="meeting__header">
-                <div class="meeting__title-container">
+                <div class="meeting__title-container select-box">
                     <span class="meeting__title"  th:text="${meeting.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hamburger-icon" src="/images/icon/hamburger.svg">
                     <th:block th:if="${meeting.isMyMeeting == true}">	
@@ -315,7 +315,7 @@
         </div>
 			<ul class="comment__list">
 				<li th:attr="data-id=${comment.id}" th:each="comment:${meeting.comments}">
-					<div class="profile">
+					<div class="profile select-box">
 						<span class="profile__image" th:text="${comment.profileImgPath}"></span>
 						<span class="profile__nickname" th:text="${comment.nickname}">닉네임</span>
 						<span class="profile__time" th:text="${comment.elapsedTime}">경과시간</span>
