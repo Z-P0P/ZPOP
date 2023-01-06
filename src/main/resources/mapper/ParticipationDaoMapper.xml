@@ -72,7 +72,15 @@
 	<select id="countByMeetingId" resultType="int">
 		SELECT COUNT(id)
 		FROM participation
-		where meetingId = #{id}
+		WHERE meetingId = #{id}
+	</select>
+
+	<select id="countActiveByMeetingId" resultType="int">
+		SELECT COUNT(id)
+		FROM participation
+		WHERE meetingId = #{id}
+		AND canceledAt IS NOT NULL
+		AND bannedAt IS NOT NULL;
 	</select>
 
 	<select id="countBySearch" resultType= "java.lang.Integer">

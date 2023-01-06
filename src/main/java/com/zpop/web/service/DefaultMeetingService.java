@@ -462,7 +462,7 @@ public class DefaultMeetingService implements MeetingService {
 
 		int maxMember = foundMeeting.getMaxMember();
 		int hostId = foundMeeting.getRegMemberId();
-		int participantCount = participationDao.countByMeetingId(id);
+		int participantCount = participationDao.countActiveByMeetingId(id);
 
 		// 현재 참여자 수 & 최대인원 비교 확인
 		if(participantCount >= maxMember)
@@ -471,7 +471,7 @@ public class DefaultMeetingService implements MeetingService {
 		// 참여 성공
 		participationDao.insert(id, memberId);
 		// 참여 처리 후 참여자 수에 따른 마감 처리
-		int resultCount = participationDao.countByMeetingId(id);
+		int resultCount = participationDao.countActiveByMeetingId(id);
 		if(resultCount >= maxMember)
 			dao.updateClosedAt(foundMeeting);
 
