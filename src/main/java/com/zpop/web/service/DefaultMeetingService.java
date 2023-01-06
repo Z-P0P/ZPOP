@@ -137,7 +137,9 @@ public class DefaultMeetingService implements MeetingService {
 
 		List<MeetingFile> images = dto.getImages();
 		images.forEach(image -> image.setMeetingId(meetingId));
-		meetingFileDao.updateAllMeetingId(images);
+		// 업로드한 이미지가 있다면
+		if(!images.isEmpty())
+			meetingFileDao.updateAllMeetingId(images);
 		//
 		
 		
