@@ -22,10 +22,10 @@ window.addEventListener("load", function() {
 	const arrowDown = document.querySelector(".icon-arrow-down");
 	
 	btnModalParticipate.addEventListener("click", ()=>{
-			participate(meetingId, participantUl, participantCount);
-	const modalParticipationCloseBtn = document.querySelectorAll("[data-modal='#modal-wrapper-participation']");
-	modalParticipationCloseBtn.forEach(btn=> btn.addEventListener('click', ()=>resetModal()));
-
+		participate(meetingId, participantUl, participantCount);
+		const modalParticipationCloseBtn = document.querySelectorAll("[data-modal='#modal-wrapper-participation']");
+		modalParticipationCloseBtn.forEach(btn=> btn.addEventListener('click', ()=>resetModal()));
+	});
 	btnModalParticipate.addEventListener("click", () => {
 		participate(meetingId, participantUl, participantCount);
 	});
@@ -39,11 +39,6 @@ window.addEventListener("load", function() {
 	});
 
 	const meetingTitleHambugerIcon = document.querySelector(".meeting__title-hambuger-icon");
-
-	meetingTitleHambugerIcon.onclick = function(e) {
-
-
-	}
 
 	arrowUp.addEventListener("click", (e) => {
 		participantUl.classList.add("hidden");
@@ -69,8 +64,8 @@ function resetModal(){
 	statusIcon.classList.add('lds-roller');
 	closeModalBtn.classList.add('hidden');
 	inputMessage.classList.add('hidden');
-	statusMessage.innerText = null;
-	inputMessage.innerText = null;
+	statusMessage.innerText = "";
+	inputMessage.innerText = "";
 }
 
 function participate(meetingId, participantUl, participantCount) {
@@ -234,6 +229,5 @@ function getParticipant(meetingId, participantUl, participantCount) {
 
 function getClickableLink (link) {
     return link.startsWith("http://") || link.startsWith("https://") ?
-      link
-      : `http://${link}`;
-  };
+      link: `http://${link}`;
+}
