@@ -162,7 +162,7 @@ function sendAll(){
 					                    type
 					              	  })
 					           	 }
-								fetch("http://localhost:8080/notification/type", data)
+								fetch("/notification/type", data)
 								.then(response=>{
 									window.location.href=deleteTarget.getAttribute("data-url");
 								})
