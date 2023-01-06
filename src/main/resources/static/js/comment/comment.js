@@ -123,15 +123,14 @@ export function getComment(meetingId, commentUl) {
 				if(c.countOfReply != 0)
 					countOfReply = "답글 " + c.countOfReply + "개";
 				let template = `
-					<li>
+					<li data-id="${c.id}>
 						<div class="profile">
 							<span class="profile__image"></span> 
 							<span class="profile__nickname">${c.nickname}</span> 
 							<span class="profile__time">${c.elapsedTime}</span>
 							<button></button>
 						</div> <span class="comment__content">${c.content}</span>
-						<div class="comment__replies underline pointer">
-							<span class="hidden comment-id">${c.id}</span> 
+						<div class="comment__replies underline pointer"> 
 							<span class="pointer underline reply-cnt">${countOfReply}</span>
 							<span class="hidden pointer hidden reply-close">닫기</span>
 							<span class="pointer underline reply-write">답글 달기</span>

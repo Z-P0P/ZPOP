@@ -221,6 +221,10 @@ public class DefaultMeetingService implements MeetingService {
 		boolean hasParticipated = false; 
 
 		for (ParticipationInfoView p : participations) {
+			// 취소 or kick 당한 참여자는 스킵
+			if(p.getCanceledAt() != null || p.getBannedAt() != null)
+				continue;
+
 			// 내가 참여한 모임인지 확인
 			if(memberId != null && p.getParticipantId() == memberId)
 				hasParticipated = true;

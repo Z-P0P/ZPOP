@@ -48,11 +48,11 @@ public class ReplyController {
 	//답글(reply) 등록 AJAX endpoint (js에서 콜하는 함수)
 	@PostMapping()
 	@ResponseBody
-	public  String registerReply(@RequestBody Comment reply,
+	public  boolean registerReply(@RequestBody Comment reply,
 								 @AuthenticationPrincipal ZpopUserDetails userDetails) {
 		reply.setWriterId(userDetails.getId());
 		service.registerReply(reply);
-		return "{\"1\":1}"; //JSON
+		return true;
 	}
 	//댓글 수정 AJAX endpoint
 	@PatchMapping("{id}")
@@ -75,12 +75,12 @@ public class ReplyController {
 	//댓글 신고 AJAX endpoint
 	@PutMapping("{id}")
 	@ResponseBody
-	public String reportReply(@PathVariable int id, @RequestBody ReportedComment reportedReply,
+	public boolean reportReply(@PathVariable int id, @RequestBody ReportedComment reportedReply,
 							  @AuthenticationPrincipal ZpopUserDetails userDetails) {
 		Comment reply = service.getCommentById(id);
 		reportedReply.setReporterId(userDetails.getId());
 		reportedReply.setOriginal(reply.getContent());
 		reportService.createCommentReport(reportedReply);
-		return "{\"1\":1}"; //JSON
+		return true;
 	}
 }
