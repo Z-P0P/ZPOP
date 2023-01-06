@@ -137,7 +137,9 @@ public class DefaultMeetingService implements MeetingService {
 
 		List<MeetingFile> images = dto.getImages();
 		images.forEach(image -> image.setMeetingId(meetingId));
-		meetingFileDao.updateAllMeetingId(images);
+		// 업로드한 이미지가 있다면
+		if(!images.isEmpty())
+			meetingFileDao.updateAllMeetingId(images);
 		//
 		
 		
@@ -221,6 +223,10 @@ public class DefaultMeetingService implements MeetingService {
 		boolean hasParticipated = false; 
 
 		for (ParticipationInfoView p : participations) {
+			// 취소 or kick 당한 참여자는 스킵
+			if(p.getCanceledAt() != null || p.getBannedAt() != null)
+				continue;
+
 			// 내가 참여한 모임인지 확인
 			if(memberId != null && p.getParticipantId() == memberId)
 				hasParticipated = true;
@@ -428,7 +434,7 @@ public class DefaultMeetingService implements MeetingService {
 	}
 	@Override
 	@Transactional
-	public boolean participate(int id, int memberId) {
+	public String participate(int id, int memberId) {
 
 		Meeting foundMeeting = dao.get(id);
 
@@ -446,16 +452,15 @@ public class DefaultMeetingService implements MeetingService {
 		for(Participation p : participants) {
 			if(p.getParticipantId() != memberId)
 				continue;
-
 			if(p.getBannedAt() != null)
 				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 모임에 참여할 수 없습니다");
-			if(p.getParticipantId() == memberId)
+			if(p.getParticipantId() == memberId && p.getCanceledAt() == null)
 				throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 참여한 모임입니다");
 		}
 
 		int maxMember = foundMeeting.getMaxMember();
 		int hostId = foundMeeting.getRegMemberId();
-		int participantCount = participationDao.countByMeetingId(id);
+		int participantCount = participationDao.countActiveByMeetingId(id);
 
 		// 현재 참여자 수 & 최대인원 비교 확인
 		if(participantCount >= maxMember)
@@ -464,13 +469,13 @@ public class DefaultMeetingService implements MeetingService {
 		// 참여 성공
 		participationDao.insert(id, memberId);
 		// 참여 처리 후 참여자 수에 따른 마감 처리
-		int resultCount = participationDao.countByMeetingId(id);
+		int resultCount = participationDao.countActiveByMeetingId(id);
 		if(resultCount >= maxMember)
 			dao.updateClosedAt(foundMeeting);
 
 		createNotification(hostId, "/meeting/"+ id,2);
 
-		return true;
+		return foundMeeting.getContact();
 	}
 
 	@Override

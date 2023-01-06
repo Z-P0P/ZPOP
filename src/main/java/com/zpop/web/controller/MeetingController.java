@@ -143,14 +143,21 @@ public class MeetingController {
 	@ResponseBody
 	public Map<String, Object> participate(@PathVariable int meetingId,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		// TODO: 임시로 MAP 리턴함
-		int memberId = userDetails.getId();
-		service.participate(meetingId, memberId);
-
+		//TODO: 임시로 MAP 리턴함
 		Map<String, Object> result = new HashMap<>();
-		result.put("success", true);
+		int memberId = userDetails.getId();
+		try {
+			String contact = service.participate(meetingId, memberId);			
+			result.put("success", true);
+			result.put("contact", contact);
+		}
+		catch (ResponseStatusException e){
+			result.put("success", false);
+			result.put("reason", e.getReason());
+		}
+		
+		return result;			
 
-		return result;
 	}
 	//참여취소 AJAX endpoint(js에서 콜하는 함수)
 	@DeleteMapping("/{meetingId}/leave")

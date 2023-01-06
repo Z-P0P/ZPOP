@@ -33,6 +33,8 @@ public interface ParticipationDao {
 
 	int countByMeetingId(int meetingId);
 
+    int countActiveByMeetingId(int meetingId);
+
     int updateBannedAt(int id);
 
     int updateCanceledAt(int id);

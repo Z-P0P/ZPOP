@@ -51,27 +51,49 @@
 
 .banner__btn{
 	opacity:0;
-	width:40px;
-	height:40px;
-	border-radius:20px;
+	width:20px;
+	height:20px;
+	border-radius:10px;
 	position:absolute;
 	top:50%;
 	transform:translateY(-50%);
 	background-color:var(--light-grey1);
 	transition:opacity 0.3s;
+	background-size:80%;
+}
+
+@media (min-width: 576px) {
+	.banner__btn{
+		width:40px;
+		height:40px;
+		border-radius:20px;
+	}
 }
 
 .banner-container:hover .banner__btn{
-	opacity: 0.7;
+	opacity: 0.5;
 }
 
 .banner__btn--left{
-	left: 10px;
+	left: 5px;
 }
 
 .banner__btn--right{
-	right:10px;
+	right:5px;
 	background-position: 60% 50%;
+}
+
+@media (min-width: 576px) {
+	.banner__btn--left{
+		left: 10px;
+	}
+}
+
+
+@media (min-width: 576px) {
+	.banner__btn--right{
+		right:10px;
+	}
 }
 
 
