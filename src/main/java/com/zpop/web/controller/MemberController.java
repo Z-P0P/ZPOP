@@ -36,28 +36,13 @@ public class MemberController {
     @Autowired
     private MeetingService meetingService;
 
-//    @GetMapping("{id}")
-//    public String getMember(@PathVariable ("id") int id, Model model){
-//        Member member = service.getById(id);
-//        model.addAttribute("member", member);
-//        return "member/my-profile";
-//	}
-
 	// 마이페이지 진입
 	@GetMapping("/me")
-	// user id는 세션에서 받아와야함
 	public String getMyPage(@AuthenticationPrincipal ZpopUserDetails userDetails,
 							 Model model) {
-		
 		Member member = service.getById(userDetails.getId());
-		
 		model.addAttribute("member", member);
-// 		int memberId = userDetails.getId()
-		
-		
 		return "member/my-profile";
-		// member 없을때 처리
-		// 만약 로그인한 사람이 아닌데 들어올 경우 -> 처리 (멤버가져오기)
 	}
 
 	@GetMapping("me/edit")
@@ -78,29 +63,22 @@ public class MemberController {
 
     @ResponseBody
     @GetMapping("/eval/{dataId}")
-    public List<EvalMemberDto> getParticipants(@PathVariable("dataId") int meetingId)
-    { List<EvalMemberDto> participant = service.getEvalMember(meetingId) ;
-  
+    public List<EvalMemberDto> getParticipants(@PathVariable("dataId") int meetingId) {
+		List<EvalMemberDto> participant = service.getEvalMember(meetingId) ;
         return participant;
     }
 
 	@ResponseBody
 	@PostMapping("/rate")
-	public void hello(@RequestBody EvalDto dto, @AuthenticationPrincipal ZpopUserDetails userDetails) {
-		System.out.println(dto);
+	public void rateMember(@RequestBody EvalDto dto, @AuthenticationPrincipal ZpopUserDetails userDetails) {
 		if (userDetails == null){
-			// 로그인해야됨
+			//로그인 요청
 		}
-
 		int evaluatorId = userDetails.getId();
 		dto.setEvaluatorId(evaluatorId);
-
-		service.getEvalData(dto);
-
-//		return meetingTitle;
+		service.getRateData(dto);
 	}
 
-	// 권한 확인
 
 	//내가모집한 모임 조회
 	@GetMapping("/me/gathering")

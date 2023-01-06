@@ -3,7 +3,7 @@
  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
  layout:decorate="~{inc/layout}">
   <title>ZPOP | 모임</title>
-    
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <th:block layout:fragment="css">
       <!-- component css -->
       <link rel="stylesheet" href="/css/member/component/profile-box.css">
@@ -16,13 +16,18 @@
       <link rel="stylesheet" href="/css/member/component/report-modal.css">
       <!-- detail page css -->
       <link rel="stylesheet" href="/css/member/meeting/detail.css">
+      <link rel="stylesheet" href="/css/member/member/profile-modal.css">
+      <link rel="stylesheet" href="https://unpkg.com/@ivteplo/utilities.css@1.0.0/build/main.css">
   </th:block>	
- <th:block layout:fragment="js">   
+
+ <th:block layout:fragment="js">
     <script src="/js/meeting/detail.js"></script>
     <script type="module" src="/js/comment/comment.js"></script>
     <script type="module" src="/js/comment/edit-comment.js"></script>
     <script src="/js/meeting/report.js"></script>
-</head>
+    <script src="/js/member/profile-modal.js" defer></script>
+  </th:block>	
+
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
 
 <main class="main"  layout:fragment="content">
@@ -34,7 +39,7 @@
             <div class="meeting__header">
                 <div class="meeting__title-container">
                     <span class="meeting__title"  th:text="${meeting.title}">한강공원에서 러닝하실 분~🙂</span>
-                    <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
+                    <img class="meeting__title-hamburger-icon" src="/images/icon/hamburger.svg">
                     <th:block th:if="${meeting.isMyMeeting == true}">	
                     		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-host}"></div>
                     </th:block>
@@ -89,8 +94,9 @@
         </div>
         <ul class="participant__list">
             <li th:each="participant:${meeting.participants}">
+            <div id="open-sheet" aria-controls="sheet" class="participant__info">
             <div class="participant__info">
-                <img 
+                <img
                     th:src="@{${participant.profileImagePath}?${participant.profileImagePath}:'/images/icon/user-profile.svg'}">
                 <span th:text="${participant.nickname}"></span>
             </div>
@@ -282,8 +288,8 @@
        		</div>
         </div>
         <div class="btn-wrapper">
-            <span id="cancel-btn" data-modal="#modal-report-member" class="comment__btn btn btn-round modal__close-btn">취소</span>
-            <span id="report-btn" data-modal="#modal-report-member" class="comment__btn btn btn-round member__report-btn">신고하기</span>
+            <span id="cancel-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round modal__close-btn report__cancel-btn">취소</span>
+            <span id="report-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round meeting__report-btn">신고하기</span>
         </div>
         </div>
       </div>
@@ -297,16 +303,16 @@
     </div>
     <!--------------- 댓글 섹션 -------------------->
     <section class="comment">
-			<h2 class="comment__num" th:text="'댓글 ' + ${meeting.commentCount}+' 개'">N</h2>
-			<div class="comment__input-container">
+        <h2 class="comment__num" th:text="'댓글 ' + ${meeting.commentCount}+' 개'">N</h2>
+        <div class="comment__input-container">
 				<textarea class="comment__input" name="comment-text"
-					id="comment-text" placeholder="댓글을 입력하세요."></textarea>
-				<div class="comment__btn-container">
-					<span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
-					<span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="">등록하기</span>
-					<span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
-				</div>
-			</div>
+                          id="comment-text" placeholder="댓글을 입력하세요."></textarea>
+            <div class="comment__btn-container">
+                <span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
+                <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="">등록하기</span>
+                <span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
+            </div>
+        </div>
 			<ul class="comment__list">
 				<li th:attr="data-id=${comment.id}" th:each="comment:${meeting.comments}">
 					<div class="profile">
@@ -320,24 +326,81 @@
             <th:block th:if="${!comment.isMyComment}">
                     <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::reader}"></div>
             </th:block>
-					</div>
+                    </div>
                     <span class="comment__content" th:text="${comment.content}">
                         댓글 내용
 					</span>
-					<div class="comment__replies">
+                    <div class="comment__replies">
 						<span class="pointer underline reply-cnt"
-							th:classappend="(${comment.countOfReply}==0)? 'hidden'"
-							th:text="'답글 ' + ${comment.countOfReply}+'개'"></span> 
-						<span class="hidden pointer reply-close">닫기</span> 
-						<span class="pointer underline reply-write modal__on-btn" data-modal="">답글 달기</span>
-					</div>
-					<section class="reply hidden">
-						<ul class="reply__list">
+                              th:classappend="(${comment.countOfReply}==0)? 'hidden'"
+                              th:text="'답글 ' + ${comment.countOfReply}+'개'"></span>
+                        <span class="hidden pointer reply-close">닫기</span>
+                        <span class="pointer underline reply-write modal__on-btn" data-modal="">답글 달기</span>
+                    </div>
+                    <section class="reply hidden">
+                        <ul class="reply__list">
 
-						</ul>
-					</section>
-				</li>
+                        </ul>
+                    </section>
+                </li>
+            </ul>
+    </section>
 			</ul>
 		</section>
+
+
+         <!----------------------------------🎀유저 프로필 모달!! 시작🎀------------------------------------------------------------->
+                
+           <!------------ sheet 컴포넌트 시작 --------------->
+           <div id="sheet" class="column items-center justify-end" aria-hidden="true">
+               <div class="overlay"></div> <!-- for overlay background -->
+               <div class="contents column">
+                   <header class="controls">
+                       <div class="draggable-area">
+                       <div class="draggable-thumb"></div>
+                       </div>
+                       <span class="close-sheet icon icon-x"></span>
+                   </header>
+         
+                   <div class="body column">
+                       <div class="profile-container">
+                           <div class="image-wrap">
+                               <div class="image-bg">
+                                   <img src="/images/minji.jpg" class="image" alt="">
+                               </div>
+                           </div>
+                       
+                           <div class="user__info">
+       
+                               <div class="user__info-fixed">
+                                   <span>닉네임</span>
+                                   <span>집합 참여</span>
+                                   <span>인기도</span>
+                               </div>
+       
+                               <div class="user__info-flexible">
+                                   <span>하입보이너만원해ye</span>
+                                   <span>222 회</span>
+                                   <span>333 점💛</span>
+                               </div>
+                           </div>  
+       
+                           <div class="ban__wrap">
+                               <span class="btn btn-semiround report" >
+                                   <span class="icon icon-siren-white"></span>
+                                   신고하기
+                               </span>
+       
+                               <span class="btn btn-semiround kick" >
+                                   <span class="icon icon-door"></span>
+                                   내보내기
+                               </span>
+                           </div>
+                       </div><!-- end of profile-container -->
+                   </div><!-- end of body column -->
+               </div><!-- end of content column -->
+           </div><!-- end of sheet -->
+       <!----------------------------------🎀유저 프로필 모달!! 끝🎀------------------------------------------------------------->
+
     </main>
 </html>
