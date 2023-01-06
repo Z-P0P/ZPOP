@@ -1,4 +1,5 @@
 window.addEventListener("load", function() {
+	
 	//비로그인시 버튼 비활성화
 		const btnParticipation = document.querySelector("#btn-participation");
 		const btnCancelParticipation = document.querySelector("#btn-cancel-participation");
@@ -25,9 +26,6 @@ window.addEventListener("load", function() {
 		participate(meetingId, participantUl, participantCount);
 		const modalParticipationCloseBtn = document.querySelectorAll("[data-modal='#modal-wrapper-participation']");
 		modalParticipationCloseBtn.forEach(btn=> btn.addEventListener('click', ()=>resetModal()));
-	});
-	btnModalParticipate.addEventListener("click", () => {
-		participate(meetingId, participantUl, participantCount);
 	});
 
 	btnModalCancelParticipation.addEventListener("click", () => {
@@ -217,7 +215,7 @@ function getParticipant(meetingId, participantUl, participantCount) {
 				let template = `
 				<li>
 		            <div class="participant__info">
-		                <img src="/images/girl.svg">  
+		                <img src="/images/icon/user-profile-grey.svg">  
 		                <span>${p.nickname}</span>
 		            </div>
 	            </li>
