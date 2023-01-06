@@ -74,6 +74,41 @@ font-size: 18px;
     font-weight: bold;
 }
 
+.modal__body-container{
+	overflow-x:hidden;
+}
+
+.modal-participation-content-container{
+	flex:0 0 100%;
+}
+
+.modal__body{
+	display:flex;
+	transition:transform 0.3s;
+	align-items: flex-start;
+}
+
+.modal__body--content1{
+	transform:translateX(-100%);
+}
+
+.modal-participation-content-container:last-child{
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:center;
+	row-gap:20px;
+}
+
+.participation-status__nickname{
+	font-weight:var(--bold);
+}
+
+.modal-participation-content-container .modal__close-btn {
+	margin-bottom:10px;
+	margin-left: 0;
+}
+
 @media (min-width: 576px) {
     .modal-2 {
       justify-content: center;
@@ -84,7 +119,6 @@ font-size: 18px;
       position: relative;
       height: fit-content;
       border:none;
-      background-color: transparent;
       box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
       margin: 0 auto;
     }
@@ -139,7 +173,6 @@ font-size: 18px;
       background-image : url(/images/icon/x.svg);
       background-repeat :no-repeat;
       background-position: center;
-   
     }
   
     .modal__body {
@@ -148,4 +181,26 @@ font-size: 18px;
       background-color: var(--white);
       border-radius: 0 0 10px 10px;
     }
+  }
+  
+  .participation-status__text{
+  	display:flex;
+  	flex-direction:column;
+  	align-items:center;
+  }
+  
+  .participation-status__icon{
+  	margin-top:20px;
+  	display:inline-flex;
+  	width:100px;
+  	height:100px;
+  	justify-content:center;
+  	align-items:flex-end;
+  }
+  
+  	
+  
+  .modal-participation-content-container .input__message{
+  	font-size:14px;
+  	color:var(--main-color);
   }

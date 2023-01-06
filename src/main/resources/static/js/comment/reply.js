@@ -70,7 +70,7 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
                       name="reply-input"
                       placeholder="답글을 입력하세요."></textarea>
                   <div class="reply__btn-container">
-                      <span class="reply__btn btn btn-round btn-cancel cancel-btn">취소하기</span>
+                      <span class="reply__btn btn btn-round btn-cancel cancel-btn" id="reply-cancel">취소하기</span>
                       <span class="reply__btn btn btn-round btn-action register-btn">등록하기</span>
                   </div>
               </div> 
@@ -79,7 +79,7 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 		linkContainer.insertAdjacentHTML("afterend", template);
 		const inputBox = document.querySelector("#reply-text");
 		inputBox.focus();
-		document.querySelector(".register-btn").addEventListener("click", () => {
+		document.querySelector(".reply__btn.register-btn").addEventListener("click", () => {
 			const replyText = document.querySelector("#reply-text").value;
 			
 			if(replyText==""){
@@ -116,7 +116,7 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 					});
 		});//end of registerBtn event handler
 		//취소버튼에 이벤트핸들러 부착 
-		document.querySelector(".cancel-btn").addEventListener("click",()=>{
+		document.querySelector("#reply-cancel").addEventListener("click",()=>{
 			document.querySelector(".reply__input-container").remove();
 			linkContainer.classList.remove("hidden");
 		});

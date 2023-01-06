@@ -96,7 +96,7 @@ public interface MeetingService {
 	 * @param memberId 멤버 아이디
 	 * @return 성공 여부
 	 */
-	boolean participate(int id, int memberId);
+	String participate(int id, int memberId);
 
 	/**
 	 * 모임 참여를 취소하기.
@@ -110,7 +110,7 @@ public interface MeetingService {
 	 * 
 	 * @param id 모임 아이디
 	 * @param memberId 멤버 아이디
-	 * @return 성공 여부
+	 * @return 모임 연락처
 	 */
 	boolean cancelParticipate(int id, int memberId);
 

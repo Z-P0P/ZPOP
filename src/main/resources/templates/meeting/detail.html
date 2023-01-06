@@ -2,9 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org"
  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
  layout:decorate="~{inc/layout}">
- <head>
   <title>ZPOP | 모임</title>
-    
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <th:block layout:fragment="css">
       <!-- component css -->
       <link rel="stylesheet" href="/css/member/component/profile-box.css">
@@ -17,13 +16,17 @@
       <link rel="stylesheet" href="/css/member/component/report-modal.css">
       <!-- detail page css -->
       <link rel="stylesheet" href="/css/member/meeting/detail.css">
+      <link rel="stylesheet" href="/css/member/member/profile-modal.css">
+      <link rel="stylesheet" href="https://unpkg.com/@ivteplo/utilities.css@1.0.0/build/main.css">
   </th:block>	
- <th:block layout:fragment="js">   
+
+ <th:block layout:fragment="js">
     <script src="/js/meeting/detail.js"></script>
     <script type="module" src="/js/comment/comment.js"></script>
     <script type="module" src="/js/comment/edit-comment.js"></script>
     <script src="/js/meeting/report.js"></script>
-</th:block>	
+    <script src="/js/member/profile-modal.js" defer></script>
+  </th:block>	
 
 <!-- header.html 모임글 상세조회 화면 헤더(로그인 O) -->
 
@@ -36,7 +39,7 @@
             <div class="meeting__header">
                 <div class="meeting__title-container">
                     <span class="meeting__title"  th:text="${meeting.title}">한강공원에서 러닝하실 분~🙂</span>
-                    <img class="meeting__title-hambuger-icon" src="/images/icon/hambuger.svg">
+                    <img class="meeting__title-hamburger-icon" src="/images/icon/hamburger.svg">
                     <th:block th:if="${meeting.isMyMeeting == true}">	
                     		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-host}"></div>
                     </th:block>
@@ -91,9 +94,10 @@
         </div>
         <ul class="participant__list">
             <li th:each="participant:${meeting.participants}">
+            <div id="open-sheet" aria-controls="sheet" class="participant__info">
             <div class="participant__info">
-                <img 
-                    th:src="@{${participant.profileImagePath}?${participant.profileImagePath}:'/images/icon/user-profile.svg'}">
+                <img
+                    th:src="@{${participant.profileImagePath}?${participant.profileImagePath}:'/images/icon/user-profile-grey.svg'}">
                 <span th:text="${participant.nickname}"></span>
             </div>
             </li>
@@ -107,28 +111,46 @@
             <div class="modal__header">
                 <span class="modal__x-icon pointer modal__close-btn" data-modal="#modal-wrapper-participation"></span>
             </div>
-            <div class="modal__body">
-                <div class="modal-participation-content">
-                    <div class="modal-icon">
-                        <img src="/images/icon/handshake24.svg">
-                    </div>
-                    <div class="modal-text">
-                        <strong th:text="${meeting.title}">
-                            제목
-                        </strong>
-                        <div class="next-line">이 모임에 참여하시겠어요?</div>
-                    </div>
-                </div>
-                <div class="btn-modal">
-                    <div class="btn-modal-left  modal__close-btn pointer" data-modal="#modal-wrapper-participation">다음에 할래요</div>
-                    <div class="btn-modal-right modal__close-btn pointer" id="participate-confirm" data-modal="#modal-wrapper-participation">참여하기</div>
+            <div class="modal__body-container">
+	            <div class="modal__body">
+		            <div class="modal-participation-content-container">
+			            <div class="modal-participation-content">
+		                    <div class="modal-icon">
+		                        <img src="/images/icon/handshake24.svg">
+		                    </div>
+		                    <div class="modal-text">
+		                        <strong th:text="${meeting.title}">
+		                            제목
+		                        </strong>
+		                        <div class="next-line">이 모임에 참여하시겠어요?</div>
+		                    </div>
+		                </div>
+		                <div class="btn-modal">
+		                    <div class="btn-modal-left  modal__close-btn pointer" data-modal="#modal-wrapper-participation">다음에 할래요</div>
+		                    <div class="btn-modal-right pointer" id="participate-confirm">참여하기</div>
+		                </div>
+	                </div>
+	                <div class="modal-participation-content-container">
+		                <div class="participation-status__icon">
+		                	<div class="lds-roller">
+								<div></div><div></div><div></div><div></div>
+								<div></div><div></div><div></div><div></div>
+							</div>
+		                </div>
+						<div class="participation-status__text">
+							<div class="participation-status__message"></div>
+							<input type=text readonly class="input-text input-text__content hidden">
+							<a class="input__message hidden"></a>
+						</div>
+						<div class="btn btn-semiround btn-action hidden modal__close-btn" data-modal="#modal-wrapper-participation">닫기</div>
+					</div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- -------------참여 취소 모달----------------------->
-    	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-wrapper-cancel">
+   	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-wrapper-cancel">
 		<div class="popup__wrap-inactive" id="popup">
 			<div class="popup">
 				<div class="popup__body">
@@ -142,7 +164,7 @@
 					<span class="pop-btn close modal__close-btn" id="cancel-cancel" data-modal="#modal-wrapper-cancel">취소</span> 
 					<span class="pop-btn confirm modal__close-btn" id="cancel-confirm" data-modal="#modal-wrapper-cancel">확인</span>
 				</div>
-			</div>
+            </div>
 		</div>
 	</div>
 
@@ -266,8 +288,8 @@
        		</div>
         </div>
         <div class="btn-wrapper">
-            <span id="cancel-btn" data-modal="#modal-report-member" class="comment__btn btn btn-round modal__close-btn">취소</span>
-            <span id="report-btn" data-modal="#modal-report-member" class="comment__btn btn btn-round member__report-btn">신고하기</span>
+            <span id="cancel-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round modal__close-btn report__cancel-btn">취소</span>
+            <span id="report-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round meeting__report-btn">신고하기</span>
         </div>
         </div>
       </div>
@@ -281,16 +303,16 @@
     </div>
     <!--------------- 댓글 섹션 -------------------->
     <section class="comment">
-			<h2 class="comment__num" th:text="'댓글 ' + ${meeting.commentCount}+' 개'">N</h2>
-			<div class="comment__input-container">
+        <h2 class="comment__num" th:text="'댓글 ' + ${meeting.commentCount}+' 개'">N</h2>
+        <div class="comment__input-container">
 				<textarea class="comment__input" name="comment-text"
-					id="comment-text" placeholder="댓글을 입력하세요."></textarea>
-				<div class="comment__btn-container">
-					<span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
-					<span class="comment__btn btn btn-round btn-action" id="register-btn">등록하기</span>
-					<span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
-				</div>
-			</div>
+                          id="comment-text" placeholder="댓글을 입력하세요."></textarea>
+            <div class="comment__btn-container">
+                <span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
+                <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="#dummy-modal">등록하기</span>
+                <span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
+            </div>
+        </div>
 			<ul class="comment__list">
 				<li th:attr="data-id=${comment.id}" th:each="comment:${meeting.comments}">
 					<div class="profile">
@@ -304,24 +326,83 @@
             <th:block th:if="${!comment.isMyComment}">
                     <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::reader}"></div>
             </th:block>
-					</div>
+                    </div>
                     <span class="comment__content" th:text="${comment.content}">
                         댓글 내용
 					</span>
-					<div class="comment__replies">
+                    <div class="comment__replies">
 						<span class="pointer underline reply-cnt"
-							th:classappend="(${comment.countOfReply}==0)? 'hidden'"
-							th:text="'답글 ' + ${comment.countOfReply}+'개'"></span> <span
-							class="hidden pointer reply-close">닫기</span> <span
-							class="pointer underline reply-write">답글 달기</span>
-					</div>
-					<section class="reply hidden">
-						<ul class="reply__list">
+                              th:classappend="(${comment.countOfReply}==0)? 'hidden'"
+                              th:text="'답글 ' + ${comment.countOfReply}+'개'"></span>
+                        <span class="hidden pointer reply-close">닫기</span>
+                        <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal">답글 달기</span>
+                    </div>
+                    <section class="reply hidden">
+                        <ul class="reply__list">
 
-						</ul>
-					</section>
-				</li>
+                        </ul>
+                        
+                    </section>
+                </li>
+            </ul>
+    </section>
 			</ul>
+            <div class="hidden" id="dummy-modal"></div>
 		</section>
+
+
+         <!----------------------------------🎀유저 프로필 모달!! 시작🎀------------------------------------------------------------->
+                
+           <!------------ sheet 컴포넌트 시작 --------------->
+           <div id="sheet" class="column items-center justify-end" aria-hidden="true">
+               <div class="overlay"></div> <!-- for overlay background -->
+               <div class="contents column">
+                   <header class="controls">
+                       <div class="draggable-area">
+                       <div class="draggable-thumb"></div>
+                       </div>
+                       <span class="close-sheet icon icon-x"></span>
+                   </header>
+         
+                   <div class="body column">
+                       <div class="profile-container">
+                           <div class="image-wrap">
+                               <div class="image-bg">
+                                   <img src="/images/minji.jpg" class="image" alt="">
+                               </div>
+                           </div>
+                       
+                           <div class="user__info">
+       
+                               <div class="user__info-fixed">
+                                   <span>닉네임</span>
+                                   <span>집합 참여</span>
+                                   <span>인기도</span>
+                               </div>
+       
+                               <div class="user__info-flexible">
+                                   <span>하입보이너만원해ye</span>
+                                   <span>222 회</span>
+                                   <span>333 점💛</span>
+                               </div>
+                           </div>  
+       
+                           <div class="ban__wrap">
+                               <span class="btn btn-semiround report" >
+                                   <span class="icon icon-siren-white"></span>
+                                   신고하기
+                               </span>
+       
+                               <span class="btn btn-semiround kick" >
+                                   <span class="icon icon-door"></span>
+                                   내보내기
+                               </span>
+                           </div>
+                       </div><!-- end of profile-container -->
+                   </div><!-- end of body column -->
+               </div><!-- end of content column -->
+           </div><!-- end of sheet -->
+       <!----------------------------------🎀유저 프로필 모달!! 끝🎀------------------------------------------------------------->
+
     </main>
 </html>

@@ -4,7 +4,6 @@ window.addEventListener("load", function () {
   
 
   const rateBtns = document.querySelectorAll(".rate");
-        // let modalBtn = document.querySelector("#rateBtn");
         const rateUi = document.querySelector(".modal__body");
         for(const btn of rateBtns){
           btn.onclick = showRateModal;
@@ -17,9 +16,6 @@ window.addEventListener("load", function () {
           let participantsId = [];
           let rateValue = [];
           let evals = [];
-          //참여자 평가정보
-          //evalList zzzz
-          //evalInfo
           e.preventDefault();
 
           rateUi.innerHTML="";
@@ -75,10 +71,6 @@ window.addEventListener("load", function () {
                               rateUi.insertAdjacentHTML("beforeend", body);
                               
                               }                                 
-                          
-                      
-
-
 
                           let footer =`     
                                       <div class ="btn-box">
@@ -108,7 +100,6 @@ window.addEventListener("load", function () {
 
                  
                 }
-
 
 
                   for (let participant of json){
@@ -158,7 +149,6 @@ window.addEventListener("load", function () {
                         credentials: 'same-origin',
                         headers: {
                             'Content-Type': 'application/json',
-                            // 'Content-Type': 'text/plain;charset=UTF-8',
                         },
                         redirect: 'follow',
                         referrer: 'no-referrer',
@@ -166,39 +156,11 @@ window.addEventListener("load", function () {
 
                     }).then((response)=>console.log("ok"))
 
-                  hideModalByButton(e);
-                  // reqRate(meetingTitle);
-                }
+                     hideModalByButton(e);
+                     // --🧨 todo -> 클래스 변경해주기
+                     }
 
-              }); 
+                         }); 
                         });  //fetch 요청 완료
                   } //showRateModal 종료
-
-        
-        function reqRate(meetingTitle) {
-          console.log(meetingTitle);
-
-          // let myJson = {
-          //     "meetingTitle" : meetingTitle
-          // };
-          fetch("http://localhost:8080/member/rate", {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache', 
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                // 'Content-Type': 'text/plain;charset=UTF-8',
-            },
-            redirect: 'follow', 
-            referrer: 'no-referrer',
-            body: meetingTitle
-            
-        })//fetch 실행이 끝나면 then의 내용 실행
-        //응답을 JSON 형태로 파싱한다
-        // .then(response => response.json()) 
-        .then(console.log("susese"))
-        }
-
-
            }); //load, click 이벤트 종료

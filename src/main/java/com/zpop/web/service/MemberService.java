@@ -14,7 +14,7 @@ public interface MemberService {
         List<MyMeetingResponse> getMyMeeting(int memberId);
         List<MyMeetingResponse> getMyGathering(int memberId);
         List<EvalMemberDto> getEvalMember(int meetingId);
-        Map<String,Object> getEvalData(EvalDto dto);
+        Map<String,Object> getRateData(EvalDto dto);
 
 }
 

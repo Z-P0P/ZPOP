@@ -27,6 +27,8 @@ window.addEventListener('load', function(){
 	}
 	
 	function moveHandler(dir){
+		if (bannerIndex >= maxIndex - 1 || bannerIndex <= 0) return;
+		
 		banner.style.transition = `transform ${transitionTime}ms ease-in-out`;
 		dir == 'left' ? bannerIndex-- : bannerIndex ++;
 		moveBanner();
