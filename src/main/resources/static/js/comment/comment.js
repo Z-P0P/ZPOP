@@ -123,7 +123,7 @@ export function getComment(meetingId, commentUl) {
 				if(c.countOfReply != 0)
 					countOfReply = "답글 " + c.countOfReply + "개";
 				let template = `
-					<li data-id="${c.id}>
+					<li data-id="${c.id}">
 						<div class="profile">
 							<span class="profile__image"></span> 
 							<span class="profile__nickname">${c.nickname}</span> 
