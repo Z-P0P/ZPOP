@@ -64,6 +64,10 @@
   right: -50%;
 }
 
+.select-box__options--right-0{
+  right: 0;
+}
+
 .select-box__options--left {
   left: 0;
 }
@@ -129,11 +133,17 @@
   cursor: pointer;
 }
 
+.modal-select__message{
+	position: absolute;
+    right: 50px;
+    color: var(--main-color);
+}
+
 .modal-select .icon {
   display: flex;
   margin-right: 15px;
 }
 
-.modal-select :last-child {
+.modal-select > :last-child {
   color: var(--red-theme);
 }
