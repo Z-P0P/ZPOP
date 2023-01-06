@@ -1,14 +1,28 @@
 window.addEventListener("load", function() {
-
+	//비로그인시 버튼 비활성화
+		const btnParticipation = document.querySelector("#btn-participation");
+		const btnCancelParticipation = document.querySelector("#btn-cancel-participation");
+		const btnCloseMeeting = document.querySelector("#btn-close");
+	if(!document.querySelector("#header-notification")){
+		if(btnParticipation)
+			btnParticipation.dataset.modal = "#modal-login";
+		if(btnCancelParticipation)
+			btnCancelParticipation.dataset.modal = "#modal-login";
+		if(btnCloseMeeting)
+			btnCloseMeeting.dataset.modal =  "#modal-login";
+	}
+	
 	const meetingId = document.querySelector(".meeting-id").dataset.id;
 	const btnModalParticipate = document.querySelector("#participate-confirm");//참여하기 모달 우측 버튼
 	const btnModalCancelParticipation = document.querySelector("#cancel-confirm");//취소 모달 우측 버튼
-	const btnMeetingClose = document.querySelector("#btn-close");//모임마감하기 버튼
 	const btnModalMeetingClose = document.querySelector("#close-confirm");//마감 모달 우측 버튼
 	const participantUl = document.querySelector(".participant__list");
 	const participantCount = document.querySelector("#participant-count");
 	const arrowUp = document.querySelector(".icon-arrow-up");
 	const arrowDown = document.querySelector(".icon-arrow-down");
+	
+	btnModalParticipate.addEventListener("click", ()=>{
+			participate(meetingId, participantUl, participantCount);
 	const modalParticipationCloseBtn = document.querySelectorAll("[data-modal='#modal-wrapper-participation']");
 	modalParticipationCloseBtn.forEach(btn=> btn.addEventListener('click', ()=>resetModal()));
 

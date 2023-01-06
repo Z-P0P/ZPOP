@@ -2,23 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org"
  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
  layout:decorate="~{inc/layout}">
+  <title>ZPOP | 모임</title>
+    
+  <th:block layout:fragment="css">
+      <!-- component css -->
+      <link rel="stylesheet" href="/css/member/component/profile-box.css">
+      <link rel="stylesheet" href="/css/member/component/meeting-info.css">
+      <link rel="stylesheet" href="/css/member/component/participant.css" >
+      <link rel="stylesheet" href="/css/member/component/comment.css" />
+      <link rel="stylesheet" href="/css/member/component/reply.css" />
 
-<th:block layout:fragment="css">
-    <!-- component css -->
-    <link rel="stylesheet" href="/css/member/component/profile-box.css">
-    <link rel="stylesheet" href="/css/member/component/meeting-info.css">
-    <link rel="stylesheet" href="/css/member/component/participant.css" >
-    <link rel="stylesheet" href="/css/member/component/comment.css" />
-    <link rel="stylesheet" href="/css/loading.css" />
-    <link rel="stylesheet" href="/css/member/component/reply.css" />
-    <link rel="stylesheet" href="/css/member/component/modal-2.css">
-    <link rel="stylesheet" href="/css/form.css">
-    <link rel="stylesheet" href="/css/member/component/report-modal.css">
-    <!-- detail page css -->
-    <link rel="stylesheet" href="/css/member/meeting/detail.css">
-</th:block>	
- <head>
-    <title>ZPOP | 모임</title>
+      <link rel="stylesheet" href="/css/member/component/modal-2.css">
+      <link rel="stylesheet" href="/css/member/component/report-modal.css">
+      <!-- detail page css -->
+      <link rel="stylesheet" href="/css/member/meeting/detail.css">
+  </th:block>	
+ <th:block layout:fragment="js">   
     <script src="/js/meeting/detail.js"></script>
     <script type="module" src="/js/comment/comment.js"></script>
     <script type="module" src="/js/comment/edit-comment.js"></script>
@@ -304,7 +303,7 @@
 					id="comment-text" placeholder="댓글을 입력하세요."></textarea>
 				<div class="comment__btn-container">
 					<span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
-					<span class="comment__btn btn btn-round btn-action" id="register-btn">등록하기</span>
+					<span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="">등록하기</span>
 					<span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
 				</div>
 			</div>
@@ -328,9 +327,9 @@
 					<div class="comment__replies">
 						<span class="pointer underline reply-cnt"
 							th:classappend="(${comment.countOfReply}==0)? 'hidden'"
-							th:text="'답글 ' + ${comment.countOfReply}+'개'"></span> <span
-							class="hidden pointer reply-close">닫기</span> <span
-							class="pointer underline reply-write">답글 달기</span>
+							th:text="'답글 ' + ${comment.countOfReply}+'개'"></span> 
+						<span class="hidden pointer reply-close">닫기</span> 
+						<span class="pointer underline reply-write modal__on-btn" data-modal="">답글 달기</span>
 					</div>
 					<section class="reply hidden">
 						<ul class="reply__list">
