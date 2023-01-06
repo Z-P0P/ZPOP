@@ -1,6 +1,7 @@
 
 
 .meeting__title-container{
+	position:relative;
     display: flex;
     font-weight: 600;
     margin: 6px 0 1rem 0;
@@ -12,8 +13,14 @@
 .meeting__title {
 
 }
-
-.meeting__title-hambuger-icon{
+.meeting__kebob{
+	position: absolute;
+    right: 0;
+    top: 0;
+	justify-self: flex-end;
+	margin-right:30px;
+}
+.meeting__title-hamburger-icon{
     margin-left: auto;
     cursor: pointer;
 }

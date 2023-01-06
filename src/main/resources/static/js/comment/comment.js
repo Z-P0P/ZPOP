@@ -119,17 +119,39 @@ export function getComment(meetingId, commentUl) {
 			const countHeader = document.querySelector(".comment__num");
 			countHeader.innerHTML = "댓글 " + count +" 개";
 			for (const c of comments) {
+				console.log(c.myComment)
 				let countOfReply = "";
 				if(c.countOfReply != 0)
 					countOfReply = "답글 " + c.countOfReply + "개";
+				//글 작성자를 위한 케밥메뉴
+				let kebobModalWriter = `
+					<div class="modal-select comment__kebob z-idx-1 hidden" id="comment-${c.id}">
+			        <div class="modal-select__contents" data-id="comment-edit" data-modal="#dummy-modal">수정
+			            <span class="icon icon-edit"></span>
+			        </div>
+			        <div class="modal-select__contents" data-id="comment-delete" data-modal="#modal-delete-comment">삭제
+			            <span class="icon icon-trash"></span>
+			        </div>
+			    	</div>	
+				`
+				//일반가입자를 위한 케밥메뉴
+				let kebobModalReader = `
+					 <div class="modal-select comment__kebob z-idx-1 hidden" id="comment-${c.id}">
+				        <div class="modal-select__contents" data-id="comment-report" data-modal="#modal-report-comment">답글 신고
+				            <span class="icon icon-siren-red"></span>
+				        </div>
+				     </div>
+				`
 				let template = `
 					<li data-id="${c.id}">
 						<div class="profile">
 							<span class="profile__image"></span> 
 							<span class="profile__nickname">${c.nickname}</span> 
 							<span class="profile__time">${c.elapsedTime}</span>
-							<button></button>
-						</div> <span class="comment__content">${c.content}</span>
+							<button class="modal__on-btn kebob" data-modal="#comment-${c.id}"></button>
+							${c.myComment?kebobModalWriter:kebobModalReader}
+						</div> 
+						<span class="comment__content">${c.content}</span>
 						<div class="comment__replies underline pointer"> 
 							<span class="pointer underline reply-cnt">${countOfReply}</span>
 							<span class="hidden pointer hidden reply-close">닫기</span>
@@ -142,6 +164,10 @@ export function getComment(meetingId, commentUl) {
 					</li>
 				`
 				commentUl.insertAdjacentHTML("beforeend", template);
+				const modalOnBtns = document.querySelectorAll(".modal__on-btn");
+			  	for (onBtn of modalOnBtns) {
+			    	onBtn.onclick = showModalByButton;
+			  	}
 			}
 		});
 }
