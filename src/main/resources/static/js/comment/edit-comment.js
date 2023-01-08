@@ -21,12 +21,12 @@ export function addListenerToCommentKebob(meetingId,commentUl,inputBox,registerB
          const cancelBtn = document.querySelector(".cancel-btn");
          cancelBtn.classList.remove("hidden");
          cancelBtn.addEventListener("click",()=>{
-         inputBox.value="";
-         inputBox.blur();
-         registerBtn.classList.remove("hidden");
-            editSaveBtn.classList.add("hidden");
-            cancelBtn.classList.add("hidden");
-      });
+	         inputBox.value="";
+	         inputBox.blur();
+	         registerBtn.classList.remove("hidden");
+             editSaveBtn.classList.add("hidden");
+             cancelBtn.classList.add("hidden");
+      	});
       });
    for(const m of modalSelectDeleteList)
       m.addEventListener("click",(e)=>{

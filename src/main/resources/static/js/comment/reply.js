@@ -41,7 +41,7 @@ export function getReply(groupId, replyUl) {
 							<span class="profile__image"></span>
 							<span class="profile__nickname profile__nickname">${r.nickname}</span>
 							<span class="profile__time">${r.elapsedTime}</span>
-							<button "modal__on-btn kebob"></button>
+							<button "modal__on-btn reply-kebob"></button>
 							${r.myComment?kebobModalWriter:kebobModalReader}
 						</div>
 						<div class="reply-container">
@@ -49,7 +49,7 @@ export function getReply(groupId, replyUl) {
 							<span class="reply__content">${r.content}</span>
 						</div>
 						<div class="reply__replies">
-							<span class="pointer underline reply-to-reply" >답글 달기</span> 
+							<span class="pointer underline modal__on-btn reply-to-reply" data-modal="#dummy-modal">답글 달기</span> 
 						</div>
 					</li>
 				`

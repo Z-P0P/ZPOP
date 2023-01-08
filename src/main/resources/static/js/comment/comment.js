@@ -9,90 +9,114 @@ window.addEventListener("load", () => {
 	const inputBox = document.querySelector(".comment__input");
 	const registerBtn = document.querySelector("#register-btn");
 	const editSaveBtn = document.querySelector("#edit-save-btn");
-	const replyWriteSpanList = document.querySelectorAll(".reply-write");
-	//로그인시 
-	if(document.querySelector("#header-notification")){
+	const replyCntList = document.querySelectorAll(".reply-cnt");
 	
 	//댓글케밥에 이벤트핸들러 등록
 	addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
 	
-	//새 댓글등록
-	writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn); //댓글 등록 버튼에 이벤트 핸들러 부착
+	//새 댓글등록 핸들러 추가
+	writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn); 
 	
-	//SSR로 뿌려진 댓글리스트 전체에 이벤트 핸들러 부착
-	commentUl.onclick = function(e) {
-		//클릭시 답글 케밥인경우 이벤트핸들러 등록
-		if(e.target.classList.contains("rkb-btn")){
-			const selectModal = e.target.nextElementSibling;
-			const replyId = e.target.closest("li").dataset.id;
-			const replyUl = e.target.closest("ul");
-			addListenerToReplyKebob(replyId, replyUl, selectModal);
-			return;
+	//비로그인시 
+	if(!document.querySelector("#header-notification")){
+		const clickables = document.querySelectorAll(".modal__on-btn");
+		for(const item of clickables)
+			item.dataset.modal = "#modal-login"
+		for(const span of replyCntList){
+			 span.addEventListener("click", (e)=>{
+				 showRestrictedReplyList(e);
+			 });
 		}
-		//클릭시 답글 보기/쓰기 버튼이 아닌경우 리턴
-		if (!e.target.classList.contains("reply-cnt")&&
-			!e.target.classList.contains("reply-write")&&
-			!e.target.classList.contains("reply-close"))
-			return; 
-		
-		const commentId = e.target.closest("li").dataset.id;
-		const replyUl = e.target.parentElement.nextElementSibling.children[0];//<ul class="reply__list">
-		const replySection = replyUl.parentElement;// <section class="reply hidden">
-		//각 댓글별로 답글 조회
-		if(e.target.classList.contains("reply-cnt")){
-			
-			//AJAX로 답글 리스트 생성
-			Reply.getReply(commentId, replyUl);
-			
-			//각 댓글 하위의 답글리스트에 '답글에 답글달기' 이벤트 핸들러 1회만 부착
-			if(!replyUl.classList.contains("click-handler")){
-				
-				replyUl.addEventListener("click",(e)=>{
-					if(e.target.classList.contains("reply-to-reply")){
-						const parentId = e.target.closest("li").dataset.id;
-						const parent = e.target.parentElement;
-						parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
-						Reply.writeReply(meetingId, commentId, parentId, replyUl, parent);
-					} //groupId = commentId
-				});
-				replyUl.classList.add("click-handler");
+	}
+	else{ //로그인시
+		//SSR로 뿌려진 댓글리스트 전체에 부착할 핸들러
+		commentUl.onclick = function(e) {
+			//클릭시 답글 케밥인경우 이벤트핸들러 등록
+			if(e.target.classList.contains("reply-kebob")){
+				const selectModal = e.target.nextElementSibling;
+				const replyId = e.target.closest("li").dataset.id;
+				const replyUl = e.target.closest("ul");
+				addListenerToReplyKebob(replyId, replyUl, selectModal);
+				return;
 			}
-			
-			//AJAX로 완성된 답글 리스트 보여주기
-			replySection.classList.remove("hidden");//<section class="reply hidden">
-			
-			//링크 교체: 답글보기 링크 -> 닫기
-			const replyCnt = e.target; //<span class="reply-cnt">
-			const replyClose = e.target.nextElementSibling//<span class="hidden pointer" id="reply-close">
-			replyClose.classList.remove("hidden");
-			replyCnt.classList.add("hidden")
-			
-			replyClose.addEventListener("click",()=>{ //'닫기'버튼 핸들러를 부착 
-				closeReplyList(replyUl, replyCnt, replyClose);
-			}); 
-		}
-		//원댓글에 답글달기
-		if(e.target.classList.contains("reply-write")){
-			const parent = e.target.parentElement;
-			parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
+			//클릭시 답글 보기/쓰기 버튼이 아닌경우 리턴
+			if (!e.target.classList.contains("reply-cnt")&&
+				!e.target.classList.contains("reply-write")&&
+				!e.target.classList.contains("reply-close"))
+				return; 
+			//답글 리스트 (default는 hidden)
 			const commentId = e.target.closest("li").dataset.id;
-			const groupId = commentId; //원댓글에 대한 답글은 groupId와 commentId가 동일
-			Reply.writeReply(meetingId, groupId, commentId, replyUl, parent);
-			replySection.classList.remove("hidden");//<section class="reply hidden">
+			const replyUl = e.target.parentElement.nextElementSibling.children[0];
+			const replySection = replyUl.parentElement;// <section class="reply hidden">
+			//각 댓글별로 답글 조회
+			if(e.target.classList.contains("reply-cnt")){
+				 revealReplyList(e.target, commentId, replyUl, replySection, meetingId);
+			}
+			//원댓글에 답글달기
+			if(e.target.classList.contains("reply-write")){
+				const parent = e.target.parentElement;
+				parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
+				const groupId = commentId; //원댓글에 대한 답글은 groupId와 commentId가 동일
+				Reply.writeReply(meetingId, groupId, commentId, replyUl, parent);
+				replySection.classList.remove("hidden");//<section class="reply hidden">
+			}
+			//답글리스트 닫기버튼
+			if(e.target.classList.contains("reply-close")){
+				const replyCnt = e.target.previousElementSibling;
+				closeReplyList(replyUl, replyCnt, e.target);
+			}
 		}
-		if(e.target.classList.contains("reply-close")){
-			const replyCnt = e.target.previousElementSibling;
-			closeReplyList(replyUl, replyCnt, e.target);
-		}
-	};
-	
-	}//비로그인시 버튼이벤트를 로그인창으로 바꿈.
-	else{
-		registerBtn.dataset.modal = "#modal-login";
-		for(const span of replyWriteSpanList)
-			span.dataset.modal = "#modal-login";
 	}
 });
+//답글리스트보여주기함수
+function revealReplyList(span, commentId, replyUl, replySection, meetingId){
+	
+	//AJAX로 답글 리스트 생성
+	Reply.getReply(commentId, replyUl);
+	
+	//각 댓글 하위의 답글리스트에 '답글에 답글달기' 이벤트 핸들러 1회만 부착
+	if(!replyUl.classList.contains("click-handler")){
+		
+		replyUl.addEventListener("click",(e)=>{
+			if(e.target.classList.contains("reply-to-reply")){
+				const parentId = e.target.closest("li").dataset.id;
+				const parent = e.target.parentElement;
+				parent.classList.add("hidden"); //답글링크 감춰 중복클릭 방지
+				Reply.writeReply(meetingId, commentId, parentId, replyUl, parent);
+			} //groupId = commentId
+		});
+		replyUl.classList.add("click-handler");
+	}
+	
+	//AJAX로 완성된 답글 리스트 보여주기
+	replySection.classList.remove("hidden");//<section class="reply hidden">
+	
+	//링크 교체: 답글보기 링크 -> 닫기
+	const replyCnt = span; //<span class="reply-cnt">
+	const replyClose = span.nextElementSibling//<span class="hidden pointer" id="reply-close">
+	replyClose.classList.remove("hidden");
+	replyCnt.classList.add("hidden")
+	
+	replyClose.addEventListener("click",()=>{ //'닫기'버튼 핸들러를 부착 
+		closeReplyList(replyUl, replyCnt, replyClose);
+	}); 
+}
+function showRestrictedReplyList(e){
+	const commentId = e.target.closest("li").dataset.id;
+	const replyUl = e.target.parentElement.nextElementSibling.children[0];
+	const replySection = replyUl.parentElement;// <section class="reply hidden">
+	
+	Reply.getReply(commentId, replyUl);
+	replySection.classList.remove("hidden");
+	const replyCnt = e.target; //<span class="reply-cnt">
+	const replyClose = e.target.nextElementSibling//<span class="hidden pointer" id="reply-close">
+	replyClose.classList.remove("hidden");
+	replyCnt.classList.add("hidden")
+	
+	replyClose.addEventListener("click",()=>{ //'닫기'버튼 핸들러를 부착 
+		closeReplyList(replyUl, replyCnt, replyClose);
+	}); 
+}
 //닫기버튼에 부착된 이벤트핸들러
 function closeReplyList(replyUl, replyCnt, replyClose){
 		while(replyUl.hasChildNodes()) //답글 한개씩 삭제
@@ -155,7 +179,7 @@ export function getComment(meetingId, commentUl) {
 						<div class="comment__replies underline pointer"> 
 							<span class="pointer underline reply-cnt">${countOfReply}</span>
 							<span class="hidden pointer hidden reply-close">닫기</span>
-							<span class="pointer underline reply-write">답글 달기</span>
+							<span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal">답글 달기</span>
 						</div>
 						<section class="reply hidden">
 							<ul class="reply__list">
@@ -164,10 +188,7 @@ export function getComment(meetingId, commentUl) {
 					</li>
 				`
 				commentUl.insertAdjacentHTML("beforeend", template);
-				const modalOnBtns = document.querySelectorAll(".modal__on-btn");
-			  	for (onBtn of modalOnBtns) {
-			    	onBtn.onclick = showModalByButton;
-			  	}
+				commentUl.lastElementChild.querySelector(".reply-write").onclick = showModlByButton;
 			}
 		});
 }

@@ -36,7 +36,6 @@ window.addEventListener("load", function() {
 		closeMeeting(meetingId, btnCloseMeeting);
 	});
 
-	const meetingTitleHambugerIcon = document.querySelector(".meeting__title-hambuger-icon");
 
 	arrowUp.addEventListener("click", (e) => {
 		participantUl.classList.add("hidden");
