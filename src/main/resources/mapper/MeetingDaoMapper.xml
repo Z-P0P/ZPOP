@@ -220,4 +220,8 @@
 		SELECT regMemberId from meeting
 		where id = #{id}
 	</select>
+	<select id="getCountOfComment" resultType="int">
+		SELECT commentCount FROM meeting
+		WHERE id = #{id}
+	</select>
 </mapper>

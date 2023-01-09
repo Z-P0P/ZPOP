@@ -1,38 +1,37 @@
 import {getReply, removeTextBox} from "./reply.js";
 
-export function addListenerToReplyKebob(replyId, replyUl,selectModal){
-    const btnModalReplyDelete = document.querySelector("#delete-reply-confirm");
-    //자신이 쓴 댓글일 경우
-    if(selectModal.children[1]!=null){
-	    if(selectModal.children[0].getAttribute("data-id")=='comment-edit'){
-		   selectModal.children[0].addEventListener("click",(e)=>{
-	         e.preventDefault();
-	         const profile = selectModal.parentElement;
-	         editReply(replyId, replyUl, profile);
-	        });
-	   }
-	   if(selectModal.children[1].getAttribute("data-id")=='comment-delete'){
-		   selectModal.children[1].addEventListener("click",(e)=>{
-	         e.preventDefault();
-	         commentId = e.target.closest("li").dataset.id;
-         	 const modal = document.querySelector("#modal-delete-reply");
-        	 modal.setAttribute("data-id",replyId);
-	        });
-	   }
-   }
-   if(selectModal.children[0].getAttribute("data-id")=='comment-report'){
-	    selectModal.addEventListener("click",(e)=>{
-         e.preventDefault();
+export function addListenerToReplyKebob(replyId, replyLi, replyUl, isMyComment){
+    //자신이 쓴 답글일 경우
+    if(isMyComment){
+	    const editOption = replyLi.querySelector("[data-id='comment-edit']");
+	    const deleteOption = replyLi.querySelector("[data-id='comment-delete']");
+	    const profile = replyLi.querySelector(".profile");
+	    editOption.addEventListener("click", ()=>{
+		    editReply(replyId, replyUl, profile);
+		});
+		deleteOption.addEventListener("click", ()=>{
+			const modalBtn = document.querySelector("#delete-reply-confirm");
+        	modalBtn.setAttribute("data-id",replyId);
+		});
+	} else {
+		const reportOption = replyLi.querySelector("[data-id='comment-report']");	   
+	    reportOption.addEventListener("click",()=>{
          //view의 댓글번호를 모달로 전달함. 이후는 report.js에서 처리(임우빈)
          const modal = document.querySelector("#modal-report-comment");
          modal.setAttribute("data-id",replyId);
-      });
-   }
-   btnModalReplyDelete.addEventListener("click",()=>{
-	   deleteReply(replyId, replyUl);
-   });
+      	});
+   	}
 }
 
+//삭제모달창 우측버튼
+export function addListenerToReplyModalBtn (){
+	const btnModalReplyDelete = document.querySelector("#delete-reply-confirm");
+    btnModalReplyDelete.addEventListener("click",(e)=>{
+		const replyId = e.target.dataset.id;
+		const replyUl = document.querySelector(`li[data-id='${replyId}']`).parentElement;
+	    deleteReply(replyId, replyUl);
+    });
+}
 function editReply(replyId, replyUl, profile){
 	removeTextBox("multi");
 	const replyContainer = profile.nextElementSibling;
@@ -47,7 +46,7 @@ function editReply(replyId, replyUl, profile){
                       class="reply__input"
                       name="reply-input"></textarea>
                   <div class="reply__btn-container">
-                      <span class="reply__btn btn btn-round btn-cancel cancel-btn" id="edit-reply-cancle">취소하기</span>
+                      <span class="reply__btn btn btn-round btn-cancel cancel-btn" id="edit-reply-cancel">취소하기</span>
                       <span class="reply__btn btn btn-round save-reply-edit btn-action"  >저장하기</span>
                   </div>
               </div> 
@@ -59,13 +58,12 @@ function editReply(replyId, replyUl, profile){
 		inputBox.focus();
 		inputBox.value="";
 		inputBox.value = text+ " ";
-		
-		const editSaveBtn = document.querySelector(".save-reply-edit");
-		editSaveBtn.addEventListener("click",()=>{
+		//저장버튼
+		document.querySelector(".save-reply-edit").addEventListener("click",()=>{
 			saveEdit(replyId,replyUl,inputBox);
 		});
-
-      document.querySelector("#edit-reply-cancel").addEventListener("click",()=>{
+		//취소버튼
+        document.querySelector("#edit-reply-cancel").addEventListener("click",()=>{
 			document.querySelector(".reply__input-container").remove();
 			linkContainer.classList.remove("hidden");
 			replyContainer.classList.remove("hidden");
@@ -105,8 +103,7 @@ function saveEdit(replyId,replyUl,inputBox){
 	  });
 }
 
-function deleteReply(replyUl){
-   const replyId = document.querySelector("#modal-delete-comment").dataset.id;
+function deleteReply(replyId, replyUl){
    const data = {
       method: "DELETE",
       headers: {

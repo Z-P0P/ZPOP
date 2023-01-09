@@ -1,21 +1,20 @@
 import * as Reply from "./reply.js";
-import {addListenerToCommentKebob} from "./edit-comment.js";
-import {addListenerToReplyKebob} from "./edit-reply.js";
-
+import {addListenerToCommentKebob, addListenerToModalBtn} from "./edit-comment.js";
+import {addListenerToReplyModalBtn} from "./edit-reply.js";
 window.addEventListener("load", () => {
 	 
 	const meetingId = document.querySelector(".meeting-id").dataset.id;
 	const commentUl = document.querySelector(".comment__list");
-	const inputBox = document.querySelector(".comment__input");
-	const registerBtn = document.querySelector("#register-btn");
-	const editSaveBtn = document.querySelector("#edit-save-btn");
 	const replyCntList = document.querySelectorAll(".reply-cnt");
 	
-	//댓글케밥에 이벤트핸들러 등록
-	addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
-	
-	//새 댓글등록 핸들러 추가
-	writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn); 
+	//댓글 케밥 셀렉트옵션들에 이벤트핸들러 등록
+	addListenerToCommentKebob(meetingId,commentUl);
+	//댓글 삭제모달 우측버튼에 이벤트핸들러 등록
+	addListenerToModalBtn(meetingId,commentUl);
+	//답글 삭제모달 우측버튼에 이벤트핸들러 등록
+	addListenerToReplyModalBtn();
+	//새 댓글 등록버튼에 이벤트핸들러 등록
+	writeComment(meetingId,commentUl); 
 	
 	//비로그인시 
 	if(!document.querySelector("#header-notification")){
@@ -40,7 +39,7 @@ window.addEventListener("load", () => {
 			//답글 리스트 (default는 hidden)
 			const commentId = e.target.closest("li").dataset.id;
 			const replyUl = e.target.parentElement.nextElementSibling.children[0];
-			const replySection = replyUl.parentElement;// <section class="reply hidden">
+			const replySection = replyUl.parentElement;
 			//각 댓글별로 답글 조회
 			if(e.target.classList.contains("reply-cnt")){
 				 revealReplyList(e.target, commentId, replyUl, replySection, meetingId);
@@ -121,8 +120,7 @@ function closeReplyList(replyUl, replyCnt, replyClose){
 }
 
 //AJAX로 댓글 렌더링
-export function getComment(meetingId, commentUl) {
-	
+export function getComment(meetingId,commentUl) {
 	fetch(`/comment?meetingId=${meetingId}`)
 		.then(response => {
 			if (response.ok) {
@@ -136,7 +134,6 @@ export function getComment(meetingId, commentUl) {
 			const countHeader = document.querySelector(".comment__num");
 			countHeader.innerHTML = "댓글 " + count +" 개";
 			for (const c of comments) {
-				console.log(c.myComment)
 				let countOfReply = "";
 				if(c.countOfReply != 0)
 					countOfReply = "답글 " + c.countOfReply + "개";
@@ -161,11 +158,11 @@ export function getComment(meetingId, commentUl) {
 				`
 				let template = `
 					<li data-id="${c.id}">
-						<div class="profile">
+						<div class="profile select-box">
 							<span class="profile__image"></span> 
 							<span class="profile__nickname">${c.nickname}</span> 
 							<span class="profile__time">${c.elapsedTime}</span>
-							<button class="modal__on-btn kebob" data-modal="#comment-${c.id}"></button>
+							<button></button>
 							${c.myComment?kebobModalWriter:kebobModalReader}
 						</div> 
 						<span class="comment__content">${c.content}</span>
@@ -185,7 +182,9 @@ export function getComment(meetingId, commentUl) {
 		});
 }
 //새 댓글 등록시 SSR로 렌더링된 기존 댓글을 지우고  AJAX로 전체를 다시 렌더링함. 
-function writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
+function writeComment(meetingId,commentUl){
+	const registerBtn = document.querySelector("#register-btn");
+	const inputBox = document.querySelector(".comment__input");
 	registerBtn.addEventListener("click", () => {
 		const commentText = inputBox.value;
 		const data = {
@@ -209,8 +208,7 @@ function writeComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
 						inputBox.value = "";
 						while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
 							commentUl.removeChild(commentUl.firstChild);
-						getComment(meetingId, commentUl); //AJAX로 새로 렌더링
-						addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
+						getComment(meetingId,commentUl); //AJAX로 새로 렌더링
 					}
 					else alert("시스템 장애로 등록이 안되고 있습니다.");
 			});

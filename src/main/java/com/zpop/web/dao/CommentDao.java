@@ -16,7 +16,7 @@ public interface CommentDao {
 	List<CommentView> getReply(int groupId);
 	Comment getCommentById(int commentId);
 
-	int getCountOfComment(int meetingId);
+//	getCountOfComment 는 meetingDao로 이관.
 	int getCountOfReply(int groupId);
 
 	int insertComment(Comment comment); // 댓글

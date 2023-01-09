@@ -1,4 +1,4 @@
-
+import {addListenerToReplyKebob} from "./edit-reply.js";
 export function getReply(groupId, replyUl) {
 	//GET request가 디폴트
 	fetch(`/reply?groupId=${groupId}`)
@@ -22,7 +22,7 @@ export function getReply(groupId, replyUl) {
 			        <div class="modal-select__contents modal__on-btn" data-id="comment-edit" data-modal="#dummy-modal">수정
 			            <span class="icon icon-edit"></span>
 			        </div>
-			        <div class="modal-select__contents modal__on-btn" data-id="comment-delete" data-modal="#modal-delete-comment">삭제
+			        <div class="modal-select__contents modal__on-btn" data-id="comment-delete" data-modal="#modal-delete-reply">삭제
 			            <span class="icon icon-trash"></span>
 			        </div>
 			    	</div>	
@@ -54,12 +54,10 @@ export function getReply(groupId, replyUl) {
 					</li>
 				`
 				replyUl.insertAdjacentHTML("beforeend", template);
-				const modalOnBtns = replyUl.querySelectorAll(".reply-kebob, .modal-select__contents");
-			    for (onBtn of modalOnBtns) {
-				    onBtn.onclick = showModalByButton;
-				}
-				initSelectBoxes();
+				addListenerToReplyKebob(r.id, replyUl.lastElementChild, replyUl, r.myComment)
 			}
+				initModals();
+				initSelectBoxes();
 		});
 }
 
