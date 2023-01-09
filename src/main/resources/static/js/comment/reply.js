@@ -16,33 +16,33 @@ export function getReply(groupId, replyUl) {
 				let parentNickname = "";
 				if (r.parentNickname != null)
 					parentNickname = '@' + r.parentNickname;
-				//글 작성자를 위한 케밥메뉴
-				let kebobModalWriter = `
-					<div class="modal-select comment__kebob z-idx-1 hidden" id="comment-${r.id}">
-			        <div class="modal-select__contents" data-id="comment-edit" data-modal="#dummy-modal">수정
+				//글 작성자를 위한 셀렉트메뉴
+				let kebobModalForWriter = `
+					<div class="modal-select select-box__options comment__kebob z-idx-1">
+			        <div class="modal-select__contents modal__on-btn" data-id="comment-edit" data-modal="#dummy-modal">수정
 			            <span class="icon icon-edit"></span>
 			        </div>
-			        <div class="modal-select__contents" data-id="comment-delete" data-modal="#modal-delete-comment">삭제
+			        <div class="modal-select__contents modal__on-btn" data-id="comment-delete" data-modal="#modal-delete-comment">삭제
 			            <span class="icon icon-trash"></span>
 			        </div>
 			    	</div>	
 				`
-				//일반가입자를 위한 케밥메뉴
-				let kebobModalReader = `
-					 <div class="modal-select comment__kebob z-idx-1 hidden">
-				        <div class="modal-select__contents" data-id="comment-report" data-modal="#modal-report-comment">답글 신고
+				//일반가입자를 위한 셀렉트메뉴
+				let kebobModalForReader = `
+					 <div class="modal-select select-box__options comment__kebob z-idx-1">
+				        <div class="modal-select__contents modal__on-btn" data-id="comment-report" data-modal="#modal-report-comment">답글 신고
 				            <span class="icon icon-siren-red"></span>
 				        </div>
 				     </div>
 				`
 				let template = `
 					<li data-id="${r.id}"> 
-						<div class="profile">
+						<div class="profile select-box">
 							<span class="profile__image"></span>
 							<span class="profile__nickname profile__nickname">${r.nickname}</span>
 							<span class="profile__time">${r.elapsedTime}</span>
-							<button "modal__on-btn reply-kebob"></button>
-							${r.myComment?kebobModalWriter:kebobModalReader}
+							<button></button>
+							${r.myComment?kebobModalForWriter:kebobModalForReader}
 						</div>
 						<div class="reply-container">
 							<span class="reply__to">${parentNickname}</span>
@@ -54,6 +54,11 @@ export function getReply(groupId, replyUl) {
 					</li>
 				`
 				replyUl.insertAdjacentHTML("beforeend", template);
+				const modalOnBtns = replyUl.querySelectorAll(".reply-kebob, .modal-select__contents");
+			    for (onBtn of modalOnBtns) {
+				    onBtn.onclick = showModalByButton;
+				}
+				initSelectBoxes();
 			}
 		});
 }

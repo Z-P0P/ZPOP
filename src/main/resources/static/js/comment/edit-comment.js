@@ -6,6 +6,7 @@ export function addListenerToCommentKebob(meetingId,commentUl,inputBox,registerB
    const modalSelectEditList = document.querySelectorAll('[data-id="comment-edit"]');
    const modalSelectDeleteList = document.querySelectorAll('[data-id="comment-delete"]');
    const modalSelectReportList = document.querySelectorAll('[data-id="comment-report"]');
+   const btnModalCommentDelete = document.querySelector("#delete-confirm");
    var commentId = 0; 
    
    for(const m of modalSelectEditList)
@@ -32,7 +33,8 @@ export function addListenerToCommentKebob(meetingId,commentUl,inputBox,registerB
       m.addEventListener("click",(e)=>{
          e.preventDefault();
          commentId = e.target.closest("li").dataset.id;
-         deleteComment(commentId,meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
+         const modal = document.querySelector("#modal-delete-comment");
+         modal.setAttribute("data-id",commentId);
       });
    for(const m of modalSelectReportList){
       m.addEventListener("click",(e)=>{
@@ -51,7 +53,11 @@ export function addListenerToCommentKebob(meetingId,commentUl,inputBox,registerB
          editSaveBtn.classList.add("hidden");
       }
       else return;
-   });   
+   }); 
+   
+   btnModalCommentDelete.addEventListener("click", ()=>{
+	   deleteComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
+   });  
 }
 
 function saveEdit(meetingId, commentId,commentUl,inputBox){
@@ -84,7 +90,8 @@ function saveEdit(meetingId, commentId,commentUl,inputBox){
       });
 }
 
-function deleteComment(commentId,meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
+function deleteComment(meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
+   const commentId = document.querySelector("#modal-delete-comment").dataset.id;
    const data = {
       method: "DELETE",
       headers: {

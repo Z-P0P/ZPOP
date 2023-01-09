@@ -43,7 +43,7 @@
   transition: transform 0.2s;
 }
 
-.select-box--expended::before {
+.select-box--expanded::before {
   transform: rotate(180deg);
 }
 
@@ -102,7 +102,7 @@
   border-bottom: 0.3px solid var(--light-grey1);
 }
 
-.select-box--expended .select-box__options {
+.select-box--expanded .select-box__options {
   max-height: fit-content;
 }
 

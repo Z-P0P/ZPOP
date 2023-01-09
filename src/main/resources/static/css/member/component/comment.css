@@ -36,6 +36,7 @@
 }
 .comment__kebob{
 	position:absolute;
+	top:0%;
 	grid-area:button;
 	justify-self: flex-end;
 	margin-right:30px;

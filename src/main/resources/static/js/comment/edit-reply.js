@@ -1,7 +1,8 @@
 import {getReply, removeTextBox} from "./reply.js";
 
 export function addListenerToReplyKebob(replyId, replyUl,selectModal){
-   
+    const btnModalReplyDelete = document.querySelector("#delete-reply-confirm");
+    //자신이 쓴 댓글일 경우
     if(selectModal.children[1]!=null){
 	    if(selectModal.children[0].getAttribute("data-id")=='comment-edit'){
 		   selectModal.children[0].addEventListener("click",(e)=>{
@@ -13,7 +14,9 @@ export function addListenerToReplyKebob(replyId, replyUl,selectModal){
 	   if(selectModal.children[1].getAttribute("data-id")=='comment-delete'){
 		   selectModal.children[1].addEventListener("click",(e)=>{
 	         e.preventDefault();
-	         deleteReply(replyId, replyUl);
+	         commentId = e.target.closest("li").dataset.id;
+         	 const modal = document.querySelector("#modal-delete-reply");
+        	 modal.setAttribute("data-id",replyId);
 	        });
 	   }
    }
@@ -22,9 +25,12 @@ export function addListenerToReplyKebob(replyId, replyUl,selectModal){
          e.preventDefault();
          //view의 댓글번호를 모달로 전달함. 이후는 report.js에서 처리(임우빈)
          const modal = document.querySelector("#modal-report-comment");
-         modal.setAttribute("data-id",commentId);
+         modal.setAttribute("data-id",replyId);
       });
    }
+   btnModalReplyDelete.addEventListener("click",()=>{
+	   deleteReply(replyId, replyUl);
+   });
 }
 
 function editReply(replyId, replyUl, profile){
@@ -99,7 +105,8 @@ function saveEdit(replyId,replyUl,inputBox){
 	  });
 }
 
-function deleteReply(replyId, replyUl){
+function deleteReply(replyUl){
+   const replyId = document.querySelector("#modal-delete-comment").dataset.id;
    const data = {
       method: "DELETE",
       headers: {

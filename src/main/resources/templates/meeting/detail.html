@@ -187,7 +187,7 @@
 			</div>
 		</div>
 	</div>
-
+    
     <!--------------- 모임 신고 모달----------------------->
     <div id="modal-report-meeting" class="modal-wrapper hidden z-idx-1 modal-report">
 
@@ -289,7 +289,7 @@
         </div>
         <div class="btn-wrapper">
             <span id="cancel-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round modal__close-btn report__cancel-btn">취소</span>
-            <span id="report-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round meeting__report-btn">신고하기</span>
+            <span id="report-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round member__report-btn">신고하기</span>
         </div>
         </div>
       </div>
@@ -301,7 +301,7 @@
         <div class="report-complete__btn">확인</div>
     </div>
     </div>
-     <!----------------------------------🎀유저 프로필 모달!! 시작🎀------------------------------------------------------------->
+     <!----------------------------------유저 프로필 모달!! 시작---------------------------------------------->
                 
            <!------------ sheet 컴포넌트 시작 --------------->
            <div id="sheet" class="column items-center justify-end" aria-hidden="true">
@@ -352,9 +352,9 @@
                    </div><!-- end of body column -->
                </div><!-- end of content column -->
            </div><!-- end of sheet -->
-       <!----------------------------------🎀유저 프로필 모달!! 끝🎀------------------------------------------------------------->
+       <!----------------------------------유저 프로필 모달!! 끝------------------------------------------------->
     
-    <!--------------- 댓글 섹션 -------------------->
+ <!------------------ 댓글 섹션 -------------------->
     <section class="comment">
         <h2 class="comment__num" th:text="'댓글 ' + ${meeting.commentCount}+' 개'">N</h2>
         <div class="comment__input-container">
@@ -368,11 +368,11 @@
         </div>
 			<ul class="comment__list">
 				<li th:attr="data-id=${comment.id}" th:each="comment:${meeting.comments}">
-					<div class="profile">
+					<div class="profile select-box">
 						<span class="profile__image" th:text="${comment.profileImgPath}"></span>
 						<span class="profile__nickname" th:text="${comment.nickname}">닉네임</span>
 						<span class="profile__time" th:text="${comment.elapsedTime}">경과시간</span>
-						<button class="modal__on-btn kebob" th:attr="data-modal=|#comment-${comment.id}|"></button>
+						<button></button>
             <th:block th:if="${comment.isMyComment}">
                     <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
             </th:block>
@@ -400,7 +400,45 @@
             </ul>
             <div class="hidden" id="dummy-modal"></div>
     </section>
+<!-- -------------댓글 삭제 모달----------------------->
+    	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-delete-comment">
 
+		<div class="popup__wrap-inactive" id="popup">
+			<div class="popup">
+				<div class="popup__body">
+					<div class="popup__body-content">
+						<div class="popup__body-contentbox">
+							<span>댓글을 삭제하시겠습니까?</span>
+						</div>
+					</div>
+				</div>
+				<div class="popup__foot">
+					<span class="pop-btn close modal__close-btn" id="delete-cancel" data-modal="#modal-delete-comment">취소</span> 
+					<span class="pop-btn confirm modal__close-btn" id="delete-confirm" data-modal="#modal-delete-comment">확인</span>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- -------------답글 삭제 모달----------------------->
+    	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-delete-reply">
+
+		<div class="popup__wrap-inactive" id="popup">
+			<div class="popup">
+				<div class="popup__body">
+					<div class="popup__body-content">
+						<div class="popup__body-contentbox">
+							<span>답글을 삭제하시겠습니까?</span>
+						</div>
+					</div>
+				</div>
+				<div class="popup__foot">
+					<span class="pop-btn close modal__close-btn" id="delete-reply-cancel" data-modal="#modal-delete-reply">취소</span> 
+					<span class="pop-btn confirm modal__close-btn" id="delete-reply-confirm" data-modal="#modal-delete-reply">확인</span>
+				</div>
+			</div>
+		</div>
+	</div>
+<!------------------------------------------------------------>
         
     </main>
 </html>

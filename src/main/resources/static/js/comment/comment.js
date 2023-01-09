@@ -31,14 +31,7 @@ window.addEventListener("load", () => {
 	else{ //로그인시
 		//SSR로 뿌려진 댓글리스트 전체에 부착할 핸들러
 		commentUl.onclick = function(e) {
-			//클릭시 답글 케밥인경우 이벤트핸들러 등록
-			if(e.target.classList.contains("reply-kebob")){
-				const selectModal = e.target.nextElementSibling;
-				const replyId = e.target.closest("li").dataset.id;
-				const replyUl = e.target.closest("ul");
-				addListenerToReplyKebob(replyId, replyUl, selectModal);
-				return;
-			}
+			
 			//클릭시 답글 보기/쓰기 버튼이 아닌경우 리턴
 			if (!e.target.classList.contains("reply-cnt")&&
 				!e.target.classList.contains("reply-write")&&
@@ -149,19 +142,19 @@ export function getComment(meetingId, commentUl) {
 					countOfReply = "답글 " + c.countOfReply + "개";
 				//글 작성자를 위한 케밥메뉴
 				let kebobModalWriter = `
-					<div class="modal-select comment__kebob z-idx-1 hidden" id="comment-${c.id}">
-			        <div class="modal-select__contents" data-id="comment-edit" data-modal="#dummy-modal">수정
+					<div class="modal-select select-box__options comment__kebob z-idx-1">
+			        <div class="modal-select__contents modal__on-btn" data-id="comment-edit" data-modal="#dummy-modal">수정
 			            <span class="icon icon-edit"></span>
 			        </div>
-			        <div class="modal-select__contents" data-id="comment-delete" data-modal="#modal-delete-comment">삭제
+			        <div class="modal-select__contents modal__on-btn" data-id="comment-delete" data-modal="#modal-delete-comment">삭제
 			            <span class="icon icon-trash"></span>
 			        </div>
 			    	</div>	
 				`
 				//일반가입자를 위한 케밥메뉴
 				let kebobModalReader = `
-					 <div class="modal-select comment__kebob z-idx-1 hidden" id="comment-${c.id}">
-				        <div class="modal-select__contents" data-id="comment-report" data-modal="#modal-report-comment">답글 신고
+					 <div class="modal-select select-box__options comment__kebob z-idx-1">
+				        <div class="modal-select__contents modal__on-btn" data-id="comment-report" data-modal="#modal-report-comment">답글 신고
 				            <span class="icon icon-siren-red"></span>
 				        </div>
 				     </div>
@@ -188,7 +181,6 @@ export function getComment(meetingId, commentUl) {
 					</li>
 				`
 				commentUl.insertAdjacentHTML("beforeend", template);
-				commentUl.lastElementChild.querySelector(".reply-write").onclick = showModlByButton;
 			}
 		});
 }
