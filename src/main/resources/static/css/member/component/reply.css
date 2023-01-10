@@ -46,7 +46,7 @@
 .reply__list li{
 	/*margin-bottom:1.5rem;*/
 }
-.reply__replies span:nth-child(2) { 
+.reply__replies span:last-child { 
   padding-left: 0.75rem;
   padding-right: 0.8rem;
 }

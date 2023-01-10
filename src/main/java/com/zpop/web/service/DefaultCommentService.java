@@ -119,7 +119,7 @@ public class DefaultCommentService implements CommentService {
 	
 	@Override
 	public int getCountOfComment(int meetingId) {
-		int countOfComment= dao.getCountOfComment(meetingId);
+		int countOfComment= meetingDao.getCountOfComment(meetingId);
 		return countOfComment;
 	}
 	@Override

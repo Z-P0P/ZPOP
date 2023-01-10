@@ -39,7 +39,7 @@
             <div class="meeting__header">
                 <div class="meeting__title-container">
                     <span class="meeting__title"  th:text="${meeting.title}">한강공원에서 러닝하실 분~🙂</span>
-                    <img class="meeting__title-hamburger-icon" src="/images/icon/hamburger.svg">
+                    <img class="meeting__title-hamburger-icon modal__on-btn" src="/images/icon/hamburger.svg" data-modal="#meeting-kebob">
                     <th:block th:if="${meeting.isMyMeeting == true}">	
                     		<div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::member-host}"></div>
                     </th:block>
@@ -104,7 +104,7 @@
         </ul>
     </section>
 			
-   <!------ 참여 모달 ------>
+   <!----------------- 참여 모달 ------------------->
      <div class="modal-2 hidden z-idx-1" id="modal-wrapper-participation">
 
         <div class="modal-participation">
@@ -187,7 +187,7 @@
 			</div>
 		</div>
 	</div>
-
+    
     <!--------------- 모임 신고 모달----------------------->
     <div id="modal-report-meeting" class="modal-wrapper hidden z-idx-1 modal-report">
 
@@ -289,7 +289,7 @@
         </div>
         <div class="btn-wrapper">
             <span id="cancel-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round modal__close-btn report__cancel-btn">취소</span>
-            <span id="report-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round meeting__report-btn">신고하기</span>
+            <span id="report-btn" data-modal="#modal-report-meeting" class="comment__btn btn btn-round member__report-btn">신고하기</span>
         </div>
         </div>
       </div>
@@ -301,57 +301,7 @@
         <div class="report-complete__btn">확인</div>
     </div>
     </div>
-    <!--------------- 댓글 섹션 -------------------->
-    <section class="comment">
-        <h2 class="comment__num" th:text="'댓글 ' + ${meeting.commentCount}+' 개'">N</h2>
-        <div class="comment__input-container">
-				<textarea class="comment__input" name="comment-text"
-                          id="comment-text" placeholder="댓글을 입력하세요."></textarea>
-            <div class="comment__btn-container">
-                <span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
-                <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="#dummy-modal">등록하기</span>
-                <span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
-            </div>
-        </div>
-			<ul class="comment__list">
-				<li th:attr="data-id=${comment.id}" th:each="comment:${meeting.comments}">
-					<div class="profile">
-						<span class="profile__image" th:text="${comment.profileImgPath}"></span>
-						<span class="profile__nickname" th:text="${comment.nickname}">닉네임</span>
-						<span class="profile__time" th:text="${comment.elapsedTime}">경과시간</span>
-						<button class="kebob"></button>
-            <th:block th:if="${comment.isMyComment}">
-                    <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
-            </th:block>
-            <th:block th:if="${!comment.isMyComment}">
-                    <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::reader}"></div>
-            </th:block>
-                    </div>
-                    <span class="comment__content" th:text="${comment.content}">
-                        댓글 내용
-					</span>
-                    <div class="comment__replies">
-						<span class="pointer underline reply-cnt"
-                              th:classappend="(${comment.countOfReply}==0)? 'hidden'"
-                              th:text="'답글 ' + ${comment.countOfReply}+'개'"></span>
-                        <span class="hidden pointer reply-close">닫기</span>
-                        <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal">답글 달기</span>
-                    </div>
-                    <section class="reply hidden">
-                        <ul class="reply__list">
-
-                        </ul>
-                        
-                    </section>
-                </li>
-            </ul>
-    </section>
-			</ul>
-            <div class="hidden" id="dummy-modal"></div>
-		</section>
-
-
-         <!----------------------------------🎀유저 프로필 모달!! 시작🎀------------------------------------------------------------->
+     <!----------------------------------유저 프로필 모달!! 시작---------------------------------------------->
                 
            <!------------ sheet 컴포넌트 시작 --------------->
            <div id="sheet" class="column items-center justify-end" aria-hidden="true">
@@ -402,7 +352,93 @@
                    </div><!-- end of body column -->
                </div><!-- end of content column -->
            </div><!-- end of sheet -->
-       <!----------------------------------🎀유저 프로필 모달!! 끝🎀------------------------------------------------------------->
+       <!----------------------------------유저 프로필 모달!! 끝------------------------------------------------->
+    
+ <!------------------ 댓글 섹션 -------------------->
+    <section class="comment">
+        <h2 class="comment__num" th:text="'댓글 ' + ${meeting.commentCount}+' 개'">N</h2>
+        <div class="comment__input-container">
+				<textarea class="comment__input" name="comment-text"
+                          id="comment-text" placeholder="댓글을 입력하세요."></textarea>
+            <div class="comment__btn-container">
+                <span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
+                <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="#dummy-modal">등록하기</span>
+                <span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
+            </div>
+        </div>
+			<ul class="comment__list">
+				<li th:attr="data-id=${comment.id}" th:each="comment:${meeting.comments}">
+					<div class="profile select-box">
+						<span class="profile__image" th:text="${comment.profileImgPath}"></span>
+						<span class="profile__nickname" th:text="${comment.nickname}">닉네임</span>
+						<span class="profile__time" th:text="${comment.elapsedTime}">경과시간</span>
+						<button></button>
+            <th:block th:if="${comment.isMyComment}">
+                    <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
+            </th:block>
+            <th:block th:if="${!comment.isMyComment}">
+                    <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::reader}"></div>
+            </th:block>
+                    </div>
+                    <span class="comment__content" th:text="${comment.content}">
+                        댓글 내용
+					</span>
+                    <div class="comment__replies">
+						<span class="pointer underline reply-cnt"
+                              th:classappend="(${comment.countOfReply}==0)? 'hidden'"
+                              th:text="'답글 ' + ${comment.countOfReply}+'개'"></span>
+                        <span class="hidden pointer reply-close">닫기</span>
+                        <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal">답글 달기</span>
+                    </div>
+                    <section class="reply hidden">
+                        <ul class="reply__list">
+							<!-- 동적으로 답글이 들어가는 부분 -->
+                        </ul>
+                        
+                    </section>
+                </li>
+            </ul>
+            <div class="hidden" id="dummy-modal"></div>
+    </section>
+<!-- -------------댓글 삭제 모달----------------------->
+    	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-delete-comment">
 
+		<div class="popup__wrap-inactive" id="popup">
+			<div class="popup">
+				<div class="popup__body">
+					<div class="popup__body-content">
+						<div class="popup__body-contentbox">
+							<span>댓글을 삭제하시겠습니까?</span>
+						</div>
+					</div>
+				</div>
+				<div class="popup__foot">
+					<span class="pop-btn close modal__close-btn" id="delete-cancel" data-modal="#modal-delete-comment">취소</span> 
+					<span class="pop-btn confirm modal__close-btn" id="delete-confirm" data-modal="#modal-delete-comment">확인</span>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- -------------답글 삭제 모달----------------------->
+    	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-delete-reply">
+
+		<div class="popup__wrap-inactive" id="popup">
+			<div class="popup">
+				<div class="popup__body">
+					<div class="popup__body-content">
+						<div class="popup__body-contentbox">
+							<span>답글을 삭제하시겠습니까?</span>
+						</div>
+					</div>
+				</div>
+				<div class="popup__foot">
+					<span class="pop-btn close modal__close-btn" id="delete-reply-cancel" data-modal="#modal-delete-reply">취소</span> 
+					<span class="pop-btn confirm modal__close-btn" id="delete-reply-confirm" data-modal="#modal-delete-reply">확인</span>
+				</div>
+			</div>
+		</div>
+	</div>
+<!------------------------------------------------------------>
+        
     </main>
 </html>

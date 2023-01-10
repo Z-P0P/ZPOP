@@ -1,5 +1,5 @@
-
-export function getReply(groupId, replyUl) {
+import {addListenerToReplyKebob} from "./edit-reply.js";
+export function getReply(groupId, replyUl, isSignedOn) {
 	//GET request가 디폴트
 	fetch(`/reply?groupId=${groupId}`)
 		.then(response => {
@@ -16,45 +16,53 @@ export function getReply(groupId, replyUl) {
 				let parentNickname = "";
 				if (r.parentNickname != null)
 					parentNickname = '@' + r.parentNickname;
-				//글 작성자를 위한 케밥메뉴
-				let kebobModalWriter = `
-					<div class="modal-select comment__kebob rkb">
-			        <div class="modal-select__contents" data-id="comment-edit">수정
+				//글 작성자를 위한 셀렉트메뉴
+				let kebobModalForWriter = `
+					<div class="modal-select select-box__options comment__kebob z-idx-1">
+			        <div class="modal-select__contents modal__on-btn" data-id="comment-edit" data-modal="#dummy-modal">수정
 			            <span class="icon icon-edit"></span>
 			        </div>
-			        <div class="modal-select__contents" data-id="comment-delete">삭제
+			        <div class="modal-select__contents modal__on-btn" data-id="comment-delete" data-modal="#modal-delete-reply">삭제
 			            <span class="icon icon-trash"></span>
 			        </div>
 			    	</div>	
 				`
-				//일반가입자를 위한 케밥메뉴
-				let kebobModalReader = `
-					 <div class="modal-select comment__kebob rkb">
-				        <div class="modal-select__contents" data-id="comment-report">답글 신고
+				//일반가입자를 위한 셀렉트메뉴
+				let kebobModalForReader = `
+					 <div class="modal-select select-box__options comment__kebob z-idx-1">
+				        <div class="modal-select__contents modal__on-btn" data-id="comment-report" data-modal="#modal-report-comment">답글 신고
 				            <span class="icon icon-siren-red"></span>
 				        </div>
 				     </div>
 				`
 				let template = `
 					<li data-id="${r.id}"> 
-						<div class="profile">
+						<div class="profile select-box">
 							<span class="profile__image"></span>
 							<span class="profile__nickname profile__nickname">${r.nickname}</span>
 							<span class="profile__time">${r.elapsedTime}</span>
-							<button class="rkb-btn"></button>
-							${r.myComment?kebobModalWriter:kebobModalReader}
+							<button></button>
+							${r.myComment?kebobModalForWriter:kebobModalForReader}
 						</div>
 						<div class="reply-container">
 							<span class="reply__to">${parentNickname}</span>
 							<span class="reply__content">${r.content}</span>
 						</div>
 						<div class="reply__replies">
-							<span class="pointer underline reply-to-reply" >답글 달기</span> 
+							<span class="pointer underline modal__on-btn reply-to-reply" data-modal="#dummy-modal">답글 달기</span> 
 						</div>
 					</li>
 				`
 				replyUl.insertAdjacentHTML("beforeend", template);
+				addListenerToReplyKebob(r.id, replyUl.lastElementChild, replyUl, r.myComment)
 			}
+				if(isSignedOn){
+					initSelectBoxes();
+				}
+				const clickables = document.querySelectorAll(".modal__on-btn");
+				for(const item of clickables)
+					item.dataset.modal = "#modal-login"
+				initModals();
 		});
 }
 

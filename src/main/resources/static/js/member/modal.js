@@ -20,7 +20,7 @@ function hideModalByButton(e) {
   modal.classList.add("hidden");
 }
 
-window.addEventListener("load", function () {
+function initModals(){
   const modalOnBtns = document.querySelectorAll(".modal__on-btn");
   for (onBtn of modalOnBtns) {
     onBtn.onclick = showModalByButton;
@@ -30,4 +30,10 @@ window.addEventListener("load", function () {
   for (closeBtn of modalCloseBtns) {
     closeBtn.onclick = hideModalByButton;
   }
+}
+
+window.addEventListener("load", function () {
+	initModals();
 });
+
+

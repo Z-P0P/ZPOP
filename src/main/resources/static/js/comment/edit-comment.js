@@ -2,12 +2,16 @@ import {getComment} from "./comment.js";
 //댓글 수정,신고,삭제 기능 구현
 
 
-export function addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
+export function addListenerToCommentKebob(meetingId,commentUl){
    const modalSelectEditList = document.querySelectorAll('[data-id="comment-edit"]');
    const modalSelectDeleteList = document.querySelectorAll('[data-id="comment-delete"]');
    const modalSelectReportList = document.querySelectorAll('[data-id="comment-report"]');
+   const inputBox = document.querySelector(".comment__input");
+   const registerBtn = document.querySelector("#register-btn");
+   const editSaveBtn = document.querySelector("#edit-save-btn");
+   const cancelBtn = document.querySelector(".cancel-btn");
    var commentId = 0; 
-   
+ //셀렉트 옵션들에 이벤트핸들러 등록  
    for(const m of modalSelectEditList)
       m.addEventListener("click",(e)=>{
          e.preventDefault();
@@ -18,21 +22,21 @@ export function addListenerToCommentKebob(meetingId,commentUl,inputBox,registerB
          commentId = e.target.closest("li").dataset.id;
          registerBtn.classList.add("hidden");
          editSaveBtn.classList.remove("hidden");
-         const cancelBtn = document.querySelector(".cancel-btn");
          cancelBtn.classList.remove("hidden");
          cancelBtn.addEventListener("click",()=>{
-         inputBox.value="";
-         inputBox.blur();
-         registerBtn.classList.remove("hidden");
-            editSaveBtn.classList.add("hidden");
-            cancelBtn.classList.add("hidden");
-      });
+	         inputBox.value="";
+	         inputBox.blur();
+	         registerBtn.classList.remove("hidden");
+             editSaveBtn.classList.add("hidden");
+             cancelBtn.classList.add("hidden");
+      	});
       });
    for(const m of modalSelectDeleteList)
       m.addEventListener("click",(e)=>{
          e.preventDefault();
          commentId = e.target.closest("li").dataset.id;
-         deleteComment(commentId,meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
+         const modalBtn = document.querySelector("#delete-confirm");
+         modalBtn.setAttribute("data-id",commentId);
       });
    for(const m of modalSelectReportList){
       m.addEventListener("click",(e)=>{
@@ -43,17 +47,28 @@ export function addListenerToCommentKebob(meetingId,commentUl,inputBox,registerB
          modal.setAttribute("data-id",commentId);
       });
    }   
+   if(!editSaveBtn.classList.contains("click-handler"))
+	   editSaveBtn.addEventListener("click",()=>{
+	      if(commentId > 0){   
+	         saveEdit(meetingId, commentId, commentUl,inputBox);
+	         registerBtn.classList.remove("hidden");
+	         editSaveBtn.classList.add("hidden");
+	         cancelBtn.classList.add("hidden");
+	         editSaveBtn.classList.add("click-handler")
+	      }
+	      else return;
+	   }); 
    
-   editSaveBtn.addEventListener("click",()=>{
-      if(commentId > 0){   
-         saveEdit(meetingId, commentId, commentUl,inputBox);
-         registerBtn.classList.remove("hidden");
-         editSaveBtn.classList.add("hidden");
-      }
-      else return;
-   });   
 }
 
+//모달우측버튼 이벤트핸들러
+export function addListenerToModalBtn (meetingId,commentUl){
+	const btnModalCommentDelete = document.querySelector("#delete-confirm");
+    btnModalCommentDelete.addEventListener("click", (e)=>{
+	   const commentId = e.target.dataset.id;
+	   deleteComment(commentId, meetingId,commentUl);
+   });  
+}
 function saveEdit(meetingId, commentId,commentUl,inputBox){
    const editedText = inputBox.value;
    const data = {
@@ -84,7 +99,7 @@ function saveEdit(meetingId, commentId,commentUl,inputBox){
       });
 }
 
-function deleteComment(commentId,meetingId,commentUl,inputBox,registerBtn,editSaveBtn){
+function deleteComment(commentId, meetingId,commentUl){
    const data = {
       method: "DELETE",
       headers: {
@@ -102,7 +117,6 @@ function deleteComment(commentId,meetingId,commentUl,inputBox,registerBtn,editSa
                while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
                   commentUl.removeChild(commentUl.firstChild);
                getComment(meetingId,commentUl)
-               addListenerToCommentKebob(meetingId,commentUl,inputBox,registerBtn,editSaveBtn);
             }
             else alert("시스템 장애로 등록이 안되고 있습니다.");
       });

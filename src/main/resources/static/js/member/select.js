@@ -23,10 +23,10 @@ function initSelectBoxes() {
 			selectBox.closeOthers();
 
 			if (selectBox.status == "closed") {
-				selectBox.classList.add("select-box--expended");
+				selectBox.classList.add("select-box--expanded");
 				selectBox.status = "opened";
 			} else {
-				selectBox.classList.remove("select-box--expended");
+				selectBox.classList.remove("select-box--expanded");
 				selectBox.status = "closed";
 			}
 		};
@@ -34,7 +34,7 @@ function initSelectBoxes() {
 		selectBox.closeOthers = function() {
 			for (others of selectBoxAll) {
 				if (others === this) continue;
-				others.classList.remove("select-box--expended");
+				others.classList.remove("select-box--expanded");
 				others.status = "closed";
 			}
 		};

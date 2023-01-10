@@ -49,5 +49,7 @@ public interface MeetingDao {
 	int update(Meeting meeting);
 
 	UpdateMeetingViewDto getUpdateView(int id);
+
+	int getCountOfComment(int meetingId);
 }
 

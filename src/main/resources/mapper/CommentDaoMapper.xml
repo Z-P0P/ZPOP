@@ -25,16 +25,7 @@
 	AND deletedAt IS NULL
     ORDER BY createdAt
   </select>
-  <select id="getCountOfComment" resultType="int">
-  	SELECT count(id) 
-  	FROM comment
-  	WHERE
-		<if test=" query != null">
-			meetingId = #{query}
-		</if>
-  	AND parentCommentId IS NULL
-  	AND deletedAt IS NULL
-  </select>
+  
   <select id="getCountOfReply" resultType="int">
   	SELECT count(id) 
   	FROM comment

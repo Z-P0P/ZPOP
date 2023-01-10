@@ -52,7 +52,7 @@ function sendAll(){
 			n.remove();	
 		
 		// 안내문구 추가
-		let template=`<div class="notification notification--none";">받은 알림이 없네요!</div>`;
+		let template=`<div class="notification notification--none";">새로운 알림이 없네요!</div>`;
 		container.insertAdjacentHTML("afterbegin",template);
 		notificationCancelBtn.classList.add("deactivated-btn");
 		notificationCancelBtn.innerHTML="모두 읽음";
