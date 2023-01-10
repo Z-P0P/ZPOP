@@ -47,17 +47,17 @@ export function addListenerToCommentKebob(meetingId,commentUl){
          modal.setAttribute("data-id",commentId);
       });
    }   
-   
-   editSaveBtn.addEventListener("click",()=>{
-      if(commentId > 0){   
-         saveEdit(meetingId, commentId, commentUl,inputBox);
-         registerBtn.classList.remove("hidden");
-         editSaveBtn.classList.add("hidden");
-         cancelBtn.classList.add("hidden");
-         
-      }
-      else return;
-   }); 
+   if(!editSaveBtn.classList.contains("click-handler"))
+	   editSaveBtn.addEventListener("click",()=>{
+	      if(commentId > 0){   
+	         saveEdit(meetingId, commentId, commentUl,inputBox);
+	         registerBtn.classList.remove("hidden");
+	         editSaveBtn.classList.add("hidden");
+	         cancelBtn.classList.add("hidden");
+	         editSaveBtn.classList.add("click-handler")
+	      }
+	      else return;
+	   }); 
    
 }
 
@@ -94,9 +94,6 @@ function saveEdit(meetingId, commentId,commentUl,inputBox){
                while(commentUl.hasChildNodes()) //기존 댓글 한개씩 삭제
                   commentUl.removeChild(commentUl.firstChild);
                getComment(meetingId,commentUl)
-             //  addListenerToCommentKebob(meetingId,commentUl);
-			initModals();
-				initSelectBoxes();
             }
             else alert("시스템 장애로 등록이 안되고 있습니다.");
       });

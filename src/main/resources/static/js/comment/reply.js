@@ -1,5 +1,5 @@
 import {addListenerToReplyKebob} from "./edit-reply.js";
-export function getReply(groupId, replyUl) {
+export function getReply(groupId, replyUl, isSignedOn) {
 	//GET request가 디폴트
 	fetch(`/reply?groupId=${groupId}`)
 		.then(response => {
@@ -56,8 +56,13 @@ export function getReply(groupId, replyUl) {
 				replyUl.insertAdjacentHTML("beforeend", template);
 				addListenerToReplyKebob(r.id, replyUl.lastElementChild, replyUl, r.myComment)
 			}
+				if(isSignedOn){
+					initSelectBoxes();
+				}
+				const clickables = document.querySelectorAll(".modal__on-btn");
+				for(const item of clickables)
+					item.dataset.modal = "#modal-login"
 				initModals();
-				initSelectBoxes();
 		});
 }
 

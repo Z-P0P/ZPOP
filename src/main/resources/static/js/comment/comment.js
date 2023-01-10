@@ -7,14 +7,7 @@ window.addEventListener("load", () => {
 	const commentUl = document.querySelector(".comment__list");
 	const replyCntList = document.querySelectorAll(".reply-cnt");
 	
-	//댓글 케밥 셀렉트옵션들에 이벤트핸들러 등록
-	addListenerToCommentKebob(meetingId,commentUl);
-	//댓글 삭제모달 우측버튼에 이벤트핸들러 등록
-	addListenerToModalBtn(meetingId,commentUl);
-	//답글 삭제모달 우측버튼에 이벤트핸들러 등록
-	addListenerToReplyModalBtn();
-	//새 댓글 등록버튼에 이벤트핸들러 등록
-	writeComment(meetingId,commentUl); 
+	
 	
 	//비로그인시 
 	if(!document.querySelector("#header-notification")){
@@ -28,6 +21,16 @@ window.addEventListener("load", () => {
 		}
 	}
 	else{ //로그인시
+	
+		//댓글 케밥 셀렉트옵션들에 이벤트핸들러 등록
+		addListenerToCommentKebob(meetingId,commentUl);
+		//댓글 삭제모달 우측버튼에 이벤트핸들러 등록
+		addListenerToModalBtn(meetingId,commentUl);
+		//답글 삭제모달 우측버튼에 이벤트핸들러 등록
+		addListenerToReplyModalBtn();
+		//새 댓글 등록버튼에 이벤트핸들러 등록
+		writeComment(meetingId,commentUl); 
+		
 		//SSR로 뿌려진 댓글리스트 전체에 부착할 핸들러
 		commentUl.onclick = function(e) {
 			
@@ -179,6 +182,9 @@ export function getComment(meetingId,commentUl) {
 				`
 				commentUl.insertAdjacentHTML("beforeend", template);
 			}
+			addListenerToCommentKebob(meetingId,commentUl);
+			initModals();
+			initSelectBoxes();
 		});
 }
 //새 댓글 등록시 SSR로 렌더링된 기존 댓글을 지우고  AJAX로 전체를 다시 렌더링함. 
