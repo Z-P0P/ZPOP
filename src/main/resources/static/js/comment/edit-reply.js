@@ -99,7 +99,7 @@ function saveEdit(replyId,replyUl,inputBox){
 	  .then(json => {
 		  while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제
               replyUl.removeChild(replyUl.firstChild);
-          getReply(json,replyUl) //json값은 백단에서 받아오는 groupId
+          getReply(json,replyUl,true) //json값은 백단에서 받아오는 groupId
 	  });
 }
 
@@ -126,6 +126,6 @@ function deleteReply(replyId, replyUl){
 	  .then(json => {
 		  while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제
               replyUl.removeChild(replyUl.firstChild);
-          getReply(json,replyUl) //json값은 백단에서 받아오는 groupId
+          getReply(json,replyUl,true) //json값은 백단에서 받아오는 groupId
 	  });
 }

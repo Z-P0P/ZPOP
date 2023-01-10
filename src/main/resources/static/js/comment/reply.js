@@ -59,9 +59,11 @@ export function getReply(groupId, replyUl, isSignedOn) {
 				if(isSignedOn){
 					initSelectBoxes();
 				}
-				const clickables = document.querySelectorAll(".modal__on-btn");
-				for(const item of clickables)
-					item.dataset.modal = "#modal-login"
+				if(!isSignedOn){
+					const clickables = document.querySelectorAll(".modal__on-btn");
+					for(const item of clickables)
+						item.dataset.modal = "#modal-login"
+				}
 				initModals();
 		});
 }
@@ -118,7 +120,7 @@ export function writeReply(meetingId, groupId, parentId, replyUl, linkContainer)
 								linkContainer.classList.remove("hidden");
 								while(replyUl.hasChildNodes()) //기존 댓글 한개씩 삭제
 									replyUl.removeChild(replyUl.firstChild);
-								getReply(groupId, replyUl); //AJAX로 새로 렌더링
+								getReply(groupId, replyUl, true); //AJAX로 새로 렌더링
 							}
 							else alert("시스템 장애로 등록이 안되고 있습니다.");
 					});

@@ -67,7 +67,7 @@ window.addEventListener("load", () => {
 function revealReplyList(span, commentId, replyUl, replySection, meetingId){
 	
 	//AJAX로 답글 리스트 생성
-	Reply.getReply(commentId, replyUl);
+	Reply.getReply(commentId, replyUl, true);
 	
 	//각 댓글 하위의 답글리스트에 '답글에 답글달기' 이벤트 핸들러 1회만 부착
 	if(!replyUl.classList.contains("click-handler")){
@@ -96,12 +96,13 @@ function revealReplyList(span, commentId, replyUl, replySection, meetingId){
 		closeReplyList(replyUl, replyCnt, replyClose);
 	}); 
 }
+//비로그인상태에서 답글리스트 보여주기
 function showRestrictedReplyList(e){
 	const commentId = e.target.closest("li").dataset.id;
 	const replyUl = e.target.parentElement.nextElementSibling.children[0];
 	const replySection = replyUl.parentElement;// <section class="reply hidden">
 	
-	Reply.getReply(commentId, replyUl);
+	Reply.getReply(commentId, replyUl, false);
 	replySection.classList.remove("hidden");
 	const replyCnt = e.target; //<span class="reply-cnt">
 	const replyClose = e.target.nextElementSibling//<span class="hidden pointer" id="reply-close">
