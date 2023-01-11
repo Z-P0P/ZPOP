@@ -6,30 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.zpop.web.dto.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.zpop.web.dto.MeetingDetailResponse;
-import com.zpop.web.dto.ParticipantResponse;
-import com.zpop.web.dto.RegisterMeetingRequest;
-import com.zpop.web.dto.RegisterMeetingResponse;
-import com.zpop.web.dto.RegisterMeetingViewResponse;
-import com.zpop.web.dto.UpdateMeetingRequest;
-import com.zpop.web.dto.UpdateMeetingViewDto;
 import com.zpop.web.entity.Member;
 import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.MeetingService;
@@ -37,11 +23,12 @@ import com.zpop.web.service.MeetingService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
-@Controller
-@RequestMapping("/meeting")
+@RestController
+@RequestMapping("/api/meeting")
+@RequiredArgsConstructor
 public class MeetingController {
-	@Autowired
-	private MeetingService service;
+
+	private final MeetingService service;
 	
 	@GetMapping("/register")
 	public String registerView(Model model) {
@@ -81,6 +68,19 @@ public class MeetingController {
 						// 예외
 					   //TODO: 1. DB테이블에 Not Null인 column을 입력하지 않았을 경우
 					   //	   2. 날짜/시간을 현재 시간보다 과거로 입력했을 때.
+	}
+
+	@GetMapping("/list")
+	public ResponseEntity<List<MeetingThumbnailResponse>>  getList(
+			@RequestParam(required = false, defaultValue = "0") int start,
+			@RequestParam(required = false) String keyword,
+			@RequestParam(required = false) Integer category,
+			@RequestParam(required = false) String regions,
+			@RequestParam(required = false) Boolean isClosed
+	){
+		List<MeetingThumbnailResponse> list = service.getList(start, keyword, category, regions, isClosed);
+
+		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping("/update/{id}")

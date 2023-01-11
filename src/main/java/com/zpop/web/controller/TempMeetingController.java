@@ -35,20 +35,6 @@ public class TempMeetingController {
         return "meeting/list";
     }
 
-    @GetMapping("/api/list")
-    @ResponseBody
-    public List<MeetingThumbnailResponse> getList(
-            @RequestParam(required = false, defaultValue = "0") int start,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Integer category,
-            @RequestParam(required = false) String regions,
-            @RequestParam(required = false) Boolean isClosed
-    ){  
-        List<MeetingThumbnailResponse> meetings = service.getList(start, keyword, category, regions, isClosed);
-
-        return meetings;
-    }
-
     @DeleteMapping("/{id}")
     @ResponseBody
     public boolean delete(
