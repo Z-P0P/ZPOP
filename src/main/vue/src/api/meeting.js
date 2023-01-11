@@ -1,5 +1,5 @@
 /**
- * 모임 상세 조회
+ * 모임 썸네일 리스트 조회
  */
 function getThumbnailList(data) {
   const params = new URLSearchParams(data).toString();
