@@ -37,7 +37,7 @@ import com.zpop.web.service.MeetingService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
-@Controller
+//@Controller
 @RequestMapping("/meeting")
 public class MeetingController {
 	@Autowired

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/meeting")
+//@Controller
+//@RequestMapping("/meeting")
 public class TempMeetingController {
 
     @Autowired

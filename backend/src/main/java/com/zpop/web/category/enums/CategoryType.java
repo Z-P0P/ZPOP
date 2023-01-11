@@ -1,7 +1,9 @@
 package com.zpop.web.category.enums;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum CategoryType {
     FOOD_AND_CAFE("밥/카페"),
