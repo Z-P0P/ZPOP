@@ -1,7 +1,9 @@
 package com.zpop.web.ageRange.enums;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum AgeRangeType {
     TEENAGER("10대"),
