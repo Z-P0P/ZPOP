@@ -16,11 +16,10 @@ export default {
       throttling: null,
       meetings: [],
       loadingOn: false,
-    });
-
-    /* 모임 리스트가 하나도 없음 여부 */
-    const isResultNone = computed(() => {
-      return state.meetings.length === 0;
+      // 모임 리스트가 하나도 없음 여부
+      isResultNone: computed(() => {
+        return state.meetings.length === 0;
+      }),
     });
 
     /* 모임 리스트 요청 */
@@ -31,6 +30,7 @@ export default {
           .getThumbnailList({})
           .then((res) => res.json())
           .then((data) => {
+            return;
             for (const m of data) {
               state.meetings.push(m);
             }
@@ -78,7 +78,7 @@ export default {
 
     document.addEventListener("scroll", loadMore);
 
-    return { state, isResultNone };
+    return { state };
   },
 };
 </script>
@@ -89,7 +89,7 @@ export default {
       <li v-for="(meeting, idx) in state.meetings" :key="idx">
         <Thumbnail :meeting="meeting" />
       </li>
-      <div v-if="isResultNone">
+      <div v-if="state.isResultNone">
         <p>찾고있는 모임이 없네요!</p>
         <p>교집합을 만들어볼까요?</p>
       </div>
