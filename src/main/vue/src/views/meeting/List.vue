@@ -3,16 +3,19 @@ import { reactive, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import api from "@/api/";
 import Thumbnail from "@/components/meeting/Thumbnail.vue";
+import LoadingRoller from "@/components/LoadingRoller.vue";
 
 export default {
   name: "MeetingList",
   components: {
     Thumbnail,
+    LoadingRoller,
   },
   setup() {
     const state = reactive({
       throttling: null,
       meetings: [],
+      loadingOn: false,
     });
 
     /* 모임 리스트가 하나도 없음 여부 */
@@ -63,9 +66,11 @@ export default {
         scrollTop + clientHeight > scrollHeight - 5 &&
         scrollDirection.value < 0
       ) {
+        state.loadingOn = true;
+
         state.throttling = setTimeout(() => {
           state.throttling = null;
-
+          state.loadingOn = false;
           requestThumbnailList();
         }, 300);
       }
@@ -90,6 +95,7 @@ export default {
       </div>
     </ul>
   </section>
+  <LoadingRoller :isShow="state.loadingOn" />
 </template>
 
 <style scoped></style>
