@@ -6,7 +6,7 @@ import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.MeetingService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,31 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-<<<<<<< HEAD
-@RestController
-@RequestMapping("/api/meeting")
-=======
-import com.zpop.web.dto.*;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import com.zpop.web.entity.Member;
-import com.zpop.web.security.ZpopUserDetails;
-import com.zpop.web.service.MeetingService;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/meeting")
 @RequiredArgsConstructor
->>>>>>> 8f2c2a198ed4950528e34ee6aa80f25d14e2a8b3
+
 public class MeetingController {
 
 	private final MeetingService service;

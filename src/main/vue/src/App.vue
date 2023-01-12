@@ -2,12 +2,10 @@
 import { RouterLink, RouterView } from "vue-router";
 import Detail from "./views/meeting/Detail.vue";
 import Article from "./components/meeting/Article.vue";
+import Header from './components/header/header.vue'
 </script>
 
+<template>
   <Header/>
   <router-view/>
 </template>
-
-<script setup>
-import Header from './components/header/header.vue'
-</script>

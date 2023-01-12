@@ -15,8 +15,8 @@ const router = createRouter({
     
     {
       path: "/meeting/:id(\\d+)", // matches only numbers
-      component: MeetingDetail,
-      methods: {},
+      component: () => import ("@/views/meeting/Detail.vue")
+    
   },
   ],
 });
