@@ -8,15 +8,14 @@ export const useMeetingListStore = defineStore("meetingList", {
     isToggleOn: false,
     category: 0,
     regions: [],
-    lastId: null,
   }),
 
   actions: {
-    selectCategory(id) {
-      this.category = id;
+    selectCategory(categoryId) {
+      this.category = categoryId;
     },
-    selectRegion(id) {},
-    revmoeRegion(id) {},
+    selectRegion(regioinId) {},
+    revmoeRegion(regioinId) {},
     changeToggle() {
       this.isToggleOn = !this.isToggleOn;
     },
