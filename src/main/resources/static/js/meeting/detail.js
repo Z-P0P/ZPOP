@@ -64,7 +64,7 @@ function resetModal(){
 	statusMessage.innerText = "";
 	inputMessage.innerText = "";
 }
-
+//참여
 function participate(meetingId, participantUl, participantCount) {
 	const modalBody = document.querySelector(".modal-participation .modal__body");
 	const participationCheckModal = document.querySelector(".modal-participation-content-container:last-child");
@@ -101,7 +101,6 @@ function participate(meetingId, participantUl, participantCount) {
 				throw new Error(data.reason)
 			}
 			
-			console.log(data);
 			statusIcon.classList.remove('lds-roller');
 			statusIcon.classList.add('icon-done');
 			statusMessage.innerText = '모임 참여에 성공했어요!';
@@ -129,7 +128,7 @@ function participate(meetingId, participantUl, participantCount) {
 			closeModalBtn.classList.remove('hidden');
 		});
 }
-
+//참여취소
 function cancelParticipate(meetingId, participantUl, participantCount) {
 	const data = {
 		method: "DELETE",
@@ -149,7 +148,6 @@ function cancelParticipate(meetingId, participantUl, participantCount) {
 		})
 		.then(data => data.json())
 		.then(result => {
-			console.log(result)
 			if (result) {
 				console.log("참여취소완료")
 				while (participantUl.hasChildNodes())//기존 참여자아이콘 한개씩 삭제
@@ -166,7 +164,7 @@ function cancelParticipate(meetingId, participantUl, participantCount) {
 			console.error("실패:", error);
 		});
 }
-
+//모임 조기마감
 function closeMeeting(meetingId, btnMeetingClose) {
 
 	const data = {
@@ -196,7 +194,7 @@ function closeMeeting(meetingId, btnMeetingClose) {
 			}
 		});
 }
-
+//참여자 목록 받기
 function getParticipant(meetingId, participantUl, participantCount) {
 
 	fetch(`/meeting/${meetingId}/participant`)
@@ -222,6 +220,11 @@ function getParticipant(meetingId, participantUl, participantCount) {
 				participantUl.insertAdjacentHTML("beforeend", template);
 			}
 		});
+}
+//모임 삭제
+function deleteMeeting(meetingId){
+	 
+   // 비동기처리하지 않고 페이지전환으로 controller에 요청하여 처리.
 }
 
 function getClickableLink (link) {

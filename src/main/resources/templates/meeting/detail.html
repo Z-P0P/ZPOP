@@ -37,7 +37,7 @@
                 <span class="meeting__category"  th:text="${meeting.categoryName}">문화생활</span>
             </div>
             <div class="meeting__header">
-                <div class="meeting__title-container">
+                <div class="meeting__title-container select-box">
                     <span class="meeting__title"  th:text="${meeting.title}">한강공원에서 러닝하실 분~🙂</span>
                     <img class="meeting__title-hamburger-icon modal__on-btn" src="/images/icon/hamburger.svg" data-modal="#meeting-kebob">
                     <th:block th:if="${meeting.isMyMeeting == true}">	
@@ -103,7 +103,25 @@
             </li>
         </ul>
     </section>
-			
+<!-- ---------------모임 삭제 모달---------------------->
+    	<div class="popup-container modal-wrapper hidden z-idx-1" id="modal-delete-meeting">
+
+		<div class="popup__wrap-inactive" id="popup">
+			<div class="popup">
+				<div class="popup__body">
+					<div class="popup__body-content">
+						<div class="popup__body-contentbox">
+							<span>모임을 삭제하시겠습니까?</span>
+						</div>
+					</div>
+				</div>
+				<div class="popup__foot">
+					<span class="pop-btn close modal__close-btn" id="delete-meeting-cancel" data-modal="#modal-delete-meeting">취소</span> 
+					<span class="pop-btn confirm" id="delete-meeting-confirm" th:attr="onclick=|location.href='/meeting/delete/${meeting.id}'|">확인</span>
+				</div>
+			</div>
+		</div>
+	</div>	
    <!----------------- 참여 모달 ------------------->
      <div class="modal-2 hidden z-idx-1" id="modal-wrapper-participation">
 
@@ -301,7 +319,7 @@
         <div class="report-complete__btn">확인</div>
     </div>
     </div>
-     <!----------------------------------유저 프로필 모달!! 시작---------------------------------------------->
+<!-----------------------------유저 프로필 모달!! 시작-------------------------------------->
                 
            <!------------ sheet 컴포넌트 시작 --------------->
            <div id="sheet" class="column items-center justify-end" aria-hidden="true">
@@ -352,7 +370,7 @@
                    </div><!-- end of body column -->
                </div><!-- end of content column -->
            </div><!-- end of sheet -->
-       <!----------------------------------유저 프로필 모달!! 끝------------------------------------------------->
+ <!----------------------유저 프로필 모달!! 끝-------------------------->
     
  <!------------------ 댓글 섹션 -------------------->
     <section class="comment">
