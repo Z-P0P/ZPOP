@@ -1,3 +1,4 @@
+
 <template>
 
   <article>
@@ -36,8 +37,8 @@
       <div class="views">조회수 {{ article.viewCount }}회</div>
       <!-- TODO: 버튼 컴포넌트화 -->
       <div class="control-btn-wrap">
-        <span>참여하기</span>
-      </div>
+    <span class="btn btn-round">참여하기</span>
+  </div>
     </div>
   </article>
 
@@ -55,7 +56,5 @@ export default {
 
 <style >
   @import url(../../assets/css/meeting/article.css);
-  ::article {
-    background-color: antiquewhite;
-  }
+ 
 </style>
