@@ -11,12 +11,14 @@ public class ZpopUserDetails implements UserDetails {
     private int id;
     private String password;
     private String name;
+    private String profileImagePath;
     private List<GrantedAuthority> authorities;
     private boolean enalbed;
 
-    public ZpopUserDetails(int id, String password, String name, List<GrantedAuthority> authorities, boolean enalbed) {
+    public ZpopUserDetails(int id, String password, String name, List<GrantedAuthority> authorities, boolean enalbed, String profileImagePath) {
         this.id = id;
         this.password = password;
+        this.profileImagePath = profileImagePath;
         this.name = name;
         this.authorities = authorities;
         this.enalbed = enalbed;
@@ -60,7 +62,11 @@ public class ZpopUserDetails implements UserDetails {
     public boolean isEnabled() {
         return enalbed;
     }
-
+    
+    public String getProfileImagePath() {
+    	return this.profileImagePath;
+    }
+    
     @Override
     public String toString() {
         return "ZpopUserDetails{" +

@@ -29,7 +29,7 @@ public class UserSecurityService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(UserRole.USER.getRole()));
 
-        return new ZpopUserDetails(member.getId(), null, member.getNickname(), authorities, true);
+        return new ZpopUserDetails(member.getId(), null, member.getNickname(), authorities, true, member.getProfileImagePath());
     }
 
     public UserDetails loadUserByUsername(String username, boolean isAdmin) throws UsernameNotFoundException {
