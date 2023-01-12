@@ -12,7 +12,7 @@ export default {
   },
   setup() {
     const state = reactive({
-      article: {},
+      detail: {},
     });
     // 모임 정보 조회 reactive는 view단과 model단 일치
     const getDetail = () => {
@@ -21,7 +21,7 @@ export default {
         api.meeting
             .getDetail(route.params.id)
             .then((res) => res.json())
-            .then((data) => (state.article = data));
+            .then((data) => (state.detail = data));
       } catch (e) {
         console.log(e);
         alert("잠시 후에 다시 시도해주세요");
@@ -35,6 +35,8 @@ export default {
 };
 </script>
 <template>
-  <Article :article="state.article" />
+  <Article :article="state.detail" />
 </template>
-<style scoped></style>
+<style scoped>
+
+</style>

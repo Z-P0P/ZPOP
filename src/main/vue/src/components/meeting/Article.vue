@@ -3,20 +3,23 @@
   <article>
     <header>
       <div class="category-wrap">
-        <span class="category">{{ article.category}}</span>
+        <span class="category">{{ article.categoryName}}</span>
       </div>
       <div class="title-container">
         <h2 class="title">{{ article.title }}</h2>
+        <span class="kebab icon icon-kebab"></span>
         <img src="" alt="" />
       </div>
 
       <div class="start-datetime-container">
-        <img src="" alt="" />
-        <span>{{ article.startedAt }}</span>
+        <span class="icon icon-calender16"></span>
+        <span>{{ article.textStartedAt }}</span>
       </div>
       <div class="region-container">
-        <img src="" alt="" />
+        <span class="icon-location16"></span>
+       
         <span>{{ article.region }}</span>
+        <span>{{ article.regionName }}</span>
       </div>
       <div class="region-detail-wrap">
         <span>{{ article.detailRegion }}</span>
@@ -26,11 +29,11 @@
     <div class="content-container">
       <span> {{ article.content }}</span>
       <ul class="tags">
-        <li>#{{ article.ageRange }}</li>
-        <li>#{{ article.maxMember }}명</li>
+        <li>#{{ article.ageRange }} 선호</li>
+        <li>#{{ article.maxMember }} 명</li>
         <li>#{{ article.genderCategory }}</li>
       </ul>
-      <div class="views">{{ article.viewCount }}</div>
+      <div class="views">조회수 {{ article.viewCount }}회</div>
       <!-- TODO: 버튼 컴포넌트화 -->
       <div class="control-btn-wrap">
         <span>참여하기</span>
@@ -50,6 +53,9 @@ export default {
 };
 </script>
 
-<style scoped>
-  @import url(@/assets/css/meeting/article.css);
+<style >
+  @import url(../../assets/css/meeting/article.css);
+  ::article {
+    background-color: antiquewhite;
+  }
 </style>

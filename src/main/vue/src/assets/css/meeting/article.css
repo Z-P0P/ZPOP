@@ -1,4 +1,150 @@
+body {
+    min-width: 368px;
+}
+
+article{
+    padding: 20px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    line-height: 17px;
+   
+}
 
 .category-wrap{
-    background-color: aqua;
+    margin-top: 6px;
+    margin-bottom: 12px;
 }
+.title-container{
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.title {
+    display: flex;
+    font-size: 17px;
+    margin-right: auto;
+    
+   
+}
+
+.icon-kebab{
+    display: inline-flex;
+}
+
+
+.start-datetime-container{
+
+    display: flex;
+
+    margin-bottom: 10px;
+}
+
+.start-datetime-container .icon {
+    margin-right: 8px;
+}
+
+
+
+.region-container .icon-location16 {
+    margin-left: 4px;
+    margin-right: 13px;
+}
+
+.region-detail-wrap{
+    margin-top: 5px;
+    margin-left: 24px;
+}
+
+.category {
+    color:var(--main-color);
+}
+
+
+
+.region-detail-wrap{
+    color: var(--grey2);
+    margin-bottom: 17px;
+}
+
+
+.content-container{
+    border-top: 1px solid var(--light-grey1);
+    padding-top: 12px;
+
+}
+
+
+
+.tags{
+    margin-top: 20px;
+    color: var(--light-grey2);
+    display: flex;
+    gap: 4px;
+    margin-bottom: 7px;
+}
+
+.views{
+    color: var(--light-grey2);
+}
+/* 
+@media (min-width: 768px) {
+  .meetings {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .meetings {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+
+@media (min-width: 768px) {
+  .meeting {
+    width: 383px;
+    height: 264px;
+    border-width: 3px;
+    padding: 32px;
+  }
+}
+
+
+
+@media (min-width: 768px) {
+  .meeting__header {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .meeting__title {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .meeting__tags {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .meeting__status {
+    font-size: 1rem;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .meeting__info-detail-more {
+    display: flex;
+    gap: auto;
+    font-size: 1rem;
+  }
+}
+ */
