@@ -55,10 +55,10 @@ export function getReply(groupId, replyUl, isSignedOn) {
 				`
 				replyUl.insertAdjacentHTML("beforeend", template);
 				addListenerToReplyKebob(r.id, replyUl.lastElementChild, replyUl, r.myComment)
-			}
+			}   //로그인상태에서만 케밥메뉴 비활성화
 				if(isSignedOn){
 					initSelectBoxes();
-				}
+				}//비로그인상태에서는 로그인모달띄움
 				if(!isSignedOn){
 					const clickables = document.querySelectorAll(".modal__on-btn");
 					for(const item of clickables)

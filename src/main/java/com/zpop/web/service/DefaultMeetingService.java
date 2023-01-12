@@ -190,7 +190,12 @@ public class DefaultMeetingService implements MeetingService {
 
 		// 시작날짜 변환
 		String dateTime = TextDateTimeCalculator.getTextDateTime(meeting.getStartedAt());
-
+		
+		// 삭제 여부 처리
+		boolean isDeleted = false;
+		if(meeting.getDeletedAt() != null)
+			isDeleted = true;
+		
 		// 마감 여부 처리
 		boolean isClosed = false;
 		if(meeting.getClosedAt() != null)
@@ -271,28 +276,30 @@ public class DefaultMeetingService implements MeetingService {
 					isMyComment
 			));
 		}	 
-
-		return new MeetingDetailResponse(
-			meeting.getId(),
-			meeting.getTitle(),
-			meeting.getStartedAt(),
-			dateTime,
-			meeting.getDetailRegion(),
-			meeting.getContent(),
-			category.getName(),
-			region.getName(),
-			meeting.getMaxMember(),
-			genderCategory,
-			ageRange.getType(),
-			meeting.getRegMemberId(),
-			meeting.getViewCount(),
-			meeting.getCommentCount(),
-			isMyMeeting,
-			hasParticipated,
-			isClosed,
-			participationsResponse,
-			commentsResponse
-		);
+		if(isDeleted)
+			return null;
+		else
+			return new MeetingDetailResponse(
+				meeting.getId(),
+				meeting.getTitle(),
+				meeting.getStartedAt(),
+				dateTime,
+				meeting.getDetailRegion(),
+				meeting.getContent(),
+				category.getName(),
+				region.getName(),
+				meeting.getMaxMember(),
+				genderCategory,
+				ageRange.getType(),
+				meeting.getRegMemberId(),
+				meeting.getViewCount(),
+				meeting.getCommentCount(),
+				isMyMeeting,
+				hasParticipated,
+				isClosed,
+				participationsResponse,
+				commentsResponse
+			);
 	}
 
 	@Override

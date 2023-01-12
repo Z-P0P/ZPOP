@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.zpop.web.dto.MeetingDetailResponse;
+import com.zpop.web.dto.MeetingThumbnailResponse;
 import com.zpop.web.dto.ParticipantResponse;
 import com.zpop.web.dto.RegisterMeetingRequest;
 import com.zpop.web.dto.RegisterMeetingResponse;
@@ -42,6 +44,29 @@ import jakarta.validation.Valid;
 public class MeetingController {
 	@Autowired
 	private MeetingService service;
+	
+	@GetMapping("/list")
+    public String getListView(Model model){
+        List<MeetingThumbnailResponse> meetings = service.getList();
+        
+        model.addAttribute("meetings", meetings);
+
+        return "meeting/list";
+    }
+
+    @GetMapping("/api/list")
+    @ResponseBody
+    public List<MeetingThumbnailResponse> getList(
+            @RequestParam(required = false, defaultValue = "0") int start,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Integer category,
+            @RequestParam(required = false) String regions,
+            @RequestParam(required = false) Boolean isClosed
+    ){  
+        List<MeetingThumbnailResponse> meetings = service.getList(start, keyword, category, regions, isClosed);
+
+        return meetings;
+    }
 	
 	@GetMapping("/register")
 	public String registerView(Model model) {
@@ -108,10 +133,12 @@ public class MeetingController {
 			memberId = userDetails.getId();
 
 		MeetingDetailResponse meetingDetail = service.getById(id, memberId);
-
-		model.addAttribute("meeting", meetingDetail);
-
-		return "meeting/detail";
+		if(meetingDetail!=null) {
+			model.addAttribute("meeting", meetingDetail);
+			return "meeting/detail";
+		}
+		else 
+			return "error/404";
 		}
 	
 	@PutMapping("/update/{id}")
@@ -184,7 +211,7 @@ public class MeetingController {
 
 		return contact;
 	}
-	
+	//모임마감
 	@PatchMapping("/{id}/close")
 	@ResponseBody
 	public boolean closeMeeting(@PathVariable int id,
@@ -195,6 +222,14 @@ public class MeetingController {
 		return result;
 		
 	}
-	
+	//모임삭제
+	@GetMapping("/delete/{meetingId}")
+	public String deleteMeeting(@PathVariable int meetingId,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		Member member = new Member();
+		member.setId(userDetails.getId());
+		service.delete(meetingId, member);
+		return "redirect:/meeting/list";
+	}
 	
 }
