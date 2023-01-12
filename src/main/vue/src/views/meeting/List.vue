@@ -30,7 +30,6 @@ export default {
           .getThumbnailList({})
           .then((res) => res.json())
           .then((data) => {
-            return;
             for (const m of data) {
               state.meetings.push(m);
             }
