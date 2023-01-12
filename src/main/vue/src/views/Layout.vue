@@ -9,7 +9,16 @@
 
 <template>
   <!-- <Header /> -->
-  <router-view></router-view>
+  <main>
+    <router-view></router-view>
+  </main>
 </template>
 
-<style></style>
+<style>
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+</style>
