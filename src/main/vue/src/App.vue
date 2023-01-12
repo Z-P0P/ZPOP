@@ -4,11 +4,10 @@ import Detail from "./views/meeting/Detail.vue";
 import Article from "./components/meeting/Article.vue";
 </script>
 
-<template>
-
-  
-  <RouterView />
-  
+  <Header/>
+  <router-view/>
 </template>
 
-<style scoped></style>
+<script setup>
+import Header from './components/header/header.vue'
+</script>

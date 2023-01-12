@@ -1,9 +1,11 @@
 package com.zpop.web.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.NotificationDao;
@@ -29,7 +32,7 @@ import com.zpop.web.service.LoginService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/login")
+@RequestMapping("/api/login")
 public class LoginController {
 
 	private LoginService loginService;
@@ -52,23 +55,23 @@ public class LoginController {
 	}
 
 	// 소셜 로그인 시, kakao, naver를 공통적으로 처리함
-	@GetMapping("oauth/{loginType}")
-	public String OAuthlogin(@PathVariable("loginType") String loginType
+	@GetMapping("/oauth/{loginType}")
+	@ResponseBody
+	public ResponseEntity<?> OAuthlogin(@PathVariable("loginType") String loginType
 			,@RequestParam @Nullable String code 
 			, @RequestParam @Nullable String state
 			, HttpSession session
 			, @AuthenticationPrincipal ZpopUserDetails userDetails
 	)
 			throws IOException, InterruptedException {
-
+		System.out.println("인증요청");
 		if (userDetails != null) {
 			System.out.println("이미 로그인한 사용자임");
-			return "redirect:/";
+			return ResponseEntity.badRequest().body("이미 로그인한 사용자입니다.");
 		}
 
 		if (code == null) {
 			System.out.println("로그인에 실패하였음");
-			return "redirect:/";
 		}
 		
 		loginService = loginServiceMap.get(loginType+"LoginService");
@@ -81,10 +84,16 @@ public class LoginController {
 		 * 대신 socialId 와 loginType을 세션에 저장하여 register에서 닉네임을 설정할 때
 		 * member에 추가함
 		 */
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		
 		if (member == null) {
 			session.setAttribute("socialId", socialId);
 			session.setAttribute("loginType", loginType);
-			return "redirect:/register";
+			result.put("code", "success");
+			result.put("redirectUrl", "/register");
+			return ResponseEntity.ok(result);
 		}
 		
 		
@@ -113,9 +122,11 @@ public class LoginController {
 		SecurityContext securityContext = SecurityContextHolder.getContext();
 		securityContext.setAuthentication(auth);
 		session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-
-		return "redirect:/";
-		
+		result.put("code", "success");
+		result.put("redirectUrl", "/");
+		result.put("nickname", member.getNickname());
+		result.put("profileImagePath", member.getProfileImagePath());
+		return ResponseEntity.ok(result);
 	}
 /*
  * naverLogin과 관련된 별도의 컨트롤러
