@@ -8,7 +8,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="isShow" class="loading-roller">
+  <div class="loading-roller" :class="isShow ? '' : 'v-hidden'">
     <div></div>
     <div></div>
     <div></div>
