@@ -1,44 +1,27 @@
 package com.zpop.web.controller;
 
+import com.zpop.web.dto.*;
+import com.zpop.web.entity.Member;
+import com.zpop.web.security.ZpopUserDetails;
+import com.zpop.web.service.MeetingService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.server.ResponseStatusException;
-
-import com.zpop.web.dto.MeetingDetailResponse;
-import com.zpop.web.dto.ParticipantResponse;
-import com.zpop.web.dto.RegisterMeetingRequest;
-import com.zpop.web.dto.RegisterMeetingResponse;
-import com.zpop.web.dto.RegisterMeetingViewResponse;
-import com.zpop.web.dto.UpdateMeetingRequest;
-import com.zpop.web.dto.UpdateMeetingViewDto;
-import com.zpop.web.entity.Member;
-import com.zpop.web.security.ZpopUserDetails;
-import com.zpop.web.service.MeetingService;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
-
-@Controller
-@RequestMapping("/meeting")
+@RestController
+@RequestMapping("/api/meeting")
 public class MeetingController {
 	@Autowired
 	private MeetingService service;
@@ -99,9 +82,13 @@ public class MeetingController {
 		return "/meeting/update";
 	}
 
+
+	
 	@GetMapping("/{id}")
-	public String detailView(@PathVariable int id, Model model, 
-			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+	public ResponseEntity<MeetingDetailResponse> detailView(@PathVariable int id, 
+											@AuthenticationPrincipal ZpopUserDetails userDetails)
+											
+							 {
 		Integer memberId = null;
 
 		if(userDetails != null)
@@ -109,9 +96,10 @@ public class MeetingController {
 
 		MeetingDetailResponse meetingDetail = service.getById(id, memberId);
 
-		model.addAttribute("meeting", meetingDetail);
+//		model.addAttribute("meeting", meetingDetail);
 
-		return "meeting/detail";
+//		return "meeting/detail";
+		return ResponseEntity.ok().body(meetingDetail);
 		}
 	
 	@PutMapping("/update/{id}")
