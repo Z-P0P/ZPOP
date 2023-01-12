@@ -1,7 +1,8 @@
-<script setup></script>
-
 <template>
-  <router-view></router-view>
+  <Header/>
+  <router-view/>
 </template>
 
-<style scoped></style>
+<script setup>
+import Header from './components/header/header.vue'
+</script>
