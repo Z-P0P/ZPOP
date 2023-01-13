@@ -9,6 +9,7 @@ article{
     flex-direction: column;
     font-weight: 500;
     line-height: 17px;
+    max-width: 768px;
    
 }
 
@@ -90,27 +91,63 @@ article{
     color: var(--light-grey2);
 }
 
-.control-btn-wrap{
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: white;
-  border-top: 1px solid var(--light-grey1);
-  padding: 10px;
-}
-
-span.btn.btn-round{
-  background-color: var(--main-color);
-  position: relative;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  color: white;
-  text-align: center;
-
- 
-}
+ .control-btn-wrap{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    border-top: 1px solid var(--light-grey1);
+    padding: 10px;
+  } 
+   
+  span.btn.btn-round{
+    background-color: var(--main-color);
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+   
+  }
 /* 
 💖todo: 반응형💗
  */
+
+ @media (min-width: 576px) {
+   
+    .title{
+        font-size: 20px;
+    }
+    article {
+        font-size: 18px;
+    }
+    .tags{
+        font-size: 18px;
+        padding-top: 20px;
+    }
+
+    .content-container {
+        padding-top: 30px;
+    }
+
+    .control-btn-wrap{
+        display: flex;
+        width: fit-content;
+        border-top: none;
+        position: static;
+        margin-left: auto;
+      }
+      
+      span.btn.btn-round{
+        background-color: var(--main-color);
+        width: 100%;
+        text-align: center;
+      
+       
+      }
+   
+  }
+
+
