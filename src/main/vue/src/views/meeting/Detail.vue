@@ -5,10 +5,13 @@ import { reactive } from "vue";
 import { useRoute } from "vue-router";
 import api from "@/api";
 import Article from "@/components/meeting/Article.vue";
+import Participants from "@/components/meeting/Participants.vue";
+
 export default {
   name: "MeetingDetail",
   components: {
     Article,
+    Participants
   },
   setup() {
     const state = reactive({
@@ -36,6 +39,8 @@ export default {
 </script>
 <template>
   <Article :article="state.detail" />
+  <Participants :detail="state.detail"/> 
+
 </template>
 <style scoped>
 
