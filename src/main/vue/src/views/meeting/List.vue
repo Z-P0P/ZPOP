@@ -1,10 +1,15 @@
 <script setup>
 import { reactive, computed, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import api from "@/api/";
 import { useMeetingListStore } from "@/stores/meetingListStore";
 import Thumbnail from "@/components/meeting/Thumbnail.vue";
 import LoadingRoller from "@/components/LoadingRoller.vue";
 import OptionControll from "@/components/meeting/option-control/OptionControl.vue";
+import SearchBar from "../../components/meeting/option-control/SearchBar.vue";
+
+// 검색을 위한 router
+const router = useRouter();
 
 const meetingListStore = useMeetingListStore();
 meetingListStore.$reset(); // 이 view로 오면 상태 초기화
@@ -118,11 +123,18 @@ function generateParamsWithStore(meetingListStore) {
 
   return params;
 }
+
+/**
+ * {@link SearchBar} 컴포넌트 searchFromSearchBar 에 의해 실행되는 검색 함수
+ */
+function search(keyword) {
+  router.push(`/search?q=${keyword}`);
+}
 </script>
 
 <template>
   <div class="content-wrap">
-    <!-- TODO: 검색 -->
+    <SearchBar @searchFromSearchBar="search" />
     <OptionControll />
     <section class="meetings">
       <ul>

@@ -22,6 +22,10 @@ const router = createRouter({
               alias: "/",
             },
             {
+              path: "search",
+              component: () => import("@/views/meeting/Detail.vue"),
+            },
+            {
               path: ":id(\\d+)", // matches only numbers
               component: () => import("@/views/meeting/Detail.vue"),
             },
