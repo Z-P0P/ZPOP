@@ -1,16 +1,15 @@
 import { defineStore } from 'pinia';
 
 export const useMemberStore = defineStore('member', {
-    state: () => {
-        return{
-            memberInfo : {}
-        }
-    },
+    state: () => ({
+        memberInfo : {}
+    }),
 
     actions: {
         setInfo(memberInfo){
             this.memberInfo = memberInfo;
-        }
+        },
+        
     },
 
     // 새로고침해도 로그인 정보가 남아있을 수 있도록 sessionStorage에 저장
