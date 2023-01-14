@@ -90,7 +90,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @import url(../../assets/css/component/header.css);
 @import url(../../assets/css/component/modal.css);
 </style>

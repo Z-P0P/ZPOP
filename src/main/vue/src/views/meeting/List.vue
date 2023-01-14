@@ -6,7 +6,8 @@ import { useMeetingListStore } from "@/stores/meetingListStore";
 import Thumbnail from "@/components/meeting/Thumbnail.vue";
 import LoadingRoller from "@/components/LoadingRoller.vue";
 import OptionControll from "@/components/meeting/option-control/OptionControl.vue";
-import SearchBar from "../../components/meeting/option-control/SearchBar.vue";
+import SearchBar from "@/components/meeting/option-control/SearchBar.vue";
+import ModalDefault from "@/components/modal/Default.vue";
 
 // 검색을 위한 router
 const router = useRouter();
@@ -24,9 +25,7 @@ const state = reactive({
   }),
 });
 
-/**
- * meetingListStore의 상태가 변경될 때마다 모임 리스트를 새로 조회한다
- */
+// meetingListStore의 상태가 변경될 때마다 모임 리스트를 새로 조회한다 --------------
 watch(meetingListStore, async () => {
   state.lastId = null;
   const list = await requestList();
@@ -41,9 +40,7 @@ requestList().then((data) => {
   addMeetings(data);
 });
 
-/**
- * 무한 스크롤
- */
+// 무한 스크롤 -----------------------------------------------------------
 const scrollDirection = ref(0); // 스크롤 방향 정보 1: up -1 : down
 const scrollTrace = ref(0); // 이전 스크롤 방향을 추적
 
@@ -80,10 +77,7 @@ function onScrollDown(e) {
 
 document.addEventListener("scroll", onScrollDown);
 
-/**
- *  모임 리스트 요청 후 데이터 리턴
- *  @returns 모임[]
- */
+// 모임 리스트 요청 후 데이터 리턴 ----------------------------------------------
 async function requestList() {
   try {
     const res = await api.meeting.getThumbnailList(
@@ -124,17 +118,34 @@ function generateParamsWithStore(meetingListStore) {
   return params;
 }
 
+// 검색 -----------------------------------------------------------
+let isSearchKeywordNone = ref(false);
+
 /**
  * {@link SearchBar} 컴포넌트 searchFromSearchBar 에 의해 실행되는 검색 함수
  */
 function search(keyword) {
+  if (!keyword) {
+    isSearchKeywordNone.value = true;
+    return;
+  }
   router.push(`/search?q=${keyword}`);
+}
+
+function closeRequiredKeywordModal() {
+  isSearchKeywordNone.value = false;
 }
 </script>
 
 <template>
   <div class="content-wrap">
     <SearchBar @searchFromSearchBar="search" />
+    <ModalDefault
+      v-if="isSearchKeywordNone"
+      @closeModal="closeRequiredKeywordModal"
+    >
+      <template #modal-body>검색어를 입력해주세요.</template>
+    </ModalDefault>
     <OptionControll />
     <section class="meetings">
       <ul>
@@ -154,30 +165,10 @@ function search(keyword) {
 </template>
 
 <style scoped>
+@import url(@/assets/css/meeting/thumbnail-list.css);
+
 .content-wrap {
   max-width: 1200px;
-}
-
-.meetings {
-  margin-top: 40px;
-}
-
-.meetings > ul {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 24px;
-}
-
-@media (min-width: 768px) {
-  .meetings > ul {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .meetings > ul {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 .result-none {
