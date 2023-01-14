@@ -2,8 +2,8 @@ package com.zpop.web.dto;
 
 public class MyMeetingResponse {
 
-    private String categoryName;
-    private String regionName;
+    private String category;
+    private String region;
     private String startedAt;
     private String title;
     private String age;
@@ -14,17 +14,14 @@ public class MyMeetingResponse {
     private int commentCount;
 
 
-    private int meetingId;
+    private int id;
     private int participantId;
     private int regMemberId;
     private boolean canRate;
 
-    public MyMeetingResponse() {
-    }
-
-    public MyMeetingResponse(String categoryName, String regionName, String startedAt, String title, String age, int maxMember, String genderCategory, boolean isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId, boolean canRate) {
-        this.categoryName = categoryName;
-        this.regionName = regionName;
+    public MyMeetingResponse(String category, String region, String startedAt, String title, String age, int maxMember, String genderCategory, boolean isClosed, int viewCount, int commentCount, int id, int participantId, int regMemberId, boolean canRate) {
+        this.category = category;
+        this.region = region;
         this.startedAt = startedAt;
         this.title = title;
         this.age = age;
@@ -33,26 +30,29 @@ public class MyMeetingResponse {
         this.isClosed = isClosed;
         this.viewCount = viewCount;
         this.commentCount = commentCount;
-        this.meetingId = meetingId;
+        this.id = id;
         this.participantId = participantId;
         this.regMemberId = regMemberId;
         this.canRate = canRate;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public MyMeetingResponse() {
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public String getCategory() {
+        return category;
     }
 
-    public String getRegionName() {
-        return regionName;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String getStartedAt() {
@@ -119,12 +119,12 @@ public class MyMeetingResponse {
         this.commentCount = commentCount;
     }
 
-    public int getMeetingId() {
-        return meetingId;
+    public int getId() {
+        return id;
     }
 
-    public void setMeetingId(int meetingId) {
-        this.meetingId = meetingId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getParticipantId() {
@@ -151,3 +151,4 @@ public class MyMeetingResponse {
         this.canRate = canRate;
     }
 }
+
