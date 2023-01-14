@@ -63,7 +63,6 @@ export default {
 </script>
 <style scoped>
 @import url(../../assets/css/component/login.css);
-@import url(../../assets/css/component/modal.css);
 
 .modal__body {
     display: flex;
