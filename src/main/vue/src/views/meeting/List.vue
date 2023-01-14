@@ -165,30 +165,10 @@ function closeRequiredKeywordModal() {
 </template>
 
 <style scoped>
+@import url(@/assets/css/meeting/thumbnail-list.css);
+
 .content-wrap {
   max-width: 1200px;
-}
-
-.meetings {
-  margin-top: 40px;
-}
-
-.meetings > ul {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 24px;
-}
-
-@media (min-width: 768px) {
-  .meetings > ul {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .meetings > ul {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 .result-none {
