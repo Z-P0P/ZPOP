@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, computed, ref, watch } from "vue";
+import { reactive, computed, ref, watch, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import api from "@/api/";
 import { useMeetingListStore } from "@/stores/meetingListStore";
@@ -8,6 +8,9 @@ import LoadingRoller from "@/components/LoadingRoller.vue";
 import OptionControll from "@/components/meeting/option-control/OptionControl.vue";
 import SearchBar from "@/components/meeting/option-control/SearchBar.vue";
 import ModalDefault from "@/components/modal/Default.vue";
+import { ServerException } from "@/utils/ServerException";
+
+const emit = defineEmits(["throw"]);
 
 // 검색을 위한 router
 const router = useRouter();
@@ -83,11 +86,10 @@ async function requestList() {
     const res = await api.meeting.getThumbnailList(
       generateParamsWithStore(meetingListStore)
     );
+    if (!res.ok) throw new ServerException(res);
     return await res.json();
   } catch (e) {
-    // TODO: 에러 모달
-    console.log(e);
-    alert("잠시후에 다시 시도해주세요");
+    if (e.res.status === 500) emit("throw");
   }
 }
 
