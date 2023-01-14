@@ -30,9 +30,9 @@
 <script>
 import { useHeaderStore } from '../../stores/headerStore';
 import { useMemberStore } from '../../stores/memberStore'
-import profile from './profile.vue';
-import loginModal from './login-modal.vue';
-import notificationModal from './notification-modal.vue';
+import profile from './Profile.vue';
+import loginModal from './LoginModal.vue';
+import notificationModal from './NotificationModal.vue';
 import { computed, ref } from "vue";
 
 export default {
