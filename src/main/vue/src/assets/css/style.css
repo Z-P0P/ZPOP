@@ -2,8 +2,9 @@
 
 * {
   font-family: "Pretendard Variable";
-  font-weight: var(--medium);
 }
+
+html { overflow-y: scroll; }
 
 :root {
   /* Font weight */

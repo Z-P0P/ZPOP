@@ -13,7 +13,27 @@ function getDetail(id) {
   return fetch(`/api/meeting/${id}`);
 }
 
+/*
+* 활성화된 모임글 옵션 조회
+*/
+async function getActiveOptions(){
+  const url = '/api/meeting/register';
+  return await fetch(url);
+}
+
+async function postMeeting(form){
+  const url = '/api/meeting';
+  const option = {
+    method: "POST",
+		body: form,
+  }
+  return response = await fetch(url);
+}
+
+
 export default {
   getThumbnailList,
   getDetail,
+  getActiveOptions,
+  postMeeting,
 };

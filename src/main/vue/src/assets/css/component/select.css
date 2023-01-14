@@ -17,7 +17,9 @@
   width: 100%;
   padding: 14px 18px;
   cursor: pointer;
-  border: 2px solid var(--light-grey1);
+  border-width:  2px;
+  border-style: solid; 
+  border-color: var(--light-grey1);
 }
 
 @media (min-width: 576px) {
@@ -57,7 +59,7 @@
   overflow: hidden;
   transform-origin: top;
   background-color: var(--white);
-  z-index: 1;
+  z-index: 3;
 }
 
 .select-box__options--right {
