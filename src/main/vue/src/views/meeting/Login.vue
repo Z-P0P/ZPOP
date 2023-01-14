@@ -25,7 +25,7 @@ export default {
                 router.push(data.redirectUrl);
             })
             .catch(err=>{
-                alert("로그인에 오류가 발생했음");
+                alert(err);
             });
     }
 }
