@@ -1,9 +1,12 @@
 <script setup>
-import { reactive, computed, watch, ref } from "vue";
+import { reactive, computed, watch, ref, defineEmits } from "vue";
 import { useRoute } from "vue-router";
 import api from "@/api/";
 import Thumbnail from "@/components/meeting/Thumbnail.vue";
 import LoadingRoller from "@/components/LoadingRoller.vue";
+import { ServerException } from "@/utils/ServerException";
+
+const emit = defineEmits(["throw"]);
 
 const route = useRoute();
 
@@ -39,11 +42,10 @@ requestList().then((data) => {
 async function requestList() {
   try {
     const res = await api.meeting.getThumbnailList(generateSearchParams(state));
+    if (!res.ok) throw new ServerException(res);
     return await res.json();
   } catch (e) {
-    // TODO: 에러 모달
-    console.log(e);
-    alert("잠시후에 다시 시도해주세요");
+    if (e.res.status === 500) emit("throw");
   }
 }
 
