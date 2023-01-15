@@ -1,0 +1,133 @@
+const localTimeToday = new Date();
+
+const localTimeOneMonthAfter = new Date(localTimeToday.getTime() + (30*24*60*60*1000));
+
+export function checkTimeValid(inputTimeString){
+	const result = {
+		isValid : false,
+		reason : '',
+	}
+	const inputTime = new Date(inputTimeString);
+	if (inputTime < localTimeToday) {
+		result.reason = '시작일자는 오늘날짜 이후로 선택해주세요.';
+		return result;
+	}
+	if (inputTime > localTimeOneMonthAfter){
+		result.reason = '시작일자는 한 달이내의 날짜로 선택해주세요.';
+		return result;
+	}
+
+	result.isValid = true;
+	return result;
+}
+
+export function validateInput(inputs){
+    Object.keys(inputs).forEach(parameterName=>{
+		const currentValue = inputs[parameterName].currentValue;
+		if(currentValue === ""){
+			const title = inputs[parameterName].title;
+			const errorMessage = 
+			(['카테고리','시작일자','연령대'].indexOf(title)!=-1)?
+			`${title}를 선택하세요.`:
+			(['지역','성별','모집 인원','연락방법'].indexOf(title)!=-1)?
+			`${title}을 선택하세요`:
+			(['제목'].indexOf(title)!=-1)?
+			`${title}을 입력하세요`: `${title}를 입력하세요`
+
+			inputs[parameterName].hasError = true;
+			inputs[parameterName].message = errorMessage;
+		}
+		if (parameterName ==="startedAt" && currentValue !== ""){
+			const result = checkTimeValid(currentValue);
+			inputs[parameterName].hasError = result.isValid;
+			inputs[parameterName].message = result.reason;
+		}
+	})
+}
+
+export function addDefaultInputs(addedInputs) {
+    const genderCategoriesInput = {
+        items : [{ id : 0, name : '남녀 모두'}, { id : 1, name : '남자만'}, {id : 2, name : '여자만'}],
+        title : '성별',
+        placeholder : '성별을 선택해주세요.',
+        parameterName : 'genderCategories',
+    }
+
+    const maxMemberInput = {
+        items : [{id : 2, name : '2 명'}, {id : 3, name : '3 명'}, {id : 4, name : '4 명'}, {id : 5, name : '5 명'}, {id : 6, name : '6 명'}],
+        title : '모집 인원',
+        placeholder : '모집 인원을 선택하세요',
+        parameterName: 'maxMember',
+    }
+           
+    const meetingTitleInput = {
+        title : '제목',
+        parameterName : 'title',
+        placeholder : '제목을 입력해주세요.',
+    }
+
+    const detailRegionInput = {
+        title : '상세장소',
+        parameterName : 'detailRegion',
+        placeholder : '상세장소를 입력해주세요.',
+    };
+
+    const startedAtInput = {
+        title : '시작일자',
+        parameterName : 'startedAt',
+		placeholder : '시작일자를 선택해주세요.',
+    }
+
+    const contactInput = {
+		title : '오픈채팅방 링크',
+        parameterName : 'contact',
+        placeholder : '오픈채팅방 링크를 입력해주세요.'
+    }
+
+	const contentInput = {
+		title : '내용',
+		parameterName : 'content'
+	}
+
+	const inputs = [genderCategoriesInput, maxMemberInput, meetingTitleInput
+					,detailRegionInput ,startedAtInput, contactInput ,contentInput]
+
+	inputs.forEach(input=>{
+		addInput(addedInputs, input.items, input.title, input.placeholder, input.parameterName)
+	})
+					// 	store.addInput(input);
+// 	store.addInput(null, contentInput.title, null, contentInput.parameterName)
+//     store.addInput(maxMemberOption.items, maxMemberOption.title,
+//     maxMemberOption.placeholder, 'maxMember');
+//     store.addInput(genderCategoriesOption.items, genderCategoriesOption.title,
+//     genderCategoriesOption.placeholder, 'genderCategories');
+//     store.addInput(null,meetingTitleInput.title,meetingTitleInput.placeholder, meetingTitleInput.parameterName);
+//     store.addInput(null,detailRegionInput.title,detailRegionInput.placeholder, detailRegionInput.parameterName);
+//     store.addInput(null,startedAtInput.title,null,startedAtInput.parameterName);
+//     store.addInput(null,null,contactInput.placeholder, contactInput.parameterName);
+}
+
+export function closeAllExcept(inputs, parameterName){
+	Object.values(inputs)
+		.filter(input=>input.isOpened !== null)
+		.forEach(input => {
+			if(input.parameterName !== parameterName){
+				input.isOpened = false
+			}
+		});
+}
+
+
+export function addInput(inputs, items=null, title, placeholder=null, parameterName){
+	const option = {
+		items: items,
+		title: title,
+		isOpened : (items) ? false : null,
+		placeholder:placeholder,
+		message: '',
+		parameterName : parameterName,
+		hasError: false,
+		currentValue: '',
+	}
+	inputs[parameterName] = option;
+}

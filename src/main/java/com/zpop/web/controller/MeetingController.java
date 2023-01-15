@@ -30,12 +30,12 @@ public class MeetingController {
 	private final MeetingService service;
 	
 	@GetMapping("/register")
-	public String registerView(Model model) {
+	public ResponseEntity<?> registerView(Model model) {
 
 		RegisterMeetingViewResponse response = service.getActiveOptions();
 		// TODO: 인가처리
-		model.addAttribute("response", response);
-		return "/meeting/register";
+
+		return ResponseEntity.ok(response);
 	}
 	
 	private final String PATH = "/images";

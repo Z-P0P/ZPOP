@@ -28,12 +28,12 @@
 </template>
 
 <script>
+import { computed } from "vue";
 import { useHeaderStore } from '../../stores/headerStore';
-import { useMemberStore } from '../../stores/memberStore'
-import profile from './profile.vue';
-import loginModal from './login-modal.vue';
-import notificationModal from './notification-modal.vue';
-import { computed, ref } from "vue";
+import { useMemberStore } from '../../stores/memberStore';
+import loginModal from './LoginModal.vue';
+import notificationModal from './NotificationModal.vue';
+import profile from './Profile.vue';
 
 export default {
     name: 'header',
@@ -58,17 +58,14 @@ export default {
         });
 
         const onNotificationClick = () => {
-            headerStore.$reset();
+            headerStore.closeAllExcept('Notification')
             headerStore.changeNotificationState();
         }
         const onLoginClick = () => {
-            headerStore.$reset();
+            headerStore.closeAllExcept('Login')
             headerStore.changeLoginState();
         }
-        const onProfileClick = () => {
-            headerStore.$reset();
-            headerStore.changeProfileState();
-        }
+
         const isMemberAuthenticated = computed(() => {
             if (memberStore.memberInfo.constructor === Object
                 && Object.keys(memberStore.memberInfo).length === 0) {
@@ -83,7 +80,6 @@ export default {
             isProfileOpened,
             onNotificationClick,
             onLoginClick,
-            onProfileClick,
             isMemberAuthenticated
         }
     },

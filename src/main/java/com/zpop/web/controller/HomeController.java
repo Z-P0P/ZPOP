@@ -49,7 +49,7 @@ public class HomeController {
         return "meeting/search";
     }
     
-    @PostMapping("/upload")
+    @PostMapping("/api/upload")
 	@ResponseBody
 	public ResponseEntity<?> uploadFile(@NotNull MultipartFile file 
 							, @NotNull @NotEmpty String path

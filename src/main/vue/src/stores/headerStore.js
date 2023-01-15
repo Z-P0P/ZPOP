@@ -8,6 +8,12 @@ export const useHeaderStore = defineStore('header', {
     }),
 
     actions: {
+        closeAllExcept(name){
+            let temp = this[`is${name}Opened`] ;
+            this.$reset();
+            this[`is${name}Opened`] = temp;
+        },
+
         changeProfileState(){
             this.isProfileOpened = !this.isProfileOpened;
         },
