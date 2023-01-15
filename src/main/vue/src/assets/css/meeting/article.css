@@ -3,14 +3,13 @@ body {
 }
 
 article{
-    padding: 20px;
     font-size: 14px;
     display: flex;
     flex-direction: column;
     font-weight: 500;
     line-height: 17px;
-    max-width: 768px;
-   
+    width:100%;
+    
 }
 
 .category-wrap{
@@ -118,7 +117,7 @@ article{
  @media (min-width: 576px) {
    
     .title{
-        font-size: 20px;
+        font-size: 28px;
     }
     article {
         font-size: 18px;

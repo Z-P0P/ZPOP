@@ -37,7 +37,7 @@
       <div class="views">조회수 {{ article.viewCount }}회</div>
       <!-- TODO: 버튼 컴포넌트화 -->
       <div class="control-btn-wrap">
-    <span class="btn btn-round">참여하기</span>
+    <span class="btn btn-round btn-join">참여하기</span>
   </div>
     </div>
   </article>
@@ -55,6 +55,6 @@ export default {
 </script>
 
 <style >
-  @import url(../../assets/css/meeting/article.css);
+  @import url(@/assets/css/meeting/article.css);
  
 </style>
