@@ -128,51 +128,25 @@ public class LoginController {
 		result.put("profileImagePath", member.getProfileImagePath());
 		return ResponseEntity.ok(result);
 	}
-/*
- * naverLogin과 관련된 별도의 컨트롤러
-	@GetMapping("oauth/naver")
-	public String naverLogin(@RequestParam @Nullable String code
-			, @RequestParam @Nullable String state
-			, HttpSession session) throws IOException, InterruptedException {
 
-		LoginService loginService = loginServiceMap.get("naverLoginService");
 
-		
-		if (session.getAttribute("memberId") != null) {
-			System.out.println("이미 로그인한 사용자임");
-			return "redirect:/login";
+	@GetMapping("me")
+	@ResponseBody
+	public ResponseEntity<?> getLoginInfo(@AuthenticationPrincipal ZpopUserDetails userDetails){
+		Map<String, Object> result = new HashMap<>();
+
+		if(userDetails == null){
+			result.put("code", "NOT_AUTHENTICATED");
+			return ResponseEntity.ok(result);
 		}
 
-		if (code == null) {
-			System.out.println("로그인에 실패하였음");
-			return "redirect:/login";
-		}
+		result.put("code", "AUTHENTICATED");
+		result.put("nickname", userDetails.getUsername());
+		result.put("profileImagePath", userDetails.getProfileImagePath());
 
-		System.out.println("code: " + code);
-		System.out.println("state: " + state);
-		String accessToken = "";
-
-		accessToken = (loginService.getAccessToken(code, state));
-		System.out.println(accessToken);
-		String socialId = loginService.getSocialId(accessToken);
-		int socialIdType = 2;
-		Member member = memberDao.getBySocialId(socialId);
-		if (member == null) {
-			session.setAttribute("socialId", socialId);
-			session.setAttribute("socialIdType", socialIdType);
-			return "redirect:/register";
-		}
-		
-		session.setAttribute("memberId", member.getId());
-		session.setAttribute("socialId", member.getSocialId());
-		session.setAttribute("nickname", member.getNickname());
-		session.setAttribute("profileImg", 
-				(member.getProfileImagePath()== null ? "user-profile.svg" : member.getProfileImagePath()));
-		
-		return "redirect:/login";
+		return ResponseEntity.ok(result);
 
 	}
-*/
 	
 	private void createNotification(int memberId, String url, int type) {
 		notificationDao.insertCommentNotification(memberId,url,type);
