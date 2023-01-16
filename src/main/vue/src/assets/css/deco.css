@@ -29,6 +29,10 @@
 	text-decoration:underline;
 }
 
+.overflow-x-hidden{
+  overflow-x: hidden;
+}
+
 .add-deco-img-left::before,
 .add-deco-img-right::after {
   background-repeat: no-repeat;

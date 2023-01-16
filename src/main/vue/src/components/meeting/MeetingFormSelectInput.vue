@@ -12,15 +12,16 @@
 import SelectBox from './SelectBox.vue';
 
 export default {
-    props: ['input', 'store'],
-    components: { SelectBox },
-    emits : ['selectBoxClick','optionClick'],
+    props: ['input'],
+    components: {SelectBox},
+    emits : ['selectBoxClick', 'optionClick'],
     setup(props,context){
-        const selectBoxClickhandler = (parameterName) =>{
-            context.emit('selectBoxClick',parameterName);
+        console.log(props.input.title)
+        const selectBoxClickhandler = (id) =>{
+            context.emit('selectBoxClick',id);
         }
-        const optionClickhandler = (parameterName, placeholder, value) => {
-            context.emit('optionClick',parameterName, placeholder, value)
+        const optionClickhandler = (id, placeholder, value) => {
+            context.emit('optionClick',id, placeholder, value)
         }
         return{
             selectBoxClickhandler,

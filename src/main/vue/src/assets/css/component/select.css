@@ -20,6 +20,7 @@
   border-width:  2px;
   border-style: solid; 
   border-color: var(--light-grey1);
+  transition: box-shadow 0.1s, border-color 0.1s;
 }
 
 @media (min-width: 576px) {
