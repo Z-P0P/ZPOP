@@ -68,8 +68,7 @@ input{
 }
 
 .select-box--error::before,
-.input-text__content-wrapper--error::before,
-.input-date__content-wrapper--error::before{
+.input-text__content-wrapper--error::before{
     content: "";
     position: absolute;
     right:20px;
@@ -83,7 +82,9 @@ input{
 }
 
 
+
 .select-box.select-box--error > span,
+.input-date__content-wrapper--error .input-text__content,
 .input-text__content-wrapper--error .input-text__content{
     border-color:var(--error-red);
     box-shadow:0px 0px 0.2px var(--error-red);

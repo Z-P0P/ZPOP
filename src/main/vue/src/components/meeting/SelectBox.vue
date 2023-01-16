@@ -16,11 +16,11 @@ export default {
     setup(props,context) {
         const option = props.option;
         const onSelectBoxClick = () => {
-            context.emit('selectBoxClick', option.parameterName);
+            context.emit('selectBoxClick', option.id);
 
         };
         const onOptionClick = (e) => {
-            context.emit('optionClick', option.parameterName, e.target.innerText, e.target.dataset.id);
+            context.emit('optionClick', option.id, e.target.innerText, e.target.dataset.id);
         }
 
         return{

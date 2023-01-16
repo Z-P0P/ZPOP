@@ -5,7 +5,7 @@
         @optionClick="optionClickhandler"
         :option="selectInput"/>
         <span class="input__message" :class="{'input__message--appear': selectInput.hasError}">{{ selectInput.message }}</span>
-        <div class="input-text__content-wrapper" :class="{'input-text__content-wrapper--error' : textInput.hasError}" id="contact-input">
+        <div class="input-text__content-wrapper" :class="{'input-text__content-wrapper--error' : textInput.hasError}">
             <input @input="textInputHandler" v-model="textInput.currentValue" 
             class="input-text__content" type="text" :placeholder="textInput.placeholder" :name="textInput.parameterName" :id="textInput.parameterName">
         </div>
@@ -22,15 +22,15 @@ export default {
     components: { SelectBox },  
     setup(props, context){
 
-        const selectBoxClickhandler = (parameterName) =>{
-            context.emit('selectBoxClick',parameterName);
+        const selectBoxClickhandler = (id) =>{
+            context.emit('selectBoxClick',id);
         }
-        const optionClickhandler = (parameterName, placeholder, value) => {
-            context.emit('optionClick',parameterName, placeholder, value)
+        const optionClickhandler = (id, placeholder, value) => {
+            context.emit('optionClick',id, placeholder, value)
         }
         const textInputHandler = (e) => {
-            const parameterName = props.textInput.parameterName;
-            context.emit('textInput', parameterName, e.target.value);
+            const id = props.textInput.id;
+            context.emit('textInput', id, e.target.value);
         }
         return {
             textInputHandler,
@@ -41,6 +41,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.input-text__content-wrapper{
+    margin-top:0;
+}
 </style>

@@ -17,9 +17,10 @@ export default {
     emits:['textInput'],
     setup(props, context){
         const store = props.store;
+        console.log(props.input.title)
         const textInputHandler = (e) => {
-            const parameterName = props.input.parameterName;
-            context.emit('textInput', parameterName, e.target.value);
+            const id = props.input.id;
+            context.emit('textInput', id, e.target.value);
         }
         return {
             store,
