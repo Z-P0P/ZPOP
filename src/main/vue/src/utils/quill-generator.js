@@ -90,7 +90,7 @@ export function quillImageUploadHandler(event) {
 		imageTag.src = `/image/meeting/${data.name}`;
 		imageTag.dataset.id = data.id;
 		range.insertNode(imageTag);
-		selection.getSelection().modify('move', 'right', 'line');
+		selection.modify('move', 'right', 'line');
 	})
 	// TODO : 예외처리 수정
 	.catch((err)=>alert(err))
