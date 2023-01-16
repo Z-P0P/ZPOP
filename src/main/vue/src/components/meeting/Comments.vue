@@ -1,12 +1,16 @@
 <script>
 import { setMapStoreSuffix } from 'pinia';
-
+import api from "@/api";
+import { reactive } from 'vue';
+import { useRoute } from "vue-router";
+import Reply from "./Reply.vue";
 
 export default {
   props: ['detail'],
   data: function () {
-      return {
-          replyPressed : false,
+    return {
+      replyPressed : false,
+      reply:reactive({list:[]}),
       }
   },
   methods:{
@@ -16,6 +20,8 @@ export default {
         const el = document.querySelector('[data-id='+id+']');
         el.classList.remove("hidden");
         e.target.classList.add("hidden");
+        
+        this.reply.list=  this.getReplyList();
       }
       else {
         const id = e.target.dataset.id;
@@ -29,6 +35,27 @@ export default {
       if(comment.countOfReply>0)
       hasReply = true;
       return hasReply;
+    },
+    getReplyList (){
+        let arr = [];
+        const route = useRoute();
+        fetch('/api/reply?groupId=1')
+          .then(res=>{
+            if(res.ok)  {
+              console.log('답글을 불러왔습니다')
+              return res;
+            }
+            else 
+              alert("서버장애로 읽어들일 수 없습니다");
+          })
+          .then(res=>res.json())
+          .then(data=>{
+            for(const r of data.resultObject) { 
+              console.log(r)
+              arr.push(r);
+            }
+          })
+          return arr;
     }
   }
 }
@@ -69,7 +96,9 @@ export default {
           </div>
             <section class="reply hidden">
                 <ul class="reply__list">
-							    <!-- 동적으로 답글이 들어가는 부분 -->
+							    <li v-for="(reply, index) in reply.list" :key="index">
+                    <Reply :reply="reply"/> 
+                  </li>>
                 </ul>
             </section>
         </li>

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/reply")
+@RequestMapping("/api/reply")
 public class ReplyController {
 	@Autowired
 	private CommentService service;
