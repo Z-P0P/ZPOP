@@ -1,27 +1,27 @@
-<script>
+<script setup>
 import { setMapStoreSuffix } from 'pinia';
 import api from "@/api";
 import { reactive } from 'vue';
 import { useRoute } from "vue-router";
 import Reply from "./Reply.vue";
+import { defineProps } from 'vue';
+const props = defineProps({
+  detail:Object
+});
 
-export default {
-  props: ['detail'],
-  data: function () {
-    return {
-      replyPressed : false,
-      reply:reactive({list:[]}),
-      }
-  },
-  methods:{
-    toggle(e){
+var reply = null;
+console.log(reply)
+  function showReply(comment){
+    reply=  getReplyList(comment.id);
+  }
+    function toggle(e){
       if(e.target.id){
         const id = e.target.id;
         const el = document.querySelector('[data-id='+id+']');
         el.classList.remove("hidden");
         e.target.classList.add("hidden");
-        
-        this.reply.list=  this.getReplyList();
+        console.log(id.substr(3))
+        showReply();
       }
       else {
         const id = e.target.dataset.id;
@@ -29,17 +29,17 @@ export default {
         el.classList.remove("hidden");
         e.target.classList.add("hidden");
       }  
-    },
-    hasReply (comment){
+    }
+    function hasReply (comment){
       let hasReply = false;
       if(comment.countOfReply>0)
       hasReply = true;
       return hasReply;
-    },
-    getReplyList (){
+    }
+    function getReplyList (commentId){
         let arr = [];
         const route = useRoute();
-        fetch('/api/reply?groupId=1')
+        fetch(`/api/reply?groupId=${commentId}`)
           .then(res=>{
             if(res.ok)  {
               console.log('답글을 불러왔습니다')
@@ -51,14 +51,11 @@ export default {
           .then(res=>res.json())
           .then(data=>{
             for(const r of data.resultObject) { 
-              console.log(r)
               arr.push(r);
             }
           })
           return arr;
     }
-  }
-}
 
 </script>
 
@@ -90,16 +87,12 @@ export default {
           </div>
           <span class="comment__content">{{ comment.content }}</span>
           <div class="comment__replies">
-						<span class="pointer underline reply-cnt"  @click="toggle"  v-if="hasReply(comment)" :id="'id-'+index">답글 {{ comment.countOfReply }}개</span>
+						<span class="pointer underline reply-cnt"  @click="[toggle,showReply(comment)]"  v-if="hasReply(comment)" :id="'id-'+index">답글 {{ comment.countOfReply }}개</span>
             <span class="pointer reply-close hidden" @click="toggle"  v-if="hasReply(comment)" :data-id="'id-'+index">닫기</span>
             <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal">답글 달기</span>
           </div>
-            <section class="reply hidden">
-                <ul class="reply__list">
-							    <li v-for="(reply, index) in reply.list" :key="index">
-                    <Reply :reply="reply"/> 
-                  </li>>
-                </ul>
+            <section class="reply">
+              <Reply :replies="reply"/> 
             </section>
         </li>
       </ul>
@@ -108,6 +101,7 @@ export default {
 </template>
 
 <style scoped>
+ @import url(@/assets/css/meeting/component/select.css);
  @import url(@/assets/css/meeting/component/profile-box.css);
  @import url(@/assets/css/meeting/component/comment.css);
 

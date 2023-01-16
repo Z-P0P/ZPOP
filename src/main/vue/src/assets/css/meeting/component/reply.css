@@ -79,6 +79,7 @@
   display: flex;
   justify-content: flex-end;
   color: var(--main-color);
+  margin-right: 0;
 }
 
 @media (min-width: 36rem) {
