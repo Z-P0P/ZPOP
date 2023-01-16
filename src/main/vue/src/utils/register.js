@@ -125,13 +125,3 @@ export function addInput(inputs, propertyName, items=null,
 	}
 	inputs[propertyName] = option;
 }
-
-export function getKeyFromParameterName(inputs, parameterName){
-	let result = null;
-	Object.keys(inputs).forEach(key=>{
-		if(inputs[key].parameterName == parameterName){
-			result = key;
-			return result;
-		}
-	})
-}
