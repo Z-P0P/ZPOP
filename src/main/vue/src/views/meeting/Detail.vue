@@ -3,7 +3,7 @@
 <script>
 import { reactive } from "vue";
 import { useRoute } from "vue-router";
-import api from "@/api";
+import api from "@/api"; //index.js
 import Article from "@/components/meeting/Article.vue";
 import Participants from "@/components/meeting/Participants.vue";
 import Comments from "@/components/meeting/Comments.vue";
@@ -25,8 +25,8 @@ export default {
         const route = useRoute();
         api.meeting
             .getDetail(route.params.id)
-            .then((res) => res.json())
-            .then((data) => (state.detail = data));
+            .then(res => res.json())
+            .then(data => {state.detail = data});
       } catch (e) {
         console.log(e);
         alert("잠시 후에 다시 시도해주세요");
@@ -37,7 +37,7 @@ export default {
     // 댓글 정보 조회
     return { state }; //script에서 return된 값이 model
   },
-};
+}
 </script>
 <template>
   <div class="content-wrapper">
