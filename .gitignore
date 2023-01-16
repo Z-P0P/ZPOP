@@ -63,5 +63,3 @@ coverage
 *.njsproj
 *.sln
 *.sw?
-src/main/vue/src/components/header/Profile.vue
-src/main/vue/src/components/header/profile.vue
