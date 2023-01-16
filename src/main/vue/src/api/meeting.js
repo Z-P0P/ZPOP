@@ -21,13 +21,14 @@ async function getActiveOptions(){
   return await fetch(url);
 }
 
-async function postMeeting(form){
+async function postMeeting(dataJSONStr){
   const url = '/api/meeting';
   const option = {
     method: "POST",
-		body: form,
+    headers: {"Content-Type": "application/json"},
+		body: dataJSONStr,
   }
-  return response = await fetch(url);
+  return await fetch(url,option);
 }
 
 

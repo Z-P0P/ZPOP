@@ -30,7 +30,7 @@ public class MeetingController {
 	private final MeetingService service;
 	
 	@GetMapping("/register")
-	public ResponseEntity<?> registerView(Model model) {
+	public ResponseEntity<?> getRegisterOptions(Model model) {
 
 		RegisterMeetingViewResponse response = service.getActiveOptions();
 		// TODO: 인가처리
@@ -40,9 +40,9 @@ public class MeetingController {
 	
 	private final String PATH = "/images";
 
-	@PostMapping("/register")
+	@PostMapping()
 	@ResponseBody
-	public ResponseEntity<RegisterMeetingResponse> register(@Valid @RequestBody RegisterMeetingRequest dto, 
+	public ResponseEntity<RegisterMeetingResponse> postMeeting(@Valid @RequestBody RegisterMeetingRequest dto, 
 			 @AuthenticationPrincipal ZpopUserDetails userDetails,
 			 HttpServletRequest request) throws FileNotFoundException, IOException {
 		
@@ -50,7 +50,6 @@ public class MeetingController {
 		
 		int regMemberId = userDetails.getId();
 		dto.setRegMemberId(regMemberId);
-		System.out.println(dto.toString());
 		RegisterMeetingResponse response = null;
 		// 나중에는 @ControllerAdvice 로 바꾸기
 		try {
