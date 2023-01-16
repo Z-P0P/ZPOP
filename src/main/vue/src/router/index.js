@@ -10,6 +10,10 @@ const router = createRouter({
       component: () => import("@/views/Layout.vue"),
       children: [
         {
+          path: "/:pathMatch(.*)",
+          component: () => import("@/views/404.vue"),
+        },
+        {
           path: "login/oauth/:pathMatch(.*)*",
           component: () => import("@/views/meeting/Login.vue"),
         },
