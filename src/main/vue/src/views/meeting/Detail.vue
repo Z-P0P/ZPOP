@@ -6,12 +6,14 @@ import { useRoute } from "vue-router";
 import api from "@/api";
 import Article from "@/components/meeting/Article.vue";
 import Participants from "@/components/meeting/Participants.vue";
+import Comments from "@/components/meeting/Comments.vue";
 
 export default {
   name: "MeetingDetail",
   components: {
     Article,
-    Participants
+    Participants,
+    Comments
   },
   setup() {
     const state = reactive({
@@ -38,10 +40,12 @@ export default {
 };
 </script>
 <template>
-  <Article :article="state.detail" />
+  <div class="content-wrapper">
+  <Article :article="state.detail"/>
   <Participants :detail="state.detail"/> 
-
+  <Comments :detail="state.detail"/> 
+  </div>
 </template>
 <style scoped>
-
+   @import url(@/assets/css/meeting/detail.css);
 </style>

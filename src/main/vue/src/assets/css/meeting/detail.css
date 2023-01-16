@@ -1,0 +1,28 @@
+.content-wrapper {
+    margin: 2rem auto 4rem auto;
+    
+    max-width: 792px;
+}
+
+.content-wrapper > section {
+    margin: 1rem 20px;
+    width:100%;
+}
+.content-wrapper > article {
+    margin: 1rem 20px;
+    width:100%;
+}
+
+/* 792px 이하일 때 요소들이 모두 양 옆 경계선에 붙어서 마진을 좌우로 20px 넣었습니다 */
+@media (min-width: 576px) {
+    .content-wrapper{
+        margin: 5rem auto;
+    }
+
+    .content-wrapper > section {
+        margin: 2rem 20px;
+    }
+    .content-wrapper > article {
+        margin: 2rem 20px;
+    }
+}
