@@ -40,12 +40,12 @@ export default {
 };
 </script>
 <template>
-  <main class="main">
+  <div class="content-wrapper">
   <Article :article="state.detail"/>
   <Participants :detail="state.detail"/> 
   <Comments :detail="state.detail"/> 
-  </main>
+  </div>
 </template>
 <style scoped>
-   @import url(../../assets/css/meeting/detail.css);
+   @import url(@/assets/css/meeting/detail.css);
 </style>
