@@ -8,6 +8,7 @@ import LoadingRoller from "@/components/LoadingRoller.vue";
 import OptionControll from "@/components/meeting/option-control/OptionControl.vue";
 import SearchBar from "@/components/meeting/option-control/SearchBar.vue";
 import ModalDefault from "@/components/modal/Default.vue";
+import Banner from "../../components/meeting/Banner.vue"
 import { ServerException } from "@/utils/ServerException";
 
 const emit = defineEmits(["throw"]);
@@ -140,6 +141,7 @@ function closeRequiredKeywordModal() {
 </script>
 
 <template>
+  <banner/>
   <div class="content-wrap">
     <SearchBar @searchFromSearchBar="search" />
     <ModalDefault
