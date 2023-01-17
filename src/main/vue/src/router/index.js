@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import adminRoute from "./admin";
+import { useMemberStore } from "../stores/memberStore";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,7 @@ const router = createRouter({
           children: [
             {
               path: "list",
+              name: 'meetingList',
               component: () => import("@/views/meeting/List.vue"),
               alias: "/",
             },
@@ -31,14 +33,17 @@ const router = createRouter({
               alias: "/search",
             },
             {
+              name: 'meetingDetail',
               path: ":id(\\d+)", // matches only numbers
               component: () => import("@/views/meeting/Detail.vue"),
             },
-            {
+            { 
+              name: "registerMeeting",
               path: "register",
               component: () => import("@/views/meeting/Register.vue"),
             },
             {
+              name: "updateMeeting",
               path: "update/:id(\\d+)",
               component: () => import("@/views/meeting/Update.vue"),
             },
@@ -48,5 +53,17 @@ const router = createRouter({
     },
   ],
 });
+
+router.beforeEach((to, from, next) =>{
+  const store = useMemberStore();
+  const memberInfo = store.memberInfo;
+  
+  // if ((to.name ==='registerMeeting' || to.name ==='updateMeeting') 
+  //       && memberInfo.nickname === null){
+  //   next({path: '/', params: {login : false}});
+  // }
+
+  next();
+})
 
 export default router;
