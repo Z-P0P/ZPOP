@@ -58,10 +58,10 @@ router.beforeEach((to, from, next) =>{
   const store = useMemberStore();
   const memberInfo = store.memberInfo;
   
-  if ((to.name ==='registerMeeting' || to.name ==='updateMeeting') 
-        && memberInfo.nickname === null){
-    next({path: '/', params: {login : false}});
-  }
+  // if ((to.name ==='registerMeeting' || to.name ==='updateMeeting') 
+  //       && memberInfo.nickname === null){
+  //   next({path: '/', params: {login : false}});
+  // }
 
   next();
 })

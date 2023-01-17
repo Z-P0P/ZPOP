@@ -23,8 +23,7 @@ export const useMemberStore = defineStore('member', {
                         info.profileImagePath = data.profileImagePath;
                         info.fame = data.fame;
                     }
-                    window.sessionStorage.setItem('ZPOP_MEMBER_INFO', 
-                    JSON.stringify(info));
+                    window.sessionStorage.setItem('ZPOP_MEMBER_INFO', JSON.stringify(info));
                 })
         }
 

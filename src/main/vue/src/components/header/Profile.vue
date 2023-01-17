@@ -17,7 +17,9 @@ import { getLogout } from '../../api/login'
 import { computed } from 'vue'
 import { useHeaderStore } from '../../stores/headerStore';
 import { useMemberStore } from '../../stores/memberStore';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const headerStore = useHeaderStore();
 const memberStore = useMemberStore();
 const isOpened = computed(()=>{
@@ -32,6 +34,7 @@ const onLogoutClick = () => {
     const request = getLogout();
     request.then(()=>{
         memberStore.clearInfo();
+        router.push('/');
     })
     .catch(err=>console.log('로그인에 실패했습니다.',err));
 }
