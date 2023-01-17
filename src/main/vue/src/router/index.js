@@ -2,6 +2,13 @@ import { createRouter, createWebHistory } from "vue-router";
 import adminRoute from "./admin";
 import { useMemberStore } from "../stores/memberStore";
 
+function isAuth (to, from) {
+  const memberStore = useMemberStore();
+  if(!memberStore.memberInfo.id || !memberStore.memberInfo.nickname) {
+    return "/"
+  }
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -23,7 +30,7 @@ const router = createRouter({
           children: [
             {
               path: "list",
-              name: 'meetingList',
+              name: "meetingList",
               component: () => import("@/views/meeting/List.vue"),
               alias: "/",
             },
@@ -33,54 +40,48 @@ const router = createRouter({
               alias: "/search",
             },
             {
-              name: 'meetingDetail',
+              name: "meetingDetail",
               path: ":id(\\d+)", // matches only numbers
               component: () => import("@/views/meeting/Detail.vue"),
             },
-            { 
+            {
               name: "registerMeeting",
               path: "register",
               component: () => import("@/views/meeting/Register.vue"),
+              beforeEnter: [isAuth],
             },
             {
               name: "updateMeeting",
               path: "update/:id(\\d+)",
               component: () => import("@/views/meeting/Update.vue"),
+              beforeEnter: [isAuth],
             },
           ],
         },
         {
           path: "my-profile",
           component: () => import("@/views/member/Profile.vue"),
+          beforeEnter: [isAuth],
         },
 
         {
           path: "my-profile/edit",
-          component: () => import("@/views/member/Edit.vue")
+          component: () => import("@/views/member/Edit.vue"),
+          beforeEnter: [isAuth],
         },
         {
           path: "my-meeting",
-          component: () => import("@/views/member/MyMeeting.vue")
+          component: () => import("@/views/member/MyMeeting.vue"),
+          beforeEnter: [isAuth],
         },
         {
           path: "my-gathering",
-          component: () => import("@/views/member/MyGathering.vue")
+          component: () => import("@/views/member/MyGathering.vue"),
+          beforeEnter: [isAuth],
         },
       ],
     },
   ],
 });
-
-router.beforeEach((to, from, next) =>{
-  const store = useMemberStore();
-  const memberInfo = store.memberInfo;
-  
-  // if ((to.name ==='registerMeeting' || to.name ==='updateMeeting') 
-  //       && memberInfo.nickname === null){
-  //   next({path: '/', params: {login : false}});
-  // }
-
-  next();
-})
 
 export default router;
