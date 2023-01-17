@@ -12,14 +12,18 @@ public class ZpopUserDetails implements UserDetails {
     private String password;
     private String name;
     private String profileImagePath;
+    private int fame;
+
+
     private List<GrantedAuthority> authorities;
     private boolean enalbed;
 
-    public ZpopUserDetails(int id, String password, String name, List<GrantedAuthority> authorities, boolean enalbed, String profileImagePath) {
+    public ZpopUserDetails(int id, String password, String name, List<GrantedAuthority> authorities, boolean enalbed, String profileImagePath, int fame) {
         this.id = id;
         this.password = password;
         this.profileImagePath = profileImagePath;
         this.name = name;
+        this.fame = fame;
         this.authorities = authorities;
         this.enalbed = enalbed;
     }
@@ -67,6 +71,14 @@ public class ZpopUserDetails implements UserDetails {
     	return this.profileImagePath;
     }
     
+    public int getFame() {
+        return fame;
+    }
+
+    public void setFame(int fame) {
+        this.fame = fame;
+    }
+
     @Override
     public String toString() {
         return "ZpopUserDetails{" +
