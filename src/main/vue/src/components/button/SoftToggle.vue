@@ -10,6 +10,10 @@
 </template>
 
 <style>
+.soft-toggle-wrap {
+  display: flex;
+}
+
 .soft-toggle__switch {
   --button-width: 3.5em;
   --button-height: 2em;
@@ -21,6 +25,9 @@
   --toggle-wider: 3em;
   --color-grey: #cccccc;
   --color-green: #4296f4;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .soft-toggle__slider {

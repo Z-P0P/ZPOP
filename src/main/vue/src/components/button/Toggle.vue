@@ -1,10 +1,12 @@
 <script setup></script>
 
 <template>
-  <input type="checkbox" id="toggle" checked hidden />
-  <label for="toggle" class="toggle-switch">
-    <span class="toggle-button"></span>
-  </label>
+  <div>
+    <input type="checkbox" id="toggle" checked hidden />
+    <label for="toggle" class="toggle-switch">
+      <span class="toggle-button"></span>
+    </label>
+  </div>
 </template>
 
 <style></style>
