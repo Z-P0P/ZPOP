@@ -40,12 +40,30 @@ export default {
 };
 </script>
 <template>
-  <div class="content-wrapper">
+  <div class="content-wrap">
   <Article :article="state.detail"/>
   <Participants :detail="state.detail"/> 
-  <Comments :detail="state.detail"/> 
+  <Comments :detail="state.detail"/>
   </div>
 </template>
 <style scoped>
-   @import url(@/assets/css/meeting/detail.css);
+
+   
+   .content-wrap{
+  
+    max-width: 783px;
+    width: 100%;
+    padding: 1.2rem;
+
+   }
+
+    @media (min-width: 576px) {
+     .content-wrap{
+       padding: 4rem;
+    }
+  }
+    
+ 
+
+   
 </style>

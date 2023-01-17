@@ -30,7 +30,7 @@ export default {
         <ul class="participant__list">
             <li v-for="participant in detail.participants">
             <div class="participant__info">
-                <img src="/images/icon/user-profile.svg">
+                <img src="/images/icon/user-profile-grey.svg">
                 <span>{{participant.nickname}}</span>
             </div>
             </li>
