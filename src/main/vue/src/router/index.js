@@ -49,6 +49,23 @@ const router = createRouter({
             },
           ],
         },
+        {
+          path: "my-profile",
+          component: () => import("@/views/member/Profile.vue"),
+        },
+
+        {
+          path: "my-profile/edit",
+          component: () => import("@/views/member/Edit.vue")
+        },
+        {
+          path: "my-meeting",
+          component: () => import("@/views/member/MyMeeting.vue")
+        },
+        {
+          path: "my-gathering",
+          component: () => import("@/views/member/MyGathering.vue")
+        },
       ],
     },
   ],
