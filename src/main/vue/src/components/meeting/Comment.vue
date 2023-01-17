@@ -1,4 +1,5 @@
 <script setup>
+  import { setMapStoreSuffix } from "pinia";
   import api from "@/api";
   import { reactive,ref } from 'vue';
   import { useRoute } from "vue-router";
@@ -7,23 +8,25 @@
   const props = defineProps({
     comment:Object
   });
-
+  
   const reply = reactive([]);
 
   const toggle = (e)=>{
     if(e.target.id){
       const id = e.target.id;
-      const el = document.querySelector('[data-id='+id+']');
+      const el = document.querySelector('[data-id='+id+']'); //닫기버튼
       el.classList.remove("hidden");
       e.target.classList.add("hidden");
       getReplyList(id.substr(3));
+      e.target.parentElement.nextElementSibling.classList.remove("hidden");
     }
     else {
       const id = e.target.dataset.id;
-      const el = document.getElementById(id);
+      const el = document.getElementById(id);//답글갯수링크
       el.classList.remove("hidden");
       e.target.classList.add("hidden");
       reply.length = 0;
+      e.target.parentElement.nextElementSibling.classList.add("hidden");
     }  
   }
   function hasReply (comment){
@@ -33,8 +36,7 @@
     return hasReply;
   }
   function getReplyList (commentId){
-      const route = useRoute();
-      fetch(`/api/reply?groupId=${commentId}`)
+    api.comment.getReplyList(commentId)
         .then(res=>{
           if(res.ok)  {
             console.log('답글을 불러왔습니다')
@@ -50,6 +52,7 @@
           }
         })
   }
+  
 
 </script>
 
@@ -72,7 +75,7 @@
             <span class="pointer reply-close hidden" @click="toggle"  v-if="hasReply(comment)" :data-id="'id-'+comment.id">닫기</span>
             <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal">답글 달기</span>
           </div>
-            <section class="reply">
+            <section class="reply hidden">
               <Reply :replies="reply"/> 
             </section>
 </template>

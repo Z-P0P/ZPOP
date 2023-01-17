@@ -1,17 +1,31 @@
 <script setup>
   import { setMapStoreSuffix } from 'pinia';
+  import { defineProps, defineEmits } from 'vue';
   import api from "@/api";
-  import { reactive,ref } from 'vue';
-  import { useRoute } from "vue-router";
-  import Reply from "./Reply.vue";
-  import { defineProps } from 'vue';
   import Comment from './Comment.vue';
 
   const props = defineProps({
     detail:Object
   });
-
-  
+  const emit = defineEmits(['newComment']);
+  function newComment(){
+    emit('newComment');
+  }
+  function registerComment(meetingId){
+    const data = {};
+    data.meetingId = meetingId;
+    data.content = document.querySelector("#comment-text").value;
+    const dataJSONStr = JSON.stringify(data);
+    api.comment.registerComment(dataJSONStr)
+      .then(res=>{
+        if(res.ok){
+          console.log("댓글 등록됨");
+          emit('newComment');
+        }
+        else 
+          alert("시스템 장애로 등록이 안되고 있습니다")
+      })
+  }
 </script>
 
 <template>
@@ -22,7 +36,7 @@
                           id="comment-text" placeholder="댓글을 입력하세요."></textarea>
             <div class="comment__btn-container">
                 <span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
-                <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="#dummy-modal">등록하기</span>
+                <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="#dummy-modal" @click="registerComment(detail.id)">등록하기</span>
                 <span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
             </div>
         </div>
@@ -31,11 +45,11 @@
 					<Comment :comment="comment"/>
         </li>
       </ul>
-            <div class="hidden" id="dummy-modal"></div>
     </section>
 </template>
 
 <style scoped>
+
  @import url(@/assets/css/meeting/component/select.css);
  @import url(@/assets/css/meeting/component/profile-box.css);
  @import url(@/assets/css/meeting/component/comment.css);

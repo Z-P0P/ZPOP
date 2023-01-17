@@ -2,6 +2,7 @@
 import { setMapStoreSuffix } from 'pinia';
 
 export default {
+  name:'Participants',
   props: ['detail'],
   setup(props){
       const getParticipantNum = ()=> {
