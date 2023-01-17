@@ -1,9 +1,19 @@
-<script setup></script>
+<script setup>
+import { defineProps } from "vue";
+
+// 부모로부터 checked 여부 설정 가능 함
+const props = defineProps({
+  isOn: {
+    type: Boolean,
+    default: false,
+  },
+});
+</script>
 
 <template>
   <div class="soft-toggle-wrap">
     <label class="soft-toggle__switch">
-      <input type="checkbox" />
+      <input type="checkbox" :checked="props.isOn" />
       <span class="soft-toggle__slider"></span>
     </label>
   </div>

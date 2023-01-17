@@ -5,7 +5,7 @@ import { defineStore } from "pinia";
  */
 export const useMeetingListStore = defineStore("meetingList", {
   state: () => ({
-    isToggleOn: false,
+    isToggleOn: true,
     category: 0,
     regions: [],
   }),
