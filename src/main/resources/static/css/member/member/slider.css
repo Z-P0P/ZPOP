@@ -1,0 +1,102 @@
+input[type=range] {
+    width:285px;
+    height: 15px;
+    -webkit-appearance: none;
+    background: #ebebeb;
+    border-radius: 99px;
+  
+    background: linear-gradient(90deg, rgb(98, 179, 185) 50%, rgb(235, 235, 235) 50%);
+    /* transition: all 1s ease-out; */
+    /* transition: background 450ms ease-in; */
+
+}
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    position: relative;
+    right:-0.3px;
+    -webkit-appearance: none;
+    background: #ebebeb;
+    cursor: pointer;
+    height: 30.64px; width: 30.64px;
+    margin-top: -10px;
+
+    box-shadow:  2px 2px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 99px;
+}
+
+input[type=range]::-moz-range-thumb {
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.25);
+    height: 30.64px; width: 30.64px;
+    border-radius: 99px;
+    background: #ebebeb;
+    box-shadow:  2px 2px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 268px; height: 15px;
+    cursor: pointer;
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 99px;
+}
+
+
+input[type=range]::-moz-range-track {
+    width: 270px; height:15px;
+    cursor: pointer;
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 99px;
+}
+
+
+/* -ms 추후구현 ----------------
+input[type=range]::-ms-track {
+    width: 100%;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type=range]::-ms-thumb {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    height: 36px; width: 16px; border-radius: 3px; background: #ffffff; cursor: pointer;
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: #2a6495;
+    border: 0.2px solid #010101;
+    border-radius: 2.6px;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+input[type=range]::-ms-fill-upper {
+    background: #3071a9;
+    border: 0.2px solid #010101;
+    border-radius: 2.6px;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+    background: red;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+    background: pink;
+}*/

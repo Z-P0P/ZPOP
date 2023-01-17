@@ -1,0 +1,152 @@
+body {
+    min-width: 368px;
+}
+
+article{
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    line-height: 17px;
+    width:100%;
+    
+}
+
+.category-wrap{
+    margin-top: 6px;
+    margin-bottom: 12px;
+}
+.title-container{
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.title {
+    display: flex;
+    font-size: 17px;
+    margin-right: auto;
+    
+   
+}
+
+.icon-kebab{
+    display: inline-flex;
+}
+
+
+.start-datetime-container{
+
+    display: flex;
+
+    margin-bottom: 10px;
+}
+
+.start-datetime-container .icon {
+    margin-right: 8px;
+}
+
+
+
+.region-container .icon-location16 {
+    margin-left: 4px;
+    margin-right: 13px;
+}
+
+.region-detail-wrap{
+    margin-top: 5px;
+    margin-left: 24px;
+}
+
+.category {
+    color:var(--main-color);
+}
+
+
+
+.region-detail-wrap{
+    color: var(--grey2);
+    margin-bottom: 17px;
+}
+
+
+.content-container{
+    border-top: 1px solid var(--light-grey1);
+    padding-top: 12px;
+
+}
+
+
+
+.tags{
+    margin-top: 20px;
+    color: var(--light-grey2);
+    display: flex;
+    gap: 4px;
+    margin-bottom: 7px;
+}
+
+.views{
+    color: var(--light-grey2);
+}
+
+ .control-btn-wrap{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    border-top: 1px solid var(--light-grey1);
+    padding: 10px;
+  } 
+   
+  span.btn.btn-round{
+    background-color: var(--main-color);
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+   
+  }
+/* 
+💖todo: 반응형💗
+ */
+
+ @media (min-width: 576px) {
+   
+    .title{
+        font-size: 28px;
+    }
+    article {
+        font-size: 18px;
+    }
+    .tags{
+        font-size: 18px;
+        padding-top: 20px;
+    }
+
+    .content-container {
+        padding-top: 30px;
+    }
+
+    .control-btn-wrap{
+        display: flex;
+        width: fit-content;
+        border-top: none;
+        position: static;
+        margin-left: auto;
+      }
+      
+      span.btn.btn-round{
+        background-color: var(--main-color);
+        width: 100%;
+        text-align: center;
+      
+       
+      }
+   
+  }
+
+

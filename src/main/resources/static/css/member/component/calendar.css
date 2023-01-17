@@ -1,0 +1,79 @@
+.calendar{
+    width:fit-content;
+    height: fit-content;
+}
+
+.calendar .month-year-selecter{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar label{
+    width: 7rem;
+    text-align: center;
+}
+
+.calendar table{
+
+}
+
+.calendar .hour-minute{
+    display: flex;
+    transition: max-height 0.2s;
+    justify-content: center;
+}
+
+.calendar:hover .hour-minute{
+}
+
+.calendar .hour-minute > ul{
+    /*
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    */
+    height: 200px;
+    overflow: scroll;
+}
+
+.calendar .hour-minute > ul::-webkit-scrollbar{
+    display:none;
+}
+
+
+.calendar .hour-minute > ul:last-child{
+    row-gap:10px;
+}
+
+.calendar .hour-minute > ul li{
+    display: flex;
+    width:3rem;
+    padding: 0.5rem 0;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.hour-minute > ul li:hover{
+    background-color: var(--light-grey1);
+}
+
+.calendar table td{
+    text-align: center;
+    width:2rem;
+    height:2rem;
+}
+
+.calendar table th{
+    font-weight: 500;
+    color:var(--grey2);
+}
+
+.calendar table tr > td:nth-child(7){
+    color:var(--true-blue);
+}
+
+.calendar table tr > td:nth-child(1), .calendar .holiday{
+    color:var(--red-theme);
+}

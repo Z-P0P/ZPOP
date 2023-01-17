@@ -1,0 +1,41 @@
+.category-container{
+    width: 75rem;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 3px solid var(--light-grey2);
+}
+
+.category-nav{
+    padding: 0;
+    /* padding: 1rem 0; */
+    width: 90%;
+    margin: 0 auto;
+
+}
+
+
+.category-subcontainer{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.category{
+    /* padding: 0 1.5rem; */
+    color: var(--main-color);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 1.25rem;
+    font-size: 1.5rem;
+}
+
+
+
+
+.selected{
+    background-color: var(--main-color);
+    color: var(--white);
+    padding: 0 1.5rem;
+}
+
+

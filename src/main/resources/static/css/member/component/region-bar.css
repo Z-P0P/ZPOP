@@ -1,0 +1,20 @@
+.meeting-region{
+    min-width: 128px;
+    height:52px;
+    background-color: #177DD7; /* true blue*/
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    display: inline-flex;
+    padding:0 24px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meeting-region > img{
+    width: 24px;
+    height: 24px;
+    margin-left: 16px;
+    cursor: pointer;
+}

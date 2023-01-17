@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/admin/style.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/css/admin/component/button.css">
+    <link rel="stylesheet" href="/static/css/admin/component/status.css">
+    <link rel="stylesheet" href="/static/css/admin/component/header.css">
+    <link rel="stylesheet" href="/static/css/admin/component/admin-nav.css">
+    <link rel="stylesheet" href="/static/css/admin/component/admin-search-bar.css">
+    <link rel="stylesheet" href="/static/css/admin/component/table-bar.css">
+    <link rel="stylesheet" href="/static/css/admin/component/admin-list.css">
+    <link rel="stylesheet" href="/static/css/deco.css">
+    <script src="/static/js/member/modal.js"></script>
+    <script src="/static/js/admin/admin.js"></script>
+</head>
+<body>
+    <div class="main-wrapper">
+        <main>
+            <nav class="admin-nav">
+                <ul class="admin-nav__lists">
+                    <li class="admin-nav__list admin-nav__list--selected" ><a href="./list.html">공지 조회</a></li>
+                </ul>
+            </nav>
+            <div class="admin-search-bar-div">
+                <div class="admin-search-bar-box">
+                    <input class="admin-search-bar" type="text" placeholder="키워드를 입력하세요">
+                    <button class="admin-search-button"></button>
+                </div>
+            </div>
+            <div class="admin-list-container">
+                <div class="table-bar">
+                    <div class="table-bar__left-container">
+                      <input class="checkbox" type="checkbox" name="table-checkbox" />
+                      <span class="table-bar__icon table-bar__icon-check"></span>
+                      <span class="table-bar__icon table-bar__icon-x"></span>
+                    </div>
+              
+                    <div class="table-bar__right-container">
+                      <span class="table-bar__page"> 9,999개 중 1-10 </span>
+                      <span class="table-bar__icon table-bar__icon-arrow-left hide"></span>
+                      <span class="table-bar__icon table-bar__icon-arrow-right hide"></span>
+                    </div>
+                  </div>
+                <ul class="admin-list">
+                    <li class="admin-list__header">
+                        <ul>
+                            <li>
+                                <span>ID</span>
+                                <button><img src="/static/images/icon/up-down.svg" alt=""></button>
+                            </li>
+                            <li>제목</li>
+                            <li>링크</li>
+                            <li>작성일자</li>
+                            <li>활성여부</li>
+                        </ul>
+                    </li>
+                    <li class="admin-list__content">
+                        <ul class="list-content">
+                            <li class="list-content__id">
+                                <input type="checkbox" class="checkbox">
+                                <span>1</span>
+                            </li>
+                            <li class="list-content__title">
+                                <span class="bold">사이트 소개</span>
+                            </li>
+                            <li>https://notion.com</li>
+                            <li>2022-02-22</li>
+                            <li><span class="status status--round status--neutral">FALSE</span></li>
+                        </ul>
+                    </li>
+                    <li class="admin-list__content">
+                        <ul class="list-content">
+                            <li class="list-content__id">
+                                <input type="checkbox" class="checkbox">
+                                <span>1</span>
+                            </li>
+                            <li class="list-content__title">
+                                <span class="bold">사이트 소개</span>
+                            </li>
+                            <li>https://notion.com</li>
+                            <li>2022-02-22</li>
+                            <li><span class="status status--round status--neutral">FALSE</span></li>
+                        </ul>
+                    </li>
+                    <li class="admin-list__content">
+                        <ul class="list-content">
+                            <li class="list-content__id">
+                                <input type="checkbox" class="checkbox">
+                                <span>1</span>
+                            </li>
+                            <li class="list-content__title">
+                                <span class="bold">사이트 소개</span>
+                            </li>
+                            <li>https://notion.com</li>
+                            <li>2022-02-22</li>
+                            <li><span class="status status--round status--neutral">FALSE</span></li>
+                        </ul>
+                    </li>
+                    <li class="admin-list__content">
+                        <ul class="list-content">
+                            <li class="list-content__id">
+                                <input type="checkbox" class="checkbox">
+                                <span>1</span>
+                            </li>
+                            <li class="list-content__title">
+                                <span class="bold">사이트 소개</span>
+                            </li>
+                            <li>https://notion.com</li>
+                            <li>2022-02-22</li>
+                            <li><span class="status status--round status--neutral">FALSE</span></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+        </main>
+    </div>
+    <aside class="left-side-bar">
+        <img src="/static/images/logo/logo-with-text.svg" alt="로고">
+        <nav>
+            <ul>
+                <li><a class="add-deco-img-left deco-img-home" href="index.html">대시보드</a></li>
+                <li class="selected"><a class="add-deco-img-left deco-img-notification-white" href="../banner/list.html">공지 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-meeting" href="../meeting/list.html">모임 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-user" href="../member/list.html">회원 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-comment" href="../comment/list.html">댓글 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-report" href="../report/list.html">신고 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-logout" href="logout.html">로그아웃</a></li>
+            </ul>
+        </nav>
+    </aside>
+</body>
+</html>

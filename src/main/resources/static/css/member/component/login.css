@@ -1,0 +1,48 @@
+.login-btn::before{
+    content: "";
+    width:305px;
+    height:53px;
+    display: inline-block;
+    background-repeat: no-repeat;
+}
+
+@media (min-width: 576px) {
+    .login-btn::before{
+        width:393px;
+        height:53px;
+    }
+  }
+
+.login-btn--kakao::before{
+    background-image:url(/images/kakao-mobile.svg);
+}
+@media (min-width: 576px) {
+    .login-btn--kakao::before{
+        background-image:url(/images/kakao-pc.svg);
+    }    
+}
+
+.login-btn--naver::before{
+    background-image:url(/images/naver-mobile.svg);
+}
+
+@media (min-width: 576px) {
+    .login-btn--naver::before{
+        background-image:url(/images/naver-pc.svg);
+    }    
+}
+
+.login-btn-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap:16px;
+}
+
+@media (min-width: 576px) {
+    .login-btn-container{
+        transform:none;
+        row-gap:21px;
+        transform: translateY(-33px);
+    }    
+}

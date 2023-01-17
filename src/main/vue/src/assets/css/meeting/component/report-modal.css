@@ -1,0 +1,174 @@
+.modal-report .input__label{
+	margin-top: 30px;
+	font-weight: var(--bold);
+}
+
+.modal-report .report__close-btn{
+	margin:0;
+}
+
+.modal-report #cancel-btn{
+    background-color: var(--dark-grey2);
+    color: var(--white);
+    margin:0 15px 0 0;
+    
+}
+
+.modal-report #report-btn{
+    background-color:var(--main-color);
+    color:var(--white);
+}
+
+.modal-report .report__cancel-btn{
+	background-size:0;
+	width:60px;
+}
+
+.modal-report .report-modal__body{
+	background-color: white;
+	height:450px;
+	display : flex;
+	flex-direction: column;
+	border-radius: 0 0 10px 10px;
+}
+
+.modal-report .meeting-form__input{
+    margin: 30px auto;
+}
+
+.modal-report .select-box__options li{
+	height: 45px;
+}
+
+.modal-report .input-text{
+	display : flex;
+	flex-direction: column;
+}
+
+.modal-report .input-text > div {
+	margin: 0px auto;
+}
+
+.modal-report .input-text__label{
+	margin-bottom: 10px;
+}
+
+.modal-report .input-text__content{
+    margin: 0 auto;
+    min-width: 350px;
+    height:260px;
+    font-size: 18px;
+    resize: none;
+}
+
+.modal-report .btn-wrapper{
+    display:flex; 
+    justify-content: center;
+    margin: 24px auto;
+}
+
+.modal-report .select-box__options{
+    width: 350px;
+}
+
+.modal-report .select-box--input::before {
+    right: 18px;
+    top:18px;
+}
+    
+.modal-report .select-box--input > span {
+	border: 0.125rem solid #EBEBEB;
+	min-width:350px;
+    height: 47.5px;
+	border-radius: 0.3125rem;
+	cursor:pointer;
+	color:#8B8B8B;
+}
+
+.modal-report .input-text__content::placeholder{
+    color:#8B8B8B;
+}
+
+.modal-report .select-box--input > span.select-span{
+	color:black;
+}
+
+.report-complete {
+    font-weight: var(--font-regular);
+    font-size: 16px;
+    height: fit-content;
+    width: 200px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 15px 0px #00000033;
+   	background-color: white; 
+   	margin: 300px auto;
+  }
+
+  
+.report-complete-content{
+    line-height: 40px;
+    height: 60px;
+    padding: 10px 0px 10px 0px;
+    text-align: center;
+    border-bottom: 1px solid lightgray;
+    
+  }
+
+  .report-complete__btn {
+    padding: 10px 0px 10px 0px;
+    text-align: center;    
+    border-radius: 0px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.report-complete__btn:hover{
+    color:white;
+    background-color: #62b3b9;
+}
+
+.report-modal-wrapper {
+    animation-name: modal-bg;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+}
+
+@media (min-width:576px) {
+	
+	.modal-report .select-box--input::before {
+    right: 25px;
+	}
+	
+	.modal-report .report-modal{
+    width:450px;
+    height:520px;
+	}
+
+	.modal-report .button-div{
+	    height:54px;
+	    background-color: #76C1B1;
+	}
+	
+	.modal-report .meeting-form__input span{
+    width: 410px;
+    height:50px;
+	}
+	
+	.modal-report .select-box__options{
+    width: 410px;
+	}
+	
+	.modal-report .input-text__content{
+    width: 410px;
+    height: 200px;
+	}
+	
+	.modal-report .select-box__options li{
+	height: 50px;
+	}
+	
+	.modal-report .report__cancel-btn{
+	width:95px;
+	}
+
+}
