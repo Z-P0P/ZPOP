@@ -49,7 +49,7 @@ async function getMyMeeting() {
     state.userId = state.meetings[0].participantId;
 
     if(state.userId == null) {
-      console.log("교집합을 만들든가 말든가");
+      console.log("교집합을 만들어주세요");
       console.log("예외던지기");
     }
   }
@@ -161,11 +161,11 @@ function changeColor(e) {
 
 }
 
-function doRate(){
+function rateMeeting(e){
   console.log(e);
   console.log("done");
-  console.log(e.target);
-
+  console.log(state.participants);
+  
 }
 
 </script>
@@ -193,21 +193,16 @@ function doRate(){
       
         <ul>
         <li v-for="(participant, idx) in state.participants" :key="idx">
-          
            {{ participant.nickname }}
-            <div >
+            <div>
           <input :idx="idx" type="range" step="50" min="0" max="100" @input.prevent="changeColor">
-
         </div>
         </li>
       </ul>
-
-      
-        
       </div>
     </template>
     <template #modal-footer><div class="btn-box">
-        <div class="btn btn-semiround" @click.prevent="doRate">완료</div>
+        <div class="btn btn-semiround" @click.prevent="rateMeeting">완료</div>
       </div> </template>
   </ModalDefault>
 
