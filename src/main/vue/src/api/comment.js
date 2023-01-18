@@ -16,8 +16,21 @@ async function registerComment(dataJSONStr){
         }
         return await fetch(url,option);
       }
+/*
+답글 등록
+*/
+async function registerReply(dataJSONStr){
+        const url = '/api/reply';
+        const option = {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+              body: dataJSONStr,
+        }
+        return await fetch(url,option);
+      }
 
 export default {
     getReplyList,
-    registerComment
+    registerComment,
+    registerReply
 }

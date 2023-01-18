@@ -2,11 +2,11 @@
 <!-- detail vue = 화면 / article 화면의 구성 요소중 한 부분-->
 <script>
 import { reactive,ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import api from "@/api"; //index.js
 import Article from "@/components/meeting/Article.vue";
 import Participants from "@/components/meeting/Participants.vue";
-import CommentList from "@/components/meeting/CommentList.vue";
+import CommentList from "@/components/comment/CommentList.vue";
 
 export default {
   name: "MeetingDetail",
@@ -20,11 +20,11 @@ export default {
       detail: {},
     });
     // 모임 정보 조회 reactive는 view단과 model단 일치
+    const route = useRoute();
     const getDetail = () => {
       try {
-       // const route = useRoute();
         api.meeting
-            .getDetail(1)
+            .getDetail(route.params.id)
             .then(res => res.json())
             .then(data => {state.detail = data});
       } catch (e) {
@@ -33,13 +33,11 @@ export default {
       }
     };
     getDetail();
-    // 참여자 정보 조회
-    // 댓글 정보 조회
-    function newComment(){
-      getDetail();
-      alert("fffff");
+
+    const newComment = () =>{
+      getDetail(route.params.id);
     }
-    return { state,newComment }; //script에서 return된 값이 model
+    return { state,newComment,getDetail }; //script에서 return된 값이 model
   }
 
 }

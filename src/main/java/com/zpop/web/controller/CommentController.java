@@ -62,8 +62,7 @@ public class CommentController {
 	@ResponseBody
 	public  boolean registerComment(@RequestBody Comment comment, 
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		//comment.setWriterId(userDetails.getId());
-		comment.setWriterId(26);
+		comment.setWriterId(userDetails.getId());
 		service.registerComment(comment);
 		return true;
 	}

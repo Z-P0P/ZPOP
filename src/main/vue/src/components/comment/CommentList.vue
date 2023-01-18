@@ -1,6 +1,6 @@
 <script setup>
   import { setMapStoreSuffix } from 'pinia';
-  import { defineProps, defineEmits } from 'vue';
+  import { defineProps, defineEmits, ref, onMounted } from 'vue';
   import api from "@/api";
   import Comment from './Comment.vue';
 
@@ -8,10 +8,13 @@
     detail:Object
   });
   const emit = defineEmits(['newComment']);
-  function newComment(){
-    emit('newComment');
-  }
-  function registerComment(meetingId){
+  const inputs = {f1:ref()}
+  onMounted(() => {
+    const input = inputs['f1'].value;
+    input.focus();
+  })
+  
+  function registerComment(event, meetingId,refId){
     const data = {};
     data.meetingId = meetingId;
     data.content = document.querySelector("#comment-text").value;
@@ -25,7 +28,10 @@
         else 
           alert("시스템 장애로 등록이 안되고 있습니다")
       })
+      const input = inputs[refId].value;
+      input.value="";
   }
+
 </script>
 
 <template>
@@ -33,10 +39,10 @@
         <h2 class="comment__num">댓글 {{ detail.commentCount }} 개</h2>
         <div class="comment__input-container">
 				<textarea class="comment__input" name="comment-text"
-                          id="comment-text" placeholder="댓글을 입력하세요."></textarea>
+                          id="comment-text" placeholder="댓글을 입력하세요." :ref="inputs.f1"></textarea>
             <div class="comment__btn-container">
                 <span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
-                <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="#dummy-modal" @click="registerComment(detail.id)">등록하기</span>
+                <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="#dummy-modal" @click="registerComment($event,detail.id,'f1')">등록하기</span>
                 <span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
             </div>
         </div>

@@ -2,14 +2,14 @@
   import { setMapStoreSuffix } from "pinia";
   import api from "@/api";
   import { reactive,ref } from 'vue';
-  import { useRoute } from "vue-router";
-  import Reply from "./Reply.vue";
+  import ReplyList from "./ReplyList.vue";
   import { defineProps } from 'vue';
   const props = defineProps({
     comment:Object
   });
   
-  const reply = reactive([]);
+  const replyList = reactive([]);
+ 
 
   const toggle = (e)=>{
     if(e.target.id){
@@ -25,7 +25,7 @@
       const el = document.getElementById(id);//답글갯수링크
       el.classList.remove("hidden");
       e.target.classList.add("hidden");
-      reply.length = 0;
+      replyList.length = 0;
       e.target.parentElement.nextElementSibling.classList.add("hidden");
     }  
   }
@@ -48,7 +48,7 @@
         .then(res=>res.json())
         .then(data=>{
           for(const r of data.resultObject) { 
-            reply.push(r);
+            replyList.push(r);
           }
         })
   }
@@ -73,10 +73,10 @@
           <div class="comment__replies">
 						<span class="pointer underline reply-cnt"  @click="toggle"  v-if="hasReply(comment)" :id="'id-'+comment.id">답글 {{ comment.countOfReply }}개</span>
             <span class="pointer reply-close hidden" @click="toggle"  v-if="hasReply(comment)" :data-id="'id-'+comment.id">닫기</span>
-            <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal">답글 달기</span>
+            <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal" :ref="reply-write">답글 달기</span>
           </div>
             <section class="reply hidden">
-              <Reply :replies="reply"/> 
+              <ReplyList :replies="replyList"/> 
             </section>
 </template>
 <style scoped>
