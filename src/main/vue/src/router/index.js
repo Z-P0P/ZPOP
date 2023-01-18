@@ -2,10 +2,24 @@ import { createRouter, createWebHistory } from "vue-router";
 import adminRoute from "./admin";
 import { useMemberStore } from "../stores/memberStore";
 
-function isAuth (to, from) {
+async function isAuth (to, from) {
   const memberStore = useMemberStore();
-  if(!memberStore.memberInfo.id || !memberStore.memberInfo.nickname) {
-    return "/"
+  console.log(memberStore.id)
+  // 로그인 안한상태로 페이지 이동일 경우,
+  // 요청 페이지를 로컬스토리지에 저장한다. 그 후 로그인 모달을 띄운다.
+  if (! await memberStore.isAuthenticated()) {
+    localStorage.setItem("redirect-route", to.path);
+    return "/";
+  }
+}
+
+function redirectRouteAfterLogin(to, from) {
+  // 로컬 스토리이제 저장된 리다이렉트 라우트가 있다면,
+  // 로그인 성공 후 해당 라우트로 이동한다.
+  const redirectRoute = localStorage.getItem("redirect-route");
+  if (from.path.includes("login/oauth") && redirectRoute) {
+    localStorage.removeItem("redirect-route");
+    router.push(redirectRoute);
   }
 }
 
@@ -23,7 +37,7 @@ const router = createRouter({
         },
         {
           path: "login/oauth/:pathMatch(.*)*",
-          component: () => import("@/views/meeting/Login.vue"),
+          component: () => import("@/views/LoginProc.vue"),
         },
         {
           path: "meeting",
@@ -33,6 +47,7 @@ const router = createRouter({
               name: "meetingList",
               component: () => import("@/views/meeting/List.vue"),
               alias: "/",
+              beforeEnter: [redirectRouteAfterLogin],
             },
             {
               path: "search",
