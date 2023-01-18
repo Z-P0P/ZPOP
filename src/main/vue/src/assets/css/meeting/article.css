@@ -1,16 +1,13 @@
-body {
-    min-width: 368px;
-}
+
 
 article{
     font-size: 14px;
-    display: flex;
-    flex-direction: column;
     font-weight: 500;
     line-height: 17px;
-    width:100%;
-    
+   
 }
+
+
 
 .category-wrap{
     margin-top: 6px;
@@ -26,7 +23,8 @@ article{
     display: flex;
     font-size: 17px;
     margin-right: auto;
-    
+    font-weight: 600;
+    color: var(--dark-grey2);
    
 }
 
@@ -72,21 +70,23 @@ article{
 
 .content-container{
     border-top: 1px solid var(--light-grey1);
-    padding-top: 12px;
+    padding-top: 17px;
 
 }
 
 
 
 .tags{
-    margin-top: 20px;
+    margin-top: 44px;
     color: var(--light-grey2);
     display: flex;
     gap: 4px;
     margin-bottom: 7px;
+    font-weight: 400;
 }
 
 .views{
+    font-weight: 400;
     color: var(--light-grey2);
 }
 
@@ -108,6 +108,7 @@ article{
     width: 100%;
     color: white;
     text-align: center;
+    font-size: 16px;
    
   }
 /* 
@@ -117,7 +118,7 @@ article{
  @media (min-width: 576px) {
    
     .title{
-        font-size: 28px;
+        font-size: 22px;
     }
     article {
         font-size: 18px;
@@ -131,19 +132,33 @@ article{
         padding-top: 30px;
     }
 
+    .category-wrap {
+        margin-bottom: 20px;
+    }
+
+    .start-datetime-container {
+        padding-top: 10px;
+    }
+    .region-container {
+        padding-top: 5px;
+    }
+
+    .region-detail-wrap {
+        margin-top: 10px;
+    }
     .control-btn-wrap{
         display: flex;
         width: fit-content;
         border-top: none;
         position: static;
         margin-left: auto;
-      }
+    }
       
       span.btn.btn-round{
         background-color: var(--main-color);
         width: 100%;
         text-align: center;
-      
+       
        
       }
    

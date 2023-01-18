@@ -1,13 +1,15 @@
 .comment {
   display: flex;
   flex-direction: column;
-  margin: 50px auto 0 auto;
+  margin-top: 30px;
+/*   margin: 50px auto 0 auto; */
 }
 
 .comment__num {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 16px;
   display: inline;
+  color: var(--dark-grey2);
 }
 
 .comment__input-container {
@@ -30,6 +32,8 @@
 .comment__btn-container{
 	display:inline-flex;
 	align-self:flex-end;
+  z-index: -1;
+  
 }
 .comment__btn {
 	align-self: flex-end;
@@ -42,19 +46,26 @@
 	margin-right:30px;
 }
 @media (min-width: 576px) {
+  .comment{
+    margin-top: 50px;
+  }
   .comment__input {
     min-height: 9.375rem;
   }
 
   .comment__num {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 18px;
     display: inline;
+  }
+
+  .comment__list {
+    margin-top: 38px;
   }
 }
 
 .comment__list {
-  margin-top: 2rem;
+  margin-top: 32px;
 }
 
 .comment__replies span:last-child {
@@ -65,12 +76,15 @@
 /* ===== 댓글 리스트 영역 ====== */
 .comment__content {
   width: 100%;
+  font-weight: 500;
   min-width: 17rem;
   max-width: 49.5rem;
   display: inline-block;
   text-align: left;
   /* 사용자 프로필 영역과 댓글 영역을 위해 padding-top 추가 */
   padding-top: 1rem;
+  padding-left: 10px;
+  padding-right: 10px;
   padding-bottom: 1rem;
 }
 
