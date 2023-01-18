@@ -45,7 +45,7 @@ export default {
     setup() {
         const headerStore = useHeaderStore();
         const memberStore = useMemberStore();
-        console.log(memberStore.memberInfo);
+
         const isNotificationOpened = computed(() => {
             return headerStore.isNotificationOpened;
         });
@@ -68,11 +68,9 @@ export default {
         }
 
         const isMemberAuthenticated = computed(() => {
-            if (memberStore.memberInfo.nickname === null){
-                return false;
-            }
-            return true;
+            return memberStore.id !== 0
         });
+        
         return {
             isNotificationOpened,
             isLoginOpened,
