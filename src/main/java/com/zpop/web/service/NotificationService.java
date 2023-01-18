@@ -21,5 +21,7 @@ public interface NotificationService {
 	void updateReadAt(int id, Date readAt);
 	
 	void updateByType(int memberId, Date readAt, int type);
+
+	void updateAllById(int memberId, Date readAt);
 	
 }
