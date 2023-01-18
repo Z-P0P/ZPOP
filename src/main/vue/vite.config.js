@@ -18,7 +18,9 @@ export default defineConfig({
       },
       '/image':{
         target: 'http://localhost:8080',
-        changeOrigin: true,
+      },
+      '/logout':{
+        target: 'http://localhost:8080',
       },
     },
   },

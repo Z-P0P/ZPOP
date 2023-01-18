@@ -21,10 +21,25 @@ async function getActiveOptions(){
   return await fetch(url);
 }
 
-async function postMeeting(dataJSONStr){
+async function postRequest(dataJSONStr){
   const url = '/api/meeting';
   const option = {
     method: "POST",
+    headers: {"Content-Type": "application/json"},
+		body: dataJSONStr,
+  }
+  return await fetch(url,option);
+}
+
+async function getDetailsForUpdate(id){
+  const url = `/api/meeting/update/${id}`;
+  return await fetch(url);
+}
+
+async function putRequest(id, dataJSONStr){
+  const url = `/api/meeting/${id}`;
+  const option = {
+    method: "PUT",
     headers: {"Content-Type": "application/json"},
 		body: dataJSONStr,
   }
@@ -36,5 +51,7 @@ export default {
   getThumbnailList,
   getDetail,
   getActiveOptions,
-  postMeeting,
+  postRequest,
+  getDetailsForUpdate,
+  putRequest,
 };

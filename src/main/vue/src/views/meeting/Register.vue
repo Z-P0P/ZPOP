@@ -1,28 +1,28 @@
 <template>
-    <div class="meeting-form-container" v-if="isLoaded" @click="clickHandler">
+    <div class="meeting-form-container" v-if="registerForm.isLoaded" @click="clickHandler">
         <form class="meeting-form" action="meeting/register" @submit.prevent="submithandler">
             <h1 class="meeting-form__title">모임 등록하기</h1>
             <fieldset class="meeting-form__default-info">
                 <legend>1. 모임 기본 정보를 입력해주세요.</legend>
                 <meeting-form-select-input @selectBoxClick="selectBoxClickHandler" @optionClick="optionClickHandler"
-                    :input="inputs.categories" />
-                <meeting-form-date-input @dateChange="dateChangeHandler" :input="inputs.startedAt" />
+                    :input="registerForm.inputs.categories" />
+                <meeting-form-date-input @dateChange="dateChangeHandler" :input="registerForm.inputs.startedAt" />
                 <meeting-form-select-input @selectBoxClick="selectBoxClickHandler" @optionClick="optionClickHandler"
-                    :input="inputs.regions" />
-                <meeting-form-text-input @textInput="textInputHandler" :input="inputs.detailRegion" />
+                    :input="registerForm.inputs.regions" />
+                <meeting-form-text-input @textInput="textInputHandler" :input="registerForm.inputs.detailRegion" />
                 <meeting-form-select-input @selectBoxClick="selectBoxClickHandler" @optionClick="optionClickHandler"
-                    :input="inputs.ageRanges" />
+                    :input="registerForm.inputs.ageRanges" />
                 <meeting-form-select-input @selectBoxClick="selectBoxClickHandler" @optionClick="optionClickHandler"
-                    :input="inputs.genderCategories" />
+                    :input="registerForm.inputs.genderCategories" />
                 <meeting-form-select-input @selectBoxClick="selectBoxClickHandler" @optionClick="optionClickHandler"
-                    :input="inputs.maxMembers" />
+                    :input="registerForm.inputs.maxMembers" />
                 <meeting-form-select-text-input @selectBoxClick="selectBoxClickHandler"
-                    @optionClick="optionClickHandler" @textInput="textInputHandler" :selectInput="inputs.contactTypes"
-                    :textInput="inputs.contact" />
+                    @optionClick="optionClickHandler" @textInput="textInputHandler" :selectInput="registerForm.inputs.contactTypes"
+                    :textInput="registerForm.inputs.contact" />
             </fieldset>
             <fieldset class="meeting-form__details">
                 <legend>2. 모임에 대해 소개해주세요.</legend>
-                <meeting-form-text-input @textInput="textInputHandler" :input="inputs.meetingTitle" />
+                <meeting-form-text-input @textInput="textInputHandler" :input="registerForm.inputs.title" />
                 <div class="meeting-form__input">
                     <label class="input-text__label" for="">내용</label>
                     <div id="editor">
@@ -41,28 +41,29 @@
                 <button id="register-btn" class="btn btn-round btn-action" type="submit">등록하기</button>
             </div>
         </form>
-        <Modal v-show="modalState.isOpened" @close-modal="closeModalHandler">
+        <Modal v-show="registerForm.modalState.isOpened" @close-modal="closeModalHandler">
             <template #modal-body>
                 <div class="overflow-x-hidden">
-                    <div class="modal__content-container" :style="{transform:`translateX(${modalState.sectionNum*-100}%)`}">
+                    <div class="modal__content-container" :style="{transform:`translateX(${registerForm.modalState.sectionNum*-100}%)`}">
                         <div class="modal__content">
                             <div class="icon-cancel"></div>
                             <div class="register-status__text">
                                 <div class="register-status__message">게시글 등록에 실패했어요.<br>다음 내용을 확인해주세요.</div>
+                                <div class="register-status__message">registerForm.errorMessage</div>
                             </div>
                         </div>
                         <div class="modal__content">
                             <loading-roller :isShow="true" />
                             <div class="register-status__text">
                                 <div class="register-status__message">게시글을 등록하고 있어요!</div>
-                                <a class="register-status__btn btn btn-semiround" href="#">등록 중</a>
+                                <span class="register-status__btn btn btn-semiround" href="#">등록 중</span>
                             </div>
                         </div>
                         <div class="modal__content">
                             <div class="icon-done"></div>
                             <div class="register-status__text">
                                 <div class="register-status__message">게시글을 등록했어요!</div>
-                                <a class="register-status__btn btn btn-semiround btn-action" :href="meetingUrl">모임글로 이동</a>
+                                <a class="register-status__btn btn btn-semiround btn-action" :href="registerForm.meetingUrl">모임글로 이동</a>
                             </div>
                         </div>
                     </div>
@@ -76,7 +77,6 @@
 </template>
 
 <script>
-import api from '@/api';
 import { onUpdated, reactive, ref } from '@vue/runtime-core';
 import LoadingRoller from '../../components/LoadingRoller.vue';
 import MeetingFormDateInput from '../../components/meeting/MeetingFormDateInput.vue';
@@ -84,163 +84,64 @@ import MeetingFormSelectInput from '../../components/meeting/MeetingFormSelectIn
 import MeetingFormSelectTextInput from '../../components/meeting/MeetingFormSelectTextInput.vue';
 import MeetingFormTextInput from '../../components/meeting/MeetingFormTextInput.vue';
 import Modal from '../../components/modal/Default.vue';
+import { RegisterForm } from '../../utils/RegisterForm';
 import { getQuillEditor, quillImageUploadHandler } from "../../utils/quill-generator";
-import { addDefaultInputs, addInput, checkTimeValid, closeAllExcept, validateInput } from '../../utils/register';
 export default {
     components: { Modal, MeetingFormSelectInput, MeetingFormTextInput, 
         MeetingFormDateInput, MeetingFormSelectTextInput, LoadingRoller },
     setup() {
-        const isLoaded = ref(false);
-        const inputs = reactive({});
-        const modalState = reactive({
-            isOpened : false,
-            sectionNum :1,  
-        })
-        const meetingUrl = ref('#');
-        const editor = ref(null);
-        const submithandler = (e) => {
-            const quill = editor.value;
-            modalState.isOpened = true;
-            
+        
+        const registerForm = reactive(new RegisterForm());
+        registerForm.addDefaultInputs();
+        registerForm.requestInputOptions();
+
+        const submithandler = (event) => {
+
+            registerForm.openStatusModal();
             // quill 에디터의 내용을 v-model이나 기타 input, change 이벤트를 이용해 즉각적으로 store에 반영하기 어려움
             // 따라서 제출 시 내용 한번만 확인
-            inputs['content'].currentValue = quill.root.innerHTML;
-
-            const data = {};
-            Object.keys(inputs).forEach(key=>{
-                const input = inputs[key];
-                data[input.parameterName] = input.currentValue;
-            })
-
-            const parser = new DOMParser();
-		    const quillContentDOM = parser.parseFromString(quill.root.innerHTML, 'text/html').body;
-		    const attachedImages = quillContentDOM.querySelectorAll('img');
-
-            let images = [];
-            attachedImages.forEach(image => {
-                if (image.dataset.id == undefined) {
-                    return;
-                }
-                images.push(
-                        {
-                            id: image.dataset.id,
-                        }   
-                    );
-            });
-            data['images'] = images;
-
-            const dataJSONStr = JSON.stringify(data);
-            console.log(dataJSONStr);
-
-
-            validateInput(inputs);
-
-            // const request = api.meeting.postMeeting(dataJSONStr);
-            // request.then(res => { res.json()})
-            //     .then(data => {
-            //         modalState.sectionNum = 2;
-            //         meetingUrl = `/meeting/${data.meetingId}`
-            //     })
-            //     .catch(err=>{
-            //         modalState.sectionNum = 0;
-            //     })
+            registerForm.setContentInEditor();
+            registerForm.validateInput();
+            registerForm.postMeeting();
+        
         }
 
-        const clickHandler = (e) => {
-            if (!e.target.parentElement.classList.contains('select-box')) {
-                Object.keys(inputs).forEach(key => {
-                    if (inputs[key].isOpened === null) return
-
-                    inputs[key].isOpened = false;
-                })
+        const clickHandler = (event) => {
+            if (!event.target.parentElement.classList.contains('select-box')) {
+                registerForm.closeAllSelectBox();
             }
         }
 
-        const closeModalHandler = (e) => {
-            modalState.isOpened = false;
+        const closeModalHandler = (event) => {
+            registerForm.closeStatusModal();
         }
 
         const fileUploadHandler = quillImageUploadHandler;
 
         const selectBoxClickHandler = (id) => {
-            const input = inputs[id];
-            closeAllExcept(inputs, id);
-            input.isOpened = !input.isOpened;
-            input.hasError = false;
+            registerForm.updateSelectBox(id);
         }
 
         const optionClickHandler = (id, placeholder, value) => {
-            const input = inputs[id];
-            input.placeholder = placeholder;
-            input.currentValue = value;
-            input.isOpened = !input.isOpened;
+            registerForm.updateOption(id,placeholder,value);
         }
 
         const dateChangeHandler = (id, inputDate) => {
-            const input = inputs[id];
-            input.hasError = false;
-            const result = checkTimeValid(inputDate);
-            if (!result.isValid) {
-                input.message = result.reason;
-                input.hasError = true;
-                return;
-            }
-            input.currentValue = inputDate;
+            registerForm.updateDate(id, inputDate);
         }
 
         const textInputHandler = (id, currentValue) => {
-            const input = inputs[id];
-            input.hasError = false;
-            input.currentValue = currentValue;
+            registerForm.updateTextInput(id,currentValue);
         }
 
-        addDefaultInputs(inputs);
-        const request = api.meeting.getActiveOptions();
-        request
-            .then(res => res.json())
-            .then(data => {
-                Object.keys(data).forEach((key) => {
-                    let title;
-                    let placeholder;
-                    let parameterName;
-                    switch (key) {
-                        case 'categories':
-                            title = '카테고리';
-                            placeholder = '카테고리를 선택해주세요.';
-                            parameterName = 'categoryId'
-                            break;
-                        case 'ageRanges':
-                            title = '연령대';
-                            placeholder = '연령대를 선택해주세요.';
-                            parameterName = 'ageRangeId';
-                            break;
-                        case 'regions':
-                            title = '지역';
-                            placeholder = '지역을 선택해주세요.';
-                            parameterName = 'regionId';
-                            break;
-                        case 'contactTypes':
-                            title = '연락방법';
-                            placeholder = '연락방법을 선택해주세요.';
-                            parameterName = 'contactTypeId'
-                            break;
-                    }
-                    addInput(inputs, key, data[key], title, placeholder, parameterName);
-                    isLoaded.value = true;
-                })
-            })
-            .catch((err) => { alert('모임글 옵션을 불러오는데 실패했습니다.'+err) });
-
         onUpdated(() => {
-            if (!editor.value) {
-                const quill = getQuillEditor();
-                editor.value = quill;
+            if (!registerForm.editor) {
+                registerForm.setEditor(getQuillEditor());
             }
         });
 
         return {
-            isLoaded,
-            inputs,
+            registerForm,
             submithandler,
             fileUploadHandler,
             dateChangeHandler,
@@ -249,9 +150,6 @@ export default {
             textInputHandler,
             clickHandler,
             closeModalHandler,
-            editor,
-            modalState,
-            meetingUrl,
         }
     }
 }

@@ -52,6 +52,5 @@ export default {
   </div>
 </template>
 <style scoped>
-   @import url(@/assets/css/component/select.css);
    @import url(@/assets/css/meeting/detail.css);
 </style>

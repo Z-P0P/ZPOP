@@ -82,19 +82,21 @@ public class MeetingController {
 	}
 	
 	@GetMapping("/update/{id}")
-	public String getMeetingUpdateView(@PathVariable int id
+	@ResponseBody
+	public Map<String, Object> getMeetingUpdateView(@PathVariable int id
 								,Model model
 								,@AuthenticationPrincipal ZpopUserDetails userDetails) {
 	/*	if (userDetails.getId() != id) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}*/
-		RegisterMeetingViewResponse response = service.getActiveOptions();
-		model.addAttribute("response", response);
-		UpdateMeetingViewDto dto = service.getUpdateMeetingView(id);
-		System.out.println(dto.toString());
-		model.addAttribute("meetingDetail", dto);
-		
-		return "/meeting/update";
+		RegisterMeetingViewResponse activeOptions = service.getActiveOptions();
+		UpdateMeetingViewDto meetingDetails = service.getUpdateMeetingView(id);
+		Map<String, Object> response = new HashMap<>();
+		response.put("options", activeOptions);
+		response.put("details", meetingDetails);
+
+
+		return response;
 	}
 
 
@@ -118,9 +120,9 @@ public class MeetingController {
 		return ResponseEntity.ok().body(meetingDetail);
 		}
 	
-	@PutMapping("/update/{id}")
+	@PutMapping("{id}")
 	@ResponseBody()
-	public ResponseEntity<?> updateMeeting(@PathVariable("id") int meetingId
+	public ResponseEntity<Object> updateMeeting(@PathVariable("id") int meetingId
 					, @Valid @RequestBody UpdateMeetingRequest dto
 					, @AuthenticationPrincipal ZpopUserDetails userDetails
 					, HttpServletRequest request) throws IOException {

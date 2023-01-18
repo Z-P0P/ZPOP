@@ -7,28 +7,36 @@
             <li><router-link to="/member/me/gathering">내가 모집한 모임</router-link></li>
             <li><router-link to="/member/me/meeting">내가 참여한 모임</router-link></li>
             <li><router-link to="/member/me/meeting">모임 평가하기</router-link></li>
-            <li><router-link to="/logout">로그아웃</router-link></li>
+            <li><a href="#" @click="onLogoutClick">로그아웃</a></li>
         </ul>
     </li>
 </template>
 
-<script>
+<script setup>
+import { getLogout } from '../../api/login'
 import { computed } from 'vue'
 import { useHeaderStore } from '../../stores/headerStore';
-export default {
-    setup(){
-        const store = useHeaderStore();
-        const isOpened = computed(()=>{
-            return store.isProfileOpened;
-        })
-        const onProfileClick = () => {
-            store.changeProfileState();
-        }
-        return{
-            isOpened,
-            onProfileClick,   
-        }
-    }
+import { useMemberStore } from '../../stores/memberStore';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const headerStore = useHeaderStore();
+const memberStore = useMemberStore();
+const isOpened = computed(()=>{
+    return headerStore.isProfileOpened;
+})
+const onProfileClick = () => {
+    headerStore.closeAllExcept('Profile')
+    headerStore.changeProfileState();
+}
+
+const onLogoutClick = () => {
+    const request = getLogout();
+    request.then(()=>{
+        memberStore.clearInfo();
+        router.push('/');
+    })
+    .catch(err=>console.log('로그인에 실패했습니다.',err));
 }
 </script>
 
