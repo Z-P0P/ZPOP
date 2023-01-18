@@ -5,7 +5,7 @@ export default {
   props: ['detail'],
   setup(props){
       const getParticipantNum = ()=> {
-        console.log('호출됨');
+
         if (props.detail.participants === undefined) return;
         
         const participantNum = props.detail.participants.length;
