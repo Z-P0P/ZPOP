@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from "vue";
 import Header from "@/components/header/header.vue";
-import ModalError from "../components/modal/ServerError.vue";
+import LoginModal from '@/components/modal/LoginModal.vue';
+import ModalError from "@/components/modal/ServerError.vue";
 
 let onError = ref(false);
 
@@ -15,9 +16,10 @@ function closeErrorModal() {
 </script>
 
 <template>
-  <Header />
+  <Header/>
   <main>
     <router-view @throw="showErrorModal"></router-view>
+    <LoginModal/>
     <ModalError v-if="onError" @closeModal="closeErrorModal"></ModalError>
   </main>
 </template>
