@@ -33,8 +33,8 @@ function getParticipant(meetingId){
 /**
  * 모임을 평가하기 
  */
-function rateMeeting(){
-
+function rateMeeting(meetingId){
+    return fetch(`api/rate`)
 }
 
 export default {
@@ -42,5 +42,6 @@ export default {
     getMyMeeting,
     getMyGathering,
     getParticipant,
-    getProfile,
+    rateMeeting
+
 };
