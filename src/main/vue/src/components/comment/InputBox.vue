@@ -1,26 +1,38 @@
 <script setup>
     import { defineProps, defineEmits, ref, onMounted } from 'vue';
     import api from "@/api";
+    import { useCommentStore} from '@/stores/commentStore'
 
+    const cmtStore = useCommentStore();
     const props = defineProps({
       reply:Object
     });
-    const emit = defineEmits(['cancelClicked',
-                                'newReply']);
+    const emit = defineEmits(['cancelClicked']);
+    const inputs = {f1:ref()}
+    onMounted(() => {
+    const input = inputs['f1'].value;
+    input.focus();
+  })
     function cancelWrite(){
         emit('cancelClicked');
     }
 
-    function registerReply(groupId){
+    function registerReply(){
         const data = {};
-        data.groupId = groupId;
+        data.meetingId = props.reply.meetingId;
+        data.parentCommentId = props.reply.id;
+        data.groupId = props.reply.groupId;
         data.content = document.querySelector("#reply-text").value;
         const dataJSONStr = JSON.stringify(data);
         api.comment.registerReply(dataJSONStr)
-        .then(res=>{
+        .then(async res=>{
             if(res.ok){
-            console.log("답글 등록됨");
-            emit('newReply');
+                console.log("답글 등록됨");
+                const data = await cmtStore.getReplyList(props.reply.groupId);
+                cmtStore.replyList.length = 0;
+                for(const r of data.resultObject) {
+                    cmtStore.replyList.push(r);
+                }
             }
             else 
             alert("시스템 장애로 등록이 안되고 있습니다")
@@ -34,10 +46,10 @@
             id="reply-text"
             class="reply__input"
             name="reply-input"
-            placeholder="답글을 입력하세요."></textarea>
+            placeholder="답글을 입력하세요." :ref="inputs.f1"></textarea>
         <div class="reply__btn-container">
             <span class="reply__btn btn btn-round btn-cancel cancel-btn" id="reply-cancel" @click="cancelWrite">취소하기</span>
-            <span class="reply__btn btn btn-round btn-action register-btn" @click="registerReply(reply.groupId)">등록하기</span>
+            <span class="reply__btn btn btn-round btn-action register-btn" @click="registerReply()">등록하기</span>
         </div>
     </div> 
 </template>

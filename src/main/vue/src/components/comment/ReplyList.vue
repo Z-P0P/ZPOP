@@ -1,6 +1,6 @@
 <script setup>
 import { setMapStoreSuffix } from 'pinia';
-import { defineProps} from 'vue';
+import { defineProps,defineEmits} from 'vue';
 import Reply from './Reply.vue'
 const props = defineProps({
   replies:Object

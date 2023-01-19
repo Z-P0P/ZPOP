@@ -11,9 +11,9 @@ import CommentList from "@/components/comment/CommentList.vue";
 export default {
   name: "MeetingDetail",
   components: {
-    'meeting-article':Article,
-    'participants':Participants,
-    'comment-list':CommentList,
+    'Article':Article,
+    'Participants':Participants,
+    'CommentList':CommentList,
   },
   setup() {
     const state = reactive({
@@ -43,14 +43,25 @@ export default {
 }
 </script>
 <template>
-  <div class="content-wrapper">
-  <meeting-article :article="state.detail"/>
-  <participants :detail="state.detail"/> 
-  <comment-list :detail="state.detail" @newComment="newComment"/> 
-
+  <div class="content-wrap">
+  <Article :article="state.detail"/>
+  <Participants :detail="state.detail"/> 
+  <CommentList :detail="state.detail" @newComment="newComment"/> 
+  
 
   </div>
 </template>
 <style scoped>
-   @import url(@/assets/css/meeting/detail.css);
+       
+.content-wrap{
+  
+  max-width: 783px;
+  width: 100%;
+  padding: 1.2rem;
+ }
+  @media (min-width: 576px) {
+.content-wrap{
+     padding: 4rem;
+  }
+}
 </style>

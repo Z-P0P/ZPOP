@@ -2,16 +2,15 @@
 import { setMapStoreSuffix } from 'pinia';
 import { defineProps,ref,reactive } from 'vue';
 import InputBox from './InputBox.vue';
+
 const props = defineProps({
   reply:Object
 });
+
 var hasBox = reactive({on:false});
 var replyWrite = reactive({on:true})
-const links = {
-      replyCnt:ref(),
-      replyClose:ref(),
-      replyWrite:ref()
-  }
+
+
 
   function inputBoxToggle() {
     replyWrite.on= !replyWrite.on;

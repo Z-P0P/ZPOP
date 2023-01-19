@@ -4,20 +4,35 @@
   import { reactive,ref } from 'vue';
   import ReplyList from "./ReplyList.vue";
   import { defineProps } from 'vue';
+  import { useCommentStore} from '@/stores/commentStore'
+  import InputBox from './InputBox.vue';
+
   const props = defineProps({
     comment:Object
   });
   
-  const replyList = reactive([]);
- 
+  const cmtStore = useCommentStore();
 
-  const toggle = (e)=>{
+  var hasBox = reactive({on:false});
+  var replyWrite = reactive({on:true})
+
+  function inputBoxToggle() {
+    replyWrite.on= !replyWrite.on;
+    hasBox.on = !hasBox.on;
+  }
+
+
+    async function toggle(e){
     if(e.target.id){
       const id = e.target.id;
       const el = document.querySelector('[data-id='+id+']'); //닫기버튼
       el.classList.remove("hidden");
       e.target.classList.add("hidden");
-      getReplyList(id.substr(3));
+      const data = await cmtStore.getReplyList(id.substr(3));
+      cmtStore.replyList.length = 0;
+      for(const r of data.resultObject) {
+        cmtStore.replyList.push(r);
+      }
       e.target.parentElement.nextElementSibling.classList.remove("hidden");
     }
     else {
@@ -25,7 +40,7 @@
       const el = document.getElementById(id);//답글갯수링크
       el.classList.remove("hidden");
       e.target.classList.add("hidden");
-      replyList.length = 0;
+      cmtStore.replyList.length = 0;
       e.target.parentElement.nextElementSibling.classList.add("hidden");
     }  
   }
@@ -35,24 +50,16 @@
     hasReply = true;
     return hasReply;
   }
-  function getReplyList (commentId){
-    api.comment.getReplyList(commentId)
-        .then(res=>{
-          if(res.ok)  {
-            console.log('답글을 불러왔습니다')
-            return res;
-          }
-          else 
-            alert("서버장애로 읽어들일 수 없습니다");
-        })
-        .then(res=>res.json())
-        .then(data=>{
-          for(const r of data.resultObject) { 
-            replyList.push(r);
-          }
-        })
+  function writeReply(){
+
   }
-  
+  async function registerReply(){
+    const data = await cmtStore.getReplyList(props.comment.id);
+    cmtStore.replyList.length = 0;
+    for(const r of data.resultObject) {
+      cmtStore.replyList.push(r);
+    }
+  }
 
 </script>
 
@@ -73,10 +80,12 @@
           <div class="comment__replies">
 						<span class="pointer underline reply-cnt"  @click="toggle"  v-if="hasReply(comment)" :id="'id-'+comment.id">답글 {{ comment.countOfReply }}개</span>
             <span class="pointer reply-close hidden" @click="toggle"  v-if="hasReply(comment)" :data-id="'id-'+comment.id">닫기</span>
-            <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal" :ref="reply-write">답글 달기</span>
+            <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal" :ref="reply-write" @click="inputBoxToggle">답글 달기</span>
           </div>
             <section class="reply hidden">
-              <ReplyList :replies="replyList"/> 
+              <!--보내는 객체는 comment이나 받는쪽 이름인 reply로 맞춤-->
+              <InputBox :reply="comment" v-show="hasBox.on" @cancelClicked="inputBoxToggle"/> 
+              <ReplyList :replies="cmtStore.replyList"/> 
             </section>
 </template>
 <style scoped>

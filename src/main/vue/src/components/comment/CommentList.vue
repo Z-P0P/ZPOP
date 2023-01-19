@@ -14,9 +14,9 @@
     input.focus();
   })
   
-  function registerComment(event, meetingId,refId){
+  function registerComment(refId){
     const data = {};
-    data.meetingId = meetingId;
+    data.meetingId = props.detail.id; //미팅 id
     data.content = document.querySelector("#comment-text").value;
     const dataJSONStr = JSON.stringify(data);
     api.comment.registerComment(dataJSONStr)
@@ -24,12 +24,12 @@
         if(res.ok){
           console.log("댓글 등록됨");
           emit('newComment');
+          const input = inputs[refId].value;
+          input.value="";
         }
         else 
           alert("시스템 장애로 등록이 안되고 있습니다")
       })
-      const input = inputs[refId].value;
-      input.value="";
   }
 
 </script>
@@ -42,7 +42,7 @@
                           id="comment-text" placeholder="댓글을 입력하세요." :ref="inputs.f1"></textarea>
             <div class="comment__btn-container">
                 <span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
-                <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="#dummy-modal" @click="registerComment($event,detail.id,'f1')">등록하기</span>
+                <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="#dummy-modal" @click="registerComment('f1')">등록하기</span>
                 <span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
             </div>
         </div>

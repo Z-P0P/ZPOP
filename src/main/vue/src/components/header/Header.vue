@@ -45,7 +45,6 @@ export default {
     setup() {
         const headerStore = useHeaderStore();
         const memberStore = useMemberStore();
-        console.log(memberStore.memberInfo);
         const isNotificationOpened = computed(() => {
             return headerStore.isNotificationOpened;
         });
