@@ -15,7 +15,6 @@ let clickedParticipantId = ref(null);
 function handleModal(event){
       isOpen.value = true;
       clickedParticipantId.value = event.target.getAttribute('data-id');
-}
 
 const participantNum = computed(() => {
   // 데이터에서 불러온 참여자가 없을 시 0을 리턴

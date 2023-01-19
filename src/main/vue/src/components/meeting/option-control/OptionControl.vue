@@ -2,6 +2,8 @@
 import { useMeetingListStore } from "@/stores/meetingListStore";
 import Category from "./Category.vue";
 import SoftToggle from "@/components/button/SoftToggle.vue";
+import Region from "@/components/meeting/option-control/Region.vue";
+
 
 const meetingListStore = useMeetingListStore();
 
@@ -19,7 +21,7 @@ function handleToggle(e) {
     <section class="option-control">
       <Category @selectCategory="categoryId" />
       <div class="options-detail">
-        <!-- <Region/> -->
+        <Region/>
         <div class="option-control__activate">
           <span>모집 중만 보기</span>
           <SoftToggle
@@ -80,6 +82,21 @@ function handleToggle(e) {
   .option-control__activate > span {
     font-size: 18px;
     color: var(--dark-grey2);
+  }
+}
+
+.options-detail {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin: 1rem auto;
+  column-gap: 10px;
+}
+
+@media (min-width: 1200px) {
+  .options-detail {
+    justify-content: flex-start;
   }
 }
 </style>

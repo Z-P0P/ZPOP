@@ -46,6 +46,12 @@ export default {
 </template>
 
 <style scoped>
+h3 ,span, li{
+  font-weight: 500;
+}
+.meeting__body-detail-more {
+  font-weight: 500;
+}
 .meeting > a {
   display: flex;
   flex-direction: column;

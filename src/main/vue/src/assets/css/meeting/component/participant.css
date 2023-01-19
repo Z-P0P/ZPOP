@@ -4,19 +4,22 @@
   display: flex;
   flex-direction: column;
   font-size: 16px;
+  color: var(--dark-grey2);
+  font-weight: 600;
 }
 
 .participant__num {
   display: flex;
+  margin-top: 24px;
 }
 
 .participant__num > span {
   margin-right: .5rem;
-  font-weight: bold;
+  font-weight:600;
 }
 
 .participant__list {
-  margin-top: 1rem;
+  margin-top: 12px;
   display: grid;
   grid-auto-rows: 46px;
   row-gap: 8px;
@@ -31,7 +34,7 @@
   cursor: pointer;
   align-items: center;
   padding-left: 6px;
-  background-color: #f9f9f9;
+  font-weight: 500;
 }
 
 .participant__info:hover{

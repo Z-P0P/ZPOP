@@ -1,45 +1,64 @@
-import { reactive } from 'vue';
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
+import api from "@/api";
 
-export const useMemberStore = defineStore('member', {
-    state: () => {
-        let info = reactive({
-            id : 0,
-            nickname : null,
-            profileImagePath : null,
-            fame : 0,
+export const useMemberStore = defineStore("member", {
+  state: () => ({
+    id: 0,
+    nickname: "",
+    profileImagePath: "",
+    fame: 0,
+  }),
+  actions: {
+    setInfo(memberInfo) {
+      this.id = memberInfo.id;
+      this.nickname = memberInfo.nickname;
+      this.profileImagePath = memberInfo.profileImagePath;
+      this.fame = memberInfo.fame;
+
+      window.sessionStorage.setItem(
+        "ZPOP_MEMBER_INFO",
+        JSON.stringify({
+          id: this.id,
+          nickname: this.nickname,
+          profileImagePath: this.profileImagePath,
+          fame: this.fame,
         })
-        const storedMemberInfo = JSON.parse(window.sessionStorage.getItem('ZPOP_MEMBER_INFO'));
-
-        if (storedMemberInfo != null){
-            info = storedMemberInfo;
-        }
-        else{
-            fetch('/api/login/me')
-                .then(res=>res.json())
-                .then(data=>{
-                    if (data.code === "AUTHENTICATED"){
-                        info.nickname = data.nickname;
-                        info.profileImagePath = data.profileImagePath;
-                        info.fame = data.fame;
-                    }
-                    window.sessionStorage.setItem('ZPOP_MEMBER_INFO', JSON.stringify(info));
-                })
-        }
-
-        return{
-            memberInfo : info,
-        }
+      );
     },
-
-    actions: {
-        setInfo(memberInfo){
-            this.memberInfo = memberInfo;
-        },
-        clearInfo(){
-            window.sessionStorage.removeItem('ZPOP_MEMBER_INFO');
-            this.memberInfo.nickname = null;
-            this.memberInfo.profileImagePath = null;
-        }
+    clearInfo() {
+      window.sessionStorage.removeItem("ZPOP_MEMBER_INFO");
+      this.id = 0;
+      this.nickname = null;
+      this.profileImagePath = null;
+      this.fame = 0;
     },
-})
+    async isAuthenticated() {
+      try {
+        const storedMemberInfo = JSON.parse(
+          window.sessionStorage.getItem("ZPOP_MEMBER_INFO")
+        );
+
+        // sessionStorage에 사용자 정보가 있음.
+        if (storedMemberInfo !== null) {
+          this.setInfo(storedMemberInfo);
+          return true;
+        }
+
+        // sessionStorage에 사용자 정보가 없음
+        // 백엔드에 쿠키를 들고 요청. 에러날 경우 로그인해야 함
+        const res = await api.auth.me();
+        const data = res.json();
+        if (data.code === "AUTHENTICATED") {
+          this.setInfo(data);
+          return true;
+        }
+
+        return false;
+      } catch (e) {
+        //TODO: 예외
+        console.log("erreros ! ", e);
+        return false;
+      }
+    },
+  },
+});
