@@ -1,15 +1,14 @@
 <template>
-    {{props.myInfo}}
     <div class="my-profile">
         <div class="my-profile-container">
             <h2 class="profile__title" >내 프로필</h2>
             <div class="profile__image">
                 <div class="profile__image--no-photo .icon"></div>
             </div>
-            <span class="profile__nickname"></span>
+            <span class="profile__nickname">{{ myInfo.nickname }}</span>
 
             <div class="profile__fame">
-                <span>인기도: 99점</span>
+                <span>{{ myInfo.fame }}점</span>
                 <span class="deco-img-star "></span>
             </div>
 
@@ -36,7 +35,6 @@ const props = defineProps({
 myInfo: {type : Object,
         required :true}
 });
-console.log(props.myInfo +"iiiiiii");
 </script>
 
 <style scoped>

@@ -1,26 +1,18 @@
 package com.zpop.web.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.zpop.web.dto.EvalDto;
 import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.dto.MyMeetingResponse;
-import com.zpop.web.dto.ProfileResponse;
 import com.zpop.web.entity.Member;
 import com.zpop.web.security.ZpopUserDetails;
-import com.zpop.web.service.MeetingService;
 import com.zpop.web.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /*****
  * 1. 다른 사용자 프로필 조회 --> 모달 url 불필요 2. 마이 프로필 페이지 진입 (/member/me) --> 페이지 3.
@@ -34,70 +26,59 @@ import com.zpop.web.service.MemberService;
 // 3. 마이프로필 페이지로 이동
 
 @RestController
-@RequestMapping("/api/member")
+@RequestMapping("/api")
 public class MemberController {
 
 	@Autowired
 	private MemberService service;
 
-    @Autowired
-    private MeetingService meetingService;
 
-	// 마이페이지 진입
+	//CORS ?
+
 	@GetMapping("/me")
-	public String getMyPage(@AuthenticationPrincipal ZpopUserDetails userDetails,
-							 Model model) {
+	public ResponseEntity<Member> getMyPage(@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		Member member = service.getById(userDetails.getId());
-		model.addAttribute("member", member);
-		return "member/my-profile";
+		return ResponseEntity.ok().body(member);
 	}
+//	@GetMapping("/me")
+//	public ResponseEntity<Member> getMyPage(@AuthenticationPrincipal ZpopUserDetails userDetails) {
+//		Member member = service.getById(userDetails.getId());
+//		return ResponseEntity.ok().body(member);
+//	}
 
-	@GetMapping("me/edit")
-	public String getEditPage(@AuthenticationPrincipal ZpopUserDetails userDetails, Model model) {
-		Member member = service.getById(userDetails.getId());
-		model.addAttribute("member", member);
-		return "member/profile-edit";
-	}
-
-	@GetMapping("/me/meeting")
-	public String getMeeting(@AuthenticationPrincipal ZpopUserDetails userDetails, Model model) {
+	@GetMapping("/myMeeting")
+	public ResponseEntity<List<MyMeetingResponse>> getMeeting(@AuthenticationPrincipal ZpopUserDetails userDetails){
 		List<MyMeetingResponse> meetings = service.getMyMeeting(userDetails.getId());
-		Member member = service.getById(userDetails.getId());
-		model.addAttribute("member", member);
-		model.addAttribute("meetings", meetings);
-        return "member/my-meeting";
-    }
-
-    @ResponseBody
-    @GetMapping("/eval/{dataId}")
-    public List<EvalMemberDto> getParticipants(@PathVariable("dataId") int meetingId) {
-		List<EvalMemberDto> participant = service.getEvalMember(meetingId) ;
-        return participant;
-    }
+		return ResponseEntity.ok().body(meetings);
+	}
+	@GetMapping("/myGathering")
+	public ResponseEntity<List<MyMeetingResponse>> getGathering(@AuthenticationPrincipal ZpopUserDetails userDetails){
+		List<MyMeetingResponse> meetings = service.getMyGathering(userDetails.getId());
+		//추후수정
+		if(meetings.isEmpty()) {
+			return  new ResponseEntity<>(null, HttpStatus.OK);
+		}
+		return ResponseEntity.ok().body(meetings);
+	}
 
 	@ResponseBody
+	@GetMapping("/partList/{meetingId}")
+	public ResponseEntity<List<EvalMemberDto>> getParticipants(@PathVariable("meetingId") int meetingId) {
+		List<EvalMemberDto> participant = service.getEvalMember(meetingId) ;
+//        return participant;
+		return ResponseEntity.ok().body(participant);
+	}
+
 	@PostMapping("/rate")
-	public void rateMember(@RequestBody EvalDto dto, @AuthenticationPrincipal ZpopUserDetails userDetails) {
+	public ResponseEntity<EvalDto> rateMember(@RequestBody EvalDto dto, @AuthenticationPrincipal ZpopUserDetails userDetails) {
 		if (userDetails == null){
 			//로그인 요청
 		}
 		int evaluatorId = userDetails.getId();
 		dto.setEvaluatorId(evaluatorId);
 		service.getRateData(dto);
+
+		return ResponseEntity.ok().body(dto);
 	}
 
-
-	//내가모집한 모임 조회
-	@GetMapping("/me/gathering")
-	public String getGathering(@AuthenticationPrincipal ZpopUserDetails userDetails, Model model) {
-		List<MyMeetingResponse> meetings = service.getMyGathering(userDetails.getId());
-		model.addAttribute("meetings", meetings);
-		return "member/my-gathering";
-
-	}
-
-	@GetMapping("/{id}")
-	public ProfileResponse getProfile(@PathVariable("id") int id){
-		return service.getParticipant(id);
-	}
 }

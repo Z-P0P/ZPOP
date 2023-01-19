@@ -13,8 +13,8 @@
     
             <div class="input-text">
                 <!--📌to do: 닉네임 수정-->
-                <label class="input-text__label" for="input-text__content">닉네임</label>
-                <input id ="input-text__content" class="input-text__content" type="text">
+                <label class="input-text__label" for="input-text__content" ></label>
+                <input id ="input-text__content" class="input-text__content" v-bind:placeholder="nickname" type="text">
             </div>
             <span class="btn-semiround profile__btn--save ">저장하기</span>
             
@@ -29,7 +29,8 @@
         myInfo: {type : Object,
                 required :true}
     });
-    console.log(props.myInfo +"iiiiiii");
+
+    const nickname = props.myInfo.nickname;
     </script> 
     
     
