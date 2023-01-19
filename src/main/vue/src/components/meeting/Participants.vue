@@ -15,6 +15,7 @@ let clickedParticipantId = ref(null);
 function handleModal(event){
       isOpen.value = true;
       clickedParticipantId.value = event.target.getAttribute('data-id');
+}
 
 const participantNum = computed(() => {
   // 데이터에서 불러온 참여자가 없을 시 0을 리턴
@@ -40,7 +41,7 @@ const participantNum = computed(() => {
               <div class="participant__info">
                 <img src="/images/icon/user-profile-grey.svg" v-bind:data-id="participant.participantId" @click.prevent="handleModal">
                 <span v-bind:data-id="participant.participantId" @click.prevent="handleModal">{{ participant.nickname }}</span>
-            </div>
+              </div>
             </li>
         </ul>
         <UserProfile v-if="isOpen" :userDetail="detail" :participantId="clickedParticipantId"/>

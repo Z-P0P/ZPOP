@@ -1,5 +1,6 @@
 package com.zpop.web.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,11 +28,18 @@ public class NotificationController {
 	@GetMapping("/{id}")
 	@ResponseBody
 	public  List<Notification> getList(
-			 @PathVariable("id") int id
-			) {
+			 @PathVariable("id") int id) {
 		List<Notification> list = service.getNotificationByMemberId(id);
-		System.out.println(list);
-		return list; 
+		List<Notification> notificationList = new ArrayList<>();
+		
+		int typeOneCounter = 0;
+		for(Notification n : list){
+			if(n.getType()==1){ 
+				typeOneCounter++;
+					if(typeOneCounter==1) notificationList.add(n);}
+			else notificationList.add(n);
+		}
+		return notificationList; 
 	}
 	
 	@PostMapping("/read/{id}")
