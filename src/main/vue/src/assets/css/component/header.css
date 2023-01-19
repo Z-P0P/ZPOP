@@ -169,6 +169,14 @@
   background: url(/images/icon/notification.svg) center/contain no-repeat;
 }
 
+.header__notification-on button::before {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  content: "";
+  background: url(/images/icon/notification-on.svg) center/contain no-repeat;
+}
+
 .header__notification {
   position: relative;
 }

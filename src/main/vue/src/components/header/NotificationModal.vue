@@ -1,31 +1,85 @@
+<script setup>
+import { useHeaderStore } from '../../stores/headerStore';
+import api from "@/api";
+import { reactive, ref, onBeforeMount } from 'vue';
+
+const store = useHeaderStore();
+const close = () => {
+    store.changeNotificationState();
+}
+const state = reactive({
+    notification:{
+        memberId:0,
+        url:"",
+        type:0,
+        elapsedTime:""
+    }
+})
+
+const id = 18;
+function getMemberNotification(id){
+    api.notification.getNotification(id)
+    .then((response)=>response.json())
+    .then((data)=>{
+        state.notification = data;
+        console.log(state.notification);
+    })
+}
+
+function readNotification(event){
+    // 알림 클릭시 알림을 element를 없애기
+    let deleteTarget = event.target;
+    for (deleteTarget; !deleteTarget.classList.contains('notification');
+    deleteTarget = deleteTarget.parentElement);
+    
+    let notificationModal = deleteTarget.parentElement;
+    notificationModal.removeChild(deleteTarget);
+    
+    // 데이터 베이스에 해당 알림 읽음처리하기
+    const id = deleteTarget.getAttribute("data-id");
+    api.notification.readOne(id)
+    .then((response)=>{
+        // router.push('/users/eduardo') 수정 하기
+        location.href=deleteTarget.getAttribute("data-url");
+    })
+}   
+
+// 모두 읽기 버튼을 누르면 모든 알림이 사라진다.
+const notificationAbsence = ref(false);
+function readAllNotifications(event){
+    state.notification.splice(0);
+    const id = 18;
+    api.notification.readAll(id)
+    .then((response)=>{
+        notificationAbsence.value=true;
+    })
+}
+
+getMemberNotification(id);
+
+</script>
+
 <template>
     <div class="notification-modal">
         <div class="button--container">
             <input type="button" class="notification__close-btn" @click="close">
         </div>
-        <div class="notification-container"></div>
-        <!-- 알림 들어가는 공간 -->
+        <div class="notification-container">
+                <div v-for="item in state.notification" @click.prevent="readNotification" v-bind:data-url="item.url" v-bind:data-id="item.id" class="notification">
+                    <span v-if="item.type=='1'">😃 평가하지 않은 모임이 있어요 !</span>
+                    <span v-else-if="item.type=='2'">😎 내 모임에 새로운 참여자가 있어요 !</span>
+                    <span v-else-if="item.type=='3'">💬 내 모임에 댓글이 달렸어요 !</span>
+                    <span v-else-if="item.type=='4'">💬 내 댓글에 답글이 달렸어요 !</span>
+                    <p>{{item.elapsedTime}}</p>
+                </div>
+                <div class="notification notification--none" v-show="notificationAbsence">받은 알림이 없네요!</div>
+        </div>
         <div class="blank-div">
-            <div class="readAll-btn btn btn-round">모두 읽기</div>
+            <div v-if="!notificationAbsence" class="readAll-btn btn btn-round" @click.prevent="readAllNotifications">모두 읽기</div>
+            <div v-if="notificationAbsence" class="readAll-btn btn btn-round deactivated-btn">모두 읽음</div>
         </div>
     </div>
 </template>
-
-<script>
-import { useHeaderStore } from '../../stores/headerStore';
-
-export default {
-    setup() {
-        const store = useHeaderStore();
-        const close = () => {
-            store.changeNotificationState();
-        }
-        return {
-            close,
-        }
-    }
-}
-</script>
 
 <style>
 .notification-modal {
@@ -92,6 +146,11 @@ export default {
     display: inline-block;
     content: "";
     background: url(/images/icon/notification-on.svg) center/contain no-repeat;
+}
+
+.deactivated-btn{
+	cursor: default;
+	background-color:#8B8B8B;
 }
 
 .notification {

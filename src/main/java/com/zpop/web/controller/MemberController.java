@@ -1,19 +1,26 @@
 package com.zpop.web.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.zpop.web.dto.EvalDto;
 import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.dto.MyMeetingResponse;
+import com.zpop.web.dto.ProfileResponse;
 import com.zpop.web.entity.Member;
 import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.MeetingService;
 import com.zpop.web.service.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /*****
  * 1. 다른 사용자 프로필 조회 --> 모달 url 불필요 2. 마이 프로필 페이지 진입 (/member/me) --> 페이지 3.
@@ -26,8 +33,8 @@ import java.util.List;
 // 2-2. 권한이 없다면 접근권한이 없습니다! 띄우기
 // 3. 마이프로필 페이지로 이동
 
-@Controller
-@RequestMapping("/member")
+@RestController
+@RequestMapping("/api/member")
 public class MemberController {
 
 	@Autowired
@@ -87,5 +94,10 @@ public class MemberController {
 		model.addAttribute("meetings", meetings);
 		return "member/my-gathering";
 
+	}
+
+	@GetMapping("/{id}")
+	public ProfileResponse getProfile(@PathVariable("id") int id){
+		return service.getParticipant(id);
 	}
 }

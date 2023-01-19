@@ -1,8 +1,6 @@
 package com.zpop.web.service;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +39,10 @@ public class DefaultNotificationService implements NotificationService {
 		dao.updateByType(memberId, readAt, type);
 		
 	}
-	
+
+	@Override
+	public void updateAllById(int memberId, Date readAt) {
+		dao.updateAllById(memberId, readAt);
+	}
 
 }
