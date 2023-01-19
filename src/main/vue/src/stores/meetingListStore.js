@@ -14,8 +14,9 @@ export const useMeetingListStore = defineStore("meetingList", {
     selectCategory(categoryId) {
       this.category = categoryId;
     },
-    selectRegion(regioinId) {},
-    revmoeRegion(regioinId) {},
+    setRegions(selectedRegions){
+      this.regions = selectedRegions;
+    },
     changeToggle() {
       this.isToggleOn = !this.isToggleOn;
     },

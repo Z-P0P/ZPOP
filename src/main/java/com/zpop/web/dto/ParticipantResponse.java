@@ -2,15 +2,18 @@ package com.zpop.web.dto;
 
 public class ParticipantResponse {
   private int id;
+  private int participantId;
 	private String nickname;
 	private String profileImagePath;
+
 
   public ParticipantResponse() {
   }
   
 
-  public ParticipantResponse(int id, String nickname, String profileImagePath) {
+  public ParticipantResponse(int id,int participantId, String nickname, String profileImagePath) {
     this.id = id;
+    this.participantId = participantId;
     this.nickname = nickname;
     this.profileImagePath = profileImagePath;
   }
@@ -37,5 +40,15 @@ public class ParticipantResponse {
 
   public void setProfileImagePath(String profileImagePath) {
     this.profileImagePath = profileImagePath;
+  }
+
+
+  public int getParticipantId() {
+    return participantId;
+  }
+
+
+  public void setParticipantId(int participantId) {
+    this.participantId = participantId;
   }
 }

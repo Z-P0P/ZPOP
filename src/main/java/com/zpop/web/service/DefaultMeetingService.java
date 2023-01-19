@@ -233,6 +233,7 @@ public class DefaultMeetingService implements MeetingService {
 
 			participationsResponse.add(new ParticipantResponse(
 				p.getId(),
+				p.getParticipantId(),
 				p.getNickname(),
 				p.getProfileImagePath()
 			));
@@ -616,7 +617,8 @@ public class DefaultMeetingService implements MeetingService {
 				continue;
 
 			ParticipantResponse participant =
-					new ParticipantResponse(p.getId(), p.getNickname(), p.getProfileImagePath());
+				new ParticipantResponse(p.getId(), p.getParticipantId(), p.getNickname(), p.getProfileImagePath());
+
 			participants.add(participant);
 		}
 

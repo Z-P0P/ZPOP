@@ -19,4 +19,7 @@
   				(memberId, url, type)
   				values(#{memberId},#{url},#{type})
   	</insert>
+	<update id="updateAllById">
+		UPDATE notification SET readAt = #{readAt} WHERE readAt IS NULL AND memberId = #{memberId};
+	</update>
 </mapper>

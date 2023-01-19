@@ -114,7 +114,7 @@ function generateParamsWithStore(meetingListStore) {
     params.category = meetingListStore.category;
   // 지역 옵션
   if (meetingListStore.regions && meetingListStore.regions.length !== 0)
-    params.regions = regions;
+    params.regions = meetingListStore.regions;
   // 스크롤 이벤트시 설정되는 리스트 중 마지막 요소 id
   if (state.lastId) params.start = state.lastId;
 

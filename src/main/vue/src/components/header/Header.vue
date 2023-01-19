@@ -20,69 +20,45 @@
                 <profile v-if="isMemberAuthenticated" />
                 <li v-if="!isMemberAuthenticated" class="header__login">
                     <button @click="onLoginClick">로그인</button>
-                    <login-modal v-show="isLoginOpened" />
                 </li>
             </ul>
         </nav>
     </header>
 </template>
 
-<script>
-import { computed } from "vue";
+<script setup>
+import { computed, onBeforeMount } from "vue";
 import { useHeaderStore } from '../../stores/headerStore';
 import { useMemberStore } from '../../stores/memberStore';
-import loginModal from './LoginModal.vue';
+import { useLoginModalStore } from '@/stores/loginModalStore';
 import notificationModal from './NotificationModal.vue';
 import profile from './Profile.vue';
 
-export default {
-    name: 'Header',
-    components: {
-        notificationModal,
-        loginModal,
-        profile,
-    },
-    setup() {
-        const headerStore = useHeaderStore();
-        const memberStore = useMemberStore();
-        console.log(memberStore.memberInfo);
-        const isNotificationOpened = computed(() => {
-            return headerStore.isNotificationOpened;
-        });
+const headerStore = useHeaderStore();
+const memberStore = useMemberStore();
+const loginModalStore = useLoginModalStore();
 
-        const isLoginOpened = computed(() => {
-            return headerStore.isLoginOpened;
-        });
+// refresh 마다 세션 스토어를 이용해 로그인 상태 확인
+onBeforeMount(() => {
+    memberStore.isAuthenticated();
+})
 
-        const isProfileOpened = computed(() => {
-            return headerStore.isProfileOpened;
-        });
+const isNotificationOpened = computed(() => {
+    return headerStore.isNotificationOpened;
+});
 
-        const onNotificationClick = () => {
-            headerStore.closeAllExcept('Notification')
-            headerStore.changeNotificationState();
-        }
-        const onLoginClick = () => {
-            headerStore.closeAllExcept('Login')
-            headerStore.changeLoginState();
-        }
-
-        const isMemberAuthenticated = computed(() => {
-            if (memberStore.memberInfo.nickname === null){
-                return false;
-            }
-            return true;
-        });
-        return {
-            isNotificationOpened,
-            isLoginOpened,
-            isProfileOpened,
-            onNotificationClick,
-            onLoginClick,
-            isMemberAuthenticated
-        }
-    },
+const onNotificationClick = () => {
+    headerStore.closeAllExcept('Notification')
+    headerStore.changeNotificationState();
 }
+
+const onLoginClick = () => {
+    loginModalStore.show();
+}
+
+const isMemberAuthenticated = computed(() => {
+    return memberStore.id !== 0
+});
 </script>
 
 <style scoped>
