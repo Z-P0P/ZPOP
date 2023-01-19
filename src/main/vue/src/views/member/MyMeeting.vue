@@ -1,5 +1,4 @@
 
-<!-- detail vue = 화면 / article 화면의 구성 요소중 한 부분-->
 <script setup>
 import { reactive, computed, ref  } from "vue";
 import api from "@/api";
@@ -12,23 +11,12 @@ const state = reactive({
   participants: [],
   userId : null,
   participantsId: [],
-  //참여인원
-  // rateValue: [],
-
-
-  // isResultNone: computed(() => {
-  //   return state.meetings.length === 0;
-  // }),
-  isInput: computed((changeColor) => {
-
-  })
 
 });
 
 const emit = defineEmits([
   'rate'
 ]);
-
 
 let modalOn = ref(false);
 
@@ -41,6 +29,9 @@ function closeMyModal() {
 }
 
 
+/***
+ * 회원이 참여한 모임의 모든 정보를 요청하는 함수
+ */
 async function getMyMeeting() {
   try {
     const res = await api.member.getMyMeeting();
@@ -60,8 +51,6 @@ async function getMyMeeting() {
 getMyMeeting();
 
 
-
-
 /***
  * 얻게된 meeetingId를 가지고 서버에 API 정보를 요청하는 함수
  */
@@ -74,11 +63,7 @@ async function getParticipant(meetingId) {
       continue;
       p.rateValue=50;
       state.participants.push(p);
-      // console.log(p);
     }
-    // state.participants = data;
-    // console.log(data);
-    //data for문
     
     return state.participants;
   }
@@ -87,42 +72,6 @@ async function getParticipant(meetingId) {
   }
 }
 
-
-/***
- * 평가하기 버튼을 클릭했을때 state의 click값을 meetingId로 변경해주는 함수
- * 모달창 OPEN 해주어야함
- */
-async function updateIdByClick(id) {
-  state.clicked = id
-  return await getParticipant(state.clicked);
-  console.log(state.participants);
-
-
-
-}
-
-
-async function rateHandeler(id) {
-  state.meetingId = id;
-  await getParticipant(state.meetingId);
-  console.log(state.participants);
-  console.log(state.participants.length + "길이");
-
-  showModal()
-  return state.participants;
-//   console.log("clicked from parent");
-//  getParticipant(id);
-//  console.log( getParticipant(id));
-
-//   return getParticipant(id);
-  
-  // isProxy(await getParticipant(id)) ? 'yup' : 'nope'
-  // const rawObjectOrArray = toRaw(await getParticipant(id))
-  // console.log(rawObjectOrArray);
-  // console.log(rawObjectOrArray[0].id);
-  // showModal(rawObjectOrArray);
-  
-}
 
 /***
  * 
@@ -138,38 +87,86 @@ async function rateHandeler(id) {
   평가하기 버튼이 평가완료 버튼으로 닫힌다.
  * 
  */
-function changeColor(e) {
-  // state.participants.rateValue = e.target.value;
+
+
+ /**
+  * 
+  * @param {*} id 
+  * 평가하기 버튼을 누르면, 해당 모임에 참여한 참여자의 정보를 반환해준다.
+  * 평가하기 모달을 띄워준다.
+  */
+async function rateHandeler(id) {
+  state.meetingId = id;
+  await getParticipant(state.meetingId);
+  showModal()
+  return state.participants;
+}
+
+ /***
+  * 사용자의 input값이 바뀌면, 동적으로 input 태그 값이 변경됨과 동시에 배경이 바뀐다.
+  */
+function changeValue(e) {
   let targetIdx = e.target.getAttribute("idx");
-  // state.participants[targetIdx].push(e.target.value);
-  // console.log(e.target.getAttribute("idx"));
-  // console.log(e.currentTarget);
-  // console.log(e.target);
-  // console.log(state.participants.rateValue);
   let value = e.target.value;
   let color ='linear-gradient(90deg, rgb(98, 179, 185)' + value + '% , rgb(235, 235, 235)' + value + '%)';
   e.target.style.background = color;
-
-  // state.participants[targetIdx].push(value);
-  // console.log(state.participants[targetIdx]);
-  console.log(state.participants[targetIdx].rateValue = value);
-  // console.log(state.participants[targetIdx].rateValue.push(value));
-  // console.log(state.participants[targetIdx].rateValue);
-  // console.log(state.participants[targetIdx].rateValue);
-
   state.participants[targetIdx].rateValue = value;
-
 }
 
-function rateMeeting(e){
-  console.log(e);
-  console.log("done");
-  console.log(state.participants);
+/**
+ * meetingId를 받아서 해당 모임에 참여한 회원들의 인기도를 평가한다.
+ * @param {*} meetingId 
+ */
+function rateMeeting(meetingId){
+  let id = state.meetingId ;
+  //사용자가 평가한 값을 담을 배열
+  let rateValue = [];
+  //평가 대상자가 담길 배열
+  let evaluateeId = [];
+  //평가한 값과, 대상자가 짝을이뤄 evals에 담기게된다.
+  let evals =[];
+  
+  for(const s of state.participants) {
+     let result = 0;
+                      if (parseInt(s.rateValue) === 0) result = -1;
+                      if (parseInt(s.rateValue) === 50) result = 1;
+                      if (parseInt(s.rateValue) === 100) result = 3;
+                
+    rateValue.push(result);
+    evaluateeId.push(s.participantId);
+
+  }
+  for (let i = 0; i < rateValue.length; i++){
+                      let evaldata = {
+                          evaluateeId : evaluateeId[i],
+                          result : rateValue[i],
+                      }
+                      evals.push(evaldata);
+                  }
+  let rateList = {
+      "meetingId" : id,
+      "evals" : evals,
+  };
+  fetch("/api/rate", {
+                        method: 'POST',
+                        mode: 'cors',
+                        cache: 'no-cache',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        redirect: 'follow',
+                        referrer: 'no-referrer',
+                        body: JSON.stringify(rateList)
+
+                    }).then((response) => response.ok)
+                      .then((data) => {
+                        if(data==true) {
+                        }
+                      });             
   
 }
-
 </script>
-
 <template>
   <ModalDefault v-if="modalOn" @closeModal="closeMyModal"><template #modal-body>
       <div class="rate-container">
@@ -195,7 +192,7 @@ function rateMeeting(e){
         <li v-for="(participant, idx) in state.participants" :key="idx">
            {{ participant.nickname }}
             <div>
-          <input :idx="idx" type="range" step="50" min="0" max="100" @input.prevent="changeColor">
+          <input :idx="idx" type="range" step="50" min="0" max="100" @input.prevent="changeValue">
         </div>
         </li>
       </ul>
