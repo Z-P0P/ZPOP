@@ -4,7 +4,6 @@ import Category from "./Category.vue";
 import SoftToggle from "@/components/button/SoftToggle.vue";
 import Region from "@/components/meeting/option-control/Region.vue";
 
-
 const meetingListStore = useMeetingListStore();
 
 function handleToggle(e) {
@@ -21,7 +20,7 @@ function handleToggle(e) {
     <section class="option-control">
       <Category @selectCategory="categoryId" />
       <div class="options-detail">
-        <Region/>
+        <Region />
         <div class="option-control__activate">
           <span>모집 중만 보기</span>
           <SoftToggle
@@ -53,23 +52,12 @@ function handleToggle(e) {
   }
 }
 
-@media (min-width: 1200px) {
-  .option-control {
-  }
-}
-
 .option-control__activate {
-  display: hidden;
+  display: flex;
   align-items: center;
   margin-left: auto;
   margin-top: 24px;
   margin-bottom: 24px;
-}
-
-@media (min-width: 1200px) {
-  .option-control__activate {
-    display: flex;
-  }
 }
 
 .option-control__activate > span {
@@ -90,13 +78,13 @@ function handleToggle(e) {
   display: flex;
   justify-content: end;
   align-items: center;
-  margin: 1rem auto;
   column-gap: 10px;
 }
 
 @media (min-width: 1200px) {
   .options-detail {
     justify-content: flex-start;
+    margin: 1rem auto;
   }
 }
 </style>
