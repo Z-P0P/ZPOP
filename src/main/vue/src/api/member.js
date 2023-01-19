@@ -31,14 +31,15 @@ function getParticipant(meetingId){
 /**
  * 모임을 평가하기 
  */
-function rateMeeting(){
-
+function rateMeeting(meetingId){
+    return fetch(`api/rate`)
 }
 
 export default {
     getMyProfile,
     getMyMeeting,
     getMyGathering,
-    getParticipant
+    getParticipant,
+    rateMeeting
 
 };
