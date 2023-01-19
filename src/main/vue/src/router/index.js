@@ -1,14 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 import adminRoute from "./admin";
-import { useMemberStore } from "../stores/memberStore";
+import { useMemberStore } from "@/stores/memberStore";
+import { useLoginModalStore } from "@/stores/loginModalStore";
 
 async function isAuth (to, from) {
   const memberStore = useMemberStore();
-  console.log(memberStore.id)
+  const loginModalStore = useLoginModalStore();
+  
   // 로그인 안한상태로 페이지 이동일 경우,
   // 요청 페이지를 로컬스토리지에 저장한다. 그 후 로그인 모달을 띄운다.
   if (! await memberStore.isAuthenticated()) {
     localStorage.setItem("redirect-route", to.path);
+    loginModalStore.show();
     return "/";
   }
 }

@@ -20,7 +20,6 @@
                 <profile v-if="isMemberAuthenticated" />
                 <li v-if="!isMemberAuthenticated" class="header__login">
                     <button @click="onLoginClick">로그인</button>
-                    <login-modal v-show="isLoginOpened" />
                 </li>
             </ul>
         </nav>
@@ -31,12 +30,13 @@
 import { computed, onBeforeMount } from "vue";
 import { useHeaderStore } from '../../stores/headerStore';
 import { useMemberStore } from '../../stores/memberStore';
-import loginModal from './LoginModal.vue';
+import { useLoginModalStore } from '@/stores/loginModalStore';
 import notificationModal from './NotificationModal.vue';
 import profile from './Profile.vue';
 
 const headerStore = useHeaderStore();
 const memberStore = useMemberStore();
+const loginModalStore = useLoginModalStore();
 
 // refresh 마다 세션 스토어를 이용해 로그인 상태 확인
 onBeforeMount(() => {
@@ -47,21 +47,13 @@ const isNotificationOpened = computed(() => {
     return headerStore.isNotificationOpened;
 });
 
-const isLoginOpened = computed(() => {
-    return headerStore.isLoginOpened;
-});
-
-const isProfileOpened = computed(() => {
-    return headerStore.isProfileOpened;
-});
-
 const onNotificationClick = () => {
     headerStore.closeAllExcept('Notification')
     headerStore.changeNotificationState();
 }
+
 const onLoginClick = () => {
-    headerStore.closeAllExcept('Login')
-    headerStore.changeLoginState();
+    loginModalStore.show();
 }
 
 const isMemberAuthenticated = computed(() => {
