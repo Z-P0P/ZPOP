@@ -1,5 +1,4 @@
 
-<!-- detail vue = 화면 / article 화면의 구성 요소중 한 부분-->
 <script setup>
 import { reactive } from "vue";
 import api from "@/api";
@@ -10,9 +9,9 @@ const state = reactive({
     });
     console.log('myPage 설정중');
     // 모임 정보 조회 reactive는 view단과 model단 일치
-    const getMyPage = async () => {
+    const getMyProfile = async () => {
       try {
-      const res  =  await api.member.getMyPage();
+      const res  =  await api.member.getMyProfile();
       
       const data =  await res.json();
       
@@ -24,12 +23,21 @@ const state = reactive({
           }
     };
 
-    getMyPage();
+    getMyProfile();
 </script>
 <template>
+  <div class="content-wrap">
   <ProfileEdit :my-info="state.myInfo"/>
-  <!-- <ProfileEdit :my-info="state.myInfo" /> -->
+  </div>
 </template>
 <style scoped>
-  
+   .content-wrap{
+    padding: 20px;
+    }
+
+    @media (min-width: 576px) {
+     .content-wrap{
+       padding: 4rem;
+    }
+  }
 </style>
