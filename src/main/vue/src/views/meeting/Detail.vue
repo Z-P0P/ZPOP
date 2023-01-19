@@ -37,7 +37,11 @@ export default {
     const newComment = () =>{
       getDetail(route.params.id);
     }
-    return { state,newComment,getDetail }; //script에서 return된 값이 model
+    function increaseCounter(){
+      state.detail.commentCount++;
+    }
+    
+    return { state,newComment,getDetail, increaseCounter}; //script에서 return된 값이 model
   }
 
 }
@@ -46,7 +50,7 @@ export default {
   <div class="content-wrap">
   <Article :article="state.detail"/>
   <Participants :detail="state.detail"/> 
-  <CommentList :detail="state.detail" @newComment="newComment"/> 
+  <CommentList :detail="state.detail" @newComment="newComment" @counterIncreased="increaseCounter"/> 
   
 
   </div>

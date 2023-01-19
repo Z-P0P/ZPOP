@@ -6,16 +6,20 @@ import InputBox from './InputBox.vue';
 const props = defineProps({
   reply:Object
 });
+const emit = defineEmits(['counterIncreased']);
 
 var hasBox = reactive({on:false});
 var replyWrite = reactive({on:true})
 
+function inputBoxToggle() {
+  replyWrite.on= !replyWrite.on;
+  hasBox.on = !hasBox.on;
+}
 
-
-  function inputBoxToggle() {
-    replyWrite.on= !replyWrite.on;
-    hasBox.on = !hasBox.on;
-  }
+function registerFinish(){
+  inputBoxToggle();
+  emit('counterIncreased');
+}
 </script>
 
 <template>
@@ -37,7 +41,7 @@ var replyWrite = reactive({on:true})
         <div class="reply__replies">
         <span class="pointer underline modal__on-btn reply-to-reply" data-modal="#dummy-modal" @click="inputBoxToggle('replyWrite')" v-show="replyWrite.on">답글 달기</span> 
     </div>
-    <InputBox :reply="props.reply" v-show="hasBox.on" @cancelClicked="inputBoxToggle"/>
+    <InputBox :reply="props.reply" v-show="hasBox.on" @cancelClicked="inputBoxToggle" @registerCompleted="registerFinish"/>
 </template>
 <style >
   @import url(@/assets/css/meeting/component/select.css);

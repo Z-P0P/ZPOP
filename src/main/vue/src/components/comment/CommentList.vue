@@ -1,13 +1,16 @@
 <script setup>
   import { setMapStoreSuffix } from 'pinia';
-  import { defineProps, defineEmits, ref, onMounted } from 'vue';
+  import { defineProps, defineEmits, reactive, ref, onMounted } from 'vue';
   import api from "@/api";
   import Comment from './Comment.vue';
 
   const props = defineProps({
     detail:Object
   });
-  const emit = defineEmits(['newComment']);
+  const emit = defineEmits([
+    'newComment',
+    'counterIncreased'
+  ]);
   const inputs = {f1:ref()}
   onMounted(() => {
     const input = inputs['f1'].value;
@@ -31,27 +34,30 @@
           alert("시스템 장애로 등록이 안되고 있습니다")
       })
   }
-
+  function increaseCounter(){
+    emit('counterIncreased');
+    //countOfComment.value++;
+  }
 </script>
 
 <template>
-   <section class="comment">
-        <h2 class="comment__num">댓글 {{ detail.commentCount }} 개</h2>
-        <div class="comment__input-container">
-				<textarea class="comment__input" name="comment-text"
-                          id="comment-text" placeholder="댓글을 입력하세요." :ref="inputs.f1"></textarea>
-            <div class="comment__btn-container">
-                <span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
-                <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="#dummy-modal" @click="registerComment('f1')">등록하기</span>
-                <span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
-            </div>
-        </div>
-			<ul class="comment__list">
-				<li v-for="(comment, index) in detail.comments" :key="index"> 
-					<Comment :comment="comment"/>
-        </li>
-      </ul>
-    </section>
+  <section class="comment">
+    <h2 class="comment__num">댓글 {{ detail.commentCount }} 개</h2>
+    <div class="comment__input-container">
+    <textarea class="comment__input" name="comment-text"
+                      id="comment-text" placeholder="댓글을 입력하세요." :ref="inputs.f1"></textarea>
+      <div class="comment__btn-container">
+        <span class="reply__btn btn btn-round btn-cancel cancel-btn hidden">취소하기</span>
+        <span class="comment__btn btn btn-round btn-action modal__on-btn" id="register-btn" data-modal="#dummy-modal" @click="registerComment('f1')">등록하기</span>
+        <span class="hidden comment__btn btn btn-round btn-action" id="edit-save-btn">저장하기</span>
+      </div>
+    </div>
+    <ul class="comment__list">
+      <li v-for="(comment, index) in detail.comments" :key="index"> 
+        <Comment :comment="comment" @counterIncreased="increaseCounter"/>
+      </li>
+    </ul>
+  </section>
 </template>
 
 <style scoped>

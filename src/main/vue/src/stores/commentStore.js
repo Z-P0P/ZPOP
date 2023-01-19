@@ -4,13 +4,14 @@ import api from "@/api";
 export const useCommentStore = defineStore('comment',
     {
         state:()=>({
-            commentId:0,
+            comment:{
+                id: 0,
+                replyList:[]
+            },
             meetingId:0,
-            replyList:[]
         }),
         actions:{
             getReplyList (commentId){
-                console.log(commentId)
                return api.comment.getReplyList(commentId)
                     .then(res=>{
                     if(res.ok)  {
