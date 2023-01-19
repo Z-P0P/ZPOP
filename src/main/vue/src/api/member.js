@@ -6,7 +6,7 @@ function getProfile(id){
  * 내 프로필 조회, 내 프로필 수정 (사용자 사진, 닉네임 인기도 조회)
  */
 function getMyProfile(){
-    return fetch(`/api/member`);
+    return fetch(`/api/me`);
 }
 
 /**

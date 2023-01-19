@@ -2,8 +2,8 @@ package com.zpop.web.dto;
 
 public class MyMeetingResponse {
 
-    private String categoryName;
-    private String regionName;
+    private String category;
+    private String region;
     private String startedAt;
     private String title;
     private String age;
@@ -21,10 +21,10 @@ public class MyMeetingResponse {
 
     public MyMeetingResponse() {
     }
-
-    public MyMeetingResponse(String categoryName, String regionName, String startedAt, String title, String age, int maxMember, String genderCategory, boolean isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId, boolean canRate) {
-        this.categoryName = categoryName;
-        this.regionName = regionName;
+    // TODO - 롬복 적용하기
+    public MyMeetingResponse(String category, String region, String startedAt, String title, String age, int maxMember, String genderCategory, boolean isClosed, int viewCount, int commentCount, int meetingId, int participantId, int regMemberId, boolean canRate) {
+        this.category = category;
+        this.region = region;
         this.startedAt = startedAt;
         this.title = title;
         this.age = age;
@@ -39,20 +39,20 @@ public class MyMeetingResponse {
         this.canRate = canRate;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getRegionName() {
-        return regionName;
+    public String getRegion() {
+        return region;
     }
 
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String getStartedAt() {
