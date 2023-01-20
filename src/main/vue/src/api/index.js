@@ -6,7 +6,7 @@ import auth from "./auth.js";
 
 export default {
   meeting,
-  comment
+  comment,
   member,
   notification,
   auth,

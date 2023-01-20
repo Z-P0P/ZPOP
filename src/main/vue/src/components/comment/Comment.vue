@@ -32,29 +32,23 @@
     getReplyList(replyCnt.on);
     replyClose.on = !replyClose.on;
     replyCnt.on = !replyCnt.on;
-    toggleReplySection(replyCnt.on);
   }
   function toggleInputBox() {
     if(hasBox.on){
       getReplyList(hasBox.on);
-      toggleReplySection(hasBox.on&&replyCnt.on)
     }
     replyWrite.on= !replyWrite.on;
     hasBox.on = !hasBox.on;
   }
 
-  function toggleReplySection(needToShowSection){
-    if(needToShowSection)
-      replySection = !replySection;
-  }
 
   async function getReplyList(needToGetList){
     if(needToGetList){
+      console.log("함수콜")
       const data = await cmtStore.getReplyList(props.comment.id);
 
       for(const r of data.resultObject) 
-      replyList.push(r);
-      cmtStore.comment.replyList.length=0;
+        replyList.push(r);
       cmtStore.comment.replyList = replyList;
     }
     else {
@@ -74,11 +68,11 @@
   }
   function registerFinish(){
     increaseCounter();
+    cmtStore.comment.replyList.length=0;
+    getReplyList(hasBox.on);
     replyWrite.on= !replyWrite.on;
-    replyCnt.on = !replyCnt.on;
     hasBox.on = !hasBox.on;
-    toggle();
-    toggleReplyList();
+
   }
 </script>
 
@@ -101,8 +95,8 @@
       <span class="pointer reply-close " @click="toggleReplyCnt"  v-if="hasReply(comment)" v-show="replyClose.on" >닫기</span>
       <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal" v-show="replyWrite.on" @click="toggleInputBox">답글 달기</span>
     </div>
-    <section class="reply" v-show="replySection.on">
-      <!--여기서 inputBox에 보내는 객체는 comment이지만 받는쪽 이름인 reply에 맞춤-->
+    <section class="reply" v-show="!replyCnt.on">
+      <!--여기서 답글 inputBox에 보내는 객체는 댓글(comment)이지만 받는쪽 이름인 답글(reply)에 맞춤-->
       <InputBox :reply="comment" v-show="hasBox.on" @cancelClicked="toggleInputBox" @registerCompleted="registerFinish"/> 
       <ReplyList :comment="dataForReplyList" @counterIncreased="increaseCounter"/> 
     </section>
