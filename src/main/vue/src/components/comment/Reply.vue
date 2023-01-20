@@ -1,6 +1,5 @@
 <script setup>
-import { setMapStoreSuffix } from 'pinia';
-import { defineProps,ref,reactive } from 'vue';
+import { defineProps,ref} from 'vue';
 import InputBox from './InputBox.vue';
 
 const props = defineProps({
@@ -8,14 +7,14 @@ const props = defineProps({
 });
 const emit = defineEmits(['counterIncreased']);
 
-var hasBox = reactive({on:false});
-var replyWrite = reactive({on:true})
+var hasBox = ref(false);
+var replyWrite = ref(true)
 
-function inputBoxToggle() {
-  replyWrite.on= !replyWrite.on;
-  hasBox.on = !hasBox.on;
+function inputBoxToggle() { //'인풋박스' <-> '답글쓰기' 전환
+  replyWrite.value= !replyWrite.value;
+  hasBox.value = !hasBox.value;
 }
-
+//답글 등록버튼에서 올라오는 이벤트 처리기
 function registerFinish(){
   inputBoxToggle();
   emit('counterIncreased');
@@ -39,9 +38,9 @@ function registerFinish(){
         <span class="reply__content">{{reply.content}}</span>
     </div>
         <div class="reply__replies">
-        <span class="pointer underline modal__on-btn reply-to-reply" data-modal="#dummy-modal" @click="inputBoxToggle('replyWrite')" v-show="replyWrite.on">답글 달기</span> 
+        <span class="pointer underline modal__on-btn reply-to-reply" @click="inputBoxToggle('replyWrite')" v-show="replyWrite">답글 달기</span> 
     </div>
-    <InputBox :reply="props.reply" v-show="hasBox.on" @cancelClicked="inputBoxToggle" @registerCompleted="registerFinish"/>
+    <InputBox :reply="props.reply" v-show="hasBox" @cancelClicked="inputBoxToggle" @registerCompleted="registerFinish"/>
 </template>
 <style >
   @import url(@/assets/css/meeting/component/select.css);

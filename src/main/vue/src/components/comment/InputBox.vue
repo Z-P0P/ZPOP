@@ -5,9 +5,12 @@
 
     const cmtStore = useCommentStore();
     const props = defineProps({
-      reply:Object
+        reply:Object
     });
-    const emit = defineEmits(['cancelClicked','registerCompleted']);
+    const emit = defineEmits([
+        'cancelClicked',
+        'registerCompleted'
+    ]);
     let groupId = 0;
     if(props.reply.groupId == 0)
         groupId = props.reply.id; //parent에서 내려온 객체가 댓글(comment)이면 groupId=0임.
@@ -16,14 +19,14 @@
 
     const inputs = {f1:ref()}
     onMounted(() => {
-    const input = inputs['f1'].value;
-    input.focus();
-  })
+        const input = inputs['f1'].value;
+        input.focus();
+    })
     function cancelWrite(){
         emit('cancelClicked');
     }
 
-    function registerReply(refId){
+    function registerReply(){
         const data = {};
         data.meetingId = props.reply.meetingId;
         data.parentCommentId = props.reply.id;
@@ -51,21 +54,21 @@
 </script>
 
 <template>
-     <div class="reply__input-container"> 
-        <textarea
-            id="reply-text"
-            class="reply__input"
-            name="reply-input"
-            placeholder="답글을 입력하세요." :ref="inputs.f1"></textarea>
+    <div class="reply__input-container"> 
+    <textarea
+        id="reply-text"
+        class="reply__input"
+        name="reply-input"
+        placeholder="답글을 입력하세요." :ref="inputs.f1"></textarea>
         <div class="reply__btn-container">
             <span class="reply__btn btn btn-round btn-cancel cancel-btn" id="reply-cancel" @click="cancelWrite">취소하기</span>
             <span class="reply__btn btn btn-round btn-action register-btn" @click="registerReply('f1')">등록하기</span>
         </div>
-    </div> 
-</template>
+        </div> 
+    </template>
 <style>
-     @import url(@/assets/css/meeting/component/comment.css);
-     @import url(@/assets/css/meeting/component/reply.css);
+    @import url(@/assets/css/meeting/component/comment.css);
+    @import url(@/assets/css/meeting/component/reply.css);
 </style>
 
 
