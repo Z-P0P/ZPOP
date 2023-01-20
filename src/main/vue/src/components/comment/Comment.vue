@@ -28,26 +28,28 @@
   var replyWrite = reactive({on:true});
   var replyCnt = reactive({on:true});
 
-  function toggleReplyList(){
+  function toggleReplyCnt(){
+    getReplyList(replyCnt.on);
     replyClose.on = !replyClose.on;
     replyCnt.on = !replyCnt.on;
-    replySection.on = !replySection.on;
+    toggleReplySection(replyCnt.on);
   }
   function toggleInputBox() {
-    if(replyCnt.on){
-      replyWrite.on= !replyWrite.on;
-      replyCnt.on = !replyCnt.on;
-      hasBox.on = !hasBox.on;
-      replySection.on = !replySection.on;
+    if(hasBox.on){
+      getReplyList(hasBox.on);
+      toggleReplySection(hasBox.on&&replyCnt.on)
     }
-    else{
-      replyWrite.on= !replyWrite.on;
-      hasBox.on = !hasBox.on;
-    }
+    replyWrite.on= !replyWrite.on;
+    hasBox.on = !hasBox.on;
   }
 
-  async function toggle(){
-    if(replyCnt.on){
+  function toggleReplySection(needToShowSection){
+    if(needToShowSection)
+      replySection = !replySection;
+  }
+
+  async function getReplyList(needToGetList){
+    if(needToGetList){
       const data = await cmtStore.getReplyList(props.comment.id);
 
       for(const r of data.resultObject) 
@@ -58,7 +60,6 @@
     else {
       replyList.length = 0;
     }  
-    toggleReplyList();
   }
   function hasReply (comment){
     let hasReply = false;
@@ -96,8 +97,8 @@
           </div>
     <span class="comment__content">{{ comment.content }}</span>
     <div class="comment__replies">
-      <span class="pointer underline reply-cnt"  @click="toggle"  v-if="hasReply(comment)" v-show="replyCnt.on" >답글 {{ countOfReply }}개</span>
-      <span class="pointer reply-close " @click="toggle"  v-if="hasReply(comment)" v-show="replyClose.on" >닫기</span>
+      <span class="pointer underline reply-cnt"  @click="toggleReplyCnt"  v-if="hasReply(comment)" v-show="replyCnt.on" >답글 {{ countOfReply }}개</span>
+      <span class="pointer reply-close " @click="toggleReplyCnt"  v-if="hasReply(comment)" v-show="replyClose.on" >닫기</span>
       <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal" v-show="replyWrite.on" @click="toggleInputBox">답글 달기</span>
     </div>
     <section class="reply" v-show="replySection.on">
