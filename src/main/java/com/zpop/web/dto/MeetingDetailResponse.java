@@ -1,8 +1,11 @@
 package com.zpop.web.dto;
 
+import lombok.Getter;
+
 import java.util.Date;
 import java.util.List;
 
+@Getter
 public class MeetingDetailResponse {
     private int id;
     private String title;
@@ -47,159 +50,6 @@ public class MeetingDetailResponse {
         this.hasParticipated = hasParticipated;
         this.isClosed = isClosed;
         this.participants = participants;
-        this.comments = comments;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getStartedAt() {
-        return this.startedAt;
-    }
-
-    public void setStartedAt(Date startedAt) {
-        this.startedAt = startedAt;
-    }
-
-    public String getTextStartedAt() {
-        return this.textStartedAt;
-    }
-
-    public void setTextStartedAt(String textStartedAt) {
-        this.textStartedAt = textStartedAt;
-    }
-
-    public String getDetailRegion() {
-        return this.detailRegion;
-    }
-
-    public void setDetailRegion(String detailRegion) {
-        this.detailRegion = detailRegion;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getCategoryName() {
-        return this.categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getRegionName() {
-        return this.regionName;
-    }
-
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
-    }
-
-    public int getMaxMember() {
-        return this.maxMember;
-    }
-
-    public void setMaxMember(int maxMember) {
-        this.maxMember = maxMember;
-    }
-
-    public String getGenderCategory() {
-        return this.genderCategory;
-    }
-
-    public void setGenderCategory(String genderCategory) {
-        this.genderCategory = genderCategory;
-    }
-
-    public String getAgeRange() {
-        return this.ageRange;
-    }
-
-    public void setAgeRange(String ageRange) {
-        this.ageRange = ageRange;
-    }
-
-    public int getRegMemberId() {
-        return this.regMemberId;
-    }
-
-    public void setRegMemberId(int regMemberId) {
-        this.regMemberId = regMemberId;
-    }
-
-    public int getViewCount() {
-        return this.viewCount;
-    }
-
-    public void setViewCount(int viewCount) {
-        this.viewCount = viewCount;
-    }
-
-    public int getCommentCount() {
-        return this.commentCount;
-    }
-
-    public void setCommentCount(int commentCount) {
-        this.commentCount = commentCount;
-    }
-
-    public boolean isMyMeeting() {
-        return this.isMyMeeting;
-    }
-
-   
-    public void setMyMeeting(boolean isMyMeeting) {
-        this.isMyMeeting = isMyMeeting;
-    }
-
-    public boolean hasParticipated() {
-        return this.hasParticipated;
-    }
-
-    public void setParticipated(boolean hasParticipated) {
-        this.hasParticipated = hasParticipated;
-    }
-
-    public boolean isClosed() {
-        return this.isClosed;
-    }
-
-    public void setClosed(boolean isClosed) {
-        this.isClosed = isClosed;
-    }
-
-    public List<ParticipantResponse> getParticipants() {
-        return this.participants;
-    }
-
-    public void setParticipants(List<ParticipantResponse> participants) {
-        this.participants = participants;
-    }
-
-    public List<CommentResponse> getComments() {
-        return this.comments;
-    }
-
-    public void setComments(List<CommentResponse> comments) {
         this.comments = comments;
     }
 

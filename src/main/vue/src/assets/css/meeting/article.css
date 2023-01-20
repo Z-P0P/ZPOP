@@ -101,7 +101,6 @@ article{
   } 
    
   span.btn.btn-round{
-    background-color: var(--main-color);
     position: relative;
     left: 0;
     bottom: 0;
@@ -155,7 +154,6 @@ article{
     }
       
       span.btn.btn-round{
-        background-color: var(--main-color);
         width: 100%;
         text-align: center;
        

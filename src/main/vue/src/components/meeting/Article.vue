@@ -1,10 +1,8 @@
-
 <template>
-
   <article>
     <header>
       <div class="category-wrap">
-        <span class="category">{{ article.categoryName}}</span>
+        <span class="category">{{ article.categoryName }}</span>
       </div>
       <div class="title-container">
         <h2 class="title">{{ article.title }}</h2>
@@ -18,7 +16,7 @@
       </div>
       <div class="region-container">
         <span class="icon-location16"></span>
-       
+
         <span>{{ article.region }}</span>
         <span>{{ article.regionName }}</span>
       </div>
@@ -35,26 +33,34 @@
         <li>#{{ article.genderCategory }}</li>
       </ul>
       <div class="views">조회수 {{ article.viewCount }}회</div>
-      <!-- TODO: 버튼 컴포넌트화 -->
       <div class="control-btn-wrap">
-    <span class="btn btn-round">참여하기</span>
-  </div>
+        <RoundDisabled v-if="article.closed">
+          <template #content> 모집완료 </template>
+        </RoundDisabled>
+        <Round v-else-if="article.myMeeting">
+          <template #content> 마감하기 </template>
+        </Round>
+        <Round v-else-if="article.hasParticipated">
+          <template #content> 참여취소 </template>
+        </Round>
+        <Round v-else>
+          <template #content> 참여하기 </template>
+        </Round>
+      </div>
     </div>
   </article>
-
 </template>
 
-<script>
-export default {
-  name: "MeetingArticle",
-  //props 받는다.. 
-  props: {
-    article: Object,
-  },
-};
+<script setup>
+import { defineProps } from "vue";
+import Round from "../button/Round.vue";
+import RoundDisabled from "../button/RoundDisabled.vue";
+
+const props = defineProps({
+  article: Object,
+});
 </script>
 
-<style >
-  @import url(../../assets/css/meeting/article.css);
- 
+<style>
+@import url(../../assets/css/meeting/article.css);
 </style>
