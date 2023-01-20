@@ -106,6 +106,7 @@ public class MeetingController {
 											@AuthenticationPrincipal ZpopUserDetails userDetails)
 											
 							 {
+		System.out.println(userDetails+"===================================");
 		Integer memberId = null;
 
 		if(userDetails != null)
