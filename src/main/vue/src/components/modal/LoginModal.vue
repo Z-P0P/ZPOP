@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-wrapper">
+    <div v-show="store.isOn" class="modal-wrapper">
         <div class="modal">
             <div class="modal__header">
                 <span class="modal__close-btn icon icon-x" @click="close">닫기</span>
@@ -21,46 +21,38 @@
     </div>
 </template>
 
-<script>
-import { useHeaderStore } from '../../stores/headerStore';
+<script setup>
+import { useLoginModalStore } from '@/stores/loginModalStore';
 
-export default {
-    setup() {
-        const generateRandomString = (num) => {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-            let result = '';
-            const charactersLength = characters.length;
-            for (let i = 0; i < num; i++) {
-                result += characters.charAt(Math.floor(Math.random() * charactersLength));
-            }
+const store = useLoginModalStore();
 
-            return result;
-        }
+function close() {
+    store.close();
+}
 
-        const serviceURL = "https://nid.naver.com/oauth2.0/authorize";
-        const clientId = "fXPYssaX_SOB2qThvRtF";
-        const redirectUrl = encodeURI("http://localhost:5173/login/oauth/naver");
-        const responseType = "code";
-        const state = encodeURI(generateRandomString(10));
-        const requestUrl = `${serviceURL}?response_type=${responseType}&client_id=${clientId}&state=${state}&redirect_uri=${redirectUrl}`;
-        const onNaverLoginClick = () => {
-            location.href = requestUrl;
-        }
-        
-
-        const store = useHeaderStore();
-        const close = () => {
-            console.log('클릭');
-            store.changeLoginState();
-        }
-
-        return {
-            close,
-            onNaverLoginClick,
-        }
+// 소셜 로그인 시작
+const generateRandomString = (num) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < num; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
+
+    return result;
+}
+
+const serviceURL = "https://nid.naver.com/oauth2.0/authorize";
+const clientId = "fXPYssaX_SOB2qThvRtF";
+const redirectUrl = encodeURI("http://localhost:5173/login/oauth/naver");
+const responseType = "code";
+const state = encodeURI(generateRandomString(10));
+const requestUrl = `${serviceURL}?response_type=${responseType}&client_id=${clientId}&state=${state}&redirect_uri=${redirectUrl}`;
+const onNaverLoginClick = () => {
+    location.href = requestUrl;
 }
 </script>
+
 <style scoped>
 @import url(../../assets/css/component/login.css);
 @import url(../../assets/css/component/modal.css);

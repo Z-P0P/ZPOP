@@ -123,7 +123,7 @@ public class LoginController {
 		securityContext.setAuthentication(auth);
 		session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 		result.put("code", "success");
-		result.put("redirectUrl", "/");
+		result.put("id", member.getId());
 		result.put("nickname", member.getNickname());
 		result.put("profileImagePath", member.getProfileImagePath());
 		return ResponseEntity.ok(result);
@@ -141,6 +141,7 @@ public class LoginController {
 		}
 
 		result.put("code", "AUTHENTICATED");
+		result.put("id", userDetails.getId());
 		result.put("nickname", userDetails.getUsername());
 		result.put("profileImagePath", userDetails.getProfileImagePath());
 

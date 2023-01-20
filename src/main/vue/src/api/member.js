@@ -1,8 +1,12 @@
+function getProfile(id){
+    return fetch(`/api/member/${id}`)
+}
+    
 /**
  * 내 프로필 조회, 내 프로필 수정 (사용자 사진, 닉네임 인기도 조회)
  */
 function getMyProfile(){
-    return fetch(`/api/member`);
+    return fetch(`/api/me`);
 }
 
 /**
@@ -13,7 +17,6 @@ function getMyMeeting(){
 }
 
 /**
- * 
  * 내가 모집한 모임 조회
  */
 function getMyGathering(){
@@ -23,7 +26,6 @@ function getMyGathering(){
 /**
  * 모임 평가를 위한 참여자 가져오기
  */
-
 function getParticipant(meetingId){
     return fetch(`/api/partList/${meetingId}`)
 }
@@ -31,14 +33,15 @@ function getParticipant(meetingId){
 /**
  * 모임을 평가하기 
  */
-function rateMeeting(){
-
+function rateMeeting(meetingId){
+    return fetch(`api/rate`)
 }
 
 export default {
     getMyProfile,
     getMyMeeting,
     getMyGathering,
-    getParticipant
+    getParticipant,
+    rateMeeting
 
 };

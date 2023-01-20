@@ -3,10 +3,10 @@
         <button><img alt="프로필" src="/images/icon/user-profile.svg" @click="onProfileClick"></button>
         <ul class="select-box__options select-box__options--right select-box__options--header" v-show="isOpened">
             <!--li 말고 div 박스 전체로 -->
-            <li><router-link to="/member/me">내 프로필</router-link></li>
-            <li><router-link to="/member/me/gathering">내가 모집한 모임</router-link></li>
-            <li><router-link to="/member/me/meeting">내가 참여한 모임</router-link></li>
-            <li><router-link to="/member/me/meeting">모임 평가하기</router-link></li>
+            <li><router-link to="/my-profile">내 프로필</router-link></li>
+            <li><router-link to="/my-gathering">내가 모집한 모임</router-link></li>
+            <li><router-link to="/my-meeting">내가 참여한 모임</router-link></li>
+            <li><router-link to="/my-meeting">모임 평가하기</router-link></li>
             <li><a href="#" @click="onLogoutClick">로그아웃</a></li>
         </ul>
     </li>

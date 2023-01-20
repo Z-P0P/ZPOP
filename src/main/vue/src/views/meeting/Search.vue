@@ -4,6 +4,7 @@ import { useRoute } from "vue-router";
 import api from "@/api/";
 import Thumbnail from "@/components/meeting/Thumbnail.vue";
 import LoadingRoller from "@/components/LoadingRoller.vue";
+import SoftToggle from "@/components/button/SoftToggle.vue";
 import { ServerException } from "@/utils/ServerException";
 
 const emit = defineEmits(["throw"]);
@@ -17,20 +18,32 @@ const state = reactive({
   lastId: null,
   throttling: null,
   loadingOn: false,
+  isToggleOn: true,
   isResultNone: computed(() => {
     return state.meetings.length === 0;
   }),
-  isToggleOn: true,
 });
 
 // isToggleOn의 상태가 변경될 때마다 모임 리스트를 새로 조회한다 --------------
-watch(state.isToggleOn, async () => {
-  state.lastId = null;
-  const list = await requestList();
-  resetMeetigns();
-  if (!list || list.length === 0) return;
-  addMeetings(list);
-});
+watch(
+  () => state.isToggleOn,
+  async () => {
+    state.lastId = null;
+    const list = await requestList();
+    resetMeetigns();
+    if (!list || list.length === 0) return;
+    addMeetings(list);
+  }
+);
+
+// 토글 on/off
+function handleToggle(e) {
+  // 버블링 방지. 없으면 함수 두번 호출됨
+  if (e.target.tagName !== "INPUT" && e.target.type !== "checkbox") {
+    return;
+  }
+  state.isToggleOn = !state.isToggleOn;
+}
 
 // 첫 meeting search page 조회시 호출
 requestList().then((data) => {
@@ -45,6 +58,7 @@ async function requestList() {
     if (!res.ok) throw new ServerException(res);
     return await res.json();
   } catch (e) {
+    console.log(e);
     if (e.res.status === 500) emit("throw");
   }
 }
@@ -118,8 +132,9 @@ document.addEventListener("scroll", onScrollDown);
         <strong>{{ keyword }}</strong> 검색결과
       </h2>
     </div>
-    <div>
-      <!-- TODO: 토글 -->
+    <div class="option-control__activate">
+      <span>모집 중만 보기</span>
+      <SoftToggle @click="handleToggle($event)" :isOn="state.isToggleOn" />
     </div>
     <section class="meetings">
       <ul>
@@ -147,6 +162,27 @@ document.addEventListener("scroll", onScrollDown);
 
 .content-wrap {
   max-width: 1200px;
+}
+
+.option-control__activate {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.option-control__activate > span {
+  margin-right: 1rem;
+  font-weight: var(--bold);
+  color: var(--dark-grey2);
+}
+
+@media (min-width: 768px) {
+  .option-control__activate > span {
+    font-size: 18px;
+    color: var(--dark-grey2);
+  }
 }
 
 .search-result {
