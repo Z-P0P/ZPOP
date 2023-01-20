@@ -23,37 +23,43 @@
     replyList:replyList
   }
   var replySection = reactive({on:false});
-  var hasBox = reactive({on:false});
+  var hasBox = ref(false);
   var replyClose = reactive({on:false});
   var replyWrite = reactive({on:true});
   var replyCnt = reactive({on:true});
+  var isExpanded = ref(false);
 
   function toggleReplyCnt(){
-    getReplyList(replyCnt.on);
+    isExpanded.value = !isExpanded.value;
+    if(isExpanded.value)
+      getReplyList();
+    else{
+      replyList.length = 0;
+    }
     replyClose.on = !replyClose.on;
     replyCnt.on = !replyCnt.on;
   }
   function toggleInputBox() {
-    if(hasBox.on){
-      getReplyList(hasBox.on);
-    }
-    replyWrite.on= !replyWrite.on;
-    hasBox.on = !hasBox.on;
+    isExpanded.value = !isExpanded.value;
+    hasBox.value = !hasBox.value
+    // if(hasBox.on){
+    //   hasBox.on = !hasBox.on
+    //   getReplyList();
+    // }
+    // else{
+    //   replyList.length = 0;
+    // }
+    //replyClose.on = !replyClose.on;
+    //replyCnt.on = !replyCnt.on;
   }
 
 
-  async function getReplyList(needToGetList){
-    if(needToGetList){
-      console.log("함수콜")
+  async function getReplyList(){
       const data = await cmtStore.getReplyList(props.comment.id);
-
       for(const r of data.resultObject) 
         replyList.push(r);
       cmtStore.comment.replyList = replyList;
-    }
-    else {
-      replyList.length = 0;
-    }  
+      isExpanded.value = true;
   }
   function hasReply (comment){
     let hasReply = false;
@@ -90,14 +96,14 @@
       </th:block>
           </div>
     <span class="comment__content">{{ comment.content }}</span>
-    <div class="comment__replies">
+    <div class="comment__replies" :class="{hidden:hasBox}">
       <span class="pointer underline reply-cnt"  @click="toggleReplyCnt"  v-if="hasReply(comment)" v-show="replyCnt.on" >답글 {{ countOfReply }}개</span>
       <span class="pointer reply-close " @click="toggleReplyCnt"  v-if="hasReply(comment)" v-show="replyClose.on" >닫기</span>
       <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal" v-show="replyWrite.on" @click="toggleInputBox">답글 달기</span>
     </div>
-    <section class="reply" v-show="!replyCnt.on">
+    <section class="reply" :class="{'no-margin' : !isExpanded }">
       <!--여기서 답글 inputBox에 보내는 객체는 댓글(comment)이지만 받는쪽 이름인 답글(reply)에 맞춤-->
-      <InputBox :reply="comment" v-show="hasBox.on" @cancelClicked="toggleInputBox" @registerCompleted="registerFinish"/> 
+      <InputBox :reply="comment" v-show="hasBox" @cancelClicked="toggleInputBox" @registerCompleted="registerFinish"/> 
       <ReplyList :comment="dataForReplyList" @counterIncreased="increaseCounter"/> 
     </section>
 </template>
@@ -106,5 +112,8 @@
  @import url(@/assets/css/meeting/component/select.css);
  @import url(@/assets/css/meeting/component/profile-box.css);
  @import url(@/assets/css/meeting/component/comment.css);
-
+.no-margin{
+  margin: 0;
+  padding: 0;
+}
 </style>
