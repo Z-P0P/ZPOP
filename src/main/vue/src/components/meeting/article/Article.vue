@@ -45,7 +45,10 @@
         >
           <template #content> 참여하기 </template>
         </Round>
-        <Round v-else-if="!article.myMeeting && article.hasParticipated">
+        <Round
+          v-else-if="!article.myMeeting && article.hasParticipated"
+          @click.prevent="onClickLeaveBtn"
+        >
           <template #content> 참여취소 </template>
         </Round>
         <RoundDisabled v-else-if="article.closed">
@@ -90,10 +93,6 @@ function closeControlModal() {
   controlModalOn.value = false;
 }
 
-/**
- * 로그인 false -> 로그인 모달 ON,
- * 로그인 true  -> 참여하기 모달 ON
- */
 async function onClickParticipationBtn() {
   const isLoggedIn = await memberStore.isAuthenticated();
   if (!isLoggedIn) {
@@ -101,6 +100,17 @@ async function onClickParticipationBtn() {
     return;
   }
   currentControlType.value = controlType[0];
+  controlModalOn.value = !controlModalOn.value;
+}
+
+async function onClickLeaveBtn() {
+  const isLoggedIn = await memberStore.isAuthenticated();
+  if (!isLoggedIn) {
+    loginModalStore.handleModal();
+    return;
+  }
+
+  currentControlType.value = controlType[1];
   controlModalOn.value = !controlModalOn.value;
 }
 </script>

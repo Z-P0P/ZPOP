@@ -56,7 +56,16 @@ function participate(id) {
 }
 
 function getParticipant(id) {
-  return fetch(`/api/meeting/${id}/participant"`);
+  return fetch(`/api/meeting/${id}/participant`);
+}
+
+/**
+ * 모임 참여취소
+ */
+function leave(id) {
+  return fetch(`/api/meeting/${id}/leave`, {
+    method: "DELETE",
+  });
 }
 
 export default {
@@ -68,4 +77,5 @@ export default {
   putRequest,
   participate,
   getParticipant,
+  leave,
 };
