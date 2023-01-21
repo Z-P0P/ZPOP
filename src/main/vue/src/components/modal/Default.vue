@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits} from "vue";
+import { defineEmits } from "vue";
 
 const emit = defineEmits(["closeModal"]);
 
@@ -20,8 +20,7 @@ function closeModal(e) {
   <section class="modal-default-wrap" @click="closeModal($event)">
     <div class="modal-default">
       <div class="modal__header">
-        <span class="icon icon-x pointer modal__close-btn">
-        </span>
+        <span class="icon icon-x pointer modal__close-btn"> </span>
       </div>
       <div class="modal__body">
         <slot name="modal-body"></slot>
@@ -52,6 +51,7 @@ function closeModal(e) {
   border-radius: 10px;
   font-size: 18px;
   z-index: 999;
+  overflow: hidden;
 }
 
 .modal__header {
@@ -64,7 +64,13 @@ function closeModal(e) {
 .modal__body {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
   padding: 0 16px 24px 16px;
   color: var(--dark-grey1);
+}
+
+.modal__footer {
+  display: flex;
 }
 </style>

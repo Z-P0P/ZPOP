@@ -34,7 +34,7 @@ public interface MeetingDao {
 
 	int count(String keyword, String option);
 
-	int updateClosedAt(Meeting foundMeeting);
+	int updateClosedAt(Meeting meeting);
 
 	int increaseViewCount(int id);
 

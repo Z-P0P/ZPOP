@@ -24,7 +24,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/meeting")
 @RequiredArgsConstructor
-
 public class MeetingController {
 
 	private final MeetingService service;
@@ -140,30 +139,22 @@ public class MeetingController {
 	}
 
 	//참여자목록 AJAX endpoint(js가 콜하는 함수)
-	@GetMapping("{meetingId}/participant")
-	@ResponseBody
-	public List<ParticipantResponse> getParticipant(@PathVariable int meetingId){
-		List<ParticipantResponse> list = service.getParticipants(meetingId);
+	@GetMapping("{id}/participant")
+	public List<ParticipantResponse> getParticipant(@PathVariable int id){
+		List<ParticipantResponse> list = service.getParticipants(id);
 		return list;
 	}
 	
 	//참여 AJAX endpoint (js에서 콜하는 함수)
-	@PostMapping("/{meetingId}/participate")
-	@ResponseBody
-	public Map<String, Object> participate(@PathVariable int meetingId,
+	@PostMapping("/{id}/participate")
+	public Map<String, Object> participate(@PathVariable int id,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		//TODO: 임시로 MAP 리턴함
 		Map<String, Object> result = new HashMap<>();
 		int memberId = userDetails.getId();
-		try {
-			String contact = service.participate(meetingId, memberId);			
+			String contact = service.participate(id, memberId);
 			result.put("success", true);
 			result.put("contact", contact);
-		}
-		catch (ResponseStatusException e){
-			result.put("success", false);
-			result.put("reason", e.getReason());
-		}
+
 		
 		return result;			
 
