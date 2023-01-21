@@ -39,7 +39,7 @@ function increaseCounter() {
 </script>
 <template>
   <div class="content-wrap">
-    <Article :article="state.detail" />
+    <Article :article="state.detail" @refresh="getDetail" />
     <Participants :detail="state.detail" />
     <CommentList
       :detail="state.detail"

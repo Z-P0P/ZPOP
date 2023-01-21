@@ -34,31 +34,75 @@
       </ul>
       <div class="views">조회수 {{ article.viewCount }}회</div>
       <div class="control-btn-wrap">
-        <RoundDisabled v-if="article.closed">
-          <template #content> 모집완료 </template>
-        </RoundDisabled>
-        <Round v-else-if="article.myMeeting">
+        <Round v-if="article.myMeeting && !article.closed">
           <template #content> 마감하기 </template>
         </Round>
-        <Round v-else-if="article.hasParticipated">
-          <template #content> 참여취소 </template>
-        </Round>
-        <Round v-else @click.prevent="">
+        <Round
+          v-else-if="
+            !article.myMeeting && !article.hasParticipated && !article.closed
+          "
+          @click.prevent="onClickParticipationBtn"
+        >
           <template #content> 참여하기 </template>
         </Round>
+        <Round v-else-if="!article.myMeeting && article.hasParticipated">
+          <template #content> 참여취소 </template>
+        </Round>
+        <RoundDisabled v-else-if="article.closed">
+          <template #content> 모집완료 </template>
+        </RoundDisabled>
       </div>
+      <ControlModal
+        v-if="controlModalOn"
+        :controlType="currentControlType"
+        :articleTitle="article.title"
+        @closeModal="closeControlModal"
+        @refresh="emit('refresh')"
+      ></ControlModal>
     </div>
   </article>
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { ref } from "vue";
+import { useMemberStore } from "@/stores/memberStore";
+import { useLoginModalStore } from "@/stores/loginModalStore";
 import Round from "@/components/button/Round.vue";
 import RoundDisabled from "@/components/button/RoundDisabled.vue";
+import ControlModal from "./ControlModal.vue";
+
+const memberStore = useMemberStore();
+const loginModalStore = useLoginModalStore();
 
 const props = defineProps({
   article: Object,
 });
+// refresh : 모임 상세 조회 최신화
+const emit = defineEmits(["refresh"]);
+
+// 참여, 마감, 참여취소, 링크 모달 on/off
+let controlModalOn = ref(false);
+
+const controlType = ["참여", "참여취소", "마감", "참여링크"];
+let currentControlType = ref("");
+
+function closeControlModal() {
+  controlModalOn.value = false;
+}
+
+/**
+ * 로그인 false -> 로그인 모달 ON,
+ * 로그인 true  -> 참여하기 모달 ON
+ */
+async function onClickParticipationBtn() {
+  const isLoggedIn = await memberStore.isAuthenticated();
+  if (!isLoggedIn) {
+    loginModalStore.handleModal();
+    return;
+  }
+  currentControlType.value = controlType[0];
+  controlModalOn.value = !controlModalOn.value;
+}
 </script>
 
 <style>
