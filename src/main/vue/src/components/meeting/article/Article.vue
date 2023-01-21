@@ -43,7 +43,7 @@
         <Round v-else-if="article.hasParticipated">
           <template #content> 참여취소 </template>
         </Round>
-        <Round v-else>
+        <Round v-else @click.prevent="">
           <template #content> 참여하기 </template>
         </Round>
       </div>
@@ -53,8 +53,8 @@
 
 <script setup>
 import { defineProps } from "vue";
-import Round from "../button/Round.vue";
-import RoundDisabled from "../button/RoundDisabled.vue";
+import Round from "@/components/button/Round.vue";
+import RoundDisabled from "@/components/button/RoundDisabled.vue";
 
 const props = defineProps({
   article: Object,
@@ -62,5 +62,5 @@ const props = defineProps({
 </script>
 
 <style>
-@import url(../../assets/css/meeting/article.css);
+@import url(@/assets/css/meeting/article.css);
 </style>

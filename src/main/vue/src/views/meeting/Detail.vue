@@ -3,7 +3,7 @@
 import { reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import api from "@/api"; //index.js
-import Article from "@/components/meeting/Article.vue";
+import Article from "@/components/meeting/article/Article.vue";
 import Participants from "@/components/meeting/Participants.vue";
 import CommentList from "@/components/comment/CommentList.vue";
 import { ServerException } from "@/utils/ServerException";
