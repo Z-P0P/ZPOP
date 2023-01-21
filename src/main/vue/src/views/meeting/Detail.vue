@@ -1,69 +1,62 @@
-
 <!-- detail vue = 화면 / article 화면의 구성 요소중 한 부분-->
-<script>
-import { reactive } from "vue";
-import { useRoute } from "vue-router";
-import api from "@/api";
-import Article from "@/components/meeting/Article.vue";
+<script setup>
+import { reactive, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import api from "@/api"; //index.js
+import Article from "@/components/meeting/article/Article.vue";
 import Participants from "@/components/meeting/Participants.vue";
-import Comments from "@/components/meeting/Comments.vue";
+import CommentList from "@/components/comment/CommentList.vue";
+import { ServerException } from "@/utils/ServerException";
 
-export default {
-  name: "MeetingDetail",
-  components: {
-    Article,
-    Participants,
-    Comments
-  },
-  setup() {
-    const state = reactive({
-      detail: {},
-    });
-    // 모임 정보 조회 reactive는 view단과 model단 일치
-    const getDetail = () => {
-      try {
-        const route = useRoute();
-        api.meeting
-            .getDetail(route.params.id)
-            .then((res) => res.json())
-            .then((data) => (state.detail = data));
-      } catch (e) {
-        console.log(e);
-        alert("잠시 후에 다시 시도해주세요");
-      }
-    };
-    getDetail();
-    // 참여자 정보 조회
-    // 댓글 정보 조회
-    return { state }; //script에서 return된 값이 model
-  },
+const state = reactive({
+  detail: {},
+});
+// 모임 정보 조회 reactive는 view단과 model단 일치
+const route = useRoute();
+const router = useRouter();
+
+const getDetail = async () => {
+  try {
+    const res = await api.meeting.getDetail(route.params.id);
+    if (!res.ok) throw new ServerException(res);
+    const data = await res.json();
+    state.detail = data;
+  } catch (e) {
+    // 존재하지 않는 meeting id
+    if (e.res.status === 404) router.push("/404");
+  }
 };
+
+getDetail();
+
+const newComment = async () => {
+  await getDetail(route.params.id);
+};
+
+function increaseCounter() {
+  state.detail.commentCount++;
+}
 </script>
 <template>
   <div class="content-wrap">
-  <Article :article="state.detail"/>
-  <Participants :detail="state.detail"/> 
-  <Comments :detail="state.detail"/>
+    <Article :article="state.detail" @refresh="getDetail" />
+    <Participants :detail="state.detail" />
+    <CommentList
+      :detail="state.detail"
+      @newComment="newComment"
+      @counterIncreased="increaseCounter"
+    />
   </div>
 </template>
 <style scoped>
-
-   
-   .content-wrap{
-  
-    max-width: 783px;
-    width: 100%;
-    padding: 1.2rem;
-
-   }
-
-    @media (min-width: 576px) {
-     .content-wrap{
-       padding: 4rem;
-    }
+.content-wrap {
+  max-width: 783px;
+  width: 100%;
+  padding: 1.2rem;
+}
+@media (min-width: 576px) {
+  .content-wrap {
+    padding: 4rem;
   }
-    
- 
-
-   
+}
 </style>

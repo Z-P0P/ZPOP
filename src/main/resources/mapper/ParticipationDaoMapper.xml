@@ -79,8 +79,8 @@
 		SELECT COUNT(id)
 		FROM participation
 		WHERE meetingId = #{id}
-		AND canceledAt IS NOT NULL
-		AND bannedAt IS NOT NULL;
+		AND canceledAt IS NULL
+		AND bannedAt IS NULL;
 	</select>
 
 	<select id="countBySearch" resultType= "java.lang.Integer">

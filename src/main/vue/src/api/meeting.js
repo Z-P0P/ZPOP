@@ -14,38 +14,59 @@ function getDetail(id) {
 }
 
 /*
-* 활성화된 모임글 옵션 조회
-*/
-async function getActiveOptions(){
-  const url = '/api/meeting/register';
+ * 활성화된 모임글 옵션 조회
+ */
+async function getActiveOptions() {
+  const url = "/api/meeting/register";
   return await fetch(url);
 }
 
-async function postRequest(dataJSONStr){
-  const url = '/api/meeting';
+async function postRequest(dataJSONStr) {
+  const url = "/api/meeting";
   const option = {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
-		body: dataJSONStr,
-  }
-  return await fetch(url,option);
+    headers: { "Content-Type": "application/json" },
+    body: dataJSONStr,
+  };
+  return await fetch(url, option);
 }
 
-async function getDetailsForUpdate(id){
+async function getDetailsForUpdate(id) {
   const url = `/api/meeting/update/${id}`;
   return await fetch(url);
 }
 
-async function putRequest(id, dataJSONStr){
+async function putRequest(id, dataJSONStr) {
   const url = `/api/meeting/${id}`;
   const option = {
     method: "PUT",
-    headers: {"Content-Type": "application/json"},
-		body: dataJSONStr,
-  }
-  return await fetch(url,option);
+    headers: { "Content-Type": "application/json" },
+    body: dataJSONStr,
+  };
+  return await fetch(url, option);
 }
 
+/**
+ * 모임 참여하기
+ */
+function participate(id) {
+  return fetch(`/api/meeting/${id}/participate`, {
+    method: "POST",
+  });
+}
+
+function getParticipant(id) {
+  return fetch(`/api/meeting/${id}/participant`);
+}
+
+/**
+ * 모임 참여취소
+ */
+function leave(id) {
+  return fetch(`/api/meeting/${id}/leave`, {
+    method: "DELETE",
+  });
+}
 
 export default {
   getThumbnailList,
@@ -54,4 +75,7 @@ export default {
   postRequest,
   getDetailsForUpdate,
   putRequest,
+  participate,
+  getParticipant,
+  leave,
 };

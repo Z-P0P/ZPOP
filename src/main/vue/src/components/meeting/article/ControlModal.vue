@@ -1,0 +1,127 @@
+<script setup>
+import { ref } from "vue";
+import { useRoute } from "vue-router";
+import api from "@/api";
+import ModalDefault from "@/components/modal/Default.vue";
+import { ServerException } from "@/utils/ServerException";
+
+const route = useRoute();
+
+const props = defineProps({
+  controlType: String,
+  articleTitle: String,
+});
+
+// refresh : 모임 상세 조회 최신화
+const emit = defineEmits(["closeModal", "refresh"]);
+
+let confirmMsg = ref("");
+
+async function onClickYes() {
+  switch (props.controlType) {
+    case "참여":
+      await participate();
+      break;
+    case "참여취소":
+      await leave();
+      break;
+  }
+}
+
+async function participate() {
+  try {
+    const res = await api.meeting.participate(route.params.id);
+    if (!res.ok) throw new ServerException(res);
+    const data = await res.json();
+    closeModalFooterType();
+    //TODO: 참여 링크 모달
+    emit("refresh");
+  } catch (e) {}
+}
+
+async function leave() {
+  try {
+    const res = await api.meeting.leave(route.params.id);
+    if (!res.ok) throw new ServerException(res);
+    const data = await res.json();
+
+    confirmMsg.value = "모임 참여를 취소했어요 !";
+    closeModalFooterType();
+    emit("refresh");
+  } catch (e) {}
+}
+
+let modalFooterType = ref(0);
+
+function closeModalFooterType() {
+  modalFooterType.value = 1;
+}
+</script>
+
+<template>
+  <ModalDefault @closeModal="emit('closeModal')">
+    <template v-if="props.controlType === '참여'" #modal-body>
+      <p>🤝 {{ props.articleTitle }}</p>
+      <p class="confirm">모임에 참여하시겠어요?</p>
+    </template>
+    <template v-else-if="props.controlType === '참여취소'" #modal-body>
+      <div v-if="!confirmMsg">
+        <p>🤝 {{ props.articleTitle }}</p>
+        <p class="confirm">참여를 취소하시겠어요?</p>
+      </div>
+      <div v-else>
+        <p>🤝 {{ props.articleTitle }}</p>
+        <p class="confirm">{{ confirmMsg }}</p>
+      </div>
+    </template>
+    <template v-else-if="props.controlType === '마감'" #modal-body
+      >마감</template
+    >
+    <template v-else="props.controlType === '참여링크'" #modal-body
+      >참여링크</template
+    >
+
+    <template v-if="modalFooterType === 0" #modal-footer>
+      <div @click="emit('closeModal')">아니오</div>
+      <div class="yes" @click="onClickYes">예</div>
+    </template>
+
+    <template v-else-if="modalFooterType === 1" #modal-footer>
+      <div @click="emit('closeModal')">닫기</div>
+    </template>
+  </ModalDefault>
+</template>
+
+<style scoped>
+.confirm {
+  margin-top: 8px;
+}
+
+.yes {
+  color: var(--main-color);
+}
+
+:deep(.modal__body div) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+:deep(.modal__footer) {
+  border-top: 1px solid var(--light-grey1);
+}
+
+:deep(.modal__footer div) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 8px;
+  cursor: pointer;
+}
+
+:deep(.modal__footer div:hover) {
+  background-color: var(--light-grey1);
+}
+</style>

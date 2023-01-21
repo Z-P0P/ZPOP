@@ -27,7 +27,7 @@ import com.zpop.web.service.CommentService;
 import com.zpop.web.service.ReportService;
 
 @Controller
-@RequestMapping("/comment")
+@RequestMapping("/api/comment")
 public class CommentController {
 	@Autowired
 	private CommentService service;
@@ -70,23 +70,23 @@ public class CommentController {
 	//댓글 수정 AJAX endpoint
 	@PatchMapping("{id}")
 	@ResponseBody
-	public String updateComment(@PathVariable int id, @RequestBody Comment comment,
+	public Boolean updateComment(@PathVariable int id, @RequestBody Comment comment,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		service.updateComment(comment, userDetails.getId());
-		return "{\"1\":1}"; //JSON
+		return true;
 	}
 	//댓글 삭제 AJAX endpoint
 	@DeleteMapping("{id}")
 	@ResponseBody
-	public String deleteComment(@PathVariable int id, 
+	public Boolean deleteComment(@PathVariable int id, 
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		service.deleteComment(id, userDetails.getId());
-		return "{\"1\":1}"; //JSON
+		return true;
 	}
 	//댓글 신고 AJAX endpoint
 	@PostMapping("{id}")
 	@ResponseBody
-	public String reportComment(@PathVariable("id") int id, 
+	public Boolean reportComment(@PathVariable("id") int id, 
 			@RequestBody ReportedComment reportedComment,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		
@@ -95,6 +95,6 @@ public class CommentController {
 		reportedComment.setReporterId(userDetails.getId());
 		reportedComment.setOriginal(comment.getContent());
 		reportService.createCommentReport(reportedComment);
-		return "{\"1\":1}"; //JSON
+		return true;
 	}
 }
