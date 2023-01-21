@@ -33,4 +33,6 @@ public interface MemberDao {
 
 	List<EvalMemberDto> getEvalMember(int meetingId);
 	int updateFameAll(List<MemberEval> evals);
+
+	int updateNickname(int memberId, String nickname);
 }

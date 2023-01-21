@@ -8,6 +8,11 @@ public class NicknameLog {
     private Date createdAt;
     private String nickname;
 
+    public NicknameLog(int memberId, String nickname){
+        this.memberId = memberId;
+        this.nickname = nickname;
+    }
+    
     public int getId() {
         return this.id;
     }

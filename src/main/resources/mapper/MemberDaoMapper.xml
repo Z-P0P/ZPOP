@@ -80,4 +80,9 @@
 			WHERE id=#{item.evaluateeId}
 		</foreach>
 	</update>
+	<update id="updateNickname">
+		UPDATE member
+        SET nickname =#{nickname}
+        WHERE id = #{memberId}
+	</update>
 </mapper>
