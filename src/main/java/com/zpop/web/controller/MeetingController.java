@@ -161,7 +161,6 @@ public class MeetingController {
 	}
 	//참여취소 AJAX endpoint(js에서 콜하는 함수)
 	@DeleteMapping("/{meetingId}/leave")
-	@ResponseBody
 	public boolean cancelParticipate(@PathVariable int meetingId,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		int memberId = userDetails.getId();
