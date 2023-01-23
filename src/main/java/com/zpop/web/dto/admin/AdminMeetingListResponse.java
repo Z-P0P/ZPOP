@@ -1,4 +1,4 @@
-package com.zpop.web.dto;
+package com.zpop.web.dto.admin;
 
 import java.util.List;
 
@@ -13,10 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RegisterMeetingViewResponse {
-	
-	private List<RegionDto> regions;
-	private List<CategoryDto> categories;
-	private List<ContactTypeDto> contactTypes;
-	private List<AgeRangeDto> ageRanges;
+public class AdminMeetingListResponse {
+    private List<AdminMeetingDto> meetings;
+    private int count;
 }
