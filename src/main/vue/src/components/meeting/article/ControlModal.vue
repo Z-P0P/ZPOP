@@ -43,7 +43,7 @@ async function participate() {
     confirmMsg.value = data.contact;
     closeModalFooterType();
     meetingDetailStore.hasParticipated = true;
-    
+
     // 참여자 리스트 최신화
     const participantsResult = await api.meeting.getParticipant(route.params.id);
     if (!participantsResult.ok) throw new ServerException(res);
@@ -96,7 +96,6 @@ function closeModalFooterType() {
         <p class="confirm">모임에 참여하시겠어요?</p>
       </div>
       <div v-else>
-        <p>🤝 {{ meetingDetailStore.title }}</p>
         <p>모임에 참여했습니다!</p>
         <p>다음 링크로 모임원들에게 인사해주세요 👋</p>
         <p class="confirm">{{ confirmMsg }}</p>
@@ -136,13 +135,14 @@ function closeModalFooterType() {
 </template>
 
 <style scoped>
-.confirm {
-  margin-top: 8px;
-}
-
 .yes {
   color: var(--main-color);
 }
+
+:deep(.modal__body p) {
+  margin: 4px 0;
+}
+
 
 :deep(.modal__body div) {
   display: flex;
