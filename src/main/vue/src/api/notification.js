@@ -1,9 +1,11 @@
-
 function getNotification(id){
     return fetch(`/api/notification/${id}`)
 }
 
 function readOne(id){
+
+
+
     const readAt = true;
     const data = {
                     method: "POST",
@@ -14,6 +16,10 @@ function readOne(id){
                     })
                 }
     return fetch(`/api/notification/read/${id}`, data)
+}
+
+function readTypeOne(id){
+
 }
 
 function readAll(id){
