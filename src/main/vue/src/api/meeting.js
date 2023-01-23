@@ -55,6 +55,9 @@ function participate(id) {
   });
 }
 
+/**
+ * 모임 참여자 리스트 조회
+ */
 function getParticipant(id) {
   return fetch(`/api/meeting/${id}/participant`);
 }
