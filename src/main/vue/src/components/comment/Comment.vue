@@ -4,6 +4,7 @@
   import { defineProps } from 'vue';
   import { useCommentStore} from '@/stores/commentStore'
   import InputBox from './InputBox.vue';
+  import SelectModal from './SelectModal.vue';
 
   const props = defineProps({
     comment:Object
@@ -68,6 +69,14 @@
     replyCnt.value = !replyCnt.value;     //카운트 비노출
 
   }
+
+  const isModalClosed = ref(true); // 모달 상태 정의
+
+  // select modal 열고 닫기
+  function closeSelectModal(){
+    isModalClosed.value = !isModalClosed.value;
+  }
+
 </script>
 
 <template>
@@ -75,14 +84,11 @@
     <span class="profile__image"></span>
     <span class="profile__nickname">{{ comment.nickname }}</span>
     <span class="profile__time">{{comment.elapsedTime}}</span>
-    <button></button>
-    <th:block th:if="${comment.isMyComment}">
-            <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::writer}"></div>
-    </th:block>
-    <th:block th:if="${!comment.isMyComment}">
-            <div sec:authorize="isAuthenticated()" th:replace="~{inc/meeting-detail-modal::reader}"></div>
-    </th:block>
-        </div>
+    <button @click="closeSelectModal">
+      <!-- role에 writer를 부여하면 작성자 기준으로 모달이 나오고, member를 부여하면 일반 로그인 사용자 모달이 나온다. -->
+      <SelectModal :role="'writer'" v-if="!isModalClosed"/>
+    </button>  
+  </div>
   <span class="comment__content">{{ comment.content }}</span>
   <div class="comment__replies" :class="{ hidden:hasBox }">
     <span class="pointer underline reply-cnt"  @click="toggleReplyCnt"  v-if="hasReply(comment)" v-show="replyCnt" >답글 {{ countOfReply }}개</span>
@@ -105,5 +111,9 @@
  .no-margin{
   margin: 0;
   padding: 0;
+}
+
+.profile > button{
+  position:relative;
 }
 </style>
