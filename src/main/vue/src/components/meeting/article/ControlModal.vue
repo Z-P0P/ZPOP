@@ -16,8 +16,7 @@ const props = defineProps({
   controlType: String,
 });
 
-// refresh : 모임 상세 조회 최신화
-const emit = defineEmits(["closeModal", "refresh"]);
+const emit = defineEmits(["closeModal"]);
 
 let confirmMsg = ref("");
 
@@ -42,7 +41,13 @@ async function participate() {
     const data = await res.json();
     closeModalFooterType();
     //TODO: 참여 링크 모달
-    emit("refresh");
+    meetingDetailStore.hasParticipated = true;
+    // 참여자 리스트 최신화
+    const participantsResult = await api.meeting.getParticipant(route.params.id);
+    if (!participantsResult.ok) throw new ServerException(res);
+    const participants = await participantsResult.json();
+    meetingDetailStore.participants = participants;
+
   } catch (e) {}
 }
 
