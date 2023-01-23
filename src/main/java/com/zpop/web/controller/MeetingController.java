@@ -101,11 +101,10 @@ public class MeetingController {
 
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<MeetingDetailResponse> detailView(@PathVariable int id, 
+	public ResponseEntity<MeetingDetailResponse> getDetail(@PathVariable int id, 
 											@AuthenticationPrincipal ZpopUserDetails userDetails)
-											
 							 {
-		System.out.println(userDetails+"===================================");
+
 		Integer memberId = null;
 
 		if(userDetails != null)
@@ -113,11 +112,8 @@ public class MeetingController {
 
 		MeetingDetailResponse meetingDetail = service.getById(id, memberId);
 
-//		model.addAttribute("meeting", meetingDetail);
-
-//		return "meeting/detail";
 		return ResponseEntity.ok().body(meetingDetail);
-		}
+	}
 	
 	@PutMapping("{id}")
 	@ResponseBody()
