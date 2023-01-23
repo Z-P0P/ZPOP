@@ -50,5 +50,10 @@ export const useMeetingDetailStore = defineStore("meetingDetail", {
     increaseCommentCount() {
       this.commentCount++;
     },
+    removeParticipant(removeTargetId) {
+      this.participants = this.participants.filter(
+        (p) => p.participantId !== removeTargetId
+      );
+    },
   },
 });

@@ -2,11 +2,13 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import api from "@/api";
+import { useMemberStore } from "@/stores/memberStore";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import ModalDefault from "@/components/modal/Default.vue";
 import { ServerException } from "@/utils/ServerException";
 
 const meetingDetailStore = useMeetingDetailStore();
+const memberStore = useMemberStore();
 
 const route = useRoute();
 
@@ -52,8 +54,11 @@ async function leave() {
 
     confirmMsg.value = "모임 참여를 취소했어요 !";
     closeModalFooterType();
-    emit("refresh");
-  } catch (e) {}
+    meetingDetailStore.removeParticipant(memberStore.id);
+    meetingDetailStore.hasParticipated = false;
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 async function close() {
