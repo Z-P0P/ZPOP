@@ -1,5 +1,6 @@
 package com.zpop.web.service.admin;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,29 +30,30 @@ public class DeafultAdminMemberService implements AdminMemberService{
 	}
 	
 	@Override
-	public List<Member> getList(int page, String keyword, String option) {
-		int size = 10;
+	public List<Member> getList(int page, String keyword, String option, Integer period, Date minDate, Integer num, String order) {
+		int size = num;
 		int offset=(page-1)*size;
-		List<Member> list = memberDao.getListBySearch(size, offset, keyword, option);
+		List<Member> list = memberDao.getListBySearch(size, offset, keyword, option,period,minDate,order);
 		return list;
 	}
 
 	@Override
-	public int countMember(String keyword, String option) {
-		int count = memberDao.countBySearch(keyword, option);
+	public int countMember(String keyword, String option, Integer period, Date minDate) {
+		int count = memberDao.countBySearch(keyword, option,period,minDate);
 		return count;
 	}
 
 	@Override
-	public List<AdminMemberEvalDto> getEvalList(int page, String keyword, String option) {
-		int size = 10;
+	public List<AdminMemberEvalDto> getEvalList(int page, String keyword, String option, 
+												Integer period, Date minDate, Integer num, String order) {
+		int size = num;
 		int offset=(page-1)*size;
-		List<AdminMemberEvalDto> list = memberEvalDao.getAdminViewList(size, offset, keyword, option);
+		List<AdminMemberEvalDto> list = memberEvalDao.getAdminViewList(size, offset, keyword, option, period, minDate, order);
 		return list;
 	}
 	
-	public int countEval(String keyword, String option) {
-		int count = memberEvalDao.countBySearch(keyword, option);
+	public int countEval(String keyword, String option, Integer period, Date minDate, String order) {
+		int count = memberEvalDao.countBySearch(keyword, option,period, minDate, order);
 		return count;
 	}
 
@@ -68,5 +70,4 @@ public class DeafultAdminMemberService implements AdminMemberService{
 		List<AdminParticipationDto> list = participationDao.getAdminViewList(size, offset, keyword, option);
 		return list;
 	}
-	
 }
