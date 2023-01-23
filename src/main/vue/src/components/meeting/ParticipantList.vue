@@ -1,7 +1,7 @@
 <script setup>
-import { setMapStoreSuffix } from 'pinia';
-import { computed,defineProps,ref } from 'vue';
 import UserProfile from "@/components/meeting/UserProfile.vue";
+import Participant from "@/components/meeting/Participant.vue";
+import { computed, defineProps, ref } from 'vue';
 
 const props = defineProps({
   detail: Object
@@ -13,8 +13,10 @@ let clickedParticipantId = ref(null);
 
 // 참여자를 클릭하였을때 참여자 정보 모달을 뒤워주는 함수
 function handleModal(event){
+  console.log(event.target);
       isOpen.value = true;
-      clickedParticipantId.value = event.target.getAttribute('data-id');
+      clickedParticipantId.value = event.currentTarget.getAttribute('data-id');
+      console.log(event.target);
 }
 
 const participantNum = computed(() => {
@@ -24,6 +26,9 @@ const participantNum = computed(() => {
   return length;
 })
 
+function closeModal(){
+  isOpen.value = false;
+}
 </script>
 
 <template>
@@ -38,17 +43,29 @@ const participantNum = computed(() => {
         </div>
         <ul class="participant__list">
             <li v-for="(participant, idx) in detail.participants" :key = "participant.participantId">
-              <div class="participant__info">
-                <img src="/images/icon/user-profile-grey.svg" v-bind:data-id="participant.participantId" @click.prevent="handleModal">
-                <span v-bind:data-id="participant.participantId" @click.prevent="handleModal">{{ participant.nickname }}</span>
-              </div>
+              <Participant :userDetail="participant" :data-id="participant.participantId" @click.prevent="handleModal"/>
             </li>
         </ul>
-        <UserProfile v-if="isOpen" :userDetail="detail" :participantId="clickedParticipantId"/>
+        <Transition name="slide-fade">
+          <UserProfile @closeModal="closeModal" v-if="isOpen" :userDetail="detail" :participantId="clickedParticipantId" :isModalOpened="isOpen"/>
+        </Transition>
     </section>
 </template>
 
 <style>
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
 
 .main {
     margin: 2rem auto 4rem auto;

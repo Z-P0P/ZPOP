@@ -1,6 +1,3 @@
-
-
-  
   #sheet {
     --overlay: #888;
     --divider: #333;
@@ -19,6 +16,15 @@
     visibility: hidden;
     pointer-events: none;
   }
+
+  #sheet .contents:not(.not-selectable) {
+    transition: var(--default-transitions), height 0.5s;
+  }
+  
+
+  #sheet[aria-hidden="true"] .contents {
+    transform: translateY(100%);
+  }
   
   #sheet .overlay {
     position: absolute;
@@ -36,6 +42,12 @@
     position: relative;
     overflow-y: hidden;
   
+    /* 임우빈의 수정사항  css */
+    /* top:570px;
+    max-width: 400px;
+    margin : auto;  */
+    /* 임우빈 수정사항 끝 */
+
     --default-transitions: transform 0.5s, border-radius 0.5s;
     background-color: #fff;
     transition: var(--default-transitions);
@@ -48,15 +60,6 @@
     padding-left: 18px;
     padding-right :18px;
     padding-bottom: 5px;
-  }
-  
-  #sheet .contents:not(.not-selectable) {
-    transition: var(--default-transitions), height 0.5s;
-  }
-  
-
-  #sheet[aria-hidden="true"] .contents {
-    transform: translateY(100%);
   }
   
   #sheet .draggable-area {
@@ -92,8 +95,14 @@
     overflow-y: hidden;
     gap: 1rem;
   }
+
+  .resigned-member{
+    height: 20px;
+    color:red;
+    padding-top:50px;
+  }
   
-  .image {
+  .image { 
     width: 100px;
     height: 100px;
     border-radius: 99px;
@@ -157,9 +166,157 @@ margin-right: 10px;
     gap:10px;
   }
 
+  
+
   @media (min-width: 576px){
     .btn__wrap.btn {
       padding-left: 10px;
       padding-right: 10px;
   }
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+  }
+  .row.reversed-order {
+    flex-direction: row-reverse;
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: column;
+  }
+  .column.reversed-order {
+    flex-direction: column-reverse;
+  }
+  
+  .row.items-start,
+  .column.items-start {
+    align-items: flex-start;
+  }
+  .row.justify-start,
+  .column.justify-start {
+    justify-content: flex-start;
+  }
+  .row.content-start,
+  .column.content-start {
+    align-content: flex-start;
+  }
+  .row.items-center,
+  .column.items-center {
+    align-items: center;
+  }
+  .row.justify-center,
+  .column.justify-center {
+    justify-content: center;
+  }
+  .row.content-center,
+  .column.content-center {
+    align-content: center;
+  }
+  .row.items-end,
+  .column.items-end {
+    align-items: flex-end;
+  }
+  .row.justify-end,
+  .column.justify-end {
+    justify-content: flex-end;
+  }
+  .row.content-end,
+  .column.content-end {
+    align-content: flex-end;
+  }
+  .row.items-stretch,
+  .column.items-stretch {
+    align-items: stretch;
+  }
+  .row.justify-stretch,
+  .column.justify-stretch {
+    justify-content: stretch;
+  }
+  .row.content-stretch,
+  .column.content-stretch {
+    align-content: stretch;
+  }
+  .row.items-baseline,
+  .column.items-baseline {
+    align-items: baseline;
+  }
+  .row.justify-baseline,
+  .column.justify-baseline {
+    justify-content: baseline;
+  }
+  .row.content-baseline,
+  .column.content-baseline {
+    align-content: baseline;
+  }
+  .row .wrap,
+  .column .wrap {
+    flex-wrap: wrap;
+  }
+  .row .reversed-wrap,
+  .column .reversed-wrap {
+    flex-wrap: wrap-reverse;
+  }
+  .row .no-wrap,
+  .column .no-wrap {
+    flex-wrap: nowrap;
+  }
+  
+  .fill {
+    flex-grow: 1;
+    flex-shrink: 0;
+  }
+  
+  .font-system {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  }
+  
+  .font-thin {
+    font-weight: 100;
+  }
+  
+  .font-extra-light {
+    font-weight: 200;
+  }
+  
+  .font-light {
+    font-weight: 300;
+  }
+  
+  .font-regular {
+    font-weight: 400;
+  }
+  
+  .font-medium {
+    font-weight: 500;
+  }
+  
+  .font-semibold {
+    font-weight: 600;
+  }
+  
+  .font-bold {
+    font-weight: 700;
+  }
+  
+  .font-extra-bold {
+    font-weight: 800;
+  }
+  
+  .font-black {
+    font-weight: 900;
+  }
+  
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .not-selectable {
+    user-select: none;
+  }
+  
+  .selectable {
+    user-select: auto;
   }

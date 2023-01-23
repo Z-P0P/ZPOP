@@ -5,14 +5,14 @@ import { reactive } from "vue";
 import { useRoute } from "vue-router";
 import api from "@/api";
 import Article from "@/components/meeting/Article.vue";
-import Participants from "@/components/meeting/Participants.vue";
+import ParticipantList from "@/components/meeting/ParticipantList.vue";
 import Comments from "@/components/meeting/Comments.vue";
 
 export default {
   name: "MeetingDetail",
   components: {
     Article,
-    Participants,
+    ParticipantList,
     Comments
   },
   setup() {
@@ -42,7 +42,7 @@ export default {
 <template>
   <div class="content-wrap">
   <Article :article="state.detail"/>
-  <Participants :detail="state.detail"/> 
+  <ParticipantList :detail="state.detail"/> 
   <Comments :detail="state.detail"/>
   </div>
 </template>
