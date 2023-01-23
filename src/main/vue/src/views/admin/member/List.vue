@@ -156,8 +156,8 @@ const updateUrl = () => {
 }
 
 watch(route, () => {
-    requestData();
     updateOption();
+    requestData();
 })
 
 const requestData = () => {
