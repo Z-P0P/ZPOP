@@ -67,7 +67,6 @@
         :controlType="currentControlType"
         :articleTitle="meetingDetailStore.title"
         @closeModal="closeControlModal"
-        @refresh="emit('refresh')"
       ></ControlModal>
     </div>
   </article>
@@ -85,9 +84,6 @@ import ControlModal from "./ControlModal.vue";
 const memberStore = useMemberStore();
 const loginModalStore = useLoginModalStore();
 const meetingDetailStore = useMeetingDetailStore();
-
-// refresh : 모임 상세 조회 최신화
-const emit = defineEmits(["refresh"]);
 
 // 참여, 마감, 참여취소, 링크 모달 on/off
 let controlModalOn = ref(false);
