@@ -6,7 +6,10 @@
       </div>
       <div class="title-container">
         <h2 class="title">{{ meetingDetailStore.title }}</h2>
-        <span class="kebab icon icon-kebab"></span>
+        <span @click="closeSelectModal" class="kebab icon icon-kebab">
+          <!-- role에 writer를 바인딩하면 작성자 기준 모달, participant를 바인딩하면 참여자 기준 모달, member를 바인딩하면 일반 로그인 사용자 모달이 나온다. -->
+          <SelectModal :role="'participant'" v-if="!isSelectModalClosed"/>
+        </span>
         <img src="" alt="" />
       </div>
 
@@ -80,10 +83,17 @@ import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import Round from "@/components/button/Round.vue";
 import RoundDisabled from "@/components/button/RoundDisabled.vue";
 import ControlModal from "./ControlModal.vue";
+import SelectModal from "./SelectModal.vue";
 
 const memberStore = useMemberStore();
 const loginModalStore = useLoginModalStore();
 const meetingDetailStore = useMeetingDetailStore();
+
+const isSelectModalClosed = ref(true);
+
+function closeSelectModal() {
+  isSelectModalClosed.value = !isSelectModalClosed.value;
+}
 
 // 참여, 마감, 참여취소, 링크 모달 on/off
 let controlModalOn = ref(false);
@@ -130,4 +140,13 @@ async function onClickCloseBtn() {
 
 <style>
 @import url(@/assets/css/meeting/article.css);
+
+.title-container .kebab{
+  position:relative;
+}
+
+.title-container .icon{
+  overflow: visible;
+  text-indent: 0px;
+}
 </style>
