@@ -2,14 +2,16 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import api from "@/api";
+import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import ModalDefault from "@/components/modal/Default.vue";
 import { ServerException } from "@/utils/ServerException";
+
+const meetingDetailStore = useMeetingDetailStore();
 
 const route = useRoute();
 
 const props = defineProps({
   controlType: String,
-  articleTitle: String,
 });
 
 // refresh : 모임 상세 조회 최신화
@@ -24,6 +26,9 @@ async function onClickYes() {
       break;
     case "참여취소":
       await leave();
+      break;
+    case "마감":
+      await close();
       break;
   }
 }
@@ -51,6 +56,18 @@ async function leave() {
   } catch (e) {}
 }
 
+async function close() {
+  try {
+    const res = await api.meeting.close(route.params.id);
+    if (!res.ok) throw new ServerException(res);
+    const data = await res.json();
+
+    confirmMsg.value = "모임을 마감했어요 !";
+    closeModalFooterType();
+    meetingDetailStore.closed = true;
+  } catch (e) {}
+}
+
 let modalFooterType = ref(0);
 
 function closeModalFooterType() {
@@ -61,22 +78,27 @@ function closeModalFooterType() {
 <template>
   <ModalDefault @closeModal="emit('closeModal')">
     <template v-if="props.controlType === '참여'" #modal-body>
-      <p>🤝 {{ props.articleTitle }}</p>
+      <p>🤝 {{ meetingDetailStore.title }}</p>
       <p class="confirm">모임에 참여하시겠어요?</p>
     </template>
     <template v-else-if="props.controlType === '참여취소'" #modal-body>
       <div v-if="!confirmMsg">
-        <p>🤝 {{ props.articleTitle }}</p>
+        <p>🤝 {{ meetingDetailStore.title }}</p>
         <p class="confirm">참여를 취소하시겠어요?</p>
       </div>
       <div v-else>
-        <p>🤝 {{ props.articleTitle }}</p>
+        <p>🤝 {{ meetingDetailStore.title }}</p>
         <p class="confirm">{{ confirmMsg }}</p>
       </div>
     </template>
-    <template v-else-if="props.controlType === '마감'" #modal-body
-      >마감</template
-    >
+    <template v-else-if="props.controlType === '마감'" #modal-body>
+      <div v-if="!confirmMsg">
+        <p class="confirm">모임을 마감하시겠어요?</p>
+      </div>
+      <div v-else>
+        <p class="confirm">{{ confirmMsg }}</p>
+      </div>
+    </template>
     <template v-else="props.controlType === '참여링크'" #modal-body
       >참여링크</template
     >

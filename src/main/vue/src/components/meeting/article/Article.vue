@@ -119,6 +119,17 @@ async function onClickLeaveBtn() {
   currentControlType.value = controlType[1];
   controlModalOn.value = !controlModalOn.value;
 }
+
+async function onClickCloseBtn() {
+  const isLoggedIn = await memberStore.isAuthenticated();
+  if (!isLoggedIn) {
+    loginModalStore.handleModal();
+    return;
+  }
+
+  currentControlType.value = controlType[2];
+  controlModalOn.value = !controlModalOn.value;
+}
 </script>
 
 <style>
