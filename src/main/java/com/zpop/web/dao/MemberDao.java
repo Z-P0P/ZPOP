@@ -6,6 +6,7 @@ import com.zpop.web.entity.MemberEval;
 import com.zpop.web.entity.member.MyMeetingView;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -23,14 +24,16 @@ public interface MemberDao {
 	int insert(Member member);
 
 	int update(Member member);
-	int countBySearch(String keyword, String option);
+	int countBySearch(String keyword, String option, Integer period, Date minDate);
 	int count(int socialTypeId);
 
 
-	List<Member> getListBySearch(int size, int offset, String keyword, String option);
+	List<Member> getListBySearch(int size, int offset, String keyword, String option, Integer period, Date minDate, String order);
 	List<MyMeetingView> getMyMeeting(int memberId);
 	List<MyMeetingView> getMyGathering(int memberId);
 
 	List<EvalMemberDto> getEvalMember(int meetingId);
 	int updateFameAll(List<MemberEval> evals);
+
+    int updateAllIsSuspended(List<Integer> ids, Boolean isSuspended);
 }

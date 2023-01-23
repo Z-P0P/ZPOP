@@ -1,7 +1,11 @@
 package com.zpop.web.dao;
 
+import java.util.Date;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+
+import com.zpop.web.dto.admin.AdminCommentDto;
 import com.zpop.web.entity.comment.Comment;
 import com.zpop.web.entity.comment.CommentView;
 /*
@@ -28,6 +32,13 @@ public interface CommentDao {
 	int updateComment(int commentId, String content);
 	int deleteComment(int commentId); //레코드에 삭제날짜를 설정. 실제 삭제 x
 
+	List<AdminCommentDto> getAdminList(int offset, int size, String keyword, String option, Date minDate, Integer period, String order);
+	
+	int countBySearch(String keyword, String option, Date minDate, Integer period);
 
+	List<Comment> getByIds(List<Integer> ids);
 
+	int removeAllDeletedAt(List<Integer> ids);
+
+	int updateAllDeletedAt(List<Integer> ids);
 }
