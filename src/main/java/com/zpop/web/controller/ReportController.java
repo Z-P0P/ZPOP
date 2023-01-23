@@ -3,17 +3,13 @@ package com.zpop.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zpop.web.dao.MeetingDao;
-import com.zpop.web.dto.RequestCommentReportDto;
 import com.zpop.web.dto.RequestMeetingReportDto;
 import com.zpop.web.dto.RequestMemberReportDto;
 import com.zpop.web.entity.ReportedComment;
@@ -26,7 +22,7 @@ import com.zpop.web.service.CommentService;
 import com.zpop.web.service.ReportService;
 
 @Controller
-@RequestMapping("/report")
+@RequestMapping("/api/report")
 public class ReportController {
 	
 	@Autowired
@@ -44,10 +40,9 @@ public class ReportController {
 	public boolean meeting(
 			@PathVariable("id") int id,
 			@RequestBody RequestMeetingReportDto dto,
-			@AuthenticationPrincipal ZpopUserDetails userDetails
-			) {
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+
 		boolean result;
-		
 		
 		int[] list = reportService.getReportedMeetingId(id, userDetails.getId());
 		if(list.length==0) {
@@ -103,14 +98,16 @@ public class ReportController {
 	@ResponseBody
 	public boolean member(
 			@PathVariable("memberId") int memberId,
-			@RequestBody ReportedMember reportedMember,
+			@RequestBody RequestMemberReportDto dto,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+
 		boolean result;
 		
-		// 피신고자, 신고자, 유형, 사유
-		reportedMember.setReportedId(memberId);
-		reportedMember.setReporterId(userDetails.getId());
-		reportService.createMemberReport(reportedMember);
+		// 피신고자, 신고자, 유형, 사유	
+		ReportedMember rm = new ReportedMember(
+			memberId, userDetails.getId(), dto.getReportType(), dto.getReportReason());
+		reportService.createMemberReport(rm);
+
 		result = true;
 
 		return result;

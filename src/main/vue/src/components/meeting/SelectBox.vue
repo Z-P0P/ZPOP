@@ -9,7 +9,7 @@
 
 <script>
 export default {
-    props: ['option'],
+    props: ['option'],    
     emits: ['selectBoxClick', 'optionClick'],
     setup(props,context) {
         const option = props.option;
@@ -31,4 +31,6 @@ export default {
 </script>
 
 <style scoped>
+@import url(../../assets/css/component/select.css)
+
 </style>

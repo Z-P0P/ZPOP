@@ -46,7 +46,7 @@
 }
 
 .modal-report .input-text > div {
-	margin: 0px auto;
+	/* margin: 0px auto; */
 }
 
 .modal-report .input-text__label{
@@ -87,6 +87,7 @@
 
 .modal-report .input-text__content::placeholder{
     color:#8B8B8B;
+    text-indent: 20px;
 }
 
 .modal-report .select-box--input > span.select-span{
@@ -159,7 +160,6 @@
 	}
 	
 	.modal-report .input-text__content{
-    width: 410px;
     height: 200px;
 	}
 	
