@@ -182,7 +182,6 @@ public class MeetingController {
 	}
 	
 	@PatchMapping("/{id}/close")
-	@ResponseBody
 	public boolean closeMeeting(@PathVariable int id,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		Member member = new Member();

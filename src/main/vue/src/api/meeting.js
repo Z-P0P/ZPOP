@@ -68,6 +68,15 @@ function leave(id) {
   });
 }
 
+/**
+ * 모임 마감하기
+ */
+function close(id) {
+  return fetch(`/api/meeting/${id}/close`, {
+    method: "PATCH"
+  }) ;
+}
+
 export default {
   getThumbnailList,
   getDetail,
@@ -78,4 +87,5 @@ export default {
   participate,
   getParticipant,
   leave,
+  close
 };
