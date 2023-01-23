@@ -39,16 +39,19 @@ async function participate() {
     const res = await api.meeting.participate(route.params.id);
     if (!res.ok) throw new ServerException(res);
     const data = await res.json();
+  
+    confirmMsg.value = data.contact;
     closeModalFooterType();
-    //TODO: 참여 링크 모달
     meetingDetailStore.hasParticipated = true;
+    
     // 참여자 리스트 최신화
     const participantsResult = await api.meeting.getParticipant(route.params.id);
     if (!participantsResult.ok) throw new ServerException(res);
     const participants = await participantsResult.json();
     meetingDetailStore.participants = participants;
-
-  } catch (e) {}
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 async function leave() {
@@ -88,8 +91,16 @@ function closeModalFooterType() {
 <template>
   <ModalDefault @closeModal="emit('closeModal')">
     <template v-if="props.controlType === '참여'" #modal-body>
-      <p>🤝 {{ meetingDetailStore.title }}</p>
-      <p class="confirm">모임에 참여하시겠어요?</p>
+      <div v-if="!confirmMsg">
+        <p>🤝 {{ meetingDetailStore.title }}</p>
+        <p class="confirm">모임에 참여하시겠어요?</p>
+      </div>
+      <div v-else>
+        <p>🤝 {{ meetingDetailStore.title }}</p>
+        <p>모임에 참여했습니다!</p>
+        <p>다음 링크로 모임원들에게 인사해주세요 👋</p>
+        <p class="confirm">{{ confirmMsg }}</p>
+      </div>
     </template>
     <template v-else-if="props.controlType === '참여취소'" #modal-body>
       <div v-if="!confirmMsg">
