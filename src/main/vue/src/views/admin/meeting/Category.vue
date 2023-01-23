@@ -175,7 +175,9 @@ const activateCategoryHandler = (event, activate) => {
         return;
     }
 
-    if (!confirm(`정말로 다음 카테고리를 비활성화하시겠습니까?\n카테고리: ${categories}`)) return
+    const message = activate?'활성화':'비활성화'
+
+    if (!confirm(`정말로 다음 카테고리를 ${message}하시겠습니까?\n카테고리: ${[...categories]}`)) return
 
     const form = new FormData();
 	form.append('ids', ids);
@@ -188,16 +190,12 @@ const activateCategoryHandler = (event, activate) => {
 
     fetch(url, option)
     .then(()=>{
+        alert(`카테고리가 ${message}되었습니다.`);
         requestData();
     })
     .catch(err=>console.log(err));
 
-    
     clearCheckedAll();
-}
-
-const clearCheckedAll = () => {
-    listData.categories.forEach(category=> category.isChecked=false );
 }
 
 function getCheckedIds() {

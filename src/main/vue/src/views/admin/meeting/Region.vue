@@ -27,7 +27,7 @@
             <li v-for="(item, index) in listData.regions" :key="index" class="table-list__content">
                 <ul class="list-content">
                     <li class="list-content__id">
-                        <input type="checkbox" class="checkbox" v-model="item.isChecked">
+                        <input type="checkbox" class="checkbox" v-model="isChecked[index]">
                         <span>{{ item.id }}</span>
                     </li>
                     <li class="admin-tb-2">{{ item.name }}</li>
@@ -74,8 +74,8 @@ const searchOption = reactive({
 const checkAllHandler = (event) => {
     let allCheckboxChecked = event.target.checked; 
 
-    for (let region of listData.regions){
-        region.isChecked = allCheckboxChecked;
+    for (let index in isChecked){
+        isChecked[index] = allCheckboxChecked;
     }
 }
 
@@ -167,12 +167,18 @@ requestData();
 
 
 const activateRegionHandler = (event, activate) => {
-    let ids = [];
-    listData.regions.forEach(region=>{
-        if (region.isChecked){
-            ids.push(region.id);
-        }
-    })
+    let ids = getCheckedIds();
+    let regions = getCheckedRegions();
+
+    if (ids.length == 0) {
+        alert('선택한 항목이 없습니다.');
+        return;
+    }
+
+    const message = activate?'활성화':'비활성화'
+
+    if (!confirm(`정말로 다음 지역을 ${message}하시겠습니까?\n지역: ${[...regions]}`)) return
+
     const form = new FormData();
 	form.append('ids', ids);
 	form.append('activate', activate);
@@ -184,16 +190,34 @@ const activateRegionHandler = (event, activate) => {
 
     fetch(url, option)
     .then(()=>{
+        alert(`지역이 ${message}되었습니다.`);
         requestData();
     })
     .catch(err=>console.log(err));
 
-    
     clearCheckedAll();
 }
 
-const clearCheckedAll = () => {
-    listData.regions.forEach(region=> region.isChecked=false );
+function getCheckedIds() {
+    let ids = [];
+    for (let index in isChecked) {
+        if (isChecked[index]) {
+            const region = listData.regions[index];
+            ids.push(region.id);
+        }
+    }
+    return ids;
+}
+
+function getCheckedRegions() {
+    let regions = new Set();
+    for (let index in isChecked) {
+        if (isChecked[index]) {
+            const region = listData.regions[index];
+            regions.add(`${region.name}(${region.id})`);
+        }
+    }
+    return regions;
 }
 
 </script>
