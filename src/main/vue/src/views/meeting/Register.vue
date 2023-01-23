@@ -49,7 +49,7 @@
                             <div class="icon-cancel"></div>
                             <div class="register-status__text">
                                 <div class="register-status__message">게시글 등록에 실패했어요.<br>다음 내용을 확인해주세요.</div>
-                                <div class="register-status__message">registerForm.errorMessage</div>
+                                <div class="register-status__message">{{registerForm.errorMessage}}</div>
                             </div>
                         </div>
                         <div class="modal__content">
