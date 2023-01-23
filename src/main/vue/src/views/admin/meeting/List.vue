@@ -277,8 +277,8 @@ const updateUrl = () => {
 }
 
 watch(route, () => {
-    requestList();
     updateOption();
+    requestList();
 })
 
 const requestList = () => {

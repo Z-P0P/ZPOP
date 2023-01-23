@@ -7,8 +7,7 @@
             <span @click="activateRegionHandler($event, false)" class="table-bar__icon table-bar__icon-x"></span>
         </template>
         <template #right-buttons>
-            <span class="table-bar__page"> {{`${listData.count.toLocaleString()} 개 중
-            ${pageMinIndex().toLocaleString()}-${pageMaxIndex().toLocaleString()}`}} </span>
+            <span class="table-bar__page"> {{`${listData.count.toLocaleString()} 개 중 ` + getMinMaxIndex }} </span>
             <span @click="decreasePage" class="table-bar__icon table-bar__icon-arrow-left hide"></span>
             <span @click="increasePage" class="table-bar__icon table-bar__icon-arrow-right hide"></span>
         </template>
@@ -45,7 +44,7 @@
 </template>
 
 <script setup>
-import { reactive, watch } from 'vue';
+import { reactive, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import SearchBar from '../../../components/admin/SearchBar.vue';
 import AdminTable from '../../../components/admin/Table.vue';
@@ -60,11 +59,16 @@ const listData = reactive({
     isLoaded: false,
 });
 
+const isChecked = reactive([]);
+
 const searchOption = reactive({
-    keyword: "",
-    option: "",
-    page: "1",
-    numPerSearch: 10,
+    keyword : String,
+    option : String,
+    page : Number,
+    num : Number,
+    minDate : String,
+    period : Number,
+    order : String,
 })
 
 const checkAllHandler = (event) => {
@@ -75,27 +79,34 @@ const checkAllHandler = (event) => {
     }
 }
 
+// 지역 조회시에는 사용할 일이 없음
+const updateOption = () => {
+    let { keyword, option, page = 1, num = 10, minDate = new Date().toISOString().slice(0, 10), 
+    period = 9999, order =  "desc"} = route.query;
 
-const getSearchOption = () => {
-    const option = route.query.option;
-    const page = parseInt(route.query.page);
-    const keyword = route.query.keyword;
-    const numPerSearch = parseInt(route.query.numPerSearch);
-    searchOption.keyword = keyword == undefined ? "" : keyword;
-    searchOption.option = option == undefined ? "" : option;
-    searchOption.page = isNaN(page) ? 1 : page;
-    searchOption.numPerSearch = isNaN(numPerSearch) ? 10 : numPerSearch;
+    searchOption.keyword = keyword;
+    searchOption.option = option;
+    searchOption.page = page;
+    searchOption.num = num;
+    searchOption.minDate = minDate;
+    searchOption.period = period;
+    searchOption.order = order;
 }
+updateOption();
 
 const pageMinIndex = () => {
-    const pageMaxNum = (searchOption.page - 1) * searchOption.numPerSearch + 1;
-    return pageMaxNum <= listData.count ? pageMaxNum : listData.count;
+    const pageMaxNum = (searchOption.page - 1) * searchOption.num + 1;
+    return (pageMaxNum <= listData.count ? pageMaxNum : listData.count);
 }
 
 const pageMaxIndex = () => {
-    const pageMaxNum = (searchOption.page * searchOption.numPerSearch);
-    return pageMaxNum <= listData.count ? pageMaxNum : listData.count;
+    const pageMaxNum = (searchOption.page * searchOption.num);
+    return (pageMaxNum <= listData.count ? pageMaxNum : listData.count);
 }
+
+const getMinMaxIndex = computed(() => {
+    return `${pageMinIndex().toLocaleString()}-${pageMaxIndex().toLocaleString()}`
+})
 
 const decreasePage = () => {
     if (pageMinIndex() == 0 || pageMinIndex() == 1) {
@@ -133,8 +144,8 @@ const updateUrl = () => {
 }
 
 watch(route, () => {
+    updateOption();
     requestData();
-    getSearchOption();
 })
 
 const requestData = () => {
@@ -146,7 +157,7 @@ const requestData = () => {
             listData.regions = [];
             listData.count = data.count;
             data.regions.forEach(item => {
-                item.isChecked = false;
+                listData.regions.push(item);
                 isChecked.push(false);
             });
             listData.isLoaded = true;
