@@ -10,7 +10,7 @@
                 </div>
                 <div class="login-btn-container">
                     <a class="login-btn login-btn--kakao text-hidden" id="kakao-login-btn"
-                        href="javascript:Kakao.Auth.authorize({redirectUri: 'http://localhost:5173/login/oauth/kakao'})">카카오
+                        href="javascript:Kakao.Auth.authorize({redirectUri: 'http://localhost:5173?login=kakao'})">카카오
                         로그인 버튼</a>
                     <a @click="onNaverLoginClick" class="login-btn login-btn--naver text-hidden" id="naver-login-btn"
                         href="javascript:void(0)">네이버
@@ -44,7 +44,7 @@ const generateRandomString = (num) => {
 
 const serviceURL = "https://nid.naver.com/oauth2.0/authorize";
 const clientId = "fXPYssaX_SOB2qThvRtF";
-const redirectUrl = encodeURI("http://localhost:5173/login/oauth/naver");
+const redirectUrl = encodeURI("http://localhost:5173?login=naver");
 const responseType = "code";
 const state = encodeURI(generateRandomString(10));
 const requestUrl = `${serviceURL}?response_type=${responseType}&client_id=${clientId}&state=${state}&redirect_uri=${redirectUrl}`;

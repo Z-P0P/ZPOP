@@ -16,15 +16,15 @@ async function isAuth (to, from) {
   }
 }
 
-function redirectRouteAfterLogin(to, from) {
-  // 로컬 스토리이제 저장된 리다이렉트 라우트가 있다면,
-  // 로그인 성공 후 해당 라우트로 이동한다.
-  const redirectRoute = localStorage.getItem("redirect-route");
-  if (from.path.includes("login/oauth") && redirectRoute) {
-    localStorage.removeItem("redirect-route");
-    router.push(redirectRoute);
-  }
-}
+// function redirectRouteAfterLogin(to, from) {
+//   // 로컬 스토리이제 저장된 리다이렉트 라우트가 있다면,
+//   // 로그인 성공 후 해당 라우트로 이동한다.
+//   const redirectRoute = localStorage.getItem("redirect-route");
+//   if (from.path.includes("?login=") && redirectRoute) {
+//     localStorage.removeItem("redirect-route");
+//     router.push(redirectRoute);
+//   }
+// }
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,10 +38,10 @@ const router = createRouter({
           path: "/:pathMatch(.*)",
           component: () => import("@/views/404.vue"),
         },
-        {
-          path: "login/oauth/:pathMatch(.*)*",
-          component: () => import("@/views/LoginProc.vue"),
-        },
+        // {
+        //   path: "login/oauth/:pathMatch(.*)*",
+        //   component: () => import("@/views/LoginProc.vue"),
+        // },
         {
           path: "meeting",
           children: [
@@ -50,7 +50,7 @@ const router = createRouter({
               name: "meetingList",
               component: () => import("@/views/meeting/List.vue"),
               alias: "/",
-              beforeEnter: [redirectRouteAfterLogin],
+              // beforeEnter: [redirectRouteAfterLogin],
             },
             {
               path: "search",
