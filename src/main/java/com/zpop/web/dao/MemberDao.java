@@ -36,4 +36,6 @@ public interface MemberDao {
 	int updateFameAll(List<MemberEval> evals);
 
     int updateAllIsSuspended(List<Integer> ids, Boolean isSuspended);
+	
+	int updateNickname(int memberId, String nickname);
 }

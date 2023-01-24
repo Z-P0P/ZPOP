@@ -1,10 +1,13 @@
 package com.zpop.web.service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zpop.web.dao.MeetingDao;
 import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.MemberEvalDao;
+import com.zpop.web.dao.NicknameLogDao;
 import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.dto.EvalDto;
 import com.zpop.web.dto.EvalMemberDto;
@@ -20,6 +24,7 @@ import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.dto.ProfileResponse;
 import com.zpop.web.entity.Member;
 import com.zpop.web.entity.MemberEval;
+import com.zpop.web.entity.NicknameLog;
 import com.zpop.web.entity.Participation;
 import com.zpop.web.entity.member.MyMeetingView;
 import com.zpop.web.utils.TextDateTimeCalculator;
@@ -36,6 +41,11 @@ public class DefalutMemberService implements MemberService {
     @Autowired
     private MemberEvalDao memberEvalDao;
 
+    @Autowired
+    private NicknameLogDao nicknameLogDao;
+
+    private final int MAX_NICKNAME_LENGTH = 10;
+	private final String nicknamePattern = "^(?=.*[a-zA-Z0-9가-힣])[a-zA-Z0-9가-힣]{0,10}$";
 
     public DefalutMemberService() {
     }
@@ -222,4 +232,56 @@ public class DefalutMemberService implements MemberService {
 
         return participant;
     }
+
+    public Map<String, Object> checkNicknameValid(String nickname) {
+		Map<String, Object> result = new HashMap<>();
+		boolean isRegexMatch = Pattern.matches(nicknamePattern, nickname);
+		
+		if (nickname.isBlank() || nickname.isEmpty() || 
+				nickname.length() > MAX_NICKNAME_LENGTH
+				|| !isRegexMatch) {
+			result.put("result", "FORMAT_NOT_ALLOWED");
+			return result;
+		} 
+		
+		Member member = dao.getByNickname(nickname);
+		if (member != null) {
+			result.put("result", "NICKNAME_ALREADY_USED");
+			return result;
+		}
+		
+		result.put("result", "NICKNAME_VALID");
+		return result;
+	}
+ 
+	@Transactional
+	@Override
+	public Member updateNickname(int memberId, String nickname) {
+
+        //해볼게요.... 
+        //닉네임 로그 다오
+         NicknameLog nicknameLog = nicknameLogDao.getLatestByMemberId(memberId);
+         //===닉네임 설정 기간 검사===
+         Date date = nicknameLog.getCreatedAt();
+         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
+            LocalDate now =LocalDate.now();
+        Period period = Period.between(localDate, now);
+        int diff = Math.abs(period.getDays());
+        if (diff<30){
+            //변경할 수 없다
+        }
+
+        //======닉네임 변경 로직 ======= 
+        //닉네임 유효성 확인, 닉네임 중복확인
+        Map<String, Object> result = checkNicknameValid(nickname); 
+        if(result.get("result").equals("NICKNAME_VALID"))
+
+        //NicknameLog에 insert
+
+        //Member의 fame update
+        dao.updateNickname(memberId, nickname);
+        nicknameLogDao.insert(new NicknameLog(memberId, nickname));
+         
+		return null;
+	}
 }

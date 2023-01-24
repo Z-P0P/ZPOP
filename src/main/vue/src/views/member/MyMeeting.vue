@@ -1,12 +1,11 @@
-
 <script setup>
 import { reactive, computed, ref, onMounted  } from "vue";
 import api from "@/api";
 import MeetingList from "@/components/member/MeetingList.vue";
 import ModalDefault from "@/components/modal/Full.vue";
-onMounted(() => {
+// onMounted(() => {
   
-})
+// })
 const state = reactive({
   meetings: [],
   meetingId: null,

@@ -17,5 +17,8 @@ public interface MemberService {
         List<EvalMemberDto> getEvalMember(int meetingId);
         Map<String,Object> getRateData(EvalDto dto);
         ProfileResponse getParticipant(int id);
+
+        Map<String, Object> checkNicknameValid(String nickname);
+        Member updateNickname(int memberId, String nickname);
 }
 
