@@ -46,4 +46,13 @@ const onLogoutClick = () => {
 .select-box::before{
     display:none;
 }
+.header__profile > button{
+    height:32px;
+}
+
+@media (min-width: 576px) {
+    .header__profile > button{
+    height:40px;
+}
+}
 </style>
