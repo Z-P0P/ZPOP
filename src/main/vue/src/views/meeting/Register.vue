@@ -161,12 +161,16 @@ export default {
 @import url(../../assets/css/component/select.css);
 @import url('https://cdn.quilljs.com/1.3.6/quill.snow.css');
 
+.input__label {
+    color: var(--dark-grey2);
+}
 .meeting-form-container {
     padding: 0 20px;
     max-width: 996px;
     width: 100%;
     box-shadow: none;
 }
+
 
 @media (min-width:576px) {
     .meeting-form-container {
@@ -188,10 +192,22 @@ export default {
     font-size: 1rem;
 }
 
+/* error 메세지 출력 라벨 크기가 16px로 적용되는 현상 해결 */
+.meeting-form .input__message {
+    font-size: 14px;
+}
+
+/* input__label과 폰트크기가 다른 현상 해결 */
+.input-text__label{
+    font-size: 1.125rem;
+}
+
 @media (min-width:576px) {
     .meeting-form * {
         font-size: 1.125rem;
     }
+
+
 }
 
 
@@ -227,16 +243,19 @@ export default {
         font-weight: 600;
         font-size: 36px;
     }
+        
+
 }
 
 .meeting-form legend {
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: 700;
     padding: 1rem 0;
     width: 100%;
     border-bottom: 2px solid var(--tiffany-blue);
     margin-bottom: 1.5rem;
     grid-area: legend;
+    color: var(--dark-grey2);
 }
 
 

@@ -56,7 +56,7 @@
                 
                   inputStatus.inputMessage= '사용할 수 있는 닉네임이에요!';
                   inputStatus.isNicknameValid = true;
-                   
+
                 //    setNicknameBtn.classList.add('btn-action');
                    return;
                }
@@ -72,7 +72,9 @@
    }
 
 
-   //=====================================image upload 🎇🎆🎆🎈🎈🎈
+   /**
+    * image upload
+    */
    const fileInput = ref(null);
    const imgSrc = ref("")
    function openFileUpload(e) {
@@ -96,17 +98,50 @@
        
    }
 
+/**
+ * 프로필 수정 저장하기
+ */
+
+ function editSave() {
+    console.log("save clicked");
+    const activeSave = inputStatus.isNicknameValid;
+    const nickname = inputStatus.inputNickname;
+    if(activeSave == true){
+       const form = new FormData();
+       form.append('nickname', nickname);
+       const url = '/api/me/edit';
+       const options = {
+           method: "POST",
+           body: form,
+       }
+       fetch(url, options)
+           .then(response => {
+               if (response.ok) {
+                   return phNickname=nickname;
+               }
+               throw Error();
+           })
+                          
+
+    }
+    if(activeSave == false){
+        inputStatus.inputMessage ='유효하지 않은 닉네임으로 변경할 수 없어요!'
+    }
+ }
+
    </script> 
 
 
 
 
-
+//TODO : 프로필 이미지 업로드, 삭제, 모바일 화면에서 케밥적용
+//TODO : 닉네임 수정
 <template>
     <div class="my-profile">
         <div class="my-profile-container">
     
     
+          
             <h2 class="profile__title" >프로필 수정</h2>
             <div class="profile__image">
                 <input @change="uploadImage($event)" type="file" accept="image/*" ref="fileInput" class="file-input">
@@ -120,21 +155,20 @@
                 </div> 
             </div>
 
-    
+
             <div class="input-text">
-                <!--📌to do: 닉네임 수정-->
                 <label class="input-text__label" for="input-text__content" ></label>
                 <div class="input-text__content-wrapper"  
-                     v-bind:class="{'input-text__content-wrapper--correct input__message--appear' : inputStatus.isNicknameValid ,
+                     v-bind:class="{'input-text__content-wrapper--correct' : inputStatus.isNicknameValid ,
                      'input-text__content-wrapper--error input__message--appear': !inputStatus.isNicknameValid } ">
                     <input class="input-text__content" type="text"
                         maxlength="10" spellcheck="false"
                         v-bind:placeholder="phNickname" v-model="inputStatus.inputNickname" @input="validateNickname(inputStatus.inputNickname)">
                 </div>
-                <span class="input__message" v-bind:textContent="inputStatus.inputMessage" ></span>
+                <span class="input__message "   v-bind:class="{'input__message--appear': inputStatus.inputMessage}" v-bind:textContent="inputStatus.inputMessage" ></span>
 
             </div>
-            <span class="btn-semiround profile__btn--save ">저장하기</span>
+            <span class="btn-semiround profile__btn--save" @click.prevent="editSave">저장하기</span>
             
         </div>
     </div>  
