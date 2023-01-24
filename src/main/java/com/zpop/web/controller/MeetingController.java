@@ -106,7 +106,8 @@ public class MeetingController {
 							 {
 
 		Integer memberId = null;
-
+		
+		
 		if(userDetails != null)
 			memberId = userDetails.getId();
 

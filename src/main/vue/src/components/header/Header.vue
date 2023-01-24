@@ -30,7 +30,8 @@
 import { computed, onBeforeMount } from "vue";
 import { useHeaderStore } from '../../stores/headerStore';
 import { useMemberStore } from '../../stores/memberStore';
-import { useLoginModalStore } from '@/stores/loginModalStore';
+import {useLoginModalStore} from "../../stores/loginModalStore"
+
 import notificationModal from './NotificationModal.vue';
 import profile from './Profile.vue';
 

@@ -39,15 +39,66 @@
 		ON me.evaluatorId = m2.id
 		JOIN meeting as m
 		ON me.meetingId = m.id
-		LIMIT #{offset},#{size}
 		<where>
-			<if test="keyword!=null">
-				title LIKE '%${keyword}%'
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('title')">
+						m.title LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('evaluatorNickname')">
+						m2.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('evaluateeNickname')">
+						m1.nickname LIKE '%${keyword}%'
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				AND <![CDATA[
+				DATEDIFF(me.createdAt, #{minDate}) <= 0
+				AND DATEDIFF(me.createdAt, #{minDate}) >=  - #{period}
+				]]>
 			</if>
 		</where>
+		<choose>
+			<when test="order.equals('desc')">
+				ORDER BY me.id DESC
+			</when>
+			<otherwise>
+				ORDER BY me.id ASC
+			</otherwise>
+		</choose>
+		LIMIT #{offset},#{size}
 	</select>
 	<select id="countBySearch" resultType="java.lang.Integer">
-		SELECT COUNT(id)
-		FROM memberEval
+		SELECT COUNT(me.id)
+		FROM memberEval as me
+		JOIN member as m1
+		ON me.evaluateeId = m1.id
+		JOIN member as m2
+		ON me.evaluatorId = m2.id
+		JOIN meeting as m
+		ON me.meetingId = m.id
+		<where>
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('title')">
+						m.title LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('evaluatorNickname')">
+						m2.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('evaluateeNickname')">
+						m1.nickname LIKE '%${keyword}%'
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				AND <![CDATA[
+				DATEDIFF(me.createdAt, #{minDate}) <= 0
+				AND DATEDIFF(me.createdAt, #{minDate}) >=  - #{period}
+				]]>
+			</if>
+		</where>
 	</select>
 </mapper>

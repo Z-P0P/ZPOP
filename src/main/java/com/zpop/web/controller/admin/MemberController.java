@@ -1,22 +1,27 @@
 package com.zpop.web.controller.admin;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.zpop.web.dto.admin.AdminMemberEvalDto;
 import com.zpop.web.dto.admin.AdminParticipationDto;
 import com.zpop.web.entity.Member;
 import com.zpop.web.service.admin.AdminMemberService;
 
-@Controller("adminMemberController")
-@RequestMapping("/admin/member")
+@RestController("adminMemberController")
+@RequestMapping("/api/admin/member")
 public class MemberController {
 
 	private final AdminMemberService adminMemberService;
@@ -33,49 +38,60 @@ public class MemberController {
 	
 	
 	@GetMapping("list")
-	public String getList(Model model
-			,@RequestParam(name="p", defaultValue="1") int page
-			,@RequestParam @Nullable String keyword
-			,@RequestParam @Nullable String option) {
+	public Map<String, Object>  getList(
+		@RequestParam(name="page", defaultValue="1") int page
+		,@RequestParam @Nullable String keyword
+		,@RequestParam @Nullable Integer period
+		,@RequestParam @Nullable @DateTimeFormat(iso=ISO.DATE) Date minDate
+		,@RequestParam (name="option", defaultValue = "title") @Nullable String option
+		,@RequestParam(name="num", defaultValue="10") @Nullable Integer num
+		,@RequestParam(name="order", defaultValue = "desc") @Nullable String order) {
 		
-		List<Member> members = adminMemberService.getList(page,keyword,option);
-		int count = adminMemberService.countMember(keyword, option);
-		model.addAttribute("members", members);
-		model.addAttribute("count",count);
-		model.addAttribute("page",page);
-		
-		return "admin/member/list";
+				Map<String, Object> result = new HashMap<>();
+
+		List<Member> members = adminMemberService.getList(page,keyword,option,period, minDate,num, order);
+		int count = adminMemberService.countMember(keyword, option,period,minDate);
+		result.put("members", members);
+		result.put("count",count);
+
+		return result;
 	}
 	
 	@GetMapping("eval")
-	public String getMemberEvalList(Model model
-			,@RequestParam(name="p", defaultValue="1") int page
-			,@RequestParam @Nullable String keyword
-			,@RequestParam @Nullable String option) {
+	public Map<String, Object>  getMemberEvalList(
+	@RequestParam(name="page", defaultValue="1") int page
+	,@RequestParam @Nullable String keyword
+	,@RequestParam @Nullable Integer period
+	,@RequestParam @Nullable @DateTimeFormat(iso=ISO.DATE) Date minDate
+	,@RequestParam (name="option", defaultValue = "title") @Nullable String option
+	,@RequestParam(name="num", defaultValue="10") @Nullable Integer num
+	,@RequestParam(name="order", defaultValue = "desc") @Nullable String order) {
 		
-		List<AdminMemberEvalDto> evaluations = adminMemberService.getEvalList(page,keyword,option);
-		int count = adminMemberService.countEval(keyword, option);
-		model.addAttribute("evaluations", evaluations);
-		model.addAttribute("count",count);
-		model.addAttribute("page",page);
+		Map<String, Object> result = new HashMap<>();
+		List<AdminMemberEvalDto> evaluations = adminMemberService.getEvalList(page,keyword,option,
+																				period, minDate,num, order);
+		int count = adminMemberService.countEval(keyword, option,period,minDate,order);
+		result.put("evaluations", evaluations);
+		result.put("count", count);
 		
-		return "admin/member/evaluation";
+		return result;
 	}
 	
 
 	@GetMapping("participation")
-	public String getParticipation(Model model
-			,@RequestParam(name="p", defaultValue="1") int page
+	public Map<String, Object>  getParticipation(Model model
+			,@RequestParam(name="page", defaultValue="1") int page
 			,@RequestParam @Nullable String keyword
 			,@RequestParam @Nullable String option) {
 		
 		
+		Map<String, Object> result = new HashMap<>();
+
 		List<AdminParticipationDto> participations = adminMemberService.getParticipationList(page,keyword,option);
 		int count = adminMemberService.countParticipation(keyword, option);
-		model.addAttribute("participations", participations);
-		model.addAttribute("count",count);
-		model.addAttribute("page",page);
+		result.put("participations", participations);
+		result.put("count",count);
 		
-		return "admin/member/participation";
+		return result;
 	}
 }
