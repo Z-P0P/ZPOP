@@ -91,7 +91,6 @@ public int setNickname(@AuthenticationPrincipal ZpopUserDetails userDetails ,Str
 		return ResponseEntity.ok().body(meetings);
 	}
 
-	@ResponseBody
 	@GetMapping("/partList/{meetingId}")
 	public ResponseEntity<List<EvalMemberDto>> getParticipants(@PathVariable("meetingId") int meetingId) {
 		List<EvalMemberDto> participant = service.getEvalMember(meetingId) ;
@@ -100,7 +99,7 @@ public int setNickname(@AuthenticationPrincipal ZpopUserDetails userDetails ,Str
 	}
 
 	@PostMapping("/rate")
-	public ResponseEntity<EvalDto> rateMember(@RequestBody EvalDto dto, @AuthenticationPrincipal ZpopUserDetails userDetails) {
+	public ResponseEntity<EvalDto> rateMember(EvalDto dto, @AuthenticationPrincipal ZpopUserDetails userDetails) {
 		if (userDetails == null){
 			//로그인 요청
 		}
