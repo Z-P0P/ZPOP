@@ -10,6 +10,7 @@ import SearchBar from "@/components/meeting/option-control/SearchBar.vue";
 import ModalDefault from "@/components/modal/Default.vue";
 import Banner from "../../components/meeting/Banner.vue"
 import { ServerException } from "@/utils/ServerException";
+import LoginProc from "../LoginProc.vue";
 
 const emit = defineEmits(["throw"]);
 
@@ -166,6 +167,7 @@ function closeRequiredKeywordModal() {
       <LoadingRoller :isShow="state.loadingOn" />
     </div>
   </div>
+  <login-proc/>
 </template>
 
 <style scoped>
