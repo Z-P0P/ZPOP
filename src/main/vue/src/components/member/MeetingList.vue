@@ -1,5 +1,4 @@
 <script setup>
-  import { defineProps ,defineEmits} from 'vue';
 
 const props = defineProps({
   meeting: Object
@@ -23,14 +22,22 @@ function onClick(e) {
       <div class="meeting__header">
         <div class="meeting__header-detail">
           <span class="meeting__category">{{ props.meeting.category}}</span>
+          <span class="meeting__category">{{ props.meeting.category}}</span>
           <span class="meeting__region add-deco-img-left deco-img-location">
+            {{ props.meeting.region }}</span
             {{ props.meeting.region }}</span
           >
           <span class="meeting__date">{{ props.meeting.startedAt }}</span>
+          <span class="meeting__date">{{ props.meeting.startedAt }}</span>
         </div>
+        <h3>{{ props.meeting.title }}</h3>
         <h3>{{ props.meeting.title }}</h3>
       </div>
       <div class="meeting__body">
+        <ul class="meeting__tags" v-if="!props.meeting.canRate">
+          <li>#{{ props.meeting.age }}</li>
+          <li>#{{ props.meeting.maxMember }}명</li>
+          <li>#{{ props.meeting.genderCategory }}</li>
         <ul class="meeting__tags" v-if="!props.meeting.canRate">
           <li>#{{ props.meeting.age }}</li>
           <li>#{{ props.meeting.maxMember }}명</li>
@@ -44,12 +51,15 @@ function onClick(e) {
           <div class="status status__off" v-else-if="props.meeting.closed">모집완료</div>
         
           <div class="meeting__body-detail-more"  v-if="!props.meeting.canRate">
+          <div class="meeting__body-detail-more"  v-if="!props.meeting.canRate">
             <div class="meeting__views add-deco-img-left deco-img-eyes">
+              {{ props.meeting.viewCount }}
               {{ props.meeting.viewCount }}
             </div>
             <div
               class="meeting__comments add-deco-img-left deco-img-speech-bubble"
             >
+              {{ props.meeting.commentCount }}
               {{ props.meeting.commentCount }}
             </div>
           </div>

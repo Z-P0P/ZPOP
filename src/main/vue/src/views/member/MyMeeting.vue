@@ -6,13 +6,13 @@ import {useMemberStore} from "@/stores/memberStore"
 import api from "@/api";
 import MeetingList from "@/components/member/MeetingList.vue";
 import ModalDefault from "@/components/modal/Full.vue";
-onMounted(() => {
-  
-})
+// onMounted(() => {
+//
 // TODO : 평가하기 끝나면, 해당모임을 평가완료로 바꿀 것 -> has evaluated
 // TODO : 데스크탑 평가 모달 창 + 애니메이션
 // TODO : 참여한 모임이 하나도 없을경우 "아직 교집합이 없어요- 멘트 "
 // TODO : 모달창을 클릭할때 state를 비워서 참여자 명단이 두 번 출력되지 않게해야함
+// })
 const state = reactive({
   meetings: [],
   meetingId: null,

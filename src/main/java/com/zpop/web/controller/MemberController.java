@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /*****
  * 1. 다른 사용자 프로필 조회 --> 모달 url 불필요 2. 마이 프로필 페이지 진입 (/member/me) --> 페이지 3.
@@ -43,6 +44,37 @@ public class MemberController {
 //		Member member = service.getById(userDetails.getId());
 //		return ResponseEntity.ok().body(member);
 //	}
+
+@PostMapping("/nickname/validation")
+@ResponseBody
+public ResponseEntity<?> validateNickname(String nickname) {
+	System.out.println(nickname);
+	Map<String, Object> response = service.checkNicknameValid(nickname);
+	return ResponseEntity.ok(response);
+}
+@ResponseBody
+@PostMapping("/me/edit")
+public int setNickname(@AuthenticationPrincipal ZpopUserDetails userDetails ,String nickname){
+		// 만약 userDetails == null  로그인 요청
+		// 그게아니면
+		
+		int memberId = userDetails.getId();
+		service.updateNickname(memberId, nickname);
+		
+		
+
+		// 멤버 닉네임 로그 뒤져서 30일 내에 변경기록이 없는지 확인
+
+		// SELECT 조건 
+		// 만약 있다면 -> 클라이언트에게 변경할 수 없다고 응답
+		
+		// 만약 없다면 ->  닉네임 중복 검사 해주기 -> 중복이면 중복이라고 응답
+		   //중복도 아니라면
+		// 멤버의 닉네임을 업데이트하는 쿼리를 실행해준다.
+
+		
+		return 1;
+}
 
 	@GetMapping("/myMeeting")
 	public ResponseEntity<List<MyMeetingResponse>> getMeeting(@AuthenticationPrincipal ZpopUserDetails userDetails){
