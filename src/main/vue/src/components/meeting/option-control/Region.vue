@@ -115,6 +115,13 @@ const updateRegions= () => {
     padding:0 24px;
     justify-content: space-between;
     align-items: center;
+    display: none;
+}
+
+@media (min-width: 1200px) {
+  .meeting-region {
+    display: flex;
+  }
 }
 
 .meeting-region > img{
