@@ -46,7 +46,6 @@ const changeHeaderSelected = (menu) => {
 @import url(../../assets/css/admin/component/button.css);
 @import url(../../assets/css/admin/component/admin-list.css);
 @import url(../../assets/css/admin/component/table-bar.css);
-@import url(../../assets/css/admin/component/select.css);
 
 .main-wrapper{
   margin-top: 30px;

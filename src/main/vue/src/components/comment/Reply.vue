@@ -43,7 +43,7 @@ function registerFinish(){
     <InputBox :reply="props.reply" v-show="hasBox" @cancelClicked="inputBoxToggle" @registerCompleted="registerFinish"/>
 </template>
 <style >
-  @import url(@/assets/css/meeting/component/select.css);
+  @import url(@/assets/css/component/select.css);
   @import url(@/assets/css/meeting/component/profile-box.css);
   @import url(@/assets/css/meeting/component/reply.css);
  

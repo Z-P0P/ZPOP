@@ -42,5 +42,8 @@ const onLogoutClick = () => {
 
 <style scoped>
 @import url(../../assets/css/component/header.css);
-@import url(../../assets/css/component/select.css);
+
+.select-box::before{
+    display:none;
+}
 </style>

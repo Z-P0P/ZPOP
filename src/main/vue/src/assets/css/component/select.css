@@ -43,7 +43,7 @@
   background: url("/images/icon/arrow-down.svg");
   background-size: contain;
   background-repeat: no-repeat;
-  transition: transform 0.2s;
+  transition: transform 0.1s;
 }
 
 .select-box--expanded::before {
@@ -134,4 +134,9 @@
 
 .modal-select :last-child {
   color: var(--red-theme);
+}
+
+.modal-select__contents--report
+,.modal-select__contents--delete{
+  color:var(--red-theme);
 }
