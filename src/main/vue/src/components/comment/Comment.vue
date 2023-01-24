@@ -101,7 +101,7 @@
 </template>
 <style scoped>
 
- @import url(@/assets/css/meeting/component/select.css);
+ @import url(@/assets/css/component/select.css);
  @import url(@/assets/css/meeting/component/profile-box.css);
  @import url(@/assets/css/meeting/component/comment.css);
 /* 답글리스트가 고유의 마진을 갖고 있어 답글이 없을때도 공간을 차지하므로 

@@ -1,5 +1,6 @@
 <template>
-    <div class="select-box select-box--input" :class="{'select-box--error':option.hasError}" @click="onSelectBoxClick">
+    <div class="select-box select-box--input" :class="{'select-box--error':option.hasError, 'select-box--expanded' : option.isOpened}" @click="onSelectBoxClick">
+        <span class="pseudo-alternative"></span>
         <span>{{ option.placeholder }}</span>
         <ul v-show="option.isOpened" class="select-box__options" id="select-box">
             <li @click.stop="onOptionClick" v-for="(item, index) in option.items" :key="index" :data-id="item.id">{{ item.name || item.type }}</li>
@@ -31,4 +32,12 @@ export default {
 </script>
 
 <style scoped>
+.pseudo-alternative{
+    position:absolute;
+    border: none;
+    width:16px;
+    height:16px;
+    right:20px;
+    padding:0;
+}
 </style>

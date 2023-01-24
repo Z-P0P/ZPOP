@@ -51,7 +51,7 @@
             </li>
         </template>
     </admin-table>
-    <DetailModal v-if="meetingDetails.isLoaded" @closeDetailModal="closeDetailModal">
+    <DetailModal v-if="meetingDetails.isLoaded" @closeDetailModal="closeDetailModal" class="admin-detail-modal">
         <template #modal-header>
             <span class="admin-report-name bold">모임 상세 조회</span>
         </template>
@@ -345,7 +345,8 @@ const cancelDeleteAllMeeting = () => {
 
 </script>
 
-<style scoped>
+<style>
+@import url('../../../assets/css/admin/component/select.css');
 
 .list-content__title {
     flex-direction: column;
