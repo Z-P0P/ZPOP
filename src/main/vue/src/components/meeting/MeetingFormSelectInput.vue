@@ -31,8 +31,8 @@ export default {
 </script>
 
 <style scoped>
-.error{
-    
+.input__label{
+    margin-bottom: 8px;
 }
 /* 
 .meeting-form__input{

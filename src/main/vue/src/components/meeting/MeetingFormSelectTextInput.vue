@@ -45,4 +45,7 @@ export default {
 .input-text__content-wrapper{
     margin-top:0;
 }
+.input__label{
+    margin-bottom: 8px;
+}
 </style>
