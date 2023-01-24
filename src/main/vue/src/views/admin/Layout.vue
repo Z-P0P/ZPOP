@@ -41,13 +41,11 @@ const changeHeaderSelected = (menu) => {
     </div>
 </template>
 
-<style scoped>
+<style>
 @import url(../../assets/css/admin/component/status.css);
 @import url(../../assets/css/admin/component/button.css);
 @import url(../../assets/css/admin/component/admin-list.css);
 @import url(../../assets/css/admin/component/table-bar.css);
-@import url(../../assets/css/admin/component/select.css);
-@import url(../../assets/css/deco.css);
 
 .main-wrapper{
   margin-top: 30px;
