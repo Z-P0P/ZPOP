@@ -151,6 +151,10 @@
   background-image: url(/images/icon/small-location.svg);
 }
 
+.deco-img-calendar::before{
+  background-image: url(/images/icon/calendar.svg);
+}
+
 @media (max-width: 576px) {
   .hide {
     display: none;
@@ -180,6 +184,15 @@
   left:50%;
   z-index: 100;
 }
+
+.deco-img-arrow-left::before{
+  background-image: url(/images/icon/arrow-left.svg);
+}
+
+.deco-img-arrow-right::before{
+  background-image: url(/images/icon/arrow-right.svg);
+}
+
 
 @keyframes mulShdSpin {
   0%,
