@@ -1,10 +1,6 @@
 package com.zpop.web.service;
 
-import com.zpop.web.dao.MeetingDao;
-import com.zpop.web.dao.MemberDao;
-import com.zpop.web.dao.MemberEvalDao;
-import com.zpop.web.dao.NicknameLogDao;
-import com.zpop.web.dao.ParticipationDao;
+import com.zpop.web.dao.*;
 import com.zpop.web.dto.EvalDto;
 import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.dto.MyMeetingResponse;
@@ -21,11 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Service
@@ -56,11 +48,21 @@ public class DefalutMemberService implements MemberService {
     }
 
 
+    /***
+     * 회원 기본정보 응답
+     * @param id
+     * @return
+     */
     @Override
     public Member getById(int id) {
         return dao.getById(id);
     }
 
+    /**
+     * 내가 참여한 모임 응답
+     * @param memberId
+     * @return
+     */
     @Override
     public List<MyMeetingResponse> getMyMeeting(int memberId) {
         List<MyMeetingView> mmv = dao.getMyMeeting(memberId);
@@ -123,6 +125,13 @@ public class DefalutMemberService implements MemberService {
         return list;
 
     }
+
+
+    /***
+     * 내가 모집한 모임 응답
+     * @param memberId
+     * @return
+     */
     @Override
     public List<MyMeetingResponse> getMyGathering(int memberId) {
 
@@ -183,6 +192,12 @@ public class DefalutMemberService implements MemberService {
         return list;
     }
 
+    /***
+     * TODO : 주최자 혼자인채로 모임이 마감된 경우, 평가하기 비활성화
+     * 평가하기 클릭시, 해당 모임에 참여한 회원을 불러옵니다.
+     * @param meetingId
+     * @return
+     */
     @Override
     public List<EvalMemberDto> getEvalMember(int meetingId) {
        
@@ -250,6 +265,12 @@ public class DefalutMemberService implements MemberService {
         return participant;
     }
 
+
+    /**
+     * 닉네임 유효성 검사 (중복, 유효한 닉네임인지)
+     * @param nickname
+     * @return
+     */
     public Map<String, Object> checkNicknameValid(String nickname) {
 		Map<String, Object> result = new HashMap<>();
 		boolean isRegexMatch = Pattern.matches(nicknamePattern, nickname);
@@ -270,35 +291,53 @@ public class DefalutMemberService implements MemberService {
 		result.put("result", "NICKNAME_VALID");
 		return result;
 	}
- 
+
+    /**
+     * 닉네임 변경 -- TODO : 변경할 수 없을 경우 클라이언트에게 응답 해주어야함
+     * @param memberId
+     * @param nickname
+     * @return
+     */
 	@Transactional
 	@Override
 	public Member updateNickname(int memberId, String nickname) {
 
-        //해볼게요.... 
-        //닉네임 로그 다오
+        //멤버의 아이디를 통해 닉네임 로그 중 가장 최근 기록 하나를 불러옵니다.
          NicknameLog nicknameLog = nicknameLogDao.getLatestByMemberId(memberId);
-         //===닉네임 설정 기간 검사===
-         Date date = nicknameLog.getCreatedAt();
-         LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
-            LocalDate now =LocalDate.now();
+       
+         //해당 기록의 날짜를 얻습니다.
+        Date date = nicknameLog.getCreatedAt();
+
+        //해당 기록의 날짜와 현재날짜의 차이를 비교합니다.
+        LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
+        LocalDate now =LocalDate.now();
+
+        //Period 타입은 P1Y2M33D 같은형식을 반환.
         Period period = Period.between(localDate, now);
-        int diff = Math.abs(period.getDays());
-        if (diff<30){
-            //변경할 수 없다
+
+        //조건 처리결과 period.getmonths -> "월"의차이만 비교
+        //ex) 2022-11월과 2023-11월비교 -> 0
+        //따라서 year를 추가하여 연도도 조건에 추가
+        int year = period.getYears();
+        int month = period.getMonths();
+
+         //날짜의 차이가 30일 이내일 경우
+         if (year<0 || month<0){
+            //변경할 수 없음을 클라이언트에게 알려주기
+            System.out.println("30일 이내에는 변경 불가함");
+         }else {
+
+            //닉네임 유효성 확인, 닉네임 중복확인
+            System.out.println(nickname+"을 확인하세요");
+            Map<String, Object> result = checkNicknameValid(nickname);
+            if(result.get("result").equals("NICKNAME_VALID"))
+            System.out.println(result+"결과입니다");
+            dao.updateNickname(memberId, nickname);
+            System.out.println("닉네임업데이트를 실행합니다");
+            nicknameLogDao.insert(new NicknameLog(memberId, nickname));
+            System.out.println("닉네임이 업데이트 되었습니다.");
         }
 
-        //======닉네임 변경 로직 ======= 
-        //닉네임 유효성 확인, 닉네임 중복확인
-        Map<String, Object> result = checkNicknameValid(nickname); 
-        if(result.get("result").equals("NICKNAME_VALID"))
-
-        //NicknameLog에 insert
-
-        //Member의 fame update
-        dao.updateNickname(memberId, nickname);
-        nicknameLogDao.insert(new NicknameLog(memberId, nickname));
-         
 		return null;
 	}
 }
