@@ -6,7 +6,8 @@
     color:var(--dark-grey2);
     font-weight: var(--regular);
   }
-  
+
+
   .admin-detail-modal .input-text{
     width:100%;
     padding:8px 18px;
