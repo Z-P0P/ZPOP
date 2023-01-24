@@ -42,26 +42,23 @@ const selectBoxClickedHandler = () => {
 
 const optionClickedHandler = (optionId, name, dataId) => {
     option.isOpened = !option.isOpened;
-    console.log('옵션클릭')
     const index = getIndexOfSelectedRegion(dataId);
     
+    // 기존에 이미 선택한 지역이라면 제거
     if (index != -1){
         selectedRegions.splice(index,1);
     }
     
+    // 지역을 이미 3개 선택한 상태라면, 가장 마지막 것을 제거하고, 선택된 것을 마지막에 추가
     else if (selectedRegions.length >= 3){
         selectedRegions.pop();
+        selectedRegions.push({ id : dataId, name: name });
     }
     else{
-        selectedRegions.push(
-            {
-                id : dataId,
-                name: name,
-            }
-        )
+        selectedRegions.push({ id : dataId, name: name })
     }
+    
     updateRegions();
-    return;
 }
 
 const getIndexOfSelectedRegion = (dataId) => {
