@@ -71,7 +71,7 @@ function registerComment(refId) {
 </template>
 
 <style scoped>
-@import url(@/assets/css/meeting/component/select.css);
+@import url(@/assets/css/component/select.css);
 @import url(@/assets/css/meeting/component/profile-box.css);
 @import url(@/assets/css/meeting/component/comment.css);
 </style>
