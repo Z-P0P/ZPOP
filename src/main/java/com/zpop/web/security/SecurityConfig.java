@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
@@ -18,25 +20,26 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize ->
                     authorize
                             // meeting
-                            .requestMatchers(HttpMethod.POST, "/meeting/**").hasAnyRole("USER")
-                            .requestMatchers(HttpMethod.PATCH, "/meeting/**").hasAnyRole("USER")
-                            .requestMatchers(HttpMethod.PUT, "/meeting/**").hasAnyRole("USER")
-                            .requestMatchers(HttpMethod.DELETE, "/meeting/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.POST, "/api/meeting/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.PATCH, "/api/meeting/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.PUT, "/api/meeting/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.DELETE, "/api/meeting/**").hasAnyRole("USER")
                             // comment
-                            .requestMatchers(HttpMethod.POST, "/comment/**").hasAnyRole("USER")
-                            .requestMatchers(HttpMethod.PATCH, "/comment/**").hasAnyRole("USER")
-                            .requestMatchers(HttpMethod.PUT, "/comment/**").hasAnyRole("USER")
-                            .requestMatchers(HttpMethod.DELETE, "/comment/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.POST, "/api/comment/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.PATCH, "/api/comment/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.PUT, "/api/comment/**").hasAnyRole("USER")
+                            .requestMatchers(HttpMethod.DELETE, "/api/comment/**").hasAnyRole("USER")
                             // member
-                            .requestMatchers("/member/**").hasAnyRole("USER")
+                            .requestMatchers("/api/member/**").hasAnyRole("USER")
                             // auth
-                            .requestMatchers("/logout").hasAnyRole("USER")
+                            .requestMatchers("/api/logout").hasAnyRole("USER")
                             // report
-                            .requestMatchers("/report/**").hasAnyRole("USER")
+                            .requestMatchers("/api/report/**").hasAnyRole("USER")
                             // notification 
-                            .requestMatchers("/notification/**").hasAnyRole("USER")
+                            .requestMatchers("/api/notification/**").hasAnyRole("USER")
                             // admin
-                            //   .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                            .requestMatchers("/api/admin/auth/login").permitAll()
+                            .requestMatchers("/api/admin/**").hasAnyRole("ADMIN")
                             .anyRequest().permitAll()
             )
             .logout(logout ->
@@ -47,5 +50,10 @@ public class SecurityConfig {
 
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
