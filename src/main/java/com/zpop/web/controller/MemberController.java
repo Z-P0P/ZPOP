@@ -33,8 +33,6 @@ public class MemberController {
 	private MemberService service;
 
 
-	//CORS ?
-
 	@GetMapping("/me")
 	public ResponseEntity<Member> getMyPage(@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		Member member = service.getById(userDetails.getId());
@@ -65,7 +63,7 @@ public class MemberController {
 	@GetMapping("/partList/{meetingId}")
 	public ResponseEntity<List<EvalMemberDto>> getParticipants(@PathVariable("meetingId") int meetingId) {
 		List<EvalMemberDto> participant = service.getEvalMember(meetingId) ;
-//        return participant;
+		System.out.println(participant);
 		return ResponseEntity.ok().body(participant);
 	}
 
@@ -77,6 +75,7 @@ public class MemberController {
 		int evaluatorId = userDetails.getId();
 		dto.setEvaluatorId(evaluatorId);
 		service.getRateData(dto);
+
 
 		return ResponseEntity.ok().body(dto);
 	}

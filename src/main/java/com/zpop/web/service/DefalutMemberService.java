@@ -1,15 +1,5 @@
 package com.zpop.web.service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.zpop.web.dao.MeetingDao;
 import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.MemberEvalDao;
@@ -23,6 +13,15 @@ import com.zpop.web.entity.MemberEval;
 import com.zpop.web.entity.Participation;
 import com.zpop.web.entity.member.MyMeetingView;
 import com.zpop.web.utils.TextDateTimeCalculator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class DefalutMemberService implements MemberService {
@@ -69,6 +68,7 @@ public class DefalutMemberService implements MemberService {
                     break;
             }
 
+
             String dateTime = TextDateTimeCalculator.getTextDateTime(m.getStartedAt());
 
             boolean isClosedResult = false;
@@ -79,6 +79,13 @@ public class DefalutMemberService implements MemberService {
             LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
             LocalDate now =LocalDate.now();
             boolean canRate = now.isAfter(localDate);
+            boolean isEvaluated;
+            if(m.getHasEvaluated() == 1) {
+                isEvaluated = true;
+            }else {
+                isEvaluated = false;
+            }
+
 
             MyMeetingResponse mt = new MyMeetingResponse(
                     m.getCategoryName(),
@@ -94,7 +101,8 @@ public class DefalutMemberService implements MemberService {
                     m.getMeetingId(),
                     m.getParticipantId(),
                     m.getRegMemberId(),
-                    canRate
+                    canRate,
+                    isEvaluated
             );
 
             
@@ -134,6 +142,13 @@ public class DefalutMemberService implements MemberService {
             LocalDate now =LocalDate.now();
             boolean canRate = now.isAfter(localDate);
 
+            boolean isEvaluated;
+            if(m.getHasEvaluated() == 1) {
+                isEvaluated = true;
+            }else {
+                isEvaluated = false;
+            }
+
             MyMeetingResponse mt = new MyMeetingResponse(
                     m.getCategoryName(),
                     m.getRegionName(),
@@ -148,9 +163,10 @@ public class DefalutMemberService implements MemberService {
                     m.getMeetingId(),
                     m.getParticipantId(),
                     m.getRegMemberId(),
-                    canRate
+                    canRate,
+                    isEvaluated
             );
-            
+
             list.add(mt);
         }
 
@@ -172,8 +188,9 @@ public class DefalutMemberService implements MemberService {
             eval.setMeetingId(dto.getMeetingId());
          }
         memberEvalDao.insertAll(evals);
-        participationDao.updateHasEvaluated(dto.getMeetingId(), dto.getEvaluatorId());
-        System.out.println(evals);
+
+        int  result = participationDao.updateHasEvaluated(dto.getMeetingId(), dto.getEvaluatorId());
+        System.out.println(result);
         dao.updateFameAll(evals);
         return null;
     }
