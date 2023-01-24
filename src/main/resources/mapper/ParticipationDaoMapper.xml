@@ -50,6 +50,7 @@
 		ON participation.meetingId = meeting.id
 		JOIN member
 		ON participation.participantId = member.id
+		ORDER BY participation.id DESC
 		LIMIT #{offset},#{size}
 	</select>
 

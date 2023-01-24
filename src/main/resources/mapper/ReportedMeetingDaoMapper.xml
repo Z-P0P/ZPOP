@@ -18,6 +18,8 @@
 			member2.nickname AS writerNickname,
 			member2.id AS writerId,
 			mrt.type AS reportType,
+			rm.reason,
+			rm.createdAt,
 			rm.processedAt
 		FROM reportedMeeting as rm
 		JOIN member as member1
@@ -28,11 +30,75 @@
 		on meeting.regMemberId = member2.id
 		JOIN meetingReportType as mrt
 		on rm.typeId = mrt.id
+		<where>
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('title')">
+						meeting.title LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('reporterNickname')">
+						member1.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('writerNickname')">
+						member2.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('id')">
+						rm.id = #{keyword}
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				AND
+				<![CDATA[
+				DATEDIFF(rm.createdAt, #{minDate}) <=  0
+				AND DATEDIFF(rm.createdAt, #{minDate}) >=  - #{period}
+				]]>
+			</if>
+		</where>
+		<choose>
+			<when test="order.equals('desc')">
+				ORDER BY rm.id DESC
+			</when>
+			<otherwise>
+				ORDER BY rm.id ASC
+			</otherwise>
+		</choose>
 		LIMIT #{offset},#{size}
 	</select>
 	<select id="count" resultType="java.lang.Integer">
-		SELECT count(id)
-		FROM reportedMeeting;
+		SELECT COUNT(rm.id)
+		FROM reportedMeeting as rm
+		JOIN member as member1
+		ON rm.reporterId = member1.id
+		JOIN meeting
+		ON rm.meetingId = meeting.id
+		JOIN member as member2
+		on meeting.regMemberId = member2.id
+		<where>
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('title')">
+						meeting.title LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('reporterNickname')">
+						member1.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('writerNickname')">
+						member2.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('id')">
+						rm.id = #{keyword}
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				AND
+				<![CDATA[
+				DATEDIFF(rm.createdAt, #{minDate}) <=  0
+				AND DATEDIFF(rm.createdAt, #{minDate}) >=  - #{period}
+				]]>
+			</if>
+		</where>
 	</select>
 	
 	<select id="getReportedMeetingId" resultType="Integer">
@@ -40,5 +106,35 @@
 		WHERE meetingId = #{meetingId}
 		AND reporterId = #{reporterId}
 	</select>
-
+	<update id="updateAll" parameterType="java.util.List">
+		UPDATE reportedMeeting
+		<if test="ids!=null and !ids.isEmpty()">
+			SET processedAt=CURRENT_TIMESTAMP
+			<choose>
+				<when test="releasedAt != null">
+					,blockedAt=CURRENT_TIMESTAMP
+					,releasedAt=#{releasedAt}
+				</when>
+				<otherwise>
+					,blockedAt=null
+					,releasedAt=null
+				</otherwise>
+			</choose>
+			<where>
+				ID IN 
+				<foreach item="id" collection="ids" open="(" close=")"
+				separator=",">#{id}</foreach>
+			</where>
+		</if>
+	</update>
+	<select id="getByIds" resultType="ReportedMeeting">
+		SELECT *
+		FROM reportedMeeting
+		<where>
+			id IN
+			<foreach collection="ids" item="id" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+		</where>
+	</select>
 </mapper>

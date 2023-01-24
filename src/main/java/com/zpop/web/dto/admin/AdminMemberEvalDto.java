@@ -1,6 +1,8 @@
 package com.zpop.web.dto.admin;
 
-import java.sql.Date;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class AdminMemberEvalDto {
 	private int id;
@@ -11,6 +13,7 @@ public class AdminMemberEvalDto {
 	private int rate;
 	private int meetingId;
 	private String meetingTitle;
+	@JsonFormat(pattern="yyyy-MM-dd HH시 mm분")
 	private Date createdAt;
 	
 	public int getId() {

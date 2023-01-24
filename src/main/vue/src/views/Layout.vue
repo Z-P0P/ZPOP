@@ -6,6 +6,11 @@ import ModalError from "@/components/modal/ServerError.vue";
 
 let onError = ref(false);
 
+const isLoginOpened = ref(false);
+const loginModalHandler = () => {
+  isLoginOpened.value = !isLoginOpened.value;
+}
+
 function showErrorModal() {
   onError.value = true;
 }
@@ -13,6 +18,8 @@ function showErrorModal() {
 function closeErrorModal() {
   onError.value = false;
 }
+
+
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <template>
-    <Modal>
+    <Modal v-if="route.query.login">
         <template #modal-body>
             <div>
                 <div class="modal__content-container">
@@ -27,20 +27,39 @@ const memberStore = useMemberStore();
 
 const route = useRoute();
 const router = useRouter();
-const oauthLoginUrl = '/api' + route.fullPath;
 
-fetch(oauthLoginUrl)
+const requestOAuth = () => {
+    const oauthLoginUrl = `/api/login/oauth/${route.query.login}?code=${route.query.code}&state=${route.query.state}`;
+
+    fetch(oauthLoginUrl)
     .then(res => res.json())
     .then(data => {
         console.log("성공 : fetch oauthLoginUrl ")
         memberStore.setInfo(data);
-        router.push("/");
+
+        // router에 있던 리다이렉트 기능이 이쪽으로 옮겨짐
+        // 동일 view에서는 push를 해도 beforeEnter기능이 동작하지 않음
+        // 예를 들면 '/login?naver...' 에서 '/'로 push해도 beforeEneter는 활성화되지 않음
+        const redirectRoute = localStorage.getItem("redirect-route");
+        if (redirectRoute) {
+            localStorage.removeItem("redirect-route");
+            router.push(redirectRoute);
+        }
+        else{
+            router.push({path: '/'});
+        }
     })
     .catch((err) => {
         console.info("Login.vue err", err)
         alert("로그인에 오류가 발생했음");
-        router.push("/");
+        router.push({path: '/'});
     });
+}
+
+if (route.query.login){
+    requestOAuth();
+}
+
 
 </script>
 

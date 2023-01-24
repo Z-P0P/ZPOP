@@ -16,7 +16,6 @@ export default {
     components: {SelectBox},
     emits : ['selectBoxClick', 'optionClick'],
     setup(props,context){
-        console.log(props.input.title)
         const selectBoxClickhandler = (id) =>{
             context.emit('selectBoxClick',id);
         }

@@ -17,7 +17,6 @@ public interface ParticipationDao {
     
     List<Participation> getListByMeetingId(int meetingId);
     List<Participation> getList();
-    List<MeetingParticipantsDto>getByMeetingId(int meetingId);
     List<AdminParticipationDto> getAdminViewList(int size, int offset, String keyword, String option);
 
     /**

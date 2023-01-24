@@ -1,6 +1,8 @@
 package com.zpop.web.dto.admin;
 
-import java.sql.Date;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class AdminParticipationDto {
 
@@ -10,6 +12,7 @@ public class AdminParticipationDto {
 	private String profileImagePath;
 	private String participantNickname;
 	private int participantId;
+	@JsonFormat(pattern = "yyyy-MM-dd HH 시 mm 분")
 	private Date createdAt;
 	private Date canceledAt;
 	

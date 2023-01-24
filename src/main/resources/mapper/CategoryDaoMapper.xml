@@ -33,4 +33,20 @@
 		FROM category AS c
 		WHERE c.deletedAt IS NULL
 	</select>
+	<update id="updateDeletedAtAll">
+		UPDATE category
+		<if test='ids != null and !ids.isEmpty()'>
+			<if test='!activate'>
+				SET deletedAt=CURRENT_TIMESTAMP
+			</if>
+			<if test='activate'>
+				SET deletedAt=NULL
+			</if> 
+			<foreach collection="ids" item="ids" 
+			open="WHERE id IN(" close=")"
+			index="index" separator=",">
+			#{ids}
+			</foreach> 
+		</if>
+	</update>
 </mapper>

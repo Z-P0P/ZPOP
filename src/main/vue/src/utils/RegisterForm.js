@@ -167,6 +167,7 @@ export class RegisterForm{
 
     closeStatusModal(){
         this.modalState.isOpened = false;
+        this.modalState.sectionNum = 1;
     }
 
     openStatusModal(){
@@ -177,14 +178,22 @@ export class RegisterForm{
         this.openStatusModal();
         const request = api.meeting.postRequest(this.getJSONData());
         request
-        .then(res => res.json())
+        .then(res => {
+            if (res.status === 400){
+                throw new Error('오류: 입력값을 확인해주세요');
+            }
+            if (res.status === 500){
+                throw new Error('서버에 오류가 발생했습니다.');
+            }
+            return res.json();
+        })
         .then(data => {
             this.modalState.sectionNum = 2;
             this.meetingUrl = `/meeting/${data.meetingId}`
         })
         .catch(err=>{
             this.modalState.sectionNum = 0;
-            this.errorMessage = err;
+            this.errorMessage = err.message;
         })
     }
     setContentInEditor(){

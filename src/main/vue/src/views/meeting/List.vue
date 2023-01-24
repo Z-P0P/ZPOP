@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, computed, ref, watch, defineEmits } from "vue";
+import { reactive, computed, ref, watch, defineEmits, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import api from "@/api/";
 import { useMeetingListStore } from "@/stores/meetingListStore";
@@ -10,6 +10,7 @@ import SearchBar from "@/components/meeting/option-control/SearchBar.vue";
 import ModalDefault from "@/components/modal/Default.vue";
 import Banner from "../../components/meeting/Banner.vue"
 import { ServerException } from "@/utils/ServerException";
+import LoginProc from "../LoginProc.vue";
 
 const emit = defineEmits(["throw"]);
 
@@ -80,6 +81,9 @@ function onScrollDown(e) {
 }
 
 document.addEventListener("scroll", onScrollDown);
+onUnmounted(() => {
+  document.removeEventListener("scroll", onScrollDown);
+})
 
 // 모임 리스트 요청 후 데이터 리턴 ----------------------------------------------
 async function requestList() {
@@ -166,6 +170,7 @@ function closeRequiredKeywordModal() {
       <LoadingRoller :isShow="state.loadingOn" />
     </div>
   </div>
+  <login-proc/>
 </template>
 
 <style scoped>

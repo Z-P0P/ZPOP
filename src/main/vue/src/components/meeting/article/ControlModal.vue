@@ -2,18 +2,21 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import api from "@/api";
+import { useMemberStore } from "@/stores/memberStore";
+import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import ModalDefault from "@/components/modal/Default.vue";
 import { ServerException } from "@/utils/ServerException";
+
+const meetingDetailStore = useMeetingDetailStore();
+const memberStore = useMemberStore();
 
 const route = useRoute();
 
 const props = defineProps({
   controlType: String,
-  articleTitle: String,
 });
 
-// refresh : 모임 상세 조회 최신화
-const emit = defineEmits(["closeModal", "refresh"]);
+const emit = defineEmits(["closeModal"]);
 
 let confirmMsg = ref("");
 
@@ -25,6 +28,9 @@ async function onClickYes() {
     case "참여취소":
       await leave();
       break;
+    case "마감":
+      await close();
+      break;
   }
 }
 
@@ -33,10 +39,19 @@ async function participate() {
     const res = await api.meeting.participate(route.params.id);
     if (!res.ok) throw new ServerException(res);
     const data = await res.json();
+  
+    confirmMsg.value = data.contact;
     closeModalFooterType();
-    //TODO: 참여 링크 모달
-    emit("refresh");
-  } catch (e) {}
+    meetingDetailStore.hasParticipated = true;
+
+    // 참여자 리스트 최신화
+    const participantsResult = await api.meeting.getParticipant(route.params.id);
+    if (!participantsResult.ok) throw new ServerException(res);
+    const participants = await participantsResult.json();
+    meetingDetailStore.participants = participants;
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 async function leave() {
@@ -47,7 +62,22 @@ async function leave() {
 
     confirmMsg.value = "모임 참여를 취소했어요 !";
     closeModalFooterType();
-    emit("refresh");
+    meetingDetailStore.removeParticipant(memberStore.id);
+    meetingDetailStore.hasParticipated = false;
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+async function close() {
+  try {
+    const res = await api.meeting.close(route.params.id);
+    if (!res.ok) throw new ServerException(res);
+    const data = await res.json();
+
+    confirmMsg.value = "모임을 마감했어요 !";
+    closeModalFooterType();
+    meetingDetailStore.closed = true;
   } catch (e) {}
 }
 
@@ -61,22 +91,34 @@ function closeModalFooterType() {
 <template>
   <ModalDefault @closeModal="emit('closeModal')">
     <template v-if="props.controlType === '참여'" #modal-body>
-      <p>🤝 {{ props.articleTitle }}</p>
-      <p class="confirm">모임에 참여하시겠어요?</p>
-    </template>
-    <template v-else-if="props.controlType === '참여취소'" #modal-body>
       <div v-if="!confirmMsg">
-        <p>🤝 {{ props.articleTitle }}</p>
-        <p class="confirm">참여를 취소하시겠어요?</p>
+        <p>🤝 {{ meetingDetailStore.title }}</p>
+        <p class="confirm">모임에 참여하시겠어요?</p>
       </div>
       <div v-else>
-        <p>🤝 {{ props.articleTitle }}</p>
+        <p>모임에 참여했습니다!</p>
+        <p>다음 링크로 모임원들에게 인사해주세요 👋</p>
         <p class="confirm">{{ confirmMsg }}</p>
       </div>
     </template>
-    <template v-else-if="props.controlType === '마감'" #modal-body
-      >마감</template
-    >
+    <template v-else-if="props.controlType === '참여취소'" #modal-body>
+      <div v-if="!confirmMsg">
+        <p>🤝 {{ meetingDetailStore.title }}</p>
+        <p class="confirm">참여를 취소하시겠어요?</p>
+      </div>
+      <div v-else>
+        <p>🤝 {{ meetingDetailStore.title }}</p>
+        <p class="confirm">{{ confirmMsg }}</p>
+      </div>
+    </template>
+    <template v-else-if="props.controlType === '마감'" #modal-body>
+      <div v-if="!confirmMsg">
+        <p class="confirm">모임을 마감하시겠어요?</p>
+      </div>
+      <div v-else>
+        <p class="confirm">{{ confirmMsg }}</p>
+      </div>
+    </template>
     <template v-else="props.controlType === '참여링크'" #modal-body
       >참여링크</template
     >
@@ -93,13 +135,14 @@ function closeModalFooterType() {
 </template>
 
 <style scoped>
-.confirm {
-  margin-top: 8px;
-}
-
 .yes {
   color: var(--main-color);
 }
+
+:deep(.modal__body p) {
+  margin: 4px 0;
+}
+
 
 :deep(.modal__body div) {
   display: flex;

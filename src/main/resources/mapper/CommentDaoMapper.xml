@@ -42,6 +42,16 @@
 			id = #{commentId}
 	</if>
   </select>
+  <select id="getByIds" resultType="Comment">
+	SELECT *
+	FROM comment
+	<where>
+		id IN
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</where>
+	</select>
   <insert id="insertComment" parameterType="com.zpop.web.entity.comment.Comment">
   	INSERT INTO comment 
 	  	(meetingId, writerId, content)
@@ -73,5 +83,112 @@
   	WHERE
   	id = #{commentId}
   </update>
+  <select id="getAdminList" resultType="AdminCommentDto">
+	SELECT 
+		c1.id,
+		c1.content,
+		c1.writerId,
+		c1.groupId,
+		mem.nickname,
+		m.id AS meetingId,
+		m.title AS meetingTitle,
+		c1.parentCommentId,
+		c2.writerId AS parentCommentWriterId,
+		c2.content AS parentCommentContent,
+		c1.createdAt,
+		c1.updatedAt,
+		c1.deletedAt
+	FROM comment AS c1
+	LEFT JOIN meeting AS m
+	ON c1.meetingId = m.id
+	LEFT JOIN member AS mem
+	ON c1.writerId = mem.id
+	LEFT OUTER JOIN comment AS c2
+	ON c1.parentCommentId = c2.id
+	<where>
+		<if test="keyword!=null and !keyword.equals('')">
+			<choose>
+				<when test="option.equals('title')">
+					m.title LIKE '%${keyword}%'
+				</when>
+				<when test="option.equals('nickname')">
+					mem.nickname LIKE '%${keyword}%'
+				</when>
+				<when test="option.equals('id')">
+					c1.id = #{keyword}
+				</when>
+			</choose>
+		</if>
+		<if test="period!=null and minDate!=null">
+			<![CDATA[
+			DATEDIFF(c1.createdAt, #{minDate}) <= 0
+			AND DATEDIFF(c1.createdAt, #{minDate}) >=  - #{period}
+			]]>
+		</if>
+	</where>
+	<choose>
+		<when test="order.equals('desc')">
+			ORDER BY c1.id DESC
+		</when>
+		<otherwise>
+			ORDER BY c1.id ASC
+		</otherwise>
+	</choose>
+	LIMIT #{offset}, #{size}
+  </select>
+  <select id="countBySearch" resultType= "java.lang.Integer">
+	SELECT COUNT(c1.id) 
+	FROM comment AS c1
+	LEFT JOIN meeting AS m
+	ON c1.meetingId = m.id
+	LEFT JOIN member AS mem
+	ON c1.writerId = mem.id
+	<where>
+		<if test="keyword!=null and !keyword.equals('')">
+			<choose>
+				<when test="option.equals('title')">
+					m.title LIKE '%${keyword}%'
+				</when>
+				<when test="option.equals('nickname')">
+					mem.nickname LIKE '%${keyword}%'
+				</when>
+				<when test="option.equals('id')">
+					c1.id = #{keyword}
+				</when>
+			</choose>
+		</if>
+		<if test="period!=null and minDate!=null">
+			AND
+			<![CDATA[
+			DATEDIFF(c1.createdAt, #{minDate}) <= 0
+			AND DATEDIFF(c1.createdAt, #{minDate}) >=  - #{period}
+			]]>
+		</if>
+	</where>
+</select>
+<update id="removeAllDeletedAt" parameterType="java.util.List">
+	UPDATE comment
+	<if test="ids != null and !ids.isEmpty()">
+		SET deletedAt=null
+		<where>
+			<foreach item="id" index="index" collection="ids"
+			open="id IN (" separator="," close=")">
+			#{id}
+			</foreach>
+		</where>
+	</if>
+</update>
+<update id="updateAllDeletedAt" parameterType="java.util.List">
+	UPDATE comment
+	<if test="ids != null and !ids.isEmpty()">
+		SET deletedAt=CURRENT_TIMESTAMP
+		<where>
+			id IN 
+			<foreach item="id" index="index" collection="ids"
+			open="(" separator="," close=")">
+			#{id}
+			</foreach>
+		</where>
+	</if>
+</update>
 </mapper>
-

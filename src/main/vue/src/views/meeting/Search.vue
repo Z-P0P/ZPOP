@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, computed, watch, ref, defineEmits } from "vue";
+import { reactive, computed, watch, ref, defineEmits, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import api from "@/api/";
 import Thumbnail from "@/components/meeting/Thumbnail.vue";
@@ -123,6 +123,9 @@ function onScrollDown(e) {
 }
 
 document.addEventListener("scroll", onScrollDown);
+onUnmounted(() => {
+  document.removeEventListener("scroll", onScrollDown);
+})
 </script>
 
 <template>

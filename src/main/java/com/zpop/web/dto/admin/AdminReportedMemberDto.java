@@ -1,7 +1,22 @@
 package com.zpop.web.dto.admin;
 
-import java.sql.Date;
+import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
 public class AdminReportedMemberDto {
 	
 	private int id;
@@ -10,49 +25,9 @@ public class AdminReportedMemberDto {
 	private String reportedNickname;
 	private int reportedId;
 	private String reportType;
+	private String reason;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date createdAt;
 	private Date processedAt;
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getReporterNickname() {
-		return reporterNickname;
-	}
-	public void setReporterNickname(String reporterNickname) {
-		this.reporterNickname = reporterNickname;
-	}
-	public int getReporterId() {
-		return reporterId;
-	}
-	public void setReporterId(int reporterId) {
-		this.reporterId = reporterId;
-	}
-	public String getReportedNickname() {
-		return reportedNickname;
-	}
-	public void setReportedNickname(String reportedNickname) {
-		this.reportedNickname = reportedNickname;
-	}
-	public int getReportedId() {
-		return reportedId;
-	}
-	public void setReportedId(int reportedId) {
-		this.reportedId = reportedId;
-	}
-	public String getReportType() {
-		return reportType;
-	}
-	public void setReportType(String reportType) {
-		this.reportType = reportType;
-	}
-	public Date getProcessedAt() {
-		return processedAt;
-	}
-	public void setProcessedAt(Date processedAt) {
-		this.processedAt = processedAt;
-	}
 	
 }

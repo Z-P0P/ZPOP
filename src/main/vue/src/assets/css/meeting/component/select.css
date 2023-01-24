@@ -114,8 +114,13 @@
   border-radius: 5px;
   box-shadow: 0px 5px 15px 0px #00000033;
   cursor: none;
+  position:absolute;
+  top:30px;
+  right:0px;
+  background-color: var(--white);
 }
-.modal-select__contents {
+
+.modal-select__contents{
   display: flex;
   height: 100%;
   width: 100%;
@@ -127,13 +132,15 @@
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-}
-
-.modal-select .icon {
-  display: flex;
-  margin-right: 15px;
-}
-
-.modal-select :last-child {
-  color: var(--red-theme);
-}
+  
+  }
+  
+  .modal-select .icon{
+    display: flex;
+    margin-right: 15px;
+  }
+  
+  .modal-select__contents--report
+  ,.modal-select__contents--delete{
+    color:var(--red-theme);
+  }
