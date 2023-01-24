@@ -83,7 +83,6 @@ public class MeetingController {
 	@GetMapping("/update/{id}")
 	@ResponseBody
 	public Map<String, Object> getMeetingUpdateView(@PathVariable int id
-								,Model model
 								,@AuthenticationPrincipal ZpopUserDetails userDetails) {
 	/*	if (userDetails.getId() != id) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
