@@ -12,13 +12,13 @@ public class ZpopUserDetails implements UserDetails {
     private String password;
     private String name;
     private String profileImagePath;
-    private int fame;
+    private Integer fame;
 
 
     private List<GrantedAuthority> authorities;
     private boolean enalbed;
 
-    public ZpopUserDetails(int id, String password, String name, List<GrantedAuthority> authorities, boolean enalbed, String profileImagePath, int fame) {
+    public ZpopUserDetails(int id, String password, String name, List<GrantedAuthority> authorities, boolean enalbed, String profileImagePath, Integer fame) {
         this.id = id;
         this.password = password;
         this.profileImagePath = profileImagePath;
