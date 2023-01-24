@@ -28,6 +28,7 @@ export const useMemberStore = defineStore("member", {
     },
     clearInfo() {
       window.sessionStorage.removeItem("ZPOP_MEMBER_INFO");
+      window.sessionStorage.removeItem("ZPOP_ADMIN_INFO");
       this.id = 0;
       this.nickname = null;
       this.profileImagePath = null;
