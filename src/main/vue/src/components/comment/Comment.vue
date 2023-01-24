@@ -23,8 +23,11 @@
   var hasBox = ref(false); //인풋박스 노출
   var replyClose = ref(false);//'닫기'버튼 노출
   var replyWrite = ref(true);//'답글쓰기'버튼 노출
-  var replyCnt = ref(true);//'답글4개' 버튼 노출
+  var replyCnt = ref(false);//'답글4개' 버튼 노출
   var isExpanded = ref(false);//답글리스트 노출
+  
+  if(props.comment.countOfReply>0)
+      replyCnt.value = true;//원댓글이 답글을 가지고있는지 여부. 없으면 '답글0개' 비노출
 
   function toggleReplyCnt(){ //'답글4개' <-> '닫기' 전환
     isExpanded.value = !isExpanded.value;
@@ -41,12 +44,6 @@
     hasBox.value = !hasBox.value //인풋박스 노출
   }
 
-  function hasReply (comment){  //원댓글이 답글을 가지고있는지 여부. 없으면 '답글0개' 비노출
-    let hasReply = false; 
-    if(comment.countOfReply>0)
-    hasReply = true;
-    return hasReply;
-  }
  //답글 가져오는 부분
   async function getReplyList(){
       const data = await cmtStore.getReplyList(props.comment.id);
@@ -64,8 +61,9 @@
     cmtStore.comment.replyList.length=0; //스토어 초기화
     getReplyList(); //DB에 저장된 결과를 화면에 뿌려주기
     hasBox.value = false; //완료후 인풋박스 비노출
-    replyClose.value = !replyClose.value; //닫기 노출
-    replyCnt.value = !replyCnt.value;     //카운트 비노출
+    replyClose.value = true; //닫기 노출
+    replyCnt.value = false;     //카운트 비노출
+    isExpanded.value = true;  //답글리스트 외부마진 넣어줌
 
   }
 </script>
@@ -85,8 +83,8 @@
         </div>
   <span class="comment__content">{{ comment.content }}</span>
   <div class="comment__replies" :class="{ hidden:hasBox }">
-    <span class="pointer underline reply-cnt"  @click="toggleReplyCnt"  v-if="hasReply(comment)" v-show="replyCnt" >답글 {{ countOfReply }}개</span>
-    <span class="pointer reply-close " @click="toggleReplyCnt"  v-if="hasReply(comment)" v-show="replyClose" >닫기</span>
+    <span class="pointer underline reply-cnt"  @click="toggleReplyCnt"  v-show="replyCnt" >답글 {{ countOfReply }}개</span>
+    <span class="pointer reply-close " @click="toggleReplyCnt"  v-show="replyClose" >닫기</span>
     <span class="pointer underline reply-write modal__on-btn" data-modal="#dummy-modal" v-show="replyWrite" @click="toggleInputBox">답글 달기</span>
   </div>
   <section class="reply" :class="{ 'no-margin':!isExpanded }">
@@ -103,7 +101,7 @@
 /* 답글리스트가 고유의 마진을 갖고 있어 답글이 없을때도 공간을 차지하므로 
 리스트가 닫혀있을때 마진을 빼줌*/
  .no-margin{
-  margin: 0;
+  margin: 0 auto 0 24px;
   padding: 0;
 }
 </style>

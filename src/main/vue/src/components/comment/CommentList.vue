@@ -4,7 +4,7 @@ import api from "@/api";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import Comment from "./Comment.vue";
 
-const meetingDetalStore = useMeetingDetailStore();
+const meetingdetailstore = useMeetingDetailStore();
 
 const emit = defineEmits(["newComment"]);
 const inputs = { f1: ref() };
@@ -15,15 +15,16 @@ onMounted(() => {
 
 function registerComment(refId) {
   const data = {};
-  data.meetingId = meetingDetalStore.id; //미팅 id
-  data.content = document.querySelector("#comment-text").value;
+  data.meetingId = meetingdetailstore.id; //미팅 id
+  const input = inputs[refId].value;
+  data.content = input.value;
   const dataJSONStr = JSON.stringify(data);
   api.comment.registerComment(dataJSONStr).then((res) => {
     if (res.ok) {
       console.log("댓글 등록됨");
       emit("newComment");
-      const input = inputs[refId].value;
       input.value = "";
+      input.focus();
     } else alert("시스템 장애로 등록이 안되고 있습니다");
   });
 }
@@ -31,7 +32,7 @@ function registerComment(refId) {
 
 <template>
   <section class="comment">
-    <h2 class="comment__num">댓글 {{ meetingDetalStore.commentCount }} 개</h2>
+    <h2 class="comment__num">댓글 {{ meetingdetailstore.commentCount }} 개</h2>
     <div class="comment__input-container">
       <textarea
         class="comment__input"
@@ -59,10 +60,10 @@ function registerComment(refId) {
       </div>
     </div>
     <ul class="comment__list">
-      <li v-for="(comment, index) in meetingDetalStore.comments" :key="index">
+      <li v-for="(comment, index) in meetingdetailstore.comments" :key="index">
         <Comment
           :comment="comment"
-          @counterIncreased="meetingDetalStore.increaseCommentCount"
+          @counterIncreased="meetingdetailstore.increaseCommentCount"
         />
       </li>
     </ul>
