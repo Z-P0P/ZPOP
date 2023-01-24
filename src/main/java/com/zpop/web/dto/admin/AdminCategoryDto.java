@@ -1,6 +1,6 @@
 package com.zpop.web.dto.admin;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class AdminCategoryDto {
 
