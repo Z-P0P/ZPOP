@@ -46,11 +46,25 @@
     <select id="countBySearch" resultType= "java.lang.Integer">
       	SELECT COUNT(id) 
       	FROM member
-      	<where>
-      		<if test="keyword!=null">
-      			nickname LIKE '%${keyword}%'
-      		</if>
-      	</where>
+		<where>
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('nickname')">
+						nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('id')">
+						id = #{keyword}
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				AND
+				<![CDATA[
+				DATEDIFF(createdAt, #{minDate}) <= 0
+				AND DATEDIFF(createdAt, #{minDate}) >=  - #{period}
+				]]>
+			</if>
+		</where>
     </select>
     <select id="getListBySearch" resultType="Member">
     	SELECT 
@@ -63,14 +77,33 @@
     		resignedAt
    		FROM
    			member
-   		ORDER BY id DESC
-   		LIMIT #{offset},#{size};
-   		<!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 닉네임만 함 -->
-  		<where>
-      		<if test="keyword!=null">
-      			nickname LIKE '%${keyword}%'
-      		</if>
-      	</where>
+   		<where>
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('nickname')">
+						nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('id')">
+						id = #{keyword}
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				<![CDATA[
+				DATEDIFF(createdAt, #{minDate}) <= 0
+				AND DATEDIFF(createdAt, #{minDate}) >=  - #{period}
+				]]>
+			</if>
+		</where>
+		<choose>
+			<when test="order.equals('desc')">
+				ORDER BY id DESC
+			</when>
+			<otherwise>
+				ORDER BY id ASC
+			</otherwise>
+		</choose>
+		LIMIT #{offset},#{size};
     </select>
 	<update id="updateFameAll" parameterType="java.util.List">
 		<foreach item="item" index="index" collection="list"
@@ -80,4 +113,17 @@
 			WHERE id=#{item.evaluateeId}
 		</foreach>
 	</update>
+
+	<update id="updateAllIsSuspended" parameterType="java.util.List">
+		UPDATE member
+		<if test="ids != null and !ids.isEmpty()">
+			SET isSuspended=#{isSuspended}
+		</if>
+		<where>
+			ID IN 
+			<foreach item="id" collection="ids" open="(" close=")"
+			separator=",">#{id}</foreach>
+		</where>
+	</update>
+
 </mapper>

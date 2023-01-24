@@ -1,0 +1,101 @@
+.admin-table{
+    position:relative;
+    
+}
+
+.table-list{
+    width:100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.table-list__header{
+    height:54px;
+    background-color: #f8fafc;
+    border: 1px solid var(--light-grey1);
+}
+
+.table-list__header li:first-child > *{
+    display: inline-flex;
+    padding-left:5px;
+}
+
+.table-list__header button{
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.table-list__content, .table-list__header{
+    padding:10px 30px;
+}
+
+.table-list__header ul {
+    display: flex;
+    height:100%;
+}
+
+.table-list__content ul li, .table-list__header ul li{
+    flex: 0 1 100px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-list__content{
+    transition:box-shadow 0.05s 0.05s;
+    height: fit-content;
+    border: 1px solid var(--light-grey1);
+}
+
+.table-list__content:hover{
+    box-shadow:1px 1px 13px var(--light-grey1);
+}
+
+
+.table-list__content ul li:first-child,
+.table-list__header ul li:first-child{
+    justify-content: flex-start;
+}
+
+.table-list .list-content__title > span:first-child {
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width:500px;
+}
+
+.table-list .list-content__nickname{
+    flex-direction: row;
+    column-gap:10px;
+}
+
+.table-list__content--wrapper{
+    position:relative;
+    min-height: 650px;
+}
+
+.list-content{
+    display: flex;
+}
+
+.list-content__id > span{
+    margin-top:1px;
+    font-size: 16px;
+    margin-left: 9px;
+}
+
+.admin-tb-4{
+    flex:1 1 330px !important;
+}
+
+.admin-tb-3{
+    flex:1 1 220px !important;
+}
+
+.admin-tb-2{
+    flex:1 1 110px !important;
+} 
+
+.admin-tb-1{
+    flex:0 1 100px !important;
+} 

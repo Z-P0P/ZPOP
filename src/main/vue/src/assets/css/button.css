@@ -23,6 +23,12 @@
 }
 
 
+.btn-action--admin {
+  background-color: var(--admin-loyal-blue);
+}
+
+
+
 .btn-cancel {
   background-color: var(--grey2);
 }

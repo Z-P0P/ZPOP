@@ -18,6 +18,8 @@
 			m2.nickname AS writerNickname,
 			m2.id AS writerId,
 			crt.type as reportType,
+			rc.reason,
+			rc.createdAt,
 			rc.processedAt
 		FROM reportedComment as rc
 		JOIN member as m1
@@ -28,16 +30,107 @@
 		ON comment.writerId = m2.id
 		JOIN commentReportType AS crt
 		ON rc.typeId = crt.id
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('original')">
+						rc.original LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('reporterNickname')">
+						m1.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('writerNickname')">
+						m2.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('id')">
+						rc.id = #{keyword}
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				<![CDATA[
+				AND DATEDIFF(rc.createdAt, #{minDate}) >=  - #{period}
+				]]>
+			</if>
+		</trim>
+		<choose>
+			<when test="order.equals('desc')">
+				ORDER BY rc.id DESC
+			</when>
+			<otherwise>
+				ORDER BY rc.id ASC
+			</otherwise>
+		</choose>
 		LIMIT #{offset},#{size}
 	</select>
 	
 	<select id="count" resultType="Integer">
-		SELECT count(id)
-		FROM reportedComment;
+		SELECT COUNT(rc.id)
+		FROM reportedComment as rc
+		JOIN member as m1
+		ON rc.reporterId = m1.id
+		JOIN comment
+		ON rc.commentId = comment.id
+		JOIN member as m2
+		ON comment.writerId = m2.id
+		JOIN commentReportType AS crt
+		ON rc.typeId = crt.id
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('original')">
+						rc.original LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('reporterNickname')">
+						m1.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('writerNickname')">
+						m2.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('id')">
+						rc.id = #{keyword}
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				<![CDATA[
+				AND DATEDIFF(rc.createdAt, #{minDate}) >=  - #{period}
+				]]>
+			</if>
+		</trim>
 	</select>
-	
 	<select id="select" resultType="Integer">
 		SELECT id FROM reportedComment WHERE commentId = #{commentId} AND reporterId = #{reporterId};
 	</select>
-
+	<update id="updateAll" parameterType="java.util.List">
+		UPDATE reportedComment
+		<if test="ids!=null and !ids.isEmpty()">
+			SET processedAt=CURRENT_TIMESTAMP
+			<choose>
+				<when test="releasedAt != null">
+					,blockedAt=CURRENT_TIMESTAMP
+					,releasedAt=#{releasedAt}
+				</when>
+				<otherwise>
+					,blockedAt=null
+					,releasedAt=null
+				</otherwise>
+			</choose>
+			<where>
+				ID IN 
+				<foreach item="id" collection="ids" open="(" close=")"
+				separator=",">#{id}</foreach>
+			</where>
+		</if>
+	</update>
+	<select id="getByIds" resultType="ReportedComment">
+		SELECT *
+		FROM reportedComment
+		<where>
+			id IN
+			<foreach collection="ids" item="id" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+		</where>
+	</select>
 </mapper>
