@@ -37,8 +37,11 @@
       </ul>
       <div class="views">조회수 {{ meetingDetailStore.viewCount }}회</div>
       <div class="control-btn-wrap">
+        <RoundDisabled v-if="meetingDetailStore.closed">
+          <template #content> 모집완료 </template>
+        </RoundDisabled>
         <Round
-          v-if="meetingDetailStore.myMeeting && !meetingDetailStore.closed"
+          v-else-if="meetingDetailStore.myMeeting && !meetingDetailStore.closed"
           @click.prevent="onClickCloseBtn"
         >
           <template #content> 마감하기 </template>
@@ -61,9 +64,6 @@
         >
           <template #content> 참여취소 </template>
         </Round>
-        <RoundDisabled v-else-if="meetingDetailStore.closed">
-          <template #content> 모집완료 </template>
-        </RoundDisabled>
       </div>
       <ControlModal
         v-if="controlModalOn"
