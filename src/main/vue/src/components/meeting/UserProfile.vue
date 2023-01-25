@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps, reactive, ref, defineEmits } from 'vue';
 import api from '@/api';
-import ReportUser from '../modal/ReportUser.vue';
+import ReportUser from '../member/ReportUser.vue';
 import { useMemberStore } from '../../stores/memberStore';
 
 let isResigned = ref(false);
