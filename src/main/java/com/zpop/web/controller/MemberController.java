@@ -1,19 +1,25 @@
 package com.zpop.web.controller;
 
-import com.zpop.web.dto.EvalDto;
-import com.zpop.web.dto.EvalMemberDto;
-import com.zpop.web.dto.MyMeetingResponse;
-import com.zpop.web.entity.Member;
-import com.zpop.web.security.ZpopUserDetails;
-import com.zpop.web.service.MemberService;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
+import com.zpop.web.dto.EvalDto;
+import com.zpop.web.dto.EvalMemberDto;
+import com.zpop.web.dto.MyMeetingResponse;
+import com.zpop.web.dto.ProfileResponse;
+import com.zpop.web.entity.Member;
+import com.zpop.web.security.ZpopUserDetails;
+import com.zpop.web.service.MemberService;
 
 
 @RestController
@@ -22,6 +28,7 @@ public class MemberController {
 
 @Autowired
 private MemberService service;
+
 
 
 /**
@@ -123,5 +130,11 @@ public ResponseEntity<EvalDto> rateMember(EvalDto dto, @AuthenticationPrincipal 
 	service.getRateData(dto);
 	return ResponseEntity.ok().body(dto);
 }
+
+@GetMapping("/member/{id}")
+public ProfileResponse getProfile(@PathVariable("id") int id){
+	return service.getParticipant(id);
+}
+
 
 }

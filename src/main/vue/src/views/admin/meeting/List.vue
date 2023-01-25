@@ -79,7 +79,7 @@
                     </ul>
                 </li>
                 <li class="details__members">
-                    <participants :detail="meetingDetails"/>
+                    <ParticipantList :detail="meetingDetails"/>
                 </li>
                 <li class="details__option-container">
                     <meeting-form-select-input class="details__option"
@@ -166,7 +166,7 @@ import MeetingFormTextInput from '@/components/meeting/MeetingFormTextInput.vue'
 import DetailModal from '../../../components/admin/modal/AdminDetailModal.vue';
 import SearchBar from '../../../components/admin/SearchBar.vue';
 import AdminTable from '../../../components/admin/Table.vue';
-import Participants from '../../../components/meeting/Participants.vue';
+import ParticipantList from '../../../components/meeting/ParticipantList.vue';
 
 
 const route = useRoute();
