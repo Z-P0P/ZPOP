@@ -97,7 +97,7 @@ function closeModalFooterType() {
       </div>
       <div v-else>
         <p>모임에 참여했습니다!</p>
-        <p>다음 링크로 모임원들에게 인사해주세요 👋</p>
+        <p>다음 링크로 모임원들에게 인사해요! 👋</p>
         <p class="confirm">{{ confirmMsg }}</p>
       </div>
     </template>
@@ -137,12 +137,15 @@ function closeModalFooterType() {
 <style scoped>
 .yes {
   color: var(--main-color);
+  border-left: 1px solid var(--light-grey1);
 }
 
 :deep(.modal__body p) {
   margin: 4px 0;
 }
-
+:deep(.modal__body p.confirm) {
+ margin-top: 10px;
+}
 
 :deep(.modal__body div) {
   display: flex;
