@@ -8,7 +8,7 @@
         <h2 class="title">{{ meetingDetailStore.title }}</h2>
         <span @click="closeSelectModal" class="kebab icon icon-kebab">
           <!-- role에 writer를 바인딩하면 작성자 기준 모달, participant를 바인딩하면 참여자 기준 모달, member를 바인딩하면 일반 로그인 사용자 모달이 나온다. -->
-          <SelectModal :role="'participant'" v-if="!isSelectModalClosed"/>
+          <SelectModal :role="selectModalRole" v-if="!isSelectModalClosed"/>
         </span>
         <img src="" alt="" />
       </div>
@@ -76,7 +76,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useMemberStore } from "@/stores/memberStore";
 import { useLoginModalStore } from "@/stores/loginModalStore";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
@@ -89,17 +89,27 @@ const memberStore = useMemberStore();
 const loginModalStore = useLoginModalStore();
 const meetingDetailStore = useMeetingDetailStore();
 
+// 셀렉트 모달
 const isSelectModalClosed = ref(true);
+
+const selectModalRole = computed(() => {
+  let role = "member";
+  if(meetingDetailStore.myMeeting)
+    role = "writer";
+  else if(meetingDetailStore.hasParticipated)
+    role = "participant"
+  return role;
+})
 
 function closeSelectModal() {
   isSelectModalClosed.value = !isSelectModalClosed.value;
 }
 
 // 참여, 마감, 참여취소, 링크 모달 on/off
-let controlModalOn = ref(false);
+const controlModalOn = ref(false);
 
 const controlType = ["참여", "참여취소", "마감", "참여링크"];
-let currentControlType = ref("");
+const currentControlType = ref("");
 
 function closeControlModal() {
   controlModalOn.value = false;
