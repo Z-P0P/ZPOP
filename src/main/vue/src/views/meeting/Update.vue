@@ -76,8 +76,8 @@
 </template>
 
 <script setup>
-import { onUpdated, reactive } from '@vue/runtime-core';
-import { useRoute } from 'vue-router';
+import { onUpdated, reactive, ref } from '@vue/runtime-core';
+import { useRoute, useRouter } from 'vue-router';
 import LoadingRoller from '../../components/LoadingRoller.vue';
 import MeetingFormDateInput from '../../components/meeting/MeetingFormDateInput.vue';
 import MeetingFormSelectInput from '../../components/meeting/MeetingFormSelectInput.vue';
@@ -85,14 +85,33 @@ import MeetingFormSelectTextInput from '../../components/meeting/MeetingFormSele
 import MeetingFormTextInput from '../../components/meeting/MeetingFormTextInput.vue';
 import Modal from '../../components/modal/Default.vue';
 import { getQuillEditor, quillImageUploadHandler } from "../../utils/quill-generator";
-import UpdateForm from '../../utils/updateForm';
+import UpdateForm from '../../utils/UpdateForm';
+import api from '@/api';
+import { ServerException } from "@/utils/ServerException"
 
 const route = useRoute();
+const router = useRouter();
 const meetingId = route.params.id;
-        
+
 const updateForm = reactive(new UpdateForm(meetingId));
+
+async function getMeetingDetails() {
+    try{
+        const res = await api.meeting.getDetailsForUpdate(meetingId);
+        if(!res.ok)
+            throw new ServerException(await res.json());
+        const data = await res.json();
+        updateForm.init(data.options, data.details);
+    } catch(e) {
+        if(e.res.status === 404)
+            router.push("/404");
+        if(e.res.status === 403)
+            router.replace("/403");
+    }
+}
+getMeetingDetails();
+
 updateForm.addDefaultInputs();
-updateForm.getRegisteredMeetingDetails();
 
 const submitHandler = (event) => {
     console.log(event);
