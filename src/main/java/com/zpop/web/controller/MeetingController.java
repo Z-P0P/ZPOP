@@ -143,16 +143,11 @@ public class MeetingController {
 	
 	//참여 AJAX endpoint (js에서 콜하는 함수)
 	@PostMapping("/{id}/participate")
-	public Map<String, Object> participate(@PathVariable int id,
+	public ResponseEntity<ParticipationResponse> participate(@PathVariable int id,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
-		Map<String, Object> result = new HashMap<>();
 		int memberId = userDetails.getId();
-			String contact = service.participate(id, memberId);
-			result.put("success", true);
-			result.put("contact", contact);
-
-		
-		return result;			
+		ParticipationResponse res = service.participate(id, memberId);
+		return ResponseEntity.ok(res);
 
 	}
 	//참여취소 AJAX endpoint(js에서 콜하는 함수)
