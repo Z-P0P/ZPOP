@@ -5,10 +5,10 @@
             <div class="profile__image">
                 <div class="profile__image--no-photo .icon"></div>
             </div>
-            <span class="profile__nickname">{{ myInfo.nickname }}</span>
+            <span class="profile__nickname">{{ nickname }}</span>
 
             <div class="profile__fame">
-                <span>{{ myInfo.fame }}점</span>
+                <span>{{ fame }}점</span>
                 <span class="deco-img-star "></span>
             </div>
 
@@ -29,14 +29,19 @@
 
 <!-- 생명주기 시점문제 script가 돌아가고 template이 실행되어야함
 myPage.vue 의 script와 template이 돌아간다음 자식 컴포넌트 스크립트 템플릿 -->
-<script setup>
-import { defineProps } from "vue";
-const props = defineProps({
-myInfo: {type : Object,
-        required :true}
-});
-</script>
+ <script setup>
+ import {useMemberStore} from "@/stores/memberStore";
+ const memberStore = useMemberStore();
+ const nickname = memberStore.nickname;
+ const fame = memberStore.fame;
+//  console.log(nickname);
+//   const props = defineProps({
+//                         myInfo: {type : Object,
+//                         required :true}
+//   })
 
+</script> 
+  
 <style scoped>
 @import url(../../assets/css/member/mypage.css);
 @import url(../../assets/css/style.css);
