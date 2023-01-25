@@ -84,20 +84,13 @@ public class MeetingController {
 	@ResponseBody
 	public Map<String, Object> getMeetingUpdateView(@PathVariable int id
 								,@AuthenticationPrincipal ZpopUserDetails userDetails) {
-	/*	if (userDetails.getId() != id) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		}*/
 		RegisterMeetingViewResponse activeOptions = service.getActiveOptions();
-		UpdateMeetingViewDto meetingDetails = service.getUpdateMeetingView(id);
+		UpdateMeetingViewDto meetingDetails = service.getUpdateMeetingView(id, userDetails.getId());
 		Map<String, Object> response = new HashMap<>();
 		response.put("options", activeOptions);
 		response.put("details", meetingDetails);
-
-
 		return response;
 	}
-
-
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<MeetingDetailResponse> getDetail(@PathVariable int id, 
@@ -181,6 +174,4 @@ public class MeetingController {
 		return result;
 		
 	}
-	
-	
 }
