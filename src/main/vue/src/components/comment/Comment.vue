@@ -1,10 +1,18 @@
 <script setup>
   import { reactive,ref } from 'vue';
   import ReplyList from "./ReplyList.vue";
-  import { defineProps } from 'vue';
+  import { defineProps , onUpdated} from 'vue';
+  import { useMemberStore } from "@/stores/memberStore";
   import { useCommentStore} from '@/stores/commentStore'
   import InputBox from './InputBox.vue';
   import SelectModal from './SelectModal.vue';
+  
+  const memberStore = useMemberStore();
+  const isSelectModalClosed = ref(true);
+
+  function closeSelectModal() {
+    isSelectModalClosed.value = !isSelectModalClosed.value;
+  }
 
   const props = defineProps({
     comment:Object
@@ -12,7 +20,6 @@
   const emit = defineEmits([
     'counterIncreased'
   ]);
-
   const replyList = reactive([]); //반응형 답글리스트
   const countOfReply = ref(props.comment.countOfReply);
   const cmtStore = useCommentStore(); //별도의 저장소
@@ -70,11 +77,7 @@
 
   const isModalClosed = ref(true); // 모달 상태 정의
 
-  // select modal 열고 닫기
-  function closeSelectModal(){
-    isModalClosed.value = !isModalClosed.value;
-  }
-
+ 
 </script>
 
 <template>
@@ -82,10 +85,9 @@
     <span class="profile__image"></span>
     <span class="profile__nickname">{{ comment.nickname }}</span>
     <span class="profile__time">{{comment.elapsedTime}}</span>
-    <button @click="closeSelectModal">
-      <!-- role에 writer를 부여하면 작성자 기준으로 모달이 나오고, member를 부여하면 일반 로그인 사용자 모달이 나온다. -->
-      <SelectModal :role="'writer'" v-if="!isModalClosed"/>
-    </button>  
+    <button @click="closeSelectModal"></button>  
+      <SelectModal :role="'writer'" :commentId="comment.id" v-if="comment.myComment&&!isSelectModalClosed"  />
+      <!-- <SelectModal :role="member" v-else v-show="!isSelectModalClosed"/> -->
   </div>
   <span class="comment__content">{{ comment.content }}</span>
   <div class="comment__replies" :class="{ hidden:hasBox }">
@@ -111,7 +113,7 @@
   padding: 0;
 }
 
-.profile > button{
+.profile{
   position:relative;
 }
 </style>
