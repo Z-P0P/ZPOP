@@ -126,6 +126,8 @@ public class LoginController {
 		result.put("id", member.getId());
 		result.put("nickname", member.getNickname());
 		result.put("profileImagePath", member.getProfileImagePath());
+		result.put("fame", member.getFame());
+
 		return ResponseEntity.ok(result);
 	}
 
@@ -144,6 +146,7 @@ public class LoginController {
 		result.put("id", userDetails.getId());
 		result.put("nickname", userDetails.getUsername());
 		result.put("profileImagePath", userDetails.getProfileImagePath());
+		result.put("fame", userDetails.getFame());
 
 		return ResponseEntity.ok(result);
 
