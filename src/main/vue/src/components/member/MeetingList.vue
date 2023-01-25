@@ -9,15 +9,12 @@ const emit = defineEmits([
 
 function onClick(e) {
   console.log("clicked from child");
-  console.dir(props.meeting);
-  console.log(props.meeting);
+  console.log(props.meeting.id);
   emit("rate", props.meeting.meetingId)
 }
 </script>
 
 <template>
-
-
   <div class="meeting">
     <router-link :to="`/meeting/${props.meeting.meetingId}`"> 
       <div class="meeting__header">
@@ -37,7 +34,8 @@ function onClick(e) {
           <li>#{{ props.meeting.genderCategory }}</li>
         </ul>
         <div class="meeting__body-detail">
-          <button @click.prevent="onClick($event)"  class="status status__rate" v-if="props.meeting.canRate">평가하기</button>
+          <button class="status status__rated" v-if="props.meeting.evaluated">평가완료</button>
+          <button @click.prevent="onClick($event)" class="status status__rate" v-else-if="props.meeting.canRate">평가하기</button>
           <div class="status status__on" v-else-if="!props.meeting.closed">모집중</div>
           <div class="status status__off" v-else-if="props.meeting.closed">모집완료</div>
         
@@ -55,7 +53,6 @@ function onClick(e) {
       </div>
     </router-link>
   </div>
-
 </template>
 
 <style scoped>

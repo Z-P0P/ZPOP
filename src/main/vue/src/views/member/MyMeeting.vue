@@ -1,10 +1,17 @@
+
+
 <script setup>
 import { reactive, computed, ref, onMounted  } from "vue";
+import {useMemberStore} from "@/stores/memberStore"
 import api from "@/api";
 import MeetingList from "@/components/member/MeetingList.vue";
 import ModalDefault from "@/components/modal/Full.vue";
 // onMounted(() => {
-  
+//
+// TODO : 평가하기 끝나면, 해당모임을 평가완료로 바꿀 것 -> has evaluated
+// TODO : 데스크탑 평가 모달 창 + 애니메이션
+// TODO : 참여한 모임이 하나도 없을경우 "아직 교집합이 없어요- 멘트 "
+// TODO : 모달창을 클릭할때 state를 비워서 참여자 명단이 두 번 출력되지 않게해야함
 // })
 const state = reactive({
   meetings: [],
@@ -18,7 +25,9 @@ const state = reactive({
 const emit = defineEmits([
   'rate'
 ]);
-
+const memberStore = useMemberStore();
+console.log(memberStore);
+console.log(memberStore.id);
 let modalOn = ref(false);
 
 function showModal() {
@@ -38,12 +47,16 @@ async function getMyMeeting() {
     const res = await api.member.getMyMeeting();
     const data = await res.json();
     state.meetings = data;
-    state.userId = state.meetings[0].participantId;
-
-    if(state.userId == null) {
-      console.log("교집합을 만들어주세요");
-      console.log("예외던지기");
+    if(data == null){
+      console.log("참여한 모임이 없습니다");
     }
+    console.log(data);
+    
+
+    // if(state.userId == null) {
+    //   console.log("교집합을 만들어주세요");
+    //   console.log("예외던지기");
+    // }
   }
   catch (e) {
     console.log(e);
@@ -60,12 +73,13 @@ async function getParticipant(meetingId) {
     const res = await api.member.getParticipant(state.meetingId);
     const data = await res.json();
     for (const p of data) {
-      if(state.userId === p.participantId)
+      if(memberStore.id === p.participantId)
       continue;
       p.rateValue=50;
       state.participants.push(p);
+      console.log(state.participants);
     }
-    
+    console.log(state.participants);
     return state.participants;
   }
   catch (e) {
@@ -99,6 +113,7 @@ async function getParticipant(meetingId) {
 async function rateHandeler(id) {
   state.meetingId = id;
   await getParticipant(state.meetingId);
+  console.log(state.participants);
   showModal()
   return state.participants;
 }
@@ -162,9 +177,11 @@ function rateMeeting(meetingId){
 
                     }).then((response) => response.ok)
                       .then((data) => {
-                        if(data==true) {
-                        }
-                      });             
+                        //TODO: 프론트단에서 동적으로 평가완료 클래스를 바꾸어주는 방법
+                      })
+                      .then(
+                        closeMyModal()
+                      );             
   
 }
 </script>
