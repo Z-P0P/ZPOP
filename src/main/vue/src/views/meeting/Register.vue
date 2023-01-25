@@ -96,14 +96,14 @@ export default {
         registerForm.requestInputOptions();
 
         const submithandler = (event) => {
-
-            if(registerForm.validateInput()){
+            
+            registerForm.setContentInEditor();
+            if(!registerForm.validateInput()){
                 return;
             }
             registerForm.openStatusModal();
             // quill 에디터의 내용을 v-model이나 기타 input, change 이벤트를 이용해 즉각적으로 store에 반영하기 어려움
             // 따라서 제출 시 내용 한번만 확인
-            registerForm.setContentInEditor();
             registerForm.postMeeting();
         
         }
