@@ -28,9 +28,21 @@ async function registerReply(dataJSONStr){
         }
         return await fetch(url,option);
       }
+/*
+댓글 삭제
+*/
+async function deleteComment(commentId){
+        const option = {
+          method: "DELETE",
+          headers: {"Content-Type": "application/json"},
+              body: "",
+        }
+        return await fetch(`/api/comment/${commentId}`,option);
+      }
 
 export default {
     getReplyList,
     registerComment,
-    registerReply
+    registerReply,
+    deleteComment
 }
