@@ -4,7 +4,7 @@
         <div @click="onClickCopy" class="modal-select__contents">복사 하기
             <span class="icon icon-copy"></span>
         </div>
-        <div class="modal-select__contents">수정
+        <div @click="onClickUpdate" class="modal-select__contents">수정
             <span class="icon icon-edit"></span>
         </div>
         <div class="modal-select__contents modal-select__contents--delete">삭제
@@ -35,10 +35,33 @@
 </template>
 
 <script setup>
+import { useRoute, useRouter } from 'vue-router';
+import { useMemberStore } from "@/stores/memberStore";
+import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
+import { useLoginModalStore } from "@/stores/loginModalStore"
+
+const route = useRoute();
+const router = useRouter();
+
+const memberStore = useMemberStore();
+const meetingDetailStore = useMeetingDetailStore();
+const loginModalStore = useLoginModalStore();
+
 const props = defineProps(['role']);
 
 function onClickCopy() {
     navigator.clipboard.writeText(window.location.href);
+}
+
+function onClickUpdate() {
+    // 권한 확인
+    if(memberStore.id !== meetingDetailStore.regMemberId
+        || !meetingDetailStore.myMeeting) {
+        loginModalStore.show();
+        return;
+    }
+    
+    router.push(`/meeting/update/${route.params.id}`)
 }
 
 </script>
