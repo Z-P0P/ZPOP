@@ -1,0 +1,191 @@
+/* 툴팁 크기 정의 */
+
+:root{
+    --tooltip-height : 1rem;
+    --tooltip-font-size : 1rem;
+    --triangle-height: 0.5rem;
+}
+
+/* 투명 툴팁인 경우에 적용되는 animation, 
+hover시 대상에서 툴팁이 나오고 들어오는 효과 적용 */
+
+@keyframes scroll-out{
+    0%{
+        opacity: 0;
+        transform:scale(0);
+    }
+
+    80%{
+        transform:scale(1.05);
+    }
+
+    100%{
+        opacity: 1;
+        transform:scale(1);
+    }
+}
+
+@keyframes scroll-in {
+    0%{
+        opacity: 1;
+        transform:scale(1);
+    }
+
+    10%{
+        transform:scale(1.05);
+    }
+    100%{
+        opacity: 0;
+        transform:scale(0);
+    }
+}
+
+/* 모든 툴팁에 적용되는 속성 정의 */
+
+.tooltip{
+    position: relative;
+}
+
+.tooltip span{
+    position: absolute;
+    font-size: var(--tooltip-font-size);
+    padding: calc(var(--tooltip-height)/ 2);
+    z-index: 1;
+    /* visibility: hidden; */
+    transition: visibility 0.5s 0.2s;
+
+}
+
+.tooltip:hover span{
+    transition: visibility 0.2s 0.5s;
+    visibility: visible;
+}
+
+/* 대상 hover 시 단색배경의 툴팁이 나오는 경우
+적용되는 효과 정의 */
+
+.tooltip span.tooltip-solid{
+    /* opacity: 0; */
+    transition: visibility 0.2s 0.5s, opacity 0.2s 0.5s;
+}
+
+.tooltip:hover span.tooltip-solid{
+    opacity: 1;
+}
+
+/* 대상 hover 시 투명 배경의 툴팁이 나오는 경우
+적용되는 효과 정의 */
+.tooltip span.tooltip-transparent{
+    animation-name: scroll-in;
+    animation-duration: 0.2s;
+    animation-delay: 0.5s;
+}
+
+.tooltip:hover span.tooltip-transparent{
+    animation-name: scroll-out;
+    animation-duration: 0.2s;
+    animation-delay: 0.5s;
+}
+
+/* 투명 배경의 툴팁 css 속성 정의 */
+
+.tooltip-transparent{
+    box-shadow: -2px 2px 10px rgba(0,0,0,0.25);
+    color: var(--drak-grey2);
+    background-color: #ffffffaa;
+    width: max-content;
+    max-width: 30vw;
+    min-height:1.5rem;
+    backdrop-filter: blur(10px);
+    border-radius: calc(var(--tooltip-height) * 0.6);
+    z-index: 1;
+}
+
+.tooltip-transparent-right{
+    left: 20%;
+    top: 40%;
+    transform-origin: left top;
+}
+
+.tooltip-transparent-left{
+    right: 20%;
+    top: 40%;
+    transform-origin: right top;
+}
+
+.tooltip-transparent-center{
+    top:40%;
+    right:50%;
+    transform:translateX(50%);
+    transform-origin: center top;
+}
+
+/* 단색 배경의 툴팁 css 속성 정의 */
+
+.tooltip-solid{
+    width: max-content;
+    background-color: var(--admin-grey);
+    color: var(--white);
+    border-radius: calc(var(--tooltip-height) * 0.6);
+    z-index: 1;
+}
+
+.tooltip-solid::before{
+    content: "";
+    position: absolute;
+    width:0;
+    height:0;
+}
+
+.tooltip-solid-left::before{
+    right:calc(var(--triangle-height)* -1);
+    top: calc(50% - calc(var(--triangle-height) / 2));
+    border-top: calc(var(--triangle-height) / 2) solid transparent;
+    border-left: var(--triangle-height) solid var(--admin-grey);
+    border-bottom: calc(var(--triangle-height) / 2) solid transparent;
+}
+
+.tooltip-solid-left{
+    right:calc(100% + var(--triangle-height));
+}
+
+
+.tooltip-solid-right::before{
+    left:calc(var(--triangle-height)* -1);
+    top: calc(50% - calc(var(--triangle-height) / 2));
+    border-top: calc(var(--triangle-height) / 2) solid transparent;
+    border-right: var(--triangle-height) solid var(--admin-grey);
+    border-bottom: calc(var(--triangle-height) / 2) solid transparent;
+}
+
+.tooltip-solid-right{
+    left:calc(100% + var(--triangle-height));
+}
+
+.tooltip-solid-top::before{
+    bottom:calc(var(--triangle-height)* -1);
+    left: calc(50% - calc(var(--triangle-height) / 2));
+    border-left: calc(var(--triangle-height) / 2) solid transparent;
+    border-right: calc(var(--triangle-height) / 2) solid transparent;
+    border-top: var(--triangle-height) solid var(--admin-grey);
+}
+
+.tooltip-solid-top{
+    bottom:calc(100% + var(--triangle-height));
+    right:50%;
+    transform:translateX(50%);
+}
+
+.tooltip-solid-bottom::before{
+    top:calc(var(--triangle-height)* -1);
+    left: calc(50% - calc(var(--triangle-height) / 2));
+    border-left: calc(var(--triangle-height) / 2) solid transparent;
+    border-right: calc(var(--triangle-height) / 2) solid transparent;
+    border-bottom: var(--triangle-height) solid var(--admin-grey);
+}
+
+.tooltip-solid-bottom{
+    top:calc(100% + var(--triangle-height));
+    left:50%;
+    transform:translateX(-50%)
+}
