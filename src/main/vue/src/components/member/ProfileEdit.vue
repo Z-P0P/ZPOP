@@ -15,14 +15,19 @@
    /**
     * 닉네임 유효성 검사를 위한 timer 와 validateNickname()함수 추가
     */
-   let timer;
-   const delay = 300;
-   if (timer) {
-           clearTimeout(timer);
-       }
-       timer = setTimeout(function() {
-           validateNickname(inputStatus.inputNickname);
-       }, delay);
+
+    const nicknameChangeHandler = () => {
+    let timer;
+    const delay = 300;
+
+    if (timer) {
+        clearTimeout(timer);
+    }
+    timer = setTimeout(function () {
+        validateNickname(inputStatus.inputNickname);
+    }, delay);
+}
+
 
    function validateNickname(nickname) {
        console.log(nickname);
@@ -103,7 +108,6 @@
  */
 
  function editSave() {
-    console.log("save clicked");
     const activeSave = inputStatus.isNicknameValid;
     const nickname = inputStatus.inputNickname;
     if(activeSave == true){
@@ -117,7 +121,7 @@
        fetch(url, options)
            .then(response => {
                if (response.ok) {
-                   return phNickname=nickname;
+                   return memberInfo.nickname=nickname;
                }
                throw Error();
            })
@@ -135,7 +139,7 @@
 
 
 //TODO : 프로필 이미지 업로드, 삭제, 모바일 화면에서 케밥적용
-//TODO : 닉네임 수정
+//TODO : 닉네임 수정 -> 닉네임 변경할 수 없을 경우
 <template>
     <div class="my-profile">
         <div class="my-profile-container">
@@ -159,11 +163,11 @@
             <div class="input-text">
                 <label class="input-text__label" for="input-text__content" ></label>
                 <div class="input-text__content-wrapper"  
-                     v-bind:class="{'input-text__content-wrapper--correct' : inputStatus.isNicknameValid ,
-                     'input-text__content-wrapper--error input__message--appear': !inputStatus.isNicknameValid } ">
+                     v-bind:class="{'input-text__content-wrapper--correct' : inputStatus.isNicknameValid ==true ,
+                     'input-text__content-wrapper--error input__message--appear': inputStatus.isNicknameValid ==false} ">
                     <input class="input-text__content" type="text"
                         maxlength="10" spellcheck="false"
-                        v-bind:placeholder="phNickname" v-model="inputStatus.inputNickname" @input="validateNickname(inputStatus.inputNickname)">
+                        v-bind:placeholder="phNickname" v-model="inputStatus.inputNickname" @input="nicknameChangeHandler()">
                 </div>
                 <span class="input__message "   v-bind:class="{'input__message--appear': inputStatus.inputMessage}" v-bind:textContent="inputStatus.inputMessage" ></span>
 
