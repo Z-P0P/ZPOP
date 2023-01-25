@@ -1,65 +1,76 @@
 <script setup>
-import { useHeaderStore } from '../../stores/headerStore';
-import api from "@/api";
-import { reactive, ref } from 'vue';
-import { useMemberStore } from '../../stores/memberStore';
-const notificationAbsence = ref(false);
-const store = useHeaderStore();
-const close = () => {
-    store.changeNotificationState();
-}
-const state = reactive({
-    notification:{
-        memberId:0,
-        url:"",
-        type:0,
-        elapsedTime:""
+    import { useHeaderStore } from '../../stores/headerStore';
+    import api from "@/api";
+    import { reactive, ref, defineEmits } from 'vue';
+    import { useMemberStore } from '../../stores/memberStore';
+    const notificationAbsence = ref(false);
+    const emit = defineEmits(['checkNotification']);
+    const store = useHeaderStore();
+    const close = () => {
+        store.changeNotificationState();
     }
-})
+    const state = reactive({
+        notification:{
+            memberId:0,
+            url:"",
+            type:0,
+            elapsedTime:""
+        }
+    })
 
-const memberStore = useMemberStore();
-const id = 18;
+    const memberStore = useMemberStore();
+    const id =  memberStore.id;
 
-function getMemberNotification(id){
-    api.notification.getNotification(id)
-    .then((response)=>response.json())
-    .then((data)=>{
-        state.notification = data;
-        // 받은 알림이 없는 경우 알림 모달 창에 알림 없음 처리하기
-        if(state.notification.length==0)
+    function getMemberNotification(id){
+        api.notification.getNotification(id)
+        .then((response)=>response.json())
+        .then((data)=>{
+            state.notification = data;
+             // 받은 알림이 없는 경우 알림 모달 창에 알림 없음 처리하기
+            if(state.notification.length==0){
+                emit('checkNotification');
+                notificationAbsence.value=true;
+            }
+        })
+    }
+
+    function readNotification(event){
+        // 알림 클릭시 알림을 element를 없애기
+        let deleteTarget = event.target;
+        for (deleteTarget; !deleteTarget.classList.contains('notification');
+        deleteTarget = deleteTarget.parentElement);
+        
+        let notificationModal = deleteTarget.parentElement;
+        notificationModal.removeChild(deleteTarget);
+
+        const typeId = deleteTarget.getAttribute("data-type");
+        const id = deleteTarget.getAttribute("data-id");
+        if(typeId == 1){
+            
+        } 
+        else {
+             // 데이터 베이스에 해당 알림 읽음처리하기
+            api.notification.readOne(id)
+            .then((response)=>{
+            // router.push('/users/eduardo') 수정 하기
+            location.href=deleteTarget.getAttribute("data-url");
+            })
+        }
+        
+     
+    }   
+
+    // 모두 읽기 버튼을 누르면 모든 알림이 사라진다.
+    function readAllNotifications(event){
+        state.notification.splice(0);
+        api.notification.readAll(id)
+        .then((response)=>{
             notificationAbsence.value=true;
-    })
-}
+            emit('checkNotification');
+        })
+    }
 
-function readNotification(event){
-    // 알림 클릭시 알림을 element를 없애기
-    let deleteTarget = event.target;
-    for (deleteTarget; !deleteTarget.classList.contains('notification');
-    deleteTarget = deleteTarget.parentElement);
-    
-    let notificationModal = deleteTarget.parentElement;
-    notificationModal.removeChild(deleteTarget);
-    
-    // 데이터 베이스에 해당 알림 읽음처리하기
-    const id = deleteTarget.getAttribute("data-id");
-    api.notification.readOne(id)
-    .then((response)=>{
-        // router.push('/users/eduardo') 수정 하기
-        location.href=deleteTarget.getAttribute("data-url");
-    })
-}   
-
-// 모두 읽기 버튼을 누르면 모든 알림이 사라진다.
-function readAllNotifications(event){
-    state.notification.splice(0);
-    const id = 18;
-    api.notification.readAll(id)
-    .then((response)=>{
-        notificationAbsence.value=true;
-    })
-}
-
-getMemberNotification(id);
+    getMemberNotification(id);
 
 </script>
 
@@ -69,7 +80,7 @@ getMemberNotification(id);
             <input type="button" class="notification__close-btn" @click="close">
         </div>
         <div class="notification-container">
-                <div v-for="item in state.notification" @click.prevent="readNotification" v-bind:data-url="item.url" v-bind:data-id="item.id" class="notification">
+                <div v-for="item in state.notification" @click.prevent="readNotification" v-bind:data-url="item.url" v-bind:data-id="item.id" v-bind:data-type="item.type" class="notification">
                     <span v-if="item.type=='1'">😃 평가하지 않은 모임이 있어요 !</span>
                     <span v-else-if="item.type=='2'">😎 내 모임에 새로운 참여자가 있어요 !</span>
                     <span v-else-if="item.type=='3'">💬 내 모임에 댓글이 달렸어요 !</span>

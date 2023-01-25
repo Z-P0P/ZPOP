@@ -104,7 +104,7 @@ public class LoginController {
 			
 			if(participantIds!=null)
 				for(int p : participantIds)
-					createNotification(participantIds[0],"member/me/meeting",1);
+					createNotification(participantIds[0],"my-meeting",1);
 			
 
 
