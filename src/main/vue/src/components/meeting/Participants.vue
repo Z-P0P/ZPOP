@@ -79,18 +79,22 @@ const participantNum = computed(() => {
 
 .participant__num {
   display: flex;
+  margin-top: 11px;
+  align-items: center;
 }
 
 .participant__num > span {
   margin-right: 0.5rem;
-  font-weight: bold;
+  font-weight: 600;
+  color: var(--dark-grey2);
 }
-
 .participant__list {
   margin-top: 1rem;
   display: grid;
   grid-auto-rows: 46px;
   row-gap: 8px;
+  font-weight: 500;
+  font-size: 16px;
 }
 
 .participant__info {
