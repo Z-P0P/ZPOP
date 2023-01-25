@@ -39,11 +39,14 @@ async function participate() {
     const res = await api.meeting.participate(route.params.id);
     if (!res.ok) throw new ServerException(res);
     const data = await res.json();
-  
+
     confirmMsg.value = data.contact;
     closeModalFooterType();
     meetingDetailStore.hasParticipated = true;
 
+    // 모임 마감여부에 따른 컨트롤버튼 업데이트
+    if(data.closed)
+      meetingDetailStore.closed = true;
     // 참여자 리스트 최신화
     const participantsResult = await api.meeting.getParticipant(route.params.id);
     if (!participantsResult.ok) throw new ServerException(res);

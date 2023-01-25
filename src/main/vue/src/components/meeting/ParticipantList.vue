@@ -1,7 +1,8 @@
 <script setup>
-import { computed, defineProps, ref } from "vue";
-import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import UserProfile from "@/components/meeting/UserProfile.vue";
+import Participant from "@/components/meeting/Participant.vue";
+import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
+import { computed, defineProps, ref } from 'vue';
 
 const meetingDetailStore = useMeetingDetailStore();
 
@@ -10,9 +11,10 @@ let isOpen = ref(false);
 let clickedParticipantId = ref(null);
 
 // 참여자를 클릭하였을때 참여자 정보 모달을 뒤워주는 함수
-function handleModal(event) {
-  isOpen.value = true;
-  clickedParticipantId.value = event.target.getAttribute("data-id");
+function handleModal(event){
+      isOpen.value = true;
+      clickedParticipantId.value = event.currentTarget.getAttribute('data-id');
+      console.log(event.target);
 }
 
 const participantNum = computed(() => {
@@ -20,7 +22,11 @@ const participantNum = computed(() => {
   if (meetingDetailStore.participants === undefined) return 0;
   const length = meetingDetailStore.participants.length;
   return length;
-});
+})
+
+function closeModal(){
+  isOpen.value = false;
+}
 </script>
 
 <template>
@@ -37,6 +43,7 @@ const participantNum = computed(() => {
       <li
         v-for="(participant, idx) in meetingDetailStore.participants"
         :key="participant.participantId"
+        :data-id="participant.participantId" @click.prevent="handleModal"
       >
         <div class="participant__info">
           <img
@@ -50,16 +57,17 @@ const participantNum = computed(() => {
             >{{ participant.nickname }}</span
           >
         </div>
+    
+        <Transition name="slide-fade">
+          <UserProfile @closeModal="closeModal" v-if="isOpen" :userDetail="meetingDetailStore.participants" :participantId="clickedParticipantId" :isModalOpened="isOpen"/>
+        </Transition>
       </li>
     </ul>
-    <UserProfile
-      v-if="isOpen"
-      :userDetail="detail"
-      :participantId="clickedParticipantId"
-    />
+    <Transition name="slide-fade">
+        <UserProfile @closeModal="closeModal" v-if="isOpen" :userDetail="meetingDetailStore.participants" :participantId="clickedParticipantId" :isModalOpened="isOpen"/>
+    </Transition>
   </section>
 </template>
-
 <style>
 .main {
   margin: 2rem auto 4rem auto;
