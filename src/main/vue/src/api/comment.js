@@ -1,4 +1,10 @@
 /*
+댓글 리스트 조회
+*/
+function getCommentList(meetingId){
+    return fetch(`/api/comment?meetingId=${meetingId}`)
+}
+/*
 답글 리스트 조회
 */
 function getReplyList(commentId){
@@ -41,8 +47,10 @@ async function deleteComment(commentId){
       }
 
 export default {
+    getCommentList,
     getReplyList,
     registerComment,
     registerReply,
-    deleteComment
+    deleteComment,
+    
 }

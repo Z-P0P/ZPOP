@@ -1,9 +1,9 @@
 <script setup>
     import { defineProps, defineEmits, ref, onMounted } from 'vue';
     import api from "@/api";
-    import { useCommentStore} from '@/stores/commentStore'
+    import { useReplyStore} from '@/stores/replyStore'
 
-    const cmtStore = useCommentStore();
+    const rplyStore = useReplyStore();
     const props = defineProps({
         reply:Object
     });
@@ -38,11 +38,11 @@
         .then(async res=>{
             if(res.ok){
                 console.log("답글 등록됨");
-                const data = await cmtStore.getReplyList(groupId);
-                cmtStore.comment.id = groupId;
-                cmtStore.comment.replyList.length=0;
+                const data = await rplyStore.getReplyList(groupId);
+                rplyStore.comment.id = groupId;
+                rplyStore.comment.replyList.length=0;
                 for(const r of data.resultObject) {
-                    cmtStore.comment.replyList.push(r);
+                    rplyStore.comment.replyList.push(r);
                 }
                 inputBox.value = "";
                 emit('registerCompleted');

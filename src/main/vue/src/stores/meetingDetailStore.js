@@ -55,5 +55,10 @@ export const useMeetingDetailStore = defineStore("meetingDetail", {
         (p) => p.participantId !== removeTargetId
       );
     },
+    refreshComment(data){
+      this.comments = [];
+      for(const c of data)
+        this.comments.push(c);
+    }
   },
 });
