@@ -75,7 +75,9 @@ article{
 
 }
 
-
+.content-container img{
+    max-width: 100%;
+}
 
 .tags{
     margin-top: 44px;
@@ -99,6 +101,7 @@ article{
     background-color: white;
     border-top: 1px solid var(--light-grey1);
     padding: 10px;
+    z-index:3;
   } 
    
   span.btn.btn-round{
@@ -152,6 +155,7 @@ article{
         border-top: none;
         position: static;
         margin-left: auto;
+        z-index:3;
     }
       
       span.btn.btn-round{

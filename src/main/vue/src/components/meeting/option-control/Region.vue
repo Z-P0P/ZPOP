@@ -105,7 +105,7 @@ const updateRegions= () => {
 .meeting-region{
     min-width: 128px;
     height:52px;
-    background-color: #177DD7; /* true blue*/
+    background-color: var(--main-color); /* true blue*/
     border-radius: 50px;
     color: white;
     font-weight: bold;
