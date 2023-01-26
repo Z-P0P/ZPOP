@@ -113,7 +113,6 @@ input{
 
 .input-text__content-wrapper--correct .input-text__content:focus{
     border-color:var(--tiffany-blue);
-    box-shadow:0px 1px 2px var(--tiffany-blue);
 }
 
 .input-text__content-wrapper--correct + .input__message{

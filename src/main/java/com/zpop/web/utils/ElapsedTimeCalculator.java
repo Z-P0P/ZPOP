@@ -25,7 +25,7 @@ public final class ElapsedTimeCalculator {
         if (diffTime < ElapsedTimeCalculator.SEC)
         {
             // sec
-            msg = "방금";
+            msg = "방금 전";
         }
         else if ((diffTime /= ElapsedTimeCalculator.SEC) < ElapsedTimeCalculator.MIN)
         {

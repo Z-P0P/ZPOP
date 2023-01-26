@@ -9,20 +9,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.zpop.web.entity.Member;
+import com.zpop.web.global.exception.CustomException;
+import com.zpop.web.global.exception.ExceptionReason;
 import com.zpop.web.security.UserSecurityService;
 import com.zpop.web.service.RegisterService;
 
 import jakarta.servlet.http.HttpSession;
 
-@Controller
-@RequestMapping("/register")
+@RestController
+@RequestMapping("/api/register")
 public class RegisterController {
 
 	@Autowired
@@ -31,18 +31,8 @@ public class RegisterController {
 	@Autowired
 	private UserSecurityService userSecurityService;
 
-	@GetMapping()
-	public String register(HttpSession session) {
-		if (session.getAttribute("socialId") == null || session.getAttribute("memberId") != null) {
-			System.out.println("비정상적 접근");
-			return "redirect:/login";
-		}
-		System.out.println("정상 접근");
-		return "register";
-	}
 
 	@PostMapping("/nickname/validation")
-	@ResponseBody
 	public ResponseEntity<?> validateNickname(String nickname, HttpSession session) {
 		System.out.println(nickname);
 		String socialId = (String) session.getAttribute("socialId");
@@ -55,12 +45,11 @@ public class RegisterController {
 	}
 
 	@PostMapping("/nickname/set")
-	@ResponseBody
 	public ResponseEntity<?> setNickname(String nickname, HttpSession session) {
-
+		
 		String socialId = (String) session.getAttribute("socialId");
 		if (socialId == null) {
-			return ResponseEntity.badRequest().build();
+			throw new CustomException(ExceptionReason.SOCIAL_ID_ALREADY_REGISTERED);
 		}
 		
 		Map<String, Object> response = registerService.checkNicknameValid(nickname);
@@ -77,6 +66,8 @@ public class RegisterController {
 		// SecurityContextHolder에 인증 정보를 추가
 		session.removeAttribute("socialId");
 		session.removeAttribute("loginType");
+
+
 
 		UserDetails user = userSecurityService.loadUserByUsername(member.getNickname());
 

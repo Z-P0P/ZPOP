@@ -45,7 +45,7 @@ getDetail();
 }
 @media (min-width: 576px) {
   .content-wrap {
-    padding: 4rem;
+    padding-top: 40px;
   }
 }
 </style>

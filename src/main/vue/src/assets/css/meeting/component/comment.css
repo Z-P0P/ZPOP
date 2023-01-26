@@ -45,6 +45,9 @@
 	justify-self: flex-end;
 	margin-right:30px;
 }
+.comment__list > li {
+  margin-bottom: 27px;
+}
 @media (min-width: 576px) {
   .comment{
     margin-top: 50px;
@@ -63,6 +66,7 @@
     margin-top: 38px;
   }
 }
+
 
 .comment__list {
   margin-top: 32px;
