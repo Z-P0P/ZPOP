@@ -1,38 +1,40 @@
 <script setup>
-import { defineProps, defineEmits, reactive, ref, onMounted } from "vue";
+import { defineProps, defineEmits, reactive, ref, onMounted,onUpdated } from "vue";
 import api from "@/api";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
+import { useCommentStore } from '@/stores/commentStore';
 import Comment from "./Comment.vue";
 
-const meetingdetailstore = useMeetingDetailStore();
+const mtDetailStore = useMeetingDetailStore();
+const cmtStore = useCommentStore();
 
-const emit = defineEmits(["newComment"]);
 const inputs = { f1: ref() };
 onMounted(() => {
   const input = inputs["f1"].value;
   input.focus();
 });
-
+const commentList = reactive([]);
 function registerComment(refId) {
   const data = {};
-  data.meetingId = meetingdetailstore.id; //미팅 id
+  data.meetingId = mtDetailStore.id; //미팅 id
   const input = inputs[refId].value;
   data.content = input.value;
   const dataJSONStr = JSON.stringify(data);
   api.comment.registerComment(dataJSONStr).then((res) => {
     if (res.ok) {
       console.log("댓글 등록됨");
-      emit("newComment");
+      cmtStore.reloadComment(mtDetailStore,mtDetailStore.id)
       input.value = "";
       input.focus();
     } else alert("시스템 장애로 등록이 안되고 있습니다");
   });
 }
+
 </script>
 
 <template>
   <section class="comment">
-    <h2 class="comment__num">댓글 {{ meetingdetailstore.commentCount }} 개</h2>
+    <h2 class="comment__num">댓글 {{ mtDetailStore.commentCount }} 개</h2>
     <div class="comment__input-container">
       <textarea
         class="comment__input"
@@ -60,10 +62,10 @@ function registerComment(refId) {
       </div>
     </div>
     <ul class="comment__list">
-      <li v-for="(comment, index) in meetingdetailstore.comments" :key="index">
+      <li v-for="(comment, index) in mtDetailStore.comments" :key="index">
         <Comment
           :comment="comment"
-          @counterIncreased="meetingdetailstore.increaseCommentCount"
+          @counterIncreased="mtDetailStore.increaseCommentCount"
         />
       </li>
     </ul>

@@ -1,6 +1,6 @@
 <template>
     <!-- 댓글 (작성자)-->
-    <div v-if="role === 'writer'" class="modal-select select-box__options comment__kebob">
+    <div v-if="role === 'writer'" v-show="selectModalOn" class="modal-select select-box__options comment__kebob">
         <div class="modal-select__contents" data-id="comment-edit">수정
             <span class="icon icon-edit"></span>
         </div>
@@ -29,10 +29,15 @@
 <script setup>
     import {ref} from 'vue';
     import CommentModal from './CommentModal.vue';
-    const props = defineProps(['role', 'commentId']);
+    import { useCommentStore } from '@/stores/commentStore.js';
+    
+    const cmtStore = useCommentStore();
+    const props = defineProps(['role', 'commentId', 'meetingId']);
+    
     console.log(props.role + " : "+ props.commentId)
-
-    // 케밥 모달 on/off
+    // 셀렉트 모달 on/off
+    let selectModalOn = ref(true);
+    // 댓글 모달 on/off
     let commentModalOn = ref(false);
 
     const selectType = ["삭제", "신고"];
@@ -45,6 +50,7 @@
     async function onClickDeleteSelectOption() {
         currentSelectType.value = selectType[0];
         commentModalOn.value = !commentModalOn.value;
+        selectModalOn.value = !selectModalOn.value;
     }
 
 

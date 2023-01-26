@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps,defineEmits} from 'vue';
-import { useCommentStore} from '@/stores/commentStore'
+import { useReplyStore} from '@/stores/replyStore'
 import Reply from './Reply.vue'
 const props = defineProps({
   comment:Object
@@ -9,12 +9,12 @@ const emit = defineEmits([
   'counterIncreased'
 ]);
 
-const cmtStore = useCommentStore();
-const storedCommentId = cmtStore.comment.id;
+const rplyStore = useReplyStore();
+const storedCommentId = rplyStore.comment.id;
 const commentId = props.comment.id;
 let replies = props.comment.replyList;
 if(storedCommentId != commentId){
-  replies  = cmtStore.comment.replyList;
+  replies  = rplyStore.comment.replyList;
 }
 function increaseCounter(){
   emit('counterIncreased');

@@ -3,18 +3,18 @@ import { ref } from "vue";
 import api from "@/api";
 import { useMemberStore } from "@/stores/memberStore";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
+import { useCommentStore } from "@/stores/commentStore";
 import ModalDefault from "@/components/modal/Default.vue";
 import { ServerException } from "@/utils/ServerException";
 
-const meetingDetailStore = useMeetingDetailStore();
-const memberStore = useMemberStore();
+const mtDetailStore = useMeetingDetailStore();
+const cmtStore = useCommentStore();
 
 const props = defineProps({
   selectType: String,
   commentId: Number
 });
 const emit = defineEmits(["closeModal", "commentDeleted"]);
-
 let confirmMsg = ref("");
 
 async function onClickYes() {
@@ -36,7 +36,7 @@ async function deleteComment(id) {
 
     confirmMsg.value = "삭제됐습니다.";
     closeModalFooterType();
-    emit('commentDeleted')
+    cmtStore.reloadComment(mtDetailStore, mtDetailStore.id)
   } catch (e) {
     console.log(e)
   }
