@@ -28,13 +28,24 @@ const memberStore = useMemberStore();
 const route = useRoute();
 const router = useRouter();
 
+const emit = defineEmits(['memberRegisterRequired','close']);
+
 const requestOAuth = () => {
     const oauthLoginUrl = `/api/login/oauth/${route.query.login}?code=${route.query.code}&state=${route.query.state}`;
 
     fetch(oauthLoginUrl)
     .then(res => res.json())
     .then(data => {
-        console.log("성공 : fetch oauthLoginUrl ")
+        console.log("성공 : fetch oauthLoginUrl ");
+
+        if(data.code==="REGISTER_REQUIRED"){
+            emit('memberRegisterRequired');
+            emit('close');
+            router.push({path: '/'});
+            return;
+        }
+
+
         memberStore.setInfo(data);
 
         // router에 있던 리다이렉트 기능이 이쪽으로 옮겨짐
