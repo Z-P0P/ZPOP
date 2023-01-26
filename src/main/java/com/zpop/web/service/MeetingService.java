@@ -168,7 +168,7 @@ public interface MeetingService {
 			
 	boolean updateMeeting(UpdateMeetingRequest dto) throws IOException;
 			
-	UpdateMeetingViewDto getUpdateMeetingView(int id);
+	UpdateMeetingViewDto getUpdateMeetingView(int id, int memberId);
 			
 	MeetingFile uploadFile(MultipartFile file, String path) throws IOException;
 

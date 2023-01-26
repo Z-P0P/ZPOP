@@ -522,8 +522,13 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public UpdateMeetingViewDto getUpdateMeetingView(int id) {
-		return dao.getUpdateView(id);
+	public UpdateMeetingViewDto getUpdateMeetingView(int id, int memberId) {
+		UpdateMeetingViewDto updateView = dao.getUpdateView(id);
+		if(updateView == null)
+			throw new CustomException(ExceptionReason.NOT_FOUND_MEETING);
+		if(memberId != updateView.getRegMemberId())
+			throw new CustomException(ExceptionReason.AUTHORIZATION_ERROR);
+		return updateView;
 	}
 
 	@Override

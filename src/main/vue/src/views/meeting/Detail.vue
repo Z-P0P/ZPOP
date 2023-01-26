@@ -32,7 +32,7 @@ getDetail();
 </script>
 <template>
   <div class="content-wrap">
-    <Article @refresh="getDetail" />
+    <Article />
     <Participants />
     <CommentList />
   </div>

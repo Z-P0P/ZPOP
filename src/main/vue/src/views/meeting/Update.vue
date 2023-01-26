@@ -75,9 +75,9 @@
     </div>
 </template>
 
-<script>
-import { onUpdated, reactive } from '@vue/runtime-core';
-import { useRoute } from 'vue-router';
+<script setup>
+import { onUpdated, reactive, ref } from '@vue/runtime-core';
+import { useRoute, useRouter } from 'vue-router';
 import LoadingRoller from '../../components/LoadingRoller.vue';
 import MeetingFormDateInput from '../../components/meeting/MeetingFormDateInput.vue';
 import MeetingFormSelectInput from '../../components/meeting/MeetingFormSelectInput.vue';
@@ -85,78 +85,78 @@ import MeetingFormSelectTextInput from '../../components/meeting/MeetingFormSele
 import MeetingFormTextInput from '../../components/meeting/MeetingFormTextInput.vue';
 import Modal from '../../components/modal/Default.vue';
 import { getQuillEditor, quillImageUploadHandler } from "../../utils/quill-generator";
-import UpdateForm from '../../utils/updateForm';
-export default {
-    components: { Modal, MeetingFormSelectInput, MeetingFormTextInput, 
-        MeetingFormDateInput, MeetingFormSelectTextInput, LoadingRoller },
-    setup() {
-        const route = useRoute();
-        const meetingId = route.params.id;
-        
-        const updateForm = reactive(new UpdateForm(meetingId));
-        updateForm.addDefaultInputs();
-        updateForm.getRegisteredMeetingDetails();
+import UpdateForm from '../../utils/UpdateForm';
+import api from '@/api';
+import { ServerException } from "@/utils/ServerException"
 
-        const submitHandler = (event) => {
-            console.log(event);
-            updateForm.openStatusModal();
-            // quill 에디터의 내용을 v-model이나 기타 input, change 이벤트를 이용해 즉각적으로 store에 반영하기 어려움
-            // 따라서 제출 시 내용 한번만 확인
-            updateForm.setContentInEditor();
-            updateForm.validateInput();
-            updateForm.requestMeetingUpdate();
-        
-        }
+const route = useRoute();
+const router = useRouter();
+const meetingId = route.params.id;
 
-        const clickHandler = (event) => {
-            if (!event.target.parentElement.classList.contains('select-box')) {
-                updateForm.closeAllSelectBox();
-            }
-        }
+const updateForm = reactive(new UpdateForm(meetingId));
 
-        const closeModalHandler = (event) => {
-            updateForm.closeStatusModal();
-        }
+async function getMeetingDetails() {
+    try{
+        const res = await api.meeting.getDetailsForUpdate(meetingId);
+        if(!res.ok)
+            throw new ServerException(await res.json());
+        const data = await res.json();
+        updateForm.init(data.options, data.details);
+    } catch(e) {
+        if(e.res.status === 404)
+            router.push("/404");
+        if(e.res.status === 403)
+            router.replace("/403");
+    }
+}
+getMeetingDetails();
 
-        const fileUploadHandler = quillImageUploadHandler;
+updateForm.addDefaultInputs();
 
-        const selectBoxClickHandler = (id) => {
-            updateForm.updateSelectBox(id);
-        }
+const submitHandler = (event) => {
+    console.log(event);
+    updateForm.openStatusModal();
+    // quill 에디터의 내용을 v-model이나 기타 input, change 이벤트를 이용해 즉각적으로 store에 반영하기 어려움
+    // 따라서 제출 시 내용 한번만 확인
+    updateForm.setContentInEditor();
+    updateForm.validateInput();
+    updateForm.requestMeetingUpdate();
+}
 
-        const optionClickHandler = (id, placeholder, value) => {
-            updateForm.updateOption(id,placeholder,value);
-        }
-
-        const dateChangeHandler = (id, inputDate) => {
-            updateForm.updateDate(id, inputDate);
-        }
-
-        const textInputHandler = (id, currentValue) => {
-            updateForm.updateTextInput(id,currentValue);
-        }
-
-        onUpdated(() => {
-            if (!updateForm.editor) {
-                updateForm.setEditor(getQuillEditor());
-                updateForm.changeEditorContent();
-            }
-        });
-
-        return {
-            updateForm,
-            submitHandler,
-            fileUploadHandler,
-            dateChangeHandler,
-            selectBoxClickHandler,
-            optionClickHandler,
-            textInputHandler,
-            clickHandler,
-            closeModalHandler,
-        }
+const clickHandler = (event) => {
+    if (!event.target.parentElement.classList.contains('select-box')) {
+        updateForm.closeAllSelectBox();
     }
 }
 
+const closeModalHandler = (event) => {
+    updateForm.closeStatusModal();
+}
+
+const fileUploadHandler = quillImageUploadHandler;
+
+const selectBoxClickHandler = (id) => {
+    updateForm.updateSelectBox(id);
+}
+
+const optionClickHandler = (id, placeholder, value) => {
+    updateForm.updateOption(id,placeholder,value);
+}
+
+const dateChangeHandler = (id, inputDate) => {
+    updateForm.updateDate(id, inputDate);
+}
+
+const textInputHandler = (id, currentValue) => {
+    updateForm.updateTextInput(id,currentValue);
+}
+
+onUpdated(() => {
+    if (!updateForm.editor) {
+        updateForm.setEditor(getQuillEditor());
+        updateForm.changeEditorContent();
+    }
+});
 </script>
 
 <style>

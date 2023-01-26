@@ -39,10 +39,10 @@ const router = createRouter({
           path: "/:pathMatch(.*)",
           component: () => import("@/views/404.vue"),
         },
-        // {
-        //   path: "login/oauth/:pathMatch(.*)*",
-        //   component: () => import("@/views/LoginProc.vue"),
-        // },
+        {
+          path: "/403",
+          component: () => import("@/views/403.vue"),
+        },
         {
           path: "meeting",
           children: [
