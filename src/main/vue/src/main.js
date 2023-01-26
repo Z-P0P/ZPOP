@@ -9,6 +9,7 @@ import "./assets/css/style.css";
 import "./assets/css/deco.css";
 import "./assets/css/icon.css";
 import "./assets/css/button.css"
+import "./assets/css/component/tooltip.css"
 
 
 const app = createApp(App);
