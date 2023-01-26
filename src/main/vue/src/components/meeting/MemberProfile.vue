@@ -1,39 +1,42 @@
 <script setup>
-import { defineProps, reactive, ref, defineEmits } from "vue";
-import api from "@/api";
+import { reactive, ref } from "vue";
 import ReportUser from "../member/ReportUser.vue";
+import api from "@/api";
+import { ServerException } from "@/utils/ServerException";
+
+const props = defineProps({
+  memberId: Number,
+});
+const emit = defineEmits(["closeModal"]);
 
 let isResigned = ref(false);
 let isReportModalOpened = ref(false);
-const emit = defineEmits(["closeModal"]);
 
-const props = defineProps({
-  userDetail: Object,
-  participantId: Number,
-  isModalOpened: Boolean,
-});
 const state = reactive({
   member: {
     nickname: null,
     fame: 0,
     participatedMeetingNumber: 0,
     profileImg: null,
-    resigned: null,
   },
 });
 
-const id = props.participantId;
-
 async function getMemberProfile(id) {
-  const response = await api.member.getProfile(id);
-  const data = await response.json();
-  state.member.nickname = data.nickname;
-  console.log(data);
+  try {
+    const res = await api.member.getProfile(id);
+    if (!res.ok) throw new ServerException(await res.json());
+    const data = await res.json();
+    setMemberProfile(data);
+  } catch (e) {}
+}
 
-  if (state.member.resigned) isResigned.value = true;
-  //   })
+getMemberProfile(props.memberId);
 
-  // console.log(state.member);
+function setMemberProfile(data) {
+  if (data.resigned) console.log("TODO: 구현");
+  Object.keys(data).forEach((key) => {
+    state.member[key] = data[key];
+  });
 }
 
 function openReportUserModal() {
@@ -44,20 +47,11 @@ function openReportUserModal() {
 function closeModal() {
   isReportModalOpened.value = false;
 }
-
-getMemberProfile(id);
 </script>
 
 <template>
-  <!-----------------------------유저 프로필 모달!! 시작-------------------------------------->
-  <!------------ sheet 컴포넌트 시작 --------------->
-  <div
-    id="sheet"
-    class="column items-center justify-end"
-    :class="{ hidden: isReportModalOpened }"
-  >
+  <div id="sheet" class="column items-center justify-end">
     <div class="overlay"></div>
-    <!-- for overlay background -->
     <div class="contents column">
       <header class="controls">
         <div class="draggable-area">

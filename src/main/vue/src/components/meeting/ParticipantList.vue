@@ -1,52 +1,65 @@
 <script setup>
-import UserProfile from "@/components/meeting/UserProfile.vue";
+import MemberProfile from "@/components/meeting/MemberProfile.vue";
 import Participant from "@/components/meeting/Participant.vue";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
-import { computed, ref } from 'vue';
+import { useMemberStore } from "@/stores/memberStore";
+import { useLoginModalStore } from "@/stores/loginModalStore";
+import { computed, ref } from "vue";
 
 const meetingDetailStore = useMeetingDetailStore();
-
-let isOpen = ref(false);
-
-let clickedParticipantId = ref(null);
-
-// 참여자를 클릭하였을때 참여자 정보 모달을 뒤워주는 함수
-function handleModal(event){
-      isOpen.value = true;
-      clickedParticipantId.value = event.currentTarget.getAttribute('data-id');
-      console.log(event.target);
-}
+const memberStore = useMemberStore();
+const loginModalStore = useLoginModalStore();
 
 const participantNum = computed(() => {
   // 데이터에서 불러온 참여자가 없을 시 0을 리턴
-  if (!meetingDetailStore.participants === undefined ||
-    !meetingDetailStore.participants) return 0;
+  if (
+    !meetingDetailStore.participants === undefined ||
+    !meetingDetailStore.participants
+  )
+    return 0;
   return meetingDetailStore.participants.length;
-})
+});
 
-function closeModal(){
-  isOpen.value = false;
+const profileModalOn = ref(false);
+const clickedParticipantId = ref(null);
+
+// 참여자를 클릭하였을때 참여자 정보 모달 ON
+async function showProfileModal(participantId) {
+  // 로그인해야 사용자 프로필 확인 가능
+  if (!(await memberStore.isAuthenticated())) {
+    loginModalStore.show();
+    return;
+  }
+  clickedParticipantId.value = participantId;
+  profileModalOn.value = true;
+}
+
+function closeProfileModal() {
+  profileModalOn.value = false;
 }
 </script>
 
 <template>
   <section class="participants">
-    <h2 class="participant__num">참가자 {{ participantNum }} / {{ meetingDetailStore.maxMember }}</h2>
+    <h2 class="participant__num">
+      참가자 {{ participantNum }} / {{ meetingDetailStore.maxMember }}
+    </h2>
     <ul class="participant__list">
       <li
         v-for="(p, idx) in meetingDetailStore.participants"
         :key="p.participantId"
-        :data-id="p.participantId" @click.prevent="handleModal"
       >
-        <participant :userDetail="p">
+        <participant :userDetail="p" @onClickParticipant="showProfileModal">
         </participant>
       </li>
     </ul>
   </section>
   <Teleport to="#app">
-    <Transition name="slide-fade">
-      <UserProfile @closeModal="closeModal" v-if="isOpen" :userDetail="meetingDetailStore.participants" :participantId="clickedParticipantId" :isModalOpened="isOpen"/>
-    </Transition>
+    <member-profile
+      v-if="profileModalOn"
+      @closeModal="closeProfileModal"
+      :memberId="clickedParticipantId"
+    />
   </Teleport>
 </template>
 <style scoped>

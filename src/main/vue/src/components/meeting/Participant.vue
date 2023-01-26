@@ -1,22 +1,30 @@
 <template>
-    <div class="participant">
-      <img
-        class="participant__image"
-        :src="userDetail.profileImagePath 
+  <div class="participant" @click="onClickAndEmit">
+    <img
+      class="participant__image"
+      :src="
+        userDetail.profileImagePath
           ? userDetail.profileImagePath
-          : '/images/icon/user-profile-grey.svg'">
-      <span>{{ props.userDetail.nickname }}</span>
-    </div>
+          : '/images/icon/user-profile-grey.svg'
+      "
+    />
+    <span>{{ props.userDetail.nickname }}</span>
+  </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps } from "vue";
 
 const props = defineProps({
-  userDetail: Object
-})
+  userDetail: Object,
+});
 
-console.log(props.userDetail);
+const emit = defineEmits(["onClickParticipant"]);
+
+// 참여자 id를 담아 부모에게 emit(전달)
+function onClickAndEmit(e) {
+  emit("onClickParticipant", props.userDetail.participantId);
+}
 </script>
 
 <style scoped>
@@ -24,21 +32,21 @@ console.log(props.userDetail);
   width: 220px;
   height: 46px;
   border-radius: 1.625rem;
-  display: flex; 
+  display: flex;
   flex-grow: 0;
   cursor: pointer;
   align-items: center;
   padding-left: 6px;
 }
 
-@media (min-width:576px){ 
+@media (min-width: 576px) {
   .participant {
     width: 240px;
     height: 52px;
   }
- }
+}
 
-.participant:hover{
+.participant:hover {
   background-color: var(--main-color);
   color: var(--white);
 }
@@ -49,7 +57,7 @@ console.log(props.userDetail);
   margin-right: 15px;
 }
 
-@media (min-width:576px){  
+@media (min-width: 576px) {
   .participant__image {
     width: 42px;
     height: 42px;
