@@ -157,7 +157,7 @@ function onDelete() {
 }
 </script>
 
-<style scoped>
+<style>
 @import url(@/assets/css/meeting/article.css);
 
 .title-container .kebab{
