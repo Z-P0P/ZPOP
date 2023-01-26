@@ -86,8 +86,7 @@ const updateRegions= () => {
 
 </script>
 
-<style>
-@import url('../../../assets/css/component/select.css');
+<style scoped>
 .region-category {
   width: 220px;
   display: none;
