@@ -99,4 +99,12 @@
 
 <style>
 @import url(../../../../resources/static/css/member/component/notification-modal.css);
+span {
+    font-weight: 500;
+
+}
+
+.readAll-btn {
+    padding: 0.5rem 0.8rem;
+}
 </style>
