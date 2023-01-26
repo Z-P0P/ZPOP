@@ -13,6 +13,9 @@ import { ServerException } from "@/utils/ServerException";
 import LoginProc from "../LoginProc.vue";
 import NicknameRegister from "../../components/modal/NicknameRegister.vue";
 import { useRoute } from "vue-router";
+import ScrollUpBtn from "@/components/meeting/ScrollUpBtn.vue";
+import RegisterMeetingBtn from "@/components/meeting/RegisterMeetingBtn.vue";
+
 
 const emit = defineEmits(["throw"]);
 const route = useRoute();
@@ -190,6 +193,8 @@ function changeNicknameRegisterStatus(){
   </div>
   <login-proc v-show="isLoginProcOpened" @close="changeLoginProcStatus" @memberRegisterRequired="changeNicknameRegisterStatus"/>
   <nickname-register v-show="isNicknameRegisterOpened" @close="changeNicknameRegisterStatus"/>
+  <ScrollUpBtn class="scroll-up-btn"/>
+  <register-meeting-btn class="register-meeting-btn"/>
 </template>
 
 <style scoped>
@@ -209,4 +214,25 @@ function changeNicknameRegisterStatus(){
   justify-content: center;
   margin: 2rem auto;
 }
+
+.scroll-up-btn{
+  display:none;
+}
+
+@media (min-width:576px) {
+  .scroll-up-btn{
+    display:block;
+  }
+}
+
+@media (min-width:576px) {
+  .register-meeting-btn{
+    display:none;
+  }
+}
+
+.meetings{
+  position:relative;
+}
+
 </style>
