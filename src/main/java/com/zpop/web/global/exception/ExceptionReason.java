@@ -10,6 +10,7 @@ public enum ExceptionReason {
     // 400
     VALIDATION_ERROR(BAD_REQUEST, "잘못된 입력이 있습니다."),
     CLOSED_MEETING(BAD_REQUEST, "마감된 모임입니다."),
+    SOCIAL_ID_ALREADY_REGISTERED(BAD_REQUEST, "이미 등록된 소셜 계정입니다."),
 
     // 401
     AUTHENTICATION_ERROR(UNAUTHORIZED, "인증 에러"),
