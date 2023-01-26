@@ -29,15 +29,12 @@ const getDetail = async () => {
 
 getDetail();
 
-const newComment = async () => {
-  await getDetail(route.params.id);
-};
 </script>
 <template>
   <div class="content-wrap">
     <Article @refresh="getDetail" />
     <Participants />
-    <CommentList @newComment="newComment" />
+    <CommentList />
   </div>
 </template>
 <style scoped>
