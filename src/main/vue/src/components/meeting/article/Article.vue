@@ -6,13 +6,20 @@
       </div>
       <div class="title-container">
         <h2 class="title">{{ meetingDetailStore.title }}</h2>
-        <span @click="closeSelectModal" class="kebab icon icon-kebab">
+        <span @click="closeSelectModal" class="kebab icon icon-kebab tooltip">
+          <span
+            v-show="tooltipCopyShow"
+            class="tooltip-solid tooltip-solid-left">
+                링크가 복사되었어요!
+          </span>
           <!-- role에 writer를 바인딩하면 작성자 기준 모달, participant를 바인딩하면 참여자 기준 모달, member를 바인딩하면 일반 로그인 사용자 모달이 나온다. -->
           <SelectModal 
             @on-click-delete="onDelete"
+            @on-click-copy="onClickCopy"
             :role="selectModalRole"
             v-if="!isSelectModalClosed"
           />
+          
         </span>
         <img src="" alt="" />
       </div>
@@ -154,6 +161,15 @@ async function onClickCloseBtn() {
 function onDelete() {
   currentControlType.value = controlType[4];
   controlModalOn.value = !controlModalOn.value;
+}
+
+const tooltipCopyShow = ref(false);
+
+function onClickCopy() {
+  tooltipCopyShow.value = true;
+  setTimeout(() => {
+    tooltipCopyShow.value = false;
+  }, 2500)
 }
 </script>
 
