@@ -33,7 +33,7 @@ getDetail();
 <template>
   <div class="content-wrap">
     <Article />
-    <Participants />
+    <ParticipantList />
     <CommentList />
   </div>
 </template>
