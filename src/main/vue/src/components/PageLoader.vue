@@ -43,7 +43,7 @@ const onAfterLeave = () => {
 
 .js-preloader--whole-page {
     position: fixed;
-    top: 80px;
+    top: 60px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -55,6 +55,12 @@ const onAfterLeave = () => {
     z-index: 10;
 }
 
+@media (min-width: 576px) {
+    
+    .js-preloader--whole-page {
+        top: 80px;
+    }
+}
 
 @keyframes dot8567 {
     50% {
