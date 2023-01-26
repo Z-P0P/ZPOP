@@ -261,7 +261,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.delete(meetingId, member));
+            () -> service.delete(meetingId, member.getId()));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);

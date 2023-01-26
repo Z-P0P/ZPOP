@@ -40,7 +40,6 @@ public class MeetingController {
 	private final String PATH = "/images";
 
 	@PostMapping()
-	@ResponseBody
 	public ResponseEntity<RegisterMeetingResponse> postMeeting(@Valid @RequestBody RegisterMeetingRequest dto, 
 			 @AuthenticationPrincipal ZpopUserDetails userDetails,
 			 HttpServletRequest request) throws FileNotFoundException, IOException {
@@ -81,7 +80,6 @@ public class MeetingController {
 	}
 	
 	@GetMapping("/update/{id}")
-	@ResponseBody
 	public Map<String, Object> getMeetingUpdateView(@PathVariable int id
 								,@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		RegisterMeetingViewResponse activeOptions = service.getActiveOptions();
@@ -173,5 +171,16 @@ public class MeetingController {
 		boolean result = service.close(id, member);
 		return result;
 		
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(
+			@PathVariable(name = "id") int id,
+			@AuthenticationPrincipal ZpopUserDetails userDetails
+	) {
+		System.out.println("id = " + id);
+		int memberId = userDetails.getId();
+		service.delete(id, memberId);
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -323,14 +323,12 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public boolean delete(int id, Member member) {
+	public boolean delete(int id, int memberId) {
 
 		Meeting foundMeeting = dao.get(id);
 
 		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
 			throw new CustomException(ExceptionReason.NOT_FOUND_MEETING);
-
-		int memberId = member.getId();
 
 		if (foundMeeting.getRegMemberId() != memberId)
 			throw new CustomException(ExceptionReason.AUTHORIZATION_ERROR);
