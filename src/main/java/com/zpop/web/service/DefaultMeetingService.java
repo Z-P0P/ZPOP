@@ -97,7 +97,7 @@ public class DefaultMeetingService implements MeetingService {
 		// 응답에 맞게 데이터 변환
 		List<MeetingThumbnailResponse> list = new ArrayList<>();
 		for (MeetingThumbnailView m : meetingThumbnailViews) {
-			String genderCategory = "누구나";
+			String genderCategory = "남녀 모두";
 			switch (m.getGenderCategory()) {
 				case 1:
 					genderCategory = "남자 모임";
@@ -180,7 +180,7 @@ public class DefaultMeetingService implements MeetingService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
 		
 		// 성별 변환
-		String genderCategory = "누구나";
+		String genderCategory = "남녀 모두";
 		switch (meeting.getGenderCategory()) {
 			case 1:
 				genderCategory = "남자 모임";
