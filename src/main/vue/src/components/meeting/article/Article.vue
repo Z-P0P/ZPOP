@@ -6,7 +6,7 @@
       </div>
       <div class="title-container">
         <h2 class="title">{{ meetingDetailStore.title }}</h2>
-        <span @click="closeSelectModal" class="kebab icon icon-kebab tooltip">
+        <span @click="closeSelectModal" class="kebab icon icon-kebab tooltip" :class="{'tooltip--appear': tooltipCopyShow}" >
           <span
             v-show="tooltipCopyShow"
             class="tooltip-solid tooltip-solid-left">
@@ -169,7 +169,7 @@ function onClickCopy() {
   tooltipCopyShow.value = true;
   setTimeout(() => {
     tooltipCopyShow.value = false;
-  }, 2500)
+  }, 4000)
 }
 </script>
 
