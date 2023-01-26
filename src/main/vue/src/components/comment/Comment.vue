@@ -92,7 +92,7 @@ function toggleSelectModal(){
     <span class="profile__time">{{ comment.elapsedTime }}</span>
     <button @click="toggleSelectModal"></button>
     <SelectModal :role="'writer'" :commentId="comment.id" :meetingId="comment.meetingId"
-      v-if="!cmtStore.selectModalStatus[commentId]" />
+      v-if="comment.myComment&&!cmtStore.selectModalStatus[commentId]" />
     <!-- <SelectModal :role="member" v-else v-show="!isSelectModalClosed"/> -->
   </div>
   <span class="comment__content">{{ comment.content }}</span>
