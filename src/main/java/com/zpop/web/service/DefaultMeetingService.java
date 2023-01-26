@@ -13,6 +13,8 @@ import com.zpop.web.dto.*;
 import com.zpop.web.entity.*;
 import com.zpop.web.entity.comment.CommentView;
 
+import com.zpop.web.global.exception.CustomException;
+import com.zpop.web.global.exception.ExceptionReason;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -439,28 +441,28 @@ public class DefaultMeetingService implements MeetingService {
 	}
 	@Override
 	@Transactional
-	public String participate(int id, int memberId) {
+	public ParticipationResponse participate(int id, int memberId) {
 
 		Meeting foundMeeting = dao.get(id);
 
 		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+			throw new CustomException(ExceptionReason.NOT_FOUND_MEETING);
 		// 주최자가 자기 자신 모임에 참여할 때
 		if (foundMeeting.getRegMemberId() == memberId)
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "회원님이 생성한 모임입니다");
+			throw new CustomException(ExceptionReason.ALREADY_PARTICIPATED);
 
 		boolean isClosedMeeting = isClosedMeeting(foundMeeting);
 		if(isClosedMeeting)
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "마감된 모임에 참여 할 수 없습니다");
+			throw new CustomException(ExceptionReason.CLOSED_MEETING);
 
 		List<Participation> participants = participationDao.getListByMeetingId(id);
 		for(Participation p : participants) {
 			if(p.getParticipantId() != memberId)
 				continue;
 			if(p.getBannedAt() != null)
-				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 모임에 참여할 수 없습니다");
+				throw new CustomException(ExceptionReason.KICKED_MEMBER);
 			if(p.getParticipantId() == memberId && p.getCanceledAt() == null)
-				throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 참여한 모임입니다");
+				throw new CustomException(ExceptionReason.ALREADY_PARTICIPATED);
 		}
 
 		int maxMember = foundMeeting.getMaxMember();
@@ -469,18 +471,21 @@ public class DefaultMeetingService implements MeetingService {
 
 		// 현재 참여자 수 & 최대인원 비교 확인
 		if(participantCount >= maxMember)
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 마감된 모임입니다");
+			throw new CustomException(ExceptionReason.CLOSED_MEETING);
 
 		// 참여 성공
 		participationDao.insert(id, memberId);
+		boolean isClosed = false;
 		// 참여 처리 후 참여자 수에 따른 마감 처리
 		int resultCount = participationDao.countActiveByMeetingId(id);
-		if(resultCount >= maxMember)
+		if(resultCount >= maxMember) {
 			dao.updateClosedAt(foundMeeting);
+			isClosed = true;
+		}
 
 		createNotification(hostId, "/meeting/"+ id,2);
 
-		return foundMeeting.getContact();
+		return new ParticipationResponse(foundMeeting.getContact(), isClosed);
 	}
 
 	@Override

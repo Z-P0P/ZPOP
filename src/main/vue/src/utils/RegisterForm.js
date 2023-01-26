@@ -146,11 +146,12 @@ export class RegisterForm{
                 inputs[key].message = result.reason;
             }
         })
-        Object.keys(inputs).forEach(key=>{
+
+        for (let key of Object.keys(inputs)){
             if(inputs[key].hasError){
                 return false;
             }
-        })
+        }
         return true;
     }
 

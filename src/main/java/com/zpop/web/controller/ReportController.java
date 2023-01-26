@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zpop.web.dao.MeetingDao;
 import com.zpop.web.dto.RequestMeetingReportDto;
+import com.zpop.web.dto.RequestMemberReportDto;
 import com.zpop.web.entity.ReportedComment;
 import com.zpop.web.entity.ReportedMeeting;
 import com.zpop.web.entity.ReportedMember;
@@ -21,7 +22,7 @@ import com.zpop.web.service.CommentService;
 import com.zpop.web.service.ReportService;
 
 @Controller
-@RequestMapping("/report")
+@RequestMapping("/api/report")
 public class ReportController {
 	
 	@Autowired
@@ -98,14 +99,14 @@ public class ReportController {
 	@ResponseBody
 	public boolean member(
 			@PathVariable("memberId") int memberId,
-			@RequestBody ReportedMember reportedMember,
+			@RequestBody RequestMemberReportDto dto,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		boolean result;
 		
 		// 피신고자, 신고자, 유형, 사유
-		reportedMember.setReportedId(memberId);
-		reportedMember.setReporterId(userDetails.getId());
-		reportService.createMemberReport(reportedMember);
+		ReportedMember rm = new ReportedMember(
+			memberId, userDetails.getId(), 1, dto.getReportReason());
+		reportService.createMemberReport(rm);
 		result = true;
 
 		return result;

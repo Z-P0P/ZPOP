@@ -51,6 +51,5 @@ export default {
     getReplyList,
     registerComment,
     registerReply,
-    deleteComment,
-    
+    deleteComment
 }

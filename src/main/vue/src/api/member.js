@@ -1,5 +1,5 @@
-function getProfile(id){
-    return fetch(`/api/member/${id}`)
+async function getProfile(id){
+    return await fetch(`/api/member/${id}`)
 }
     
 /**
@@ -42,6 +42,7 @@ export default {
     getMyMeeting,
     getMyGathering,
     getParticipant,
-    rateMeeting
+    rateMeeting,
+    getProfile
 
 };
