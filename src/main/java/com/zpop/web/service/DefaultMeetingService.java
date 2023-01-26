@@ -328,12 +328,12 @@ public class DefaultMeetingService implements MeetingService {
 		Meeting foundMeeting = dao.get(id);
 
 		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+			throw new CustomException(ExceptionReason.NOT_FOUND_MEETING);
 
 		int memberId = member.getId();
 
 		if (foundMeeting.getRegMemberId() != memberId)
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
+			throw new CustomException(ExceptionReason.AUTHORIZATION_ERROR);
 
 		List<Participation> participations = participationDao.getListByMeetingId(id);
 
@@ -347,7 +347,7 @@ public class DefaultMeetingService implements MeetingService {
 
 			// 정상 참가자가 한명이라도 있으면 삭제 불가
 			if (bannedAt == null && canceledAt == null)
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "참가자가 있어 모임을 삭제할 수 없습니다");
+				throw new CustomException(ExceptionReason.PARTICIPANTS_EXISTS);
 		}
 		dao.updateDeletedAt(foundMeeting);
 
