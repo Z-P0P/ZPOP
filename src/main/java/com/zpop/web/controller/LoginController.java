@@ -91,8 +91,7 @@ public class LoginController {
 		if (member == null) {
 			session.setAttribute("socialId", socialId);
 			session.setAttribute("loginType", loginType);
-			result.put("code", "success");
-			result.put("redirectUrl", "/register");
+			result.put("code", "REGISTER_REQUIRED");
 			return ResponseEntity.ok(result);
 		}
 		

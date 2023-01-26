@@ -80,6 +80,16 @@ function close(id) {
   }) ;
 }
 
+/**
+ * 모임 삭제하기
+ */
+function remove(id) {
+  return fetch(`/api/meeting/${id}`, {
+    method: "DELETE",
+    Accept: "application/json",
+  });
+}
+
 export default {
   getThumbnailList,
   getDetail,
@@ -90,5 +100,6 @@ export default {
   participate,
   getParticipant,
   leave,
-  close
+  close,
+  remove,
 };

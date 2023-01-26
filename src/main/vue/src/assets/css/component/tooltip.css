@@ -6,12 +6,6 @@
     --triangle-height: 0.5rem;
 }
 
-html{
-    background-color: var(--drak-grey2);
-   /* background-color: #fbfbfd */; 
-}
-/* 투명 툴팁인 경우에 적용되는 animation, 
-hover시 대상에서 툴팁이 나오고 들어오는 효과 적용 */
 
 @keyframes scroll-out{
     0%{
@@ -50,17 +44,17 @@ hover시 대상에서 툴팁이 나오고 들어오는 효과 적용 */
     position: relative;
 }
 
-.tooltip span{
+.tooltip > span{
     position: absolute;
     font-size: var(--tooltip-font-size);
     padding: calc(var(--tooltip-height)/ 2);
-    z-index: 1;
+    z-index: 10;
     visibility: hidden;
     transition: visibility 0.5s 0.2s;
 
 }
 
-.tooltip:hover span{
+.tooltip:hover > span{
     transition: visibility 0.2s 0.5s;
     visibility: visible;
 }
@@ -68,24 +62,24 @@ hover시 대상에서 툴팁이 나오고 들어오는 효과 적용 */
 /* 대상 hover 시 단색배경의 툴팁이 나오는 경우
 적용되는 효과 정의 */
 
-.tooltip span.tooltip-solid{
+.tooltip > span.tooltip-solid{
     opacity: 0;
     transition: visibility 0.2s 0.5s, opacity 0.2s 0.5s;
 }
 
-.tooltip:hover span.tooltip-solid{
+.tooltip:hover > span.tooltip-solid{
     opacity: 1;
 }
 
 /* 대상 hover 시 투명 배경의 툴팁이 나오는 경우
 적용되는 효과 정의 */
-.tooltip span.tooltip-transparent{
+.tooltip > span.tooltip-transparent{
     animation-name: scroll-in;
     animation-duration: 0.2s;
     animation-delay: 0.5s;
 }
 
-.tooltip:hover span.tooltip-transparent{
+.tooltip:hover > span.tooltip-transparent{
     animation-name: scroll-out;
     animation-duration: 0.2s;
     animation-delay: 0.5s;
@@ -102,7 +96,7 @@ hover시 대상에서 툴팁이 나오고 들어오는 효과 적용 */
     min-height:1.5rem;
     backdrop-filter: blur(10px);
     border-radius: calc(var(--tooltip-height) * 0.6);
-    z-index: 1;
+    z-index: 10;
 }
 
 .tooltip-transparent-right{
@@ -129,7 +123,7 @@ hover시 대상에서 툴팁이 나오고 들어오는 효과 적용 */
     background-color: var(--admin-grey);
     color: var(--white);
     border-radius: calc(var(--tooltip-height) * 0.6);
-    z-index: 1;
+    z-index: 10;
 }
 
 .tooltip-solid::before{
@@ -149,6 +143,8 @@ hover시 대상에서 툴팁이 나오고 들어오는 효과 적용 */
 
 .tooltip-solid-left{
     right:calc(100% + var(--triangle-height));
+    top:50%;
+    transform:translateY(-50%);
 }
 
 
@@ -162,6 +158,8 @@ hover시 대상에서 툴팁이 나오고 들어오는 효과 적용 */
 
 .tooltip-solid-right{
     left:calc(100% + var(--triangle-height));
+    top:50%;
+    transform:translateY(-50%);
 }
 
 .tooltip-solid-top::before{

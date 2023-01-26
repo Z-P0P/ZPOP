@@ -76,7 +76,7 @@ public class DefalutMemberService implements MemberService {
         List<MyMeetingResponse> list = new ArrayList<>();
 
         for (MyMeetingView m : mmv) {
-            String genderCategory = "누구나";
+            String genderCategory = "남녀 모두";
             switch (m.getGenderCategory()) {
                 case 1:
                     genderCategory = "남자 모임";
@@ -146,7 +146,7 @@ public class DefalutMemberService implements MemberService {
         List<MyMeetingResponse> list = new ArrayList<>();
 
         for (MyMeetingView m : mmv) {
-            String genderCategory = "누구나";
+            String genderCategory = "남녀 모두";
             switch (m.getGenderCategory()) {
                 case 1:
                     genderCategory = "남자 모임";

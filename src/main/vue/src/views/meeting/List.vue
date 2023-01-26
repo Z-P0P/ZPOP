@@ -11,9 +11,11 @@ import ModalDefault from "@/components/modal/Default.vue";
 import Banner from "../../components/meeting/Banner.vue"
 import { ServerException } from "@/utils/ServerException";
 import LoginProc from "../LoginProc.vue";
+import NicknameRegister from "../../components/modal/NicknameRegister.vue";
+import { useRoute } from "vue-router";
 
 const emit = defineEmits(["throw"]);
-
+const route = useRoute();
 // 검색을 위한 router
 const router = useRouter();
 
@@ -142,6 +144,22 @@ function search(keyword) {
 function closeRequiredKeywordModal() {
   isSearchKeywordNone.value = false;
 }
+
+const isLoginProcOpened = ref(false);
+const isNicknameRegisterOpened = ref(false);
+
+if (route.query.login){
+  isLoginProcOpened.value=true;
+}
+
+function changeLoginProcStatus (){
+  isLoginProcOpened.value = !isLoginProcOpened.value;
+}
+
+function changeNicknameRegisterStatus(){
+  isNicknameRegisterOpened.value = !isNicknameRegisterOpened.value;
+}
+
 </script>
 
 <template>
@@ -170,7 +188,8 @@ function closeRequiredKeywordModal() {
       <LoadingRoller :isShow="state.loadingOn" />
     </div>
   </div>
-  <login-proc/>
+  <login-proc v-show="isLoginProcOpened" @close="changeLoginProcStatus" @memberRegisterRequired="changeNicknameRegisterStatus"/>
+  <nickname-register v-show="isNicknameRegisterOpened" @close="changeNicknameRegisterStatus"/>
 </template>
 
 <style scoped>

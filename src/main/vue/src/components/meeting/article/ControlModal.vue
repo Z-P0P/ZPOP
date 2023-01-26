@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import api from "@/api";
 import { useMemberStore } from "@/stores/memberStore";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
@@ -11,6 +11,7 @@ const meetingDetailStore = useMeetingDetailStore();
 const memberStore = useMemberStore();
 
 const route = useRoute();
+const router = useRouter();
 
 const props = defineProps({
   controlType: String,
@@ -30,6 +31,9 @@ async function onClickYes() {
       break;
     case "마감":
       await close();
+      break;
+    case "삭제":
+      await remove();
       break;
   }
 }
@@ -84,6 +88,31 @@ async function close() {
   } catch (e) {}
 }
 
+async function remove() {
+  if(memberStore.id !== meetingDetailStore.regMemberId
+      || !meetingDetailStore.myMeeting) {
+    loginModalStore.show();
+    return;
+  }
+  try {
+    const res = await api.meeting.remove(route.params.id);
+    if(!res.ok)
+      throw new ServerException(await res.json());
+    router.replace("/");
+  } catch(e) {
+    console.log(e)
+    if(e.res.status === 404)
+      router.replace("/404");
+    if(e.res.status === 403)
+      router.replace("/403");
+    if(e.res.status === 400 &&
+      e.res.message === "참가자가 있어 모임을 삭제할 수 없습니다") {
+        confirmMsg.value = "참가자가 있어 모임을 삭제할 수 없어요 !";
+        closeModalFooterType();
+    }
+  }
+}
+
 let modalFooterType = ref(0);
 
 function closeModalFooterType() {
@@ -122,9 +151,17 @@ function closeModalFooterType() {
         <p class="confirm">{{ confirmMsg }}</p>
       </div>
     </template>
-    <template v-else="props.controlType === '참여링크'" #modal-body
+    <template v-else-if="props.controlType === '참여링크'" #modal-body
       >참여링크</template
     >
+    <template v-else-if="props.controlType === '삭제'" #modal-body>
+      <div v-if="!confirmMsg">
+        <p class="confirm">모임을 정말로 삭제하시겠어요?</p>
+      </div>
+      <div v-else>
+        <p class="confirm">{{ confirmMsg }}</p>
+      </div>
+    </template>
 
     <template v-if="modalFooterType === 0" #modal-footer>
       <div @click="emit('closeModal')">아니오</div>

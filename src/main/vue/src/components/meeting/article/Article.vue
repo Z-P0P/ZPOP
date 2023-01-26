@@ -8,7 +8,11 @@
         <h2 class="title">{{ meetingDetailStore.title }}</h2>
         <span @click="closeSelectModal" class="kebab icon icon-kebab">
           <!-- role에 writer를 바인딩하면 작성자 기준 모달, participant를 바인딩하면 참여자 기준 모달, member를 바인딩하면 일반 로그인 사용자 모달이 나온다. -->
-          <SelectModal :role="selectModalRole" v-if="!isSelectModalClosed"/>
+          <SelectModal 
+            @on-click-delete="onDelete"
+            :role="selectModalRole"
+            v-if="!isSelectModalClosed"
+          />
         </span>
         <img src="" alt="" />
       </div>
@@ -108,7 +112,7 @@ function closeSelectModal() {
 // 참여, 마감, 참여취소, 링크 모달 on/off
 const controlModalOn = ref(false);
 
-const controlType = ["참여", "참여취소", "마감", "참여링크"];
+const controlType = ["참여", "참여취소", "마감", "참여링크", "삭제"];
 const currentControlType = ref("");
 
 function closeControlModal() {
@@ -146,9 +150,14 @@ async function onClickCloseBtn() {
   currentControlType.value = controlType[2];
   controlModalOn.value = !controlModalOn.value;
 }
+
+function onDelete() {
+  currentControlType.value = controlType[4];
+  controlModalOn.value = !controlModalOn.value;
+}
 </script>
 
-<style scoped>
+<style>
 @import url(@/assets/css/meeting/article.css);
 
 .title-container .kebab{
