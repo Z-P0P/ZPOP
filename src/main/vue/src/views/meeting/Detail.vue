@@ -35,7 +35,7 @@ const newComment = async () => {
 </script>
 <template>
   <div class="content-wrap">
-    <Article @refresh="getDetail" />
+    <Article />
     <Participants />
     <CommentList @newComment="newComment" />
   </div>
