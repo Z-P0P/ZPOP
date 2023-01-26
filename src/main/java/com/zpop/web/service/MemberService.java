@@ -1,13 +1,16 @@
 package com.zpop.web.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.zpop.web.dto.EvalDto;
 import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.dto.ProfileResponse;
 import com.zpop.web.entity.Member;
+import com.zpop.web.entity.ProfileFile;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public interface MemberService {
 
@@ -19,6 +22,8 @@ public interface MemberService {
         ProfileResponse getParticipant(int id);
 
         Map<String, Object> checkNicknameValid(String nickname);
-        Member updateNickname(int memberId, String nickname);
+        int updateNickname(int memberId, String nickname);
+
+        ProfileFile uploadFile(MultipartFile file, String path) throws IOException;
 }
 
