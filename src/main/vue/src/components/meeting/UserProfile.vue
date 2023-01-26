@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps, reactive, ref, defineEmits } from 'vue';
 import api from '@/api';
-import ReportUser from '../member/ReportUser.vue';
+import ReportUser from '../report/ReportUser.vue';
 import { useMemberStore } from '../../stores/memberStore';
 
 let isResigned = ref(false);
@@ -24,24 +24,17 @@ const state = reactive({
 });
 
 const id = props.participantId;
-console.log(id + "33333333333")
 async function getMemberProfile(id){
     const response = await api.member.getProfile(id)
     const data = await response.json();
     state.member.nickname = data.nickname;
     console.log(data);
-//   .then((response)=> response.json())
-//   .then((data)=>{state.member = data;
     if(state.member.resigned)
       isResigned.value = true;
-//   })
-
-// console.log(state.member);
 }
 
 function openReportUserModal(){
     isReportModalOpened.value = true;
-    //emit('closeModal')
 }
 
 function closeModal(){
@@ -104,7 +97,7 @@ getMemberProfile(id);
                </div><!-- end of content column -->
            </div><!-- end of sheet -->
  <!----------------------유저 프로필 모달!! 끝-------------------------->
-<ReportUser @closeModal="closeModal" v-if="isReportModalOpened"/>
+<ReportUser @closeModal="closeModal" v-if="isReportModalOpened" :reportedMemberId="id"/>
 </template>
 
 <style>

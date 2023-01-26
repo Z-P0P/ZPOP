@@ -102,10 +102,12 @@ public class ReportController {
 			@RequestBody RequestMemberReportDto dto,
 			@AuthenticationPrincipal ZpopUserDetails userDetails) {
 		boolean result;
+
+		//int [] reportedMembers = reportService.getReportedMemberId(memberId, userDetails.getId())
 		
 		// 피신고자, 신고자, 유형, 사유
 		ReportedMember rm = new ReportedMember(
-			memberId, userDetails.getId(), 1, dto.getReportReason());
+			memberId, userDetails.getId(), dto.getReportType(), dto.getReportReason());
 		reportService.createMemberReport(rm);
 		result = true;
 
