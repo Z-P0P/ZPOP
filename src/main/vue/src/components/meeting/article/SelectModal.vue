@@ -7,7 +7,7 @@
         <div @click="onClickUpdate" class="modal-select__contents">수정
             <span class="icon icon-edit"></span>
         </div>
-        <div class="modal-select__contents modal-select__contents--delete">삭제
+        <div @click="onClickDelete" class="modal-select__contents modal-select__contents--delete">삭제
             <span class="icon icon-trash"></span>
         </div>
     </div>
@@ -35,10 +35,13 @@
 </template>
 
 <script setup>
+import { ref, reactive, nextTick } from "vue";
 import { useRoute, useRouter } from 'vue-router';
 import { useMemberStore } from "@/stores/memberStore";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import { useLoginModalStore } from "@/stores/loginModalStore"
+import api from "@/api";
+import { ServerException } from "@/utils/ServerException";
 
 const route = useRoute();
 const router = useRouter();
@@ -48,6 +51,7 @@ const meetingDetailStore = useMeetingDetailStore();
 const loginModalStore = useLoginModalStore();
 
 const props = defineProps(['role']);
+const emit = defineEmits(["on-click-delete"]);
 
 function onClickCopy() {
     navigator.clipboard.writeText(window.location.href);
@@ -64,6 +68,9 @@ function onClickUpdate() {
     router.push(`/meeting/update/${route.params.id}`)
 }
 
+function onClickDelete() {
+    emit("on-click-delete");
+}
 </script>
 
 <style scoped>
