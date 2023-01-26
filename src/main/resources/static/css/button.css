@@ -26,7 +26,7 @@
 .btn-cancel {
   background-color: var(--grey2);
 }
-.btn-dead{
+.btn-disabled{
   cursor:default;
   background-color: var(--grey2);
 }
