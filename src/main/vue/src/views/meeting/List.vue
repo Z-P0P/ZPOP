@@ -13,6 +13,7 @@ import { ServerException } from "@/utils/ServerException";
 import LoginProc from "../LoginProc.vue";
 import NicknameRegister from "../../components/modal/NicknameRegister.vue";
 import { useRoute } from "vue-router";
+import PageLoader from "../../components/PageLoader.vue";
 
 const emit = defineEmits(["throw"]);
 const route = useRoute();
@@ -21,6 +22,8 @@ const router = useRouter();
 
 const meetingListStore = useMeetingListStore();
 meetingListStore.$reset(); // 이 view로 오면 상태 초기화
+
+const firstLoaded = ref(false);
 
 const state = reactive({
   meetings: [],
@@ -45,6 +48,7 @@ watch(meetingListStore, async () => {
 requestList().then((data) => {
   if (!data || data.length === 0) return;
   addMeetings(data);
+  firstLoaded.value = true;
 });
 
 // 무한 스크롤 -----------------------------------------------------------
@@ -185,11 +189,12 @@ function changeNicknameRegisterStatus(){
       </div>
     </section>
     <div class="loading-wrap">
-      <LoadingRoller :isShow="state.loadingOn" />
+      <PageLoader v-show="state.loadingOn"/>
     </div>
   </div>
   <login-proc v-show="isLoginProcOpened" @close="changeLoginProcStatus" @memberRegisterRequired="changeNicknameRegisterStatus"/>
   <nickname-register v-show="isNicknameRegisterOpened" @close="changeNicknameRegisterStatus"/>
+  <PageLoader v-show="!firstLoaded" :isWholePage="true"/>
 </template>
 
 <style scoped>

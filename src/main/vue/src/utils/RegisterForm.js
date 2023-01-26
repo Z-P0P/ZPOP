@@ -66,9 +66,36 @@ export class RegisterForm{
 			title : '내용',
 			parameterName : 'content'
 		}
+
+        const categories = {
+            title : '카테고리',
+            placeholder : '카테고리를 선택해주세요.',
+            parameterName : 'categoryId'
+        }
+
+        const ageRanges = {
+            title : '연령대',
+            placeholder : '연령대를 선택해주세요.',
+            parameterName : 'ageRangeId',
+        }
+
+        const regions = {
+            title : '지역',
+            placeholder : '지역을 선택해주세요.',
+            parameterName : 'regionId',
+        }
+
+        const contactTypes = {
+            title : '연락방법',
+            placeholder : '연락방법을 선택해주세요.',
+            parameterName : 'contactTypeId',
+        }
+
 	
 		const inputs = {genderCategories, maxMembers, title
-						,detailRegion ,startedAt, contact ,content}
+						,detailRegion ,startedAt, contact ,content ,
+                        categories, ageRanges, regions, contactTypes,
+                    }
 	
 		Object.keys(inputs).forEach(key=>{
 			const input = inputs[key];
@@ -91,34 +118,8 @@ export class RegisterForm{
 
     updateOptionsAfterRequest(inputOptions){
         Object.keys(inputOptions).forEach((key) => {
-            let title;
-            let placeholder;
-            let parameterName;
-            switch (key) {
-                case 'categories':
-                    title = '카테고리';
-                    placeholder = '카테고리를 선택해주세요.';
-                    parameterName = 'categoryId'
-                    break;
-                case 'ageRanges':
-                    title = '연령대';
-                    placeholder = '연령대를 선택해주세요.';
-                    parameterName = 'ageRangeId';
-                    break;
-                case 'regions':
-                    title = '지역';
-                    placeholder = '지역을 선택해주세요.';
-                    parameterName = 'regionId';
-                    break;
-                case 'contactTypes':
-                    title = '연락방법';
-                    placeholder = '연락방법을 선택해주세요.';
-                    parameterName = 'contactTypeId'
-                    break;
-            }
-            const input = new InputOption(key,inputOptions[key],title,placeholder,parameterName);
-            this.addInput(input);
-        })
+            this.inputs[key].items = inputOptions[key];
+        });
     }
 
     validateInput(){
