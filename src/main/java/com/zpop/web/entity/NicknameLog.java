@@ -1,7 +1,20 @@
 package com.zpop.web.entity;
 
-import java.sql.Date;
+import java.util.Date;
 
+import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@ToString
 public class NicknameLog {
     private int id;
     private int memberId;
@@ -12,37 +25,4 @@ public class NicknameLog {
         this.memberId = memberId;
         this.nickname = nickname;
     }
-    
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getMemberId() {
-        return this.memberId;
-    }
-
-    public void setMemberId(int memberId) {
-        this.memberId = memberId;
-    }
-
-    public Date getCreatedAt() {
-        return this.createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
 }
