@@ -16,12 +16,17 @@
           <SelectModal 
             @on-click-delete="onDelete"
             @on-click-copy="onClickCopy"
+            @on-click-report="handleMeetingReportModal"
             :role="selectModalRole"
             v-if="!isSelectModalClosed"
           />
           
         </span>
         <img src="" alt="" />
+        <MeetingReportModal 
+          @closeModal="handleMeetingReportModal" 
+          :meetingId="meetingDetailStore.id"
+          v-if="isMeetingReportModalOpened"/>
       </div>
 
       <div class="start-datetime-container">
@@ -95,10 +100,13 @@ import Round from "@/components/button/Round.vue";
 import RoundDisabled from "@/components/button/RoundDisabled.vue";
 import ControlModal from "./ControlModal.vue";
 import SelectModal from "./SelectModal.vue";
+import MeetingReportModal from "../../report/ReportMeeting.vue"
 
 const memberStore = useMemberStore();
 const loginModalStore = useLoginModalStore();
 const meetingDetailStore = useMeetingDetailStore();
+
+const isMeetingReportModalOpened = ref(false);
 
 // 셀렉트 모달
 const isSelectModalClosed = ref(true);
@@ -170,10 +178,13 @@ function onClickCopy() {
   setTimeout(() => {
     tooltipCopyShow.value = false;
   }, 4000)
+
+function handleMeetingReportModal(){
+  isMeetingReportModalOpened.value = !isMeetingReportModalOpened.value;
 }
 </script>
 
-<style scoped>
+<style>
 @import url(@/assets/css/meeting/article.css);
 
 .title-container .kebab{

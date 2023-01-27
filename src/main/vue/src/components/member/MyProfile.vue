@@ -34,11 +34,6 @@ myPage.vue 의 script와 template이 돌아간다음 자식 컴포넌트 스크�
  const memberStore = useMemberStore();
  const nickname = memberStore.nickname;
  const fame = memberStore.fame;
-//  console.log(nickname);
-//   const props = defineProps({
-//                         myInfo: {type : Object,
-//                         required :true}
-//   })
 
 </script> 
   

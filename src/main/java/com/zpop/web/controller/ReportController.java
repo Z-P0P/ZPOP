@@ -35,19 +35,18 @@ public class ReportController {
 	MeetingDao meetingDao;
 	
 	//모임신고
-	@PostMapping("meeting/{id}")
+	@PostMapping("/meeting/{reportedMeetingId}")
 	@ResponseBody
 	public boolean meeting(
-			@PathVariable("id") int id,
+			@PathVariable("reportedMeetingId") int id,
 			@RequestBody RequestMeetingReportDto dto,
 			@AuthenticationPrincipal ZpopUserDetails userDetails
 			) {
 		boolean result;
 		
-		
 		int[] list = reportService.getReportedMeetingId(id, userDetails.getId());
 		if(list.length==0) {
-			int reportTypeId = Integer.parseInt(dto.getReportType());
+			int reportTypeId = dto.getReportType();
 			String reportReason = dto.getReportReason();
 			Meeting meeting = meetingDao.get(id);
 			
@@ -105,7 +104,7 @@ public class ReportController {
 		
 		// 피신고자, 신고자, 유형, 사유
 		ReportedMember rm = new ReportedMember(
-			memberId, userDetails.getId(), 1, dto.getReportReason());
+			memberId, userDetails.getId(), dto.getReportType(), dto.getReportReason());
 		reportService.createMemberReport(rm);
 		result = true;
 

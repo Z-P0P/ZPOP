@@ -135,6 +135,10 @@
   position: absolute;
 }
 
+.header .header__create-meeting {
+  display: none;
+}
+
 @media (min-width: 576px) {
   .header .header__create-meeting {
     display: inline-flex;
