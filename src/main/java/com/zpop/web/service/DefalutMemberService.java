@@ -261,7 +261,7 @@ public class DefalutMemberService implements MemberService {
                 member.getProfileImagePath(),
                 false,
                 participatedCount
-        );;
+        );
     }
 
 
