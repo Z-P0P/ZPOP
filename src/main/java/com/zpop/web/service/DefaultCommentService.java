@@ -173,7 +173,7 @@ public class DefaultCommentService implements CommentService {
 	
 	// 새로운 댓글 생성시 알림 생성을 위한 메서드
 	private void createCommentNotification(int memberId, String url, int type) {
-		notificationDao.insertCommentNotification(memberId, url, type);
+		notificationDao.insertNotification(memberId, url, type);
 	}
 	
 	private int getRegMemberId(int meetingId) {

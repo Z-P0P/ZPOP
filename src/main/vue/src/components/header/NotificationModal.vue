@@ -46,18 +46,18 @@
         const typeId = deleteTarget.getAttribute("data-type");
         const id = deleteTarget.getAttribute("data-id");
         if(typeId == 1){
-            
+            api.notification.readTypeOne(id)
+            .then((response)=>{
+                location.href=deleteTarget.getAttribute("data-url");
+            })
         } 
         else {
              // 데이터 베이스에 해당 알림 읽음처리하기
             api.notification.readOne(id)
             .then((response)=>{
-            // router.push('/users/eduardo') 수정 하기
-            location.href=deleteTarget.getAttribute("data-url");
+                location.href=deleteTarget.getAttribute("data-url");
             })
         }
-        
-     
     }   
 
     // 모두 읽기 버튼을 누르면 모든 알림이 사라진다.
@@ -70,8 +70,13 @@
         })
     }
 
-    getMemberNotification(id);
+    function checkNotificationAmount(){
+        if(state.notification.length==0)
+            notificationAbsence.value=true;
+    }
 
+    getMemberNotification(id);
+    checkNotificationAmount();
 </script>
 
 <template>

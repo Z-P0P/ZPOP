@@ -102,7 +102,7 @@ public class LoginController {
 			int[] participantIds = participationDao.getListByParticipantId(participantId);
 			
 			if(participantIds!=null)
-				for(int p : participantIds)
+				// for(int p : participantIds)
 					createNotification(participantIds[0],"my-meeting",1);
 			
 
@@ -152,6 +152,6 @@ public class LoginController {
 	}
 	
 	private void createNotification(int memberId, String url, int type) {
-		notificationDao.insertCommentNotification(memberId,url,type);
+		notificationDao.insertNotification(memberId,url,type);
 	}
 }
