@@ -26,12 +26,11 @@
         selectModalOn.value = !selectModalOn.value;
     }
 
-    async function onClickEditSelectOption(){
+    async function onClickEditSelectOption(e){
+        e.targetId = props.commentId
         currentSelectType.value = selectType[1];
         selectModalOn.value = !selectModalOn.value;
-        cmtStore.markForEdit(props.commentId);
-        emit('onEdit');
-        console.log(cmtStore.getMarkedComment(props.commentId));
+        emit('onEdit',e);
     }
     
     async function onClickReportSelectOption(){
@@ -56,7 +55,7 @@
     </div>
 
     <!-- 댓글 (기본유저)-->
-    <div v-if="role === 'member'" class="modal-select select-box__options comment__kebob">
+    <div v-if="role === 'member'" v-show="selectModalOn" class="modal-select select-box__options comment__kebob">
         <div class="modal-select__contents modal-select__contents--report"
                 @click="onClickReportSelectOption">댓글 신고
             <span class="icon icon-siren-red"></span>
