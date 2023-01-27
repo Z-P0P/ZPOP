@@ -1,5 +1,5 @@
 <template>
-    <div class="meeting-form-container" v-if="registerForm.isLoaded" @click="clickHandler">
+    <div class="meeting-form-container" @click="clickHandler">
         <form class="meeting-form" action="meeting/register" @submit.prevent="submithandler">
             <h1 class="meeting-form__title">모임 등록하기</h1>
             <fieldset class="meeting-form__default-info">
@@ -74,6 +74,7 @@
         </Modal>
         <input type="file" id="fileUpload" class="hidden" @change="fileUploadHandler">
     </div>
+    <PageLoader :isWholePage="true" v-show="!registerForm.isLoaded"/>
 </template>
 
 <script>
@@ -86,9 +87,9 @@ import MeetingFormTextInput from '../../components/meeting/MeetingFormTextInput.
 import Modal from '../../components/modal/Default.vue';
 import { RegisterForm } from '../../utils/RegisterForm';
 import { getQuillEditor, quillImageUploadHandler } from "../../utils/quill-generator";
+import PageLoader from '../../components/PageLoader.vue';
 export default {
-    components: { Modal, MeetingFormSelectInput, MeetingFormTextInput, 
-        MeetingFormDateInput, MeetingFormSelectTextInput, LoadingRoller },
+    components: { Modal, MeetingFormSelectInput, MeetingFormTextInput, MeetingFormDateInput, MeetingFormSelectTextInput, LoadingRoller, PageLoader },
     setup() {
         
         const registerForm = reactive(new RegisterForm());
