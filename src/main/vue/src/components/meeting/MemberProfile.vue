@@ -14,9 +14,10 @@ let isReportModalOpened = ref(false);
 
 const state = reactive({
   member: {
+    id: 0,
     nickname: null,
     fame: 0,
-    participatedMeetingNumber: 0,
+    participatedCount: 0,
     profileImg: null,
   },
 });
@@ -84,7 +85,7 @@ function closeModal() {
                 >탈퇴한 회원입니다!</span
               >
               <span v-if="!isResigned"
-                >{{ state.member.participatedMeetingNumber }} 회</span
+                >{{ state.member.participatedCount }} 회</span
               >
               <span v-if="!isResigned">{{ state.member.fame }} 점</span>
             </div>
