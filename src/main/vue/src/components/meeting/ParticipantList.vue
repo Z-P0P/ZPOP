@@ -1,101 +1,86 @@
 <script setup>
-import UserProfile from "@/components/meeting/UserProfile.vue";
+import MemberProfile from "@/components/meeting/MemberProfile.vue";
 import Participant from "@/components/meeting/Participant.vue";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
-import { computed, defineProps, ref } from 'vue';
+import { useMemberStore } from "@/stores/memberStore";
+import { useLoginModalStore } from "@/stores/loginModalStore";
+import { computed, ref } from "vue";
 
 const meetingDetailStore = useMeetingDetailStore();
-
-let isOpen = ref(false);
-
-let clickedParticipantId = ref(null);
-
-// 참여자를 클릭하였을때 참여자 정보 모달을 뒤워주는 함수
-function handleModal(event){
-      isOpen.value = true;
-      clickedParticipantId.value = event.currentTarget.getAttribute('data-id');
-      console.log(event.target);
-}
+const memberStore = useMemberStore();
+const loginModalStore = useLoginModalStore();
 
 const participantNum = computed(() => {
   // 데이터에서 불러온 참여자가 없을 시 0을 리턴
-  if (meetingDetailStore.participants === undefined) return 0;
-  const length = meetingDetailStore.participants.length;
-  return length;
-})
+  if (
+    !meetingDetailStore.participants === undefined ||
+    !meetingDetailStore.participants
+  )
+    return 0;
+  return meetingDetailStore.participants.length;
+});
 
-function closeModal(){
-  isOpen.value = false;
+const profileModalOn = ref(false);
+const clickedParticipantId = ref(null);
+
+// 참여자를 클릭하였을때 참여자 정보 모달 ON
+async function showProfileModal(participantId) {
+  // 로그인해야 사용자 프로필 확인 가능
+  if (!(await memberStore.isAuthenticated())) {
+    loginModalStore.show();
+    return;
+  }
+  clickedParticipantId.value = participantId;
+  profileModalOn.value = true;
+}
+
+function closeProfileModal() {
+  profileModalOn.value = false;
 }
 </script>
 
 <template>
-  <section class="participant">
-    <div class="participant__num">
-      <span>참가자</span>
-      <span id="participant-count">{{ participantNum }}</span>
-      <span>/</span>
-      <span>{{ meetingDetailStore.maxMember }}</span>
-      <span class="icon pointer icon-arrow-up"></span>
-      <span class="icon pointer hidden icon-arrow-down"></span>
-    </div>
+  <section class="participants">
+    <h2 class="participant__num">
+      참가자 {{ participantNum }} / {{ meetingDetailStore.maxMember }}
+    </h2>
     <ul class="participant__list">
       <li
-        v-for="(participant, idx) in meetingDetailStore.participants"
-        :key="participant.participantId"
-        :data-id="participant.participantId" @click.prevent="handleModal"
+        v-for="(p, idx) in meetingDetailStore.participants"
+        :key="p.participantId"
       >
-        <div class="participant__info">
-          <img
-            src="/images/icon/user-profile-grey.svg"
-            v-bind:data-id="participant.participantId"
-            @click.prevent="handleModal"
-          />
-          <span
-            v-bind:data-id="participant.participantId"
-            @click.prevent="handleModal"
-            >{{ participant.nickname }}</span
-          >
-        </div>
-    
-        <Transition name="slide-fade">
-          <UserProfile @closeModal="closeModal" v-if="isOpen" :userDetail="meetingDetailStore.participants" :participantId="clickedParticipantId" :isModalOpened="isOpen"/>
-        </Transition>
+        <participant :userDetail="p" @onClickParticipant="showProfileModal">
+        </participant>
       </li>
     </ul>
-    <Transition name="slide-fade">
-        <UserProfile @closeModal="closeModal" v-if="isOpen" :userDetail="meetingDetailStore.participants" :participantId="clickedParticipantId" :isModalOpened="isOpen"/>
-    </Transition>
   </section>
+  <Teleport to="#app">
+    <member-profile
+      v-if="profileModalOn"
+      @closeModal="closeProfileModal"
+      :memberId="clickedParticipantId"
+    />
+  </Teleport>
 </template>
-<style>
-.main {
-  margin: 2rem auto 4rem auto;
-
-  max-width: 792px;
-}
-
-.main > section {
-  margin: 1rem 20px;
-}
-
-.participant {
+<style scoped>
+.participants {
   display: flex;
   flex-direction: column;
-  font-size: 16px;
+  margin-top: 11px;
 }
 
 .participant__num {
-  display: flex;
-  margin-top: 11px;
-  align-items: center;
-}
-
-.participant__num > span {
-  margin-right: 0.5rem;
   font-weight: 600;
+  font-size: 16px;
   color: var(--dark-grey2);
 }
+
+@media (min-width: 576px) {
+  .participant__num {
+    font-size: 18px;
+  }
+}
+
 .participant__list {
   margin-top: 1rem;
   display: grid;
@@ -105,28 +90,6 @@ function closeModal(){
   font-size: 16px;
 }
 
-.participant__info {
-  width: 220px;
-  height: 46px;
-  border-radius: 1.625rem;
-  display: flex;
-  flex-grow: 0;
-  cursor: pointer;
-  align-items: center;
-  padding-left: 6px;
-}
-
-.participant__info:hover {
-  background-color: var(--main-color);
-  color: var(--white);
-}
-
-.participant__info > img {
-  width: 36px;
-  height: 36px;
-  margin-right: 15px;
-}
-
 @media (min-width: 576px) {
   .participant__list {
     display: grid;
@@ -134,33 +97,6 @@ function closeModal(){
     grid-template-columns: repeat(2, 240px);
     row-gap: 16px;
     column-gap: 10px;
-  }
-
-  .participant {
-    font-size: 18px;
-    font-weight: 500;
-  }
-
-  .participant__info {
-    width: 240px;
-    height: 52px;
-  }
-
-  .participant__info > img {
-    width: 42px;
-    height: 42px;
-  }
-
-  .participant__num {
-    font-size: 18px;
-  }
-
-  .main {
-    margin: 5rem auto;
-  }
-
-  .main > section {
-    margin: 2rem 20px;
   }
 }
 
