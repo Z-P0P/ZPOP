@@ -12,6 +12,7 @@ public class CommentResponse {
 	private int parentCommentId;
 	private int groupId;
 	private Date createdAt;
+	private Date updatedAt;
 	private Date deletedAt;
 	private int parentMemberId;
 	private String parentNickname;
@@ -23,26 +24,33 @@ public class CommentResponse {
   public CommentResponse() {
   }
 
-  public CommentResponse(int id, int meetingId, int writerId, String nickname, String content, String profileImgPath, int parentCommentId, int groupId, Date createdAt, Date deletedAt, int parentMemberId, String parentNickname, String parentImg, String elapsedTime, int countOfReply, boolean isMyComment) {
-    this.id = id;
-    this.meetingId = meetingId;
-    this.writerId = writerId;
-    this.nickname = nickname;
-    this.content = content;
-    this.profileImgPath = profileImgPath;
-    this.parentCommentId = parentCommentId;
-    this.groupId = groupId;
-    this.createdAt = createdAt;
-    this.deletedAt = deletedAt;
-    this.parentMemberId = parentMemberId;
-    this.parentNickname = parentNickname;
-    this.parentImg = parentImg;
-    this.elapsedTime = elapsedTime;
-    this.countOfReply = countOfReply;
-    this.isMyComment = isMyComment;
-  }
 
-  public int getId() {
+
+  public CommentResponse(int id, int meetingId, int writerId, String nickname, String content, String profileImgPath,
+		int parentCommentId, int groupId, Date createdAt, Date updatedAt, Date deletedAt, int parentMemberId,
+		String parentNickname, String parentImg, String elapsedTime, int countOfReply, boolean isMyComment) {
+	this.id = id;
+	this.meetingId = meetingId;
+	this.writerId = writerId;
+	this.nickname = nickname;
+	this.content = content;
+	this.profileImgPath = profileImgPath;
+	this.parentCommentId = parentCommentId;
+	this.groupId = groupId;
+	this.createdAt = createdAt;
+	this.updatedAt = updatedAt;
+	this.deletedAt = deletedAt;
+	this.parentMemberId = parentMemberId;
+	this.parentNickname = parentNickname;
+	this.parentImg = parentImg;
+	this.elapsedTime = elapsedTime;
+	this.countOfReply = countOfReply;
+	this.isMyComment = isMyComment;
+}
+
+
+
+public int getId() {
     return this.id;
   }
 
@@ -114,7 +122,15 @@ public class CommentResponse {
     this.createdAt = createdAt;
   }
 
-  public Date getDeletedAt() {
+  public Date getUpdatedAt() {
+	return updatedAt;
+}
+
+public void setUpdatedAt(Date updatedAt) {
+	this.updatedAt = updatedAt;
+}
+
+public Date getDeletedAt() {
     return this.deletedAt;
   }
 

@@ -262,6 +262,7 @@ public class DefaultMeetingService implements MeetingService {
 					c.getParentCommentId(),
 					c.getGroupId(),
 					c.getCreatedAt(),
+					c.getUpdatedAt(),
 					c.getDeletedAt(),
 					c.getParentMemberId(),
 					c.getParentNickname(),
