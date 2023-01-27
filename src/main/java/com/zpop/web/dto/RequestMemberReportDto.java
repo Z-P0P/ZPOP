@@ -2,23 +2,23 @@ package com.zpop.web.dto;
 
 public class RequestMemberReportDto {
 
-	private String reportType;
+	private int reportType;
 	private String reportReason;
 
 	RequestMemberReportDto(){
 
 	}
 
-	public RequestMemberReportDto(String reportType, String reportReason) {
+	public RequestMemberReportDto(int reportType, String reportReason) {
 		this.reportType = reportType;
 		this.reportReason = reportReason;
 	}
 
-	public String getReportType() {
+	public int getReportType() {
 		return reportType;
 	}
 
-	public void setReportType(String reportType) {
+	public void setReportType(int reportType) {
 		this.reportType = reportType;
 	}
 

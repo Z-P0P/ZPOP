@@ -11,7 +11,7 @@
     background-color: var(--dark-grey2);
     color: var(--white);
     margin:0 15px 0 0;
-    
+    width:60px;
 }
 
 .modal-report #report-btn{
@@ -26,7 +26,6 @@
 
 .modal-report .report-modal__body{
 	background-color: white;
-	height:450px;
 	display : flex;
 	flex-direction: column;
 	border-radius: 0 0 10px 10px;
@@ -43,10 +42,13 @@
 .modal-report .input-text{
 	display : flex;
 	flex-direction: column;
+    margin: 0px auto;
+    max-width: 440px;
 }
 
 .modal-report .input-text > div {
-	/* margin: 0px auto; */
+    margin: 0px auto;
+
 }
 
 .modal-report .input-text__label{
@@ -64,7 +66,7 @@
 .modal-report .btn-wrapper{
     display:flex; 
     justify-content: center;
-    margin: 24px auto;
+    margin: 18px auto;
 }
 
 .modal-report .select-box__options{
@@ -170,5 +172,9 @@
 	.modal-report .report__cancel-btn{
 	width:95px;
 	}
+
+    .modal-report #cancel-btn{
+        width:100px;
+    }
 
 }
