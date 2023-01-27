@@ -1,25 +1,26 @@
 package com.zpop.web.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.zpop.web.dto.EvalDto;
 import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.dto.ProfileResponse;
 import com.zpop.web.entity.Member;
+import com.zpop.web.entity.ProfileFile;
 import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -136,5 +137,17 @@ public ProfileResponse getProfile(@PathVariable("id") int id){
 	return service.getParticipant(id);
 }
 
+
+
+@PostMapping("/upload/profile")
+@ResponseBody
+public ResponseEntity<?> uploadFile(@NotNull MultipartFile file
+		, @NotNull @NotEmpty String path
+		, HttpServletRequest request) throws IOException {
+	String realPath = request.getServletContext().getRealPath(path);
+	ProfileFile profileFile = service.uploadFile(file, realPath);
+	System.out.println(profileFile);
+	return ResponseEntity.ok(200);
+}
 
 }

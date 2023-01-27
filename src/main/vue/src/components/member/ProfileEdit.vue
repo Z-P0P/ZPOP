@@ -1,19 +1,35 @@
  <script setup>
     import { reactive, ref, watch } from "vue";
     import {useMemberStore} from"@/stores/memberStore"
-
+    import ModalDefault from "@/components/modal/Default.vue";
+    import ModalChanged from "@/components/modal/Changed.vue";
+    import api from "@/api";
+  
+   
    const memberInfo = useMemberStore();
-   //place holder에 표시될 닉네임
-   const phNickname = memberInfo.nickname;
+   const phNickname = memberInfo.nickname; //placeholder에 표시될 닉네임
    const inputStatus = reactive({
        inputMessage : "",
        isNicknameValid : null,
        inputNickname : "",
    })
+   let defaltModalOn = ref(false);
+   let nicknameChangeModalOn = ref(false);
+   let imageChangeModalOn = ref(false);
+
+   const editConfirm = reactive({
+    nicknameConfirm :null,
+    imageConfirm: null,
+   })
+
+   let file;
+   const fileInput = ref(null);
+   const imgSrc = ref("")
 
 
    /**
-    * 닉네임 유효성 검사를 위한 timer 와 validateNickname()함수 추가
+    * 닉네임 유효성 검사를 위한 nicknameChangeHandler 와 
+    * validateNickname()함수 추가
     */
 
     const nicknameChangeHandler = () => {
@@ -78,41 +94,68 @@
 
 
    /**
-    * image upload
+    * 파일 선택 창을 띄움
+    * fileInput = ref, 원본 값 value로 참조
+    * @param {*} e 
     */
-   const fileInput = ref(null);
-   const imgSrc = ref("")
    function openFileUpload(e) {
-       //파일선택 창 띄우기
-       //fileInput = ref , 원본 값 value로 참조
        fileInput.value.click();
    }
 
-   function uploadImage(e) {
+   /**
+    * image priview 하기
+    * @param {*} e 
+    */
+   function previewImage(e) {
        //input file 숨어있음 사진 아이콘 알맹이 on click -> openFileUpload실행
        //upload 이미지 = file
-      const file = e.target.files[0];
-       
+      file = e.target.files[0];
       const reader = new FileReader();
-
       reader.readAsDataURL(file);
-
       reader.onload = function(e) {
-       imgSrc.value = e.target.result;
-      }
+      imgSrc.value = e.target.result;
+      editConfirm.imageConfirm = true;
+      }    
        
    }
 
-/**
- * 프로필 수정 저장하기
- */
+   /**
+    * Modal control을 위한 함수
+    */
+   
+   function showDefaultModal() { 
+    defaltModalOn.value = true;
+   }
 
- function editSave() {
-    const activeSave = inputStatus.isNicknameValid;
-    const nickname = inputStatus.inputNickname;
-    if(activeSave == true){
-       const form = new FormData();
-       form.append('nickname', nickname);
+   function closeDefaultModal() {
+    defaltModalOn.value = false;
+   }
+
+   function showNicknameChangeModal() { 
+    nicknameChangeModalOn.value = true;
+   }
+
+   function closeNicknameChangeModal(){
+    nicknameChangeModalOn.value = false;
+   }
+
+   function showimageChangeModal() {
+    imageChangeModalOn.value =true;
+   }
+
+
+
+   /**
+    * 닉네임 변경하시겠어요? -> Yes 를 눌렀을 때
+    */
+   function onClickYes() {
+    
+    console.log("닉네임변경을하겠데요");
+    closeDefaultModal();
+
+    const form = new FormData();
+
+       form.append('nickname', inputStatus.inputNickname);
        const url = '/api/me/edit';
        const options = {
            method: "POST",
@@ -121,34 +164,130 @@
        fetch(url, options)
            .then(response => {
                if (response.ok) {
-                   return memberInfo.nickname=nickname;
-               }
-               throw Error();
-           })
-                          
+                console.log("닉네임 변경 요청 확인");
+                memberInfo.nickname = inputStatus.inputNickname;
+                console.log(memberInfo.nickname+"변경후");
+                editConfirm.nicknameConfirm =true;
+                showNicknameChangeModal();
+                //TODO :MemberStore 갱신
+                api.auth.me();
 
-    }
-    if(activeSave == false){
-        inputStatus.inputMessage ='유효하지 않은 닉네임으로 변경할 수 없어요!'
-    }
+               }else {
+                editConfirm.nicknameConfirm =false;
+                console.log("30일 이내에는 닉네임 변경이 불가능합니다.");
+                showNicknameChangeModal();
+
+               }
+           
+           })
+
+}
+
+/**
+ * 이미지 업로드
+ */
+
+ function uploadImage() {
+
+    console.log("이미지 변경 요청");
+        const form = new FormData();
+        console.log("file 정보"); console.log(file);
+	    form.append('file', file);
+	    form.append('path', '/image/profile');
+	    const uploadUrl = '/api/upload/profile';
+	    const option = {
+		                method: "POST",
+		                body: form,
+	                    }
+
+        fetch(uploadUrl, option)
+        .then(response => response.json())
+        .then(data=>{
+            console.log("이미지요청 완료!");
+            console.log(data);
+            showimageChangeModal();
+            
+	})
  }
 
+/**
+ * 프로필 수정 저장하기
+ */
+
+//닉네임은 유효하지 않은데 프로필 사진을 업로드하려할경우 -> 사진 업로드는 처리
+ function editSave() {
+
+    const nicknameSave = inputStatus.isNicknameValid;//닉네임저장 (true/false)
+    const imageSave = editConfirm.imageConfirm; //이미지저장 (true/false)
+
+    if (imageSave == true) {
+       uploadImage();
+    }
+
+    if(nicknameSave == false){
+        inputStatus.inputMessage ='유효하지 않은 닉네임으로 변경할 수 없어요!'
+    }
+    
+    if(nicknameSave == true){
+        showDefaultModal();
+    }
+
+    if(imageSave == true && nicknameSave == true) {
+       //TODO: 이미지업로드 먼저완료시켜서 다 보여주고 -> 닉네임 변경 모달 보여주기 
+       showDefaultModal();
+        uploadImage();
+        
+    }
+
+    console.log("nothing happend");
+
+ }
    </script> 
 
 
-
-
 //TODO : 프로필 이미지 업로드, 삭제, 모바일 화면에서 케밥적용
-//TODO : 닉네임 수정 -> 닉네임 변경할 수 없을 경우
 <template>
+    <!-- 닉네임 변경 확인하는 모달 -->
+    <ModalDefault v-if="defaltModalOn">
+        <template #modal-body >
+            <p>닉네임은 30일에 한 번만 변경가능해요.</p>
+            <p class="confirm">정말 변경하시겠어요 ?😶</p>
+        </template>
+        <template #modal-footer>
+            <div @click="defaltModalOn=false">아니오</div>
+            <div class="yes" @click="onClickYes">예</div>
+        </template>
+    </ModalDefault>
+    
+    <!-- 닉네임 변경 완료 알림 모달 -->
+    <ModalChanged v-if="nicknameChangeModalOn" >
+        <template #modal-body >
+            <p class="confirm" v-if="editConfirm.nicknameConfirm==true">{{ memberInfo.nickname }}님 🥰</p>
+            <p class="confirm" v-else >{{ memberInfo.nickname }}님 😥</p>
+            <p class="confirm" v-if="editConfirm.nicknameConfirm==true">닉네임변경이 완료되었습니다!</p>
+            <p class="confirm" v-else>닉네임변경은 30일에 한 번만 가능해요.</p>
+        </template>
+        <template #modal-footer>
+            <div @click="nicknameChangeModalOn=false">닫기</div>
+        </template>
+    </ModalChanged>
+    
+
+    <ModalChanged v-if="imageChangeModalOn && editConfirm.imageConfirm" >
+        <template #modal-body >
+            <p class="confirm">{{ memberInfo.nickname }}님 🥰</p>
+            <p class="confirm">이미지변경이 완료되었습니다!</p>
+        </template>
+        <template #modal-footer>
+            <div @click="imageChangeModalOn=false">닫기</div>
+        </template>
+    </ModalChanged>
+
     <div class="my-profile">
         <div class="my-profile-container">
-    
-    
-          
             <h2 class="profile__title" >프로필 수정</h2>
             <div class="profile__image">
-                <input @change="uploadImage($event)" type="file" accept="image/*" ref="fileInput" class="file-input">
+                <input @change="previewImage($event)" type="file" accept="image/*" ref="fileInput" class="file-input">
                 
                 <div v-if="imgSrc" class="profile__image--with-photo">
                     <img  :src="imgSrc" alt="" class="profile__image--img">
@@ -158,7 +297,6 @@
                     <div class="icon icon-camera" @click="openFileUpload"></div>
                 </div> 
             </div>
-
 
             <div class="input-text">
                 <label class="input-text__label" for="input-text__content" ></label>
@@ -180,11 +318,11 @@
     </template>
    
     
-    
-    <style scoped>
-    @import url(../../assets/css/form.css);
-    @import url(../../assets/css/member/mypage.css);
-       
+
+<style scoped>
+@import url(../../assets/css/form.css);
+@import url(../../assets/css/member/mypage.css);
+        
     .file-input {
         display: none;
     }
@@ -205,7 +343,45 @@
         right: 3px;
     }
 
-    </style>
+    .modal-default-wrap{
+        z-index: 1;
+    }
+    .yes {
+    color: var(--main-color);
+    border-left: 1px solid var(--light-grey1);
+    }
+
+    :deep(.modal__body p) {
+    margin: 4px 0;
+    }
+    :deep(.modal__body p.confirm) {
+    margin-top: 10px;
+    }
+
+    :deep(.modal__body div) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    }
+
+    :deep(.modal__footer) {
+    border-top: 1px solid var(--light-grey1);
+    }
+
+    :deep(.modal__footer div) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 16px 8px;
+    cursor: pointer;
+    }
+
+    :deep(.modal__footer div:hover) {
+    background-color: var(--light-grey1);
+    }
     
-    
-    
+</style>
+
+
