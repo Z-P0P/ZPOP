@@ -2,7 +2,9 @@
     import { defineProps, defineEmits, ref, onMounted } from 'vue';
     import api from "@/api";
     import { useReplyStore} from '@/stores/replyStore'
-
+    import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
+    
+    const mtDetailStore = useMeetingDetailStore();
     const rplyStore = useReplyStore();
     const props = defineProps({
         reply:Object
@@ -38,12 +40,7 @@
         .then(async res=>{
             if(res.ok){
                 console.log("답글 등록됨");
-                const data = await rplyStore.getReplyList(groupId);
-                rplyStore.comment.id = groupId;
-                rplyStore.comment.replyList.length=0;
-                for(const r of data.resultObject) {
-                    rplyStore.comment.replyList.push(r);
-                }
+                //cmtStore.reloadReply(mtDetailStore,mtDetailStore.id)
                 inputBox.value = "";
                 emit('registerCompleted');
             }

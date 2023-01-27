@@ -13,7 +13,6 @@ onMounted(() => {
   const input = inputs["f1"].value;
   input.focus();
 });
-const commentList = reactive([]);
 function registerComment(refId) {
   const data = {};
   data.meetingId = mtDetailStore.id; //미팅 id
@@ -29,6 +28,16 @@ function registerComment(refId) {
     } else alert("시스템 장애로 등록이 안되고 있습니다");
   });
 }
+  /*****************댓글 수정 *******************************/
+   function editComment(){
+    const input = inputs["f1"].value;
+    cmtStore.dispatch('getMarkedComment').then(
+    payload=>{console.log(payload)}
+   );
+    input.focus();
+    input.value= "";
+   // input.value = comment.content + " ";
+  }
 
 </script>
 
@@ -66,6 +75,7 @@ function registerComment(refId) {
         <Comment
           :comment="comment"
           @counterIncreased="mtDetailStore.increaseCommentCount"
+          @onEdit="editComment"
         />
       </li>
     </ul>
