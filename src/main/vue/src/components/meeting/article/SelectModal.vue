@@ -19,12 +19,12 @@
         <div class="modal-select__contents">참여링크
             <span class="icon icon-link"></span>
         </div>
-        <div class="modal-select__contents modal-select__contents--report">글 신고
+        <div @click.prevent="onClickReport" class="modal-select__contents modal-select__contents--report">글 신고
             <span class="icon icon-siren-red"></span>
         </div>
     </div>
     <!-- 기본 유저 -->
-    <div class="modal-select select-box__options" v-if="role === 'member'" id="meeting__article-tool">
+    <div @click.prevent="onClickReport" class="modal-select select-box__options" v-if="role === 'member'" id="meeting__article-tool">
         <div @click="onClickCopy" class="modal-select__contents">복사 하기
             <span class="icon icon-copy"></span>
         </div>
@@ -51,7 +51,7 @@ const meetingDetailStore = useMeetingDetailStore();
 const loginModalStore = useLoginModalStore();
 
 const props = defineProps(['role']);
-const emit = defineEmits(["on-click-delete"]);
+const emit = defineEmits(["on-click-delete","on-click-report"]);
 
 function onClickCopy() {
     navigator.clipboard.writeText(window.location.href);
@@ -70,6 +70,10 @@ function onClickUpdate() {
 
 function onClickDelete() {
     emit("on-click-delete");
+}
+
+function onClickReport(){
+    emit("on-click-report")
 }
 </script>
 

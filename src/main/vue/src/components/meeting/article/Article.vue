@@ -10,11 +10,16 @@
           <!-- role에 writer를 바인딩하면 작성자 기준 모달, participant를 바인딩하면 참여자 기준 모달, member를 바인딩하면 일반 로그인 사용자 모달이 나온다. -->
           <SelectModal 
             @on-click-delete="onDelete"
+            @on-click-report="handleMeetingReportModal"
             :role="selectModalRole"
             v-if="!isSelectModalClosed"
           />
         </span>
         <img src="" alt="" />
+        <MeetingReportModal 
+          @closeModal="handleMeetingReportModal" 
+          :meetingId="meetingDetailStore.id"
+          v-if="isMeetingReportModalOpened"/>
       </div>
 
       <div class="start-datetime-container">
@@ -88,10 +93,13 @@ import Round from "@/components/button/Round.vue";
 import RoundDisabled from "@/components/button/RoundDisabled.vue";
 import ControlModal from "./ControlModal.vue";
 import SelectModal from "./SelectModal.vue";
+import MeetingReportModal from "../../report/ReportMeeting.vue"
 
 const memberStore = useMemberStore();
 const loginModalStore = useLoginModalStore();
 const meetingDetailStore = useMeetingDetailStore();
+
+const isMeetingReportModalOpened = ref(false);
 
 // 셀렉트 모달
 const isSelectModalClosed = ref(true);
@@ -154,6 +162,10 @@ async function onClickCloseBtn() {
 function onDelete() {
   currentControlType.value = controlType[4];
   controlModalOn.value = !controlModalOn.value;
+}
+
+function handleMeetingReportModal(){
+  isMeetingReportModalOpened.value = !isMeetingReportModalOpened.value;
 }
 </script>
 
