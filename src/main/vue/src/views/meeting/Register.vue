@@ -37,7 +37,7 @@
                 </div>
             </fieldset>
             <div class="meeting-form__buttons">
-                <button class="btn btn-round">취소</button>
+                <router-link class="btn btn-round" :to="{path: '/'}">취소</router-link>
                 <button id="register-btn" class="btn btn-round btn-action" type="submit">등록하기</button>
             </div>
         </form>

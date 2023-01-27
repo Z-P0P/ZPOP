@@ -99,14 +99,11 @@ public class LoginController {
 		// 로그인시 알림생성
 		try {
 			int participantId = member.getId();
-			int[] participantIds = participationDao.getListByParticipantId(participantId);
-			
+			int[] participantIds = participationDao.getIdsUnEvaluatedByParticipantId(participantId);
+			// 용도가 평가하지않은 모임 찾기
 			if(participantIds!=null)
-				for(int p : participantIds)
+				// for(int p : participantIds)
 					createNotification(participantIds[0],"my-meeting",1);
-			
-
-
 		} catch (ArrayIndexOutOfBoundsException e) {
 		    System.err.println("Error: the array is empty!");
 		}
@@ -152,6 +149,6 @@ public class LoginController {
 	}
 	
 	private void createNotification(int memberId, String url, int type) {
-		notificationDao.insertCommentNotification(memberId,url,type);
+		notificationDao.insertNotification(memberId,url,type);
 	}
 }

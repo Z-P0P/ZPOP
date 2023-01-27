@@ -174,10 +174,7 @@ public class DefaultMeetingService implements MeetingService {
 		/**
 		 * 모임 정보 조회 및 가공
 		 */ 
-		Meeting meeting = dao.get(id);
-
-		if(meeting == null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+		Meeting meeting = findById(id);
 		
 		// 성별 변환
 		String genderCategory = "남녀 모두";
@@ -300,35 +297,16 @@ public class DefaultMeetingService implements MeetingService {
 
 	@Override
 	public String getContact(int id, int memberId) {
-		Meeting foundMeeting = dao.get(id);
-
-		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
-
+		Meeting foundMeeting = findById(id);
 		// 참여자가 맞는지 확인한다
-		Participation participationInfo = null;
-
-		List<Participation> participations = participationDao.getListByMeetingId(id);
-		for(Participation p : participations) {
-			if(p.getParticipantId() == memberId) {
-				participationInfo = p;
-				break;
-			}
-		}
-
-		if(participationInfo == null)
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "참여하지않은 모임입니다");
-
+		findParticipationByMeetingAndMember(id, memberId);
 		return foundMeeting.getContact();
 	}
 
 	@Override
 	public boolean delete(int id, int memberId) {
 
-		Meeting foundMeeting = dao.get(id);
-
-		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
-			throw new CustomException(ExceptionReason.NOT_FOUND_MEETING);
+		Meeting foundMeeting = findById(id);
 
 		if (foundMeeting.getRegMemberId() != memberId)
 			throw new CustomException(ExceptionReason.AUTHORIZATION_ERROR);
@@ -354,10 +332,7 @@ public class DefaultMeetingService implements MeetingService {
 
 	@Override
 	public boolean kick(int id, int participantId, Member member) {
-		Meeting foundMeeting = dao.get(id);
-
-		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+		Meeting foundMeeting = findById(id);
 
 		int memberId = member.getId();
 
@@ -413,10 +388,7 @@ public class DefaultMeetingService implements MeetingService {
 	@Override
 	public boolean close(int id, Member member) {
 
-		Meeting foundMeeting = dao.get(id);
-
-		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
+		Meeting foundMeeting = findById(id);
 
 		int memberId = member.getId();
 
@@ -441,10 +413,8 @@ public class DefaultMeetingService implements MeetingService {
 	@Transactional
 	public ParticipationResponse participate(int id, int memberId) {
 
-		Meeting foundMeeting = dao.get(id);
+		Meeting foundMeeting = findById(id);
 
-		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
-			throw new CustomException(ExceptionReason.NOT_FOUND_MEETING);
 		// 주최자가 자기 자신 모임에 참여할 때
 		if (foundMeeting.getRegMemberId() == memberId)
 			throw new CustomException(ExceptionReason.ALREADY_PARTICIPATED);
@@ -493,10 +463,7 @@ public class DefaultMeetingService implements MeetingService {
 		int meetingId = dto.getMeetingId();
 		int regMemberId = dto.getRegMemberId();
 
-		Meeting meeting = dao.get(meetingId);
-		if (meeting == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "모임글이 없습니다.");
-		}
+		Meeting meeting = findById(meetingId);
 
 		if (meeting.getRegMemberId() != regMemberId) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
@@ -560,30 +527,16 @@ public class DefaultMeetingService implements MeetingService {
 	public boolean cancelParticipate(int id, int memberId) {
 
         // 모임이 존재하는지 확인한다
-        Meeting foundMeeting = dao.get(id);
+        Meeting foundMeeting = findById(id);
 
-        if(foundMeeting == null || foundMeeting.getDeletedAt() != null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
-        
-        // 참여자가 맞는지 확인한다
-        Participation participationInfo = null;
-
-        List<Participation> participations = participationDao.getListByMeetingId(id);
-        for(Participation p : participations) {
-            if(p.getParticipantId() == memberId) {
-                participationInfo = p;
-                break;
-            }
-        }
+        Participation participationInfo = findParticipationByMeetingAndMember(id, memberId);
 
         /*
-         * 1. 모임에 참여한 적이 없을 때
-         * 2. 취소한 모임에 참여 취소할 때
-         * 3. kick당한 모임에 참여 취소할 때
+         * 1. 취소한 모임에 참여 취소할 때
+         * 2. kick당한 모임에 참여 취소할 때
          */
-        if(participationInfo == null ||
-            participationInfo.getCanceledAt() != null ||
-            participationInfo.getBannedAt() != null)
+        if( participationInfo.getCanceledAt() != null ||
+            participationInfo.getBannedAt() != null )
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "참여한 모임에만 참여를 취소할 수 있습니다");
 
         // 마감된 모임은 참여를 취소할 수 없다
@@ -611,10 +564,7 @@ public class DefaultMeetingService implements MeetingService {
 
 	@Override
 	public List<ParticipantResponse> getParticipants(int id) {
-		Meeting meeting = dao.get(id);
-		if (meeting == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "모임이 없습니다");
-		}
+		findById(id);
 
 		List<ParticipationInfoView> list = participationDao.getParticipantInfoByMeetingId(id);
 		List<ParticipantResponse> participants = new ArrayList<>();
@@ -634,6 +584,27 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	private void createNotification(int memberId, String url, int type) {
-		notificationDao.insertCommentNotification(memberId, url, type);
+		notificationDao.insertNotification(memberId, url, type);
+	}
+
+	private Meeting findById(int id) {
+		Meeting meeting = dao.get(id);
+		if(meeting == null || meeting.getDeletedAt() != null)
+			throw new CustomException(ExceptionReason.NOT_FOUND_MEETING);
+		return meeting;
+	}
+
+	private Participation findParticipationByMeetingAndMember(int meetingId, int memberId) {
+		Participation participationInfo = null;
+		List<Participation> participations = participationDao.getListByMeetingId(meetingId);
+		for(Participation p : participations) {
+			if(p.getParticipantId() == memberId) {
+				participationInfo = p;
+				break;
+			}
+		}
+		if(participationInfo == null)
+			throw new CustomException(ExceptionReason.NOT_JOIN_MEETING);
+		return participationInfo;
 	}
 }

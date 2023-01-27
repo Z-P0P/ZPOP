@@ -224,7 +224,7 @@ const detailSubmitHandler = (e) => {
     margin-left:1.250rem;
 }
 
-select{
+.filter-box select{
     border: 0.063rem solid var(--admin-grey);
     border-right:0; 
     border-top:0; 

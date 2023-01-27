@@ -29,8 +29,13 @@ function readAll(id){
     return fetch(`/api/notification/readAll/${id}`, data)
 }
 
+function readTypeOne(id){
+    return fetch(`/api/notification/readTypeOne/${id}`)
+}
+
 export default {
     getNotification,
     readOne,
-    readAll
+    readAll,
+    readTypeOne
 };
