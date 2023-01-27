@@ -61,7 +61,13 @@
 		
 	</select>
     
-	<select id="getListByParticipantId" resultType="int">
+	<select id="getListByParticipantId" resultType="com.zpop.web.entity.Participation">
+		SELECT *
+		FROM participation
+		WHERE participantId=#{participantId}
+	</select>
+
+	<select id="getIdsUnEvaluatedByParticipantId" resultType="int">
 		SELECT participantId
 		FROM participation
 		WHERE participantId=#{participantId}

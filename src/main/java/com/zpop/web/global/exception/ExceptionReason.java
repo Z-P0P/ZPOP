@@ -21,7 +21,8 @@ public enum ExceptionReason {
     NOT_JOIN_MEETING(FORBIDDEN, "참여하지 않은 모임입니다"),
 
     // 404
-    NOT_FOUND_MEETING(NOT_FOUND, "존재하지 않는 모임입니다."),
+    NOT_FOUND_MEETING(NOT_FOUND, "존재하지 않는 모임입니다"),
+    NOT_FOUND_MEMBER(NOT_FOUND, "존재하지 않는 사용자입니다"),
 
     // 409
     SOCIAL_ID_ALREADY_REGISTERED(CONFLICT, "이미 등록된 소셜 계정입니다."),

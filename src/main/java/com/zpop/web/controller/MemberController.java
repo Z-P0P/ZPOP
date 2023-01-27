@@ -133,8 +133,9 @@ public ResponseEntity<EvalDto> rateMember(EvalDto dto, @AuthenticationPrincipal 
 }
 
 @GetMapping("/member/{id}")
-public ProfileResponse getProfile(@PathVariable("id") int id){
-	return service.getParticipant(id);
+public ResponseEntity<ProfileResponse> getProfile(@PathVariable("id") int id){
+	ProfileResponse profile = service.getProfile(id);
+	return ResponseEntity.ok(profile);
 }
 
 
