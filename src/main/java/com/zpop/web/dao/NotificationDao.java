@@ -17,8 +17,9 @@ public interface NotificationDao {
 	void update(int id, Date readAt);
 	void updateByType(int memberId, Date readAt, int type);
 	void updateAllById(int memberId, Date readAt);
+	void updateAllByType(int memberId, Date readAt);
 
-	// 댓글 알림 생성 
-	void insertCommentNotification(int memberId, String url, int type);
+	// 알림 생성 
+	void insertNotification(int memberId, String url, int type);
 	
 }

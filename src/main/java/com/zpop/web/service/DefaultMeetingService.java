@@ -634,6 +634,6 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	private void createNotification(int memberId, String url, int type) {
-		notificationDao.insertCommentNotification(memberId, url, type);
+		notificationDao.insertNotification(memberId, url, type);
 	}
 }
