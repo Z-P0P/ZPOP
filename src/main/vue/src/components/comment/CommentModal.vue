@@ -1,18 +1,20 @@
 <script setup>
 import { ref } from "vue";
 import api from "@/api";
-import { useMemberStore } from "@/stores/memberStore";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import { useCommentStore } from "@/stores/commentStore";
+import { useReplyStore } from '@/stores/ReplyStore'
 import ModalDefault from "@/components/modal/Default.vue";
 import { ServerException } from "@/utils/ServerException";
 
 const mtDetailStore = useMeetingDetailStore();
 const cmtStore = useCommentStore();
+const rplyStore = useReplyStore();
 
 const props = defineProps({
   selectType: String,
-  commentId: Number
+  commentId: Number,
+  groupId: Number
 });
 const emit = defineEmits(["closeModal", "commentDeleted"]);
 let confirmMsg = ref("");
@@ -23,7 +25,7 @@ async function onClickYes() {
       await deleteComment(props.commentId);
       break;
     case "신고":
-      await report();
+      await alert("신고처리함수동작"); //TODO: 임우빈
       break;
   }
 }
@@ -36,7 +38,10 @@ async function deleteComment(id) {
 
     confirmMsg.value = "삭제됐습니다.";
     closeModalFooterType();
-    cmtStore.reloadComment(mtDetailStore, mtDetailStore.id)
+    if(props.groupId>0)
+      rplyStore.reloadReply(props.groupId)
+    else
+      cmtStore.reloadComment(mtDetailStore, mtDetailStore.id)
   } catch (e) {
     console.log(e)
   }
@@ -57,6 +62,15 @@ function closeModalFooterType() {
     <template v-if="props.selectType === '삭제'" #modal-body>
       <div v-if="!confirmMsg">
         <p class="confirm">댓글을 삭제하시겠어요?</p>
+      </div>
+      <div v-else>
+        <p class="confirm">{{ confirmMsg }}</p>
+      </div>
+    </template>
+
+    <template v-if="props.selectType === '신고'" #modal-body>
+      <div v-if="!confirmMsg">
+        <p class="confirm">이 모달은 임시로 띄운 것. 이 자리에 신고모달을 넣음</p>
       </div>
       <div v-else>
         <p class="confirm">{{ confirmMsg }}</p>

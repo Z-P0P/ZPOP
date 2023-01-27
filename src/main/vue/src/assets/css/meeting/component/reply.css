@@ -27,7 +27,9 @@
   margin: 1rem 0;
   font-size: 1rem;
 }
-
+.reply__list > li{
+  margin-bottom: 27px;
+}
 
 @media (min-width: 576px) {
   .reply__input {

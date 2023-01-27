@@ -7,57 +7,51 @@ import { useCommentStore } from '@/stores/CommentStore'
 import InputBox from './InputBox.vue';
 import SelectModal from './SelectModal.vue';
 
+const commentId = props.comment.id;
 const cmtStore = useCommentStore();
+const rplyStore = useReplyStore(); 
+rplyStore.commentId = commentId;
 
 const props = defineProps({
   comment: Object
 });
-const commentId = props.comment.id;
 const emit = defineEmits([
   'counterIncreased',
+  'onEdit'
 ]);
 
 cmtStore.addComment(props.comment); //댓글스토어에 댓글 하나씩 채우기
+rplyStore.addComment(props.comment); 
 
-const replyList = reactive([]); //반응형 답글리스트
 const countOfReply = ref(props.comment.countOfReply);
-const rplyStore = useReplyStore(); //별도의 저장소
-rplyStore.comment.id = commentId;
-const dataForReplyList = { //자식컴포넌트에 전달할 값들.
-  id: commentId,
-  replyList: replyList
-}
-var hasBox = ref(false); //인풋박스 노출
-var replyClose = ref(false);//'닫기'버튼 노출
+// const dataForReplyList = { //자식컴포넌트에 전달할 값들.
+//   id: commentId,
+//   replyList: replyList
+// }
+var hasBox = ref(false); //인풋박스 비노출
+var replyClose = ref(false);//'닫기'버튼 비노출
 var replyWrite = ref(true);//'답글쓰기'버튼 노출
 var replyCnt = ref(false);//'답글4개' 버튼 노출
-var isExpanded = ref(false);//답글리스트 노출
+var isExpanded = ref(false);//답글리스트 비노출
 
 if (props.comment.countOfReply > 0)
   replyCnt.value = true;//원댓글이 답글을 가지고있는지 여부. 없으면 '답글0개' 비노출
 
 function toggleReplyCnt() { //'답글4개' <-> '닫기' 전환
-  isExpanded.value = !isExpanded.value;
-  if (isExpanded.value && replyCnt.value)
-    getReplyList();
-  else {
-    replyList.length = 0; //전환시 답글배열 초기화
-  }
-  replyClose.value = !replyClose.value; //닫기 노출
-  replyCnt.value = !replyCnt.value;     //카운트 비노출
+isExpanded.value = !isExpanded.value;
+replyClose.value = !replyClose.value; //닫기 노출
+replyCnt.value = !replyCnt.value;     //카운트 비노출
+if (replyClose.value)
+  rplyStore.fillRepliesToComment(commentId);//답글스토어에 답글리스트 채우기
+else {
+  rplyStore.comments[commentId].replyList.length = 0; //전환시 답글배열 초기화
+}
 }
 function toggleInputBox() { //'인풋박스' <-> '답글쓰기' 전환
   isExpanded.value = !isExpanded.value;
   hasBox.value = !hasBox.value //인풋박스 노출
 }
 
-//답글 가져오는 부분
-async function getReplyList() {
-  const data = await rplyStore.getReplyList(commentId);
-  for (const r of data.resultObject)
-    replyList.push(r);
-  rplyStore.comment.replyList = replyList; //별도로 스토어에 저장
-}
 function increaseCounter() {
   countOfReply.value++;
   emit('counterIncreased');
@@ -65,8 +59,8 @@ function increaseCounter() {
 //답글 등록버튼에서 올라오는 이벤트 처리기
 function registerFinish() {
   increaseCounter();
-  rplyStore.comment.replyList.length = 0; //스토어 초기화
-  getReplyList(); //DB에 저장된 결과를 화면에 뿌려주기
+  rplyStore.comments[commentId].replyList.length = 0; //스토어 초기화
+  rplyStore.fillRepliesToComment(commentId); //DB에 저장된 결과를 화면에 뿌려주기
   hasBox.value = false; //완료후 인풋박스 비노출
   replyClose.value = true; //닫기 노출
   replyCnt.value = false;     //카운트 비노출
@@ -91,9 +85,11 @@ function toggleSelectModal(){
     <span class="profile__nickname">{{ comment.nickname }}</span>
     <span class="profile__time">{{ comment.elapsedTime }}</span>
     <button @click="toggleSelectModal"></button>
-    <SelectModal :role="'writer'" :commentId="comment.id" :meetingId="comment.meetingId"
-      v-if="comment.myComment&&!cmtStore.selectModalStatus[commentId]" />
-    <!-- <SelectModal :role="member" v-else v-show="!isSelectModalClosed"/> -->
+    <SelectModal :role="'writer'" :commentId="commentId" :groupId="0"
+      v-if="comment.myComment&&!cmtStore.selectModalStatus[commentId]" 
+      @onEdit="emit('onEdit')"/>
+    <SelectModal :role="'member'" :commentId="commentId" :groupId="0"
+      v-if="!comment.myComment&&!cmtStore.selectModalStatus[commentId]"/>
   </div>
   <span class="comment__content">{{ comment.content }}</span>
   <div class="comment__replies" :class="{ hidden: hasBox }">
@@ -105,7 +101,7 @@ function toggleSelectModal(){
   <section class="reply" :class="{ 'no-margin': !isExpanded }">
     <!--여기서 답글 inputBox에 보내는 객체는 댓글(comment)이지만 받는쪽 이름인 답글(reply)에 맞춰줌-->
     <InputBox :reply="comment" v-show="hasBox" @cancelClicked="toggleInputBox" @registerCompleted="registerFinish" />
-    <ReplyList :comment="dataForReplyList" @counterIncreased="increaseCounter" />
+    <ReplyList  :commentId="commentId" @counterIncreased="increaseCounter" />
   </section>
 </template>
 <style scoped>

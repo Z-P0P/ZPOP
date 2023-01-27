@@ -1,11 +1,18 @@
 <script setup>
 import { defineProps,ref} from 'vue';
 import InputBox from './InputBox.vue';
+import SelectModal from './SelectModal.vue';
+import { useReplyStore } from '@/stores/ReplyStore'
+
+const replyId = props.reply.id;
+const groupId = props.reply.groupId;
+const rplyStore = useReplyStore();
 
 const props = defineProps({
   reply:Object
 });
 const emit = defineEmits(['counterIncreased']);
+
 
 var hasBox = ref(false);
 var replyWrite = ref(true)
@@ -19,6 +26,17 @@ function registerFinish(){
   inputBoxToggle();
   emit('counterIncreased');
 }
+
+/*****************셀렉트 모달 열고 닫기**********************/
+rplyStore.initSelectModal(groupId);
+function toggleSelectModal(){
+  if(rplyStore.comments[groupId].selectModalStatus[replyId]){
+    rplyStore.openSelectModal(replyId, groupId)
+  }
+  else{
+    rplyStore.initSelectModal(groupId);
+  }
+}
 </script>
 
 <template>
@@ -26,13 +44,11 @@ function registerFinish(){
         <span class="profile__image"></span>
         <span class="profile__nickname profile__nickname">{{ reply.nickname }}</span>
         <span class="profile__time">{{ reply.elapsedTime }}</span>
-        <button></button>
-        <div class="modal-select select-box__options comment__kebob z-idx-1">
-            <div class="modal-select__contents modal__on-btn" data-id="comment-report" data-modal="#modal-report-comment">답글 신고
-                <span class="icon icon-siren-red"></span>
-            </div>
-            </div>
-        </div>
+        <button @click="toggleSelectModal"></button>
+        <SelectModal :role="'writer'" :commentId="reply.id" :groupId="groupId"
+           v-if="reply.myComment&&!rplyStore.comments[groupId].selectModalStatus[replyId]" />
+        <!-- <SelectModal :role="member" v-else v-show="!isSelectModalClosed"/> -->
+    </div>
     <div class="reply-container">
         <span class="reply__to">{{reply.parentNickname?'@'+reply.parentNickname:reply.parentNickname }}</span>
         <span class="reply__content">{{reply.content}}</span>
