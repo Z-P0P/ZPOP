@@ -4,14 +4,12 @@ import { useRouter, useRoute } from "vue-router";
 import api from "@/api/";
 import { useMeetingListStore } from "@/stores/meetingListStore";
 import Thumbnail from "@/components/meeting/Thumbnail.vue";
-import LoadingRoller from "@/components/LoadingRoller.vue";
 import OptionControll from "@/components/meeting/option-control/OptionControl.vue";
 import SearchBar from "@/components/meeting/option-control/SearchBar.vue";
 import ModalDefault from "@/components/modal/Default.vue";
 import Banner from "../../components/meeting/Banner.vue"
 import { ServerException } from "@/utils/ServerException";
 import LoginProc from "../LoginProc.vue";
-import NicknameRegister from "../../components/modal/NicknameRegister.vue";
 import ScrollUpBtn from "@/components/meeting/ScrollUpBtn.vue";
 import RegisterMeetingBtn from "@/components/meeting/RegisterMeetingBtn.vue";
 import PageLoader from "../../components/PageLoader.vue";
@@ -193,10 +191,10 @@ function changeNicknameRegisterStatus(){
       <PageLoader v-show="state.loadingOn"/>
     </div>
   </div>
-  <login-proc v-show="isLoginProcOpened" @close="changeLoginProcStatus" @memberRegisterRequired="changeNicknameRegisterStatus"/>
-  <nickname-register v-show="isNicknameRegisterOpened" @close="changeNicknameRegisterStatus"/>
-  <ScrollUpBtn class="scroll-up-btn"/>
-  <register-meeting-btn class="register-meeting-btn"/>
+  <LoginProc v-show="isLoginProcOpened" @close="changeLoginProcStatus" @memberRegisterRequired="changeNicknameRegisterStatus"/>
+  <NicknameRegisterVue v-show="isNicknameRegisterOpened" @close="changeNicknameRegisterStatus"/>
+  <ScrollUpBtn/>
+  <RegisterMeetingBtn/>
   <PageLoader v-show="!firstLoaded" :isWholePage="true"/>
 </template>
 
