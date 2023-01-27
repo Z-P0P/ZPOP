@@ -51,10 +51,11 @@ const meetingDetailStore = useMeetingDetailStore();
 const loginModalStore = useLoginModalStore();
 
 const props = defineProps(['role']);
-const emit = defineEmits(["on-click-delete","on-click-report"]);
+const emit = defineEmits(["on-click-delete", "on-click-copy", "on-click-report"]);
 
 function onClickCopy() {
     navigator.clipboard.writeText(window.location.href);
+    emit("on-click-copy");
 }
 
 function onClickUpdate() {
