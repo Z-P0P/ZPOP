@@ -1,20 +1,22 @@
 <template>
-    <Modal v-if="route.query.login">
-        <template #modal-body>
-            <div>
-                <div class="modal__content-container">
-                    <div class="modal__content">
-                        <loading-roller :isShow="true" />
-                        <div class="register-status__text">
-                            <div class="register-status__message">로그인 중</div>
+    <Transition>
+        <Modal v-if="route.query.login" class="loginModal">
+            <template #modal-body>
+                <div>
+                    <div class="modal__content-container">
+                        <div class="modal__content">
+                            <loading-roller :isShow="true" />
+                            <div class="register-status__text">
+                                <div class="register-status__message">로그인 중</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </template>
-        <template #modal-footer>
-        </template>
-    </Modal>
+            </template>
+            <template #modal-footer>
+            </template>
+        </Modal>
+    </Transition>   
 </template>
 
 <script setup>
@@ -80,5 +82,19 @@ if (route.query.login){
     margin-bottom: 10px;
     display:flex;
     justify-content: center;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+.loginModal{
+    z-index:10000;
 }
 </style>

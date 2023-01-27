@@ -57,6 +57,7 @@ const router = createRouter({
               // beforeEnter: [redirectRouteAfterLogin],
             },
             {
+              name: "searchMeeting",
               path: "search",
               component: () => import("@/views/meeting/Search.vue"),
               alias: "/search",
