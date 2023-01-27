@@ -151,16 +151,12 @@ public class MeetingController {
 		
 	}
 	@GetMapping("/{id}/contact")
-	@ResponseBody
-	public String getContact(@PathVariable int id,
+	public ResponseEntity<?> getContact(@PathVariable int id,
 		    @AuthenticationPrincipal ZpopUserDetails userDetails) {
-
-		if(userDetails == null)
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
-
 		String contact = service.getContact(id, userDetails.getId());
-
-		return contact;
+		Map<String, Object> response = new HashMap<>();
+		response.put("contact", contact);
+		return ResponseEntity.ok(response);
 	}
 	
 	@PatchMapping("/{id}/close")

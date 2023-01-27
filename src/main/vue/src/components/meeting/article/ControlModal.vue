@@ -151,9 +151,6 @@ function closeModalFooterType() {
         <p class="confirm">{{ confirmMsg }}</p>
       </div>
     </template>
-    <template v-else-if="props.controlType === '참여링크'" #modal-body
-      >참여링크</template
-    >
     <template v-else-if="props.controlType === '삭제'" #modal-body>
       <div v-if="!confirmMsg">
         <p class="confirm">모임을 정말로 삭제하시겠어요?</p>

@@ -130,7 +130,7 @@ function closeSelectModal() {
 // 참여, 마감, 참여취소, 링크 모달 on/off
 const controlModalOn = ref(false);
 
-const controlType = ["참여", "참여취소", "마감", "참여링크", "삭제"];
+const controlType = ["참여", "참여취소", "마감", "삭제"];
 const currentControlType = ref("");
 
 function closeControlModal() {
