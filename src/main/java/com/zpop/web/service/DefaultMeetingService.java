@@ -97,7 +97,7 @@ public class DefaultMeetingService implements MeetingService {
 		// 응답에 맞게 데이터 변환
 		List<MeetingThumbnailResponse> list = new ArrayList<>();
 		for (MeetingThumbnailView m : meetingThumbnailViews) {
-			String genderCategory = "누구나";
+			String genderCategory = "남녀 모두";
 			switch (m.getGenderCategory()) {
 				case 1:
 					genderCategory = "남자 모임";
@@ -180,7 +180,7 @@ public class DefaultMeetingService implements MeetingService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
 		
 		// 성별 변환
-		String genderCategory = "누구나";
+		String genderCategory = "남녀 모두";
 		switch (meeting.getGenderCategory()) {
 			case 1:
 				genderCategory = "남자 모임";
@@ -323,17 +323,15 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public boolean delete(int id, Member member) {
+	public boolean delete(int id, int memberId) {
 
 		Meeting foundMeeting = dao.get(id);
 
 		if (foundMeeting == null || foundMeeting.getDeletedAt() != null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 모임입니다");
-
-		int memberId = member.getId();
+			throw new CustomException(ExceptionReason.NOT_FOUND_MEETING);
 
 		if (foundMeeting.getRegMemberId() != memberId)
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
+			throw new CustomException(ExceptionReason.AUTHORIZATION_ERROR);
 
 		List<Participation> participations = participationDao.getListByMeetingId(id);
 
@@ -347,7 +345,7 @@ public class DefaultMeetingService implements MeetingService {
 
 			// 정상 참가자가 한명이라도 있으면 삭제 불가
 			if (bannedAt == null && canceledAt == null)
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "참가자가 있어 모임을 삭제할 수 없습니다");
+				throw new CustomException(ExceptionReason.PARTICIPANTS_EXISTS);
 		}
 		dao.updateDeletedAt(foundMeeting);
 

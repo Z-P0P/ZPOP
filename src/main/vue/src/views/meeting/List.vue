@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, computed, ref, watch, defineEmits, onUnmounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import api from "@/api/";
 import { useMeetingListStore } from "@/stores/meetingListStore";
 import Thumbnail from "@/components/meeting/Thumbnail.vue";
@@ -12,7 +12,9 @@ import Banner from "../../components/meeting/Banner.vue"
 import { ServerException } from "@/utils/ServerException";
 import LoginProc from "../LoginProc.vue";
 import NicknameRegister from "../../components/modal/NicknameRegister.vue";
-import { useRoute } from "vue-router";
+import ScrollUpBtn from "@/components/meeting/ScrollUpBtn.vue";
+import RegisterMeetingBtn from "@/components/meeting/RegisterMeetingBtn.vue";
+import PageLoader from "../../components/PageLoader.vue";
 
 const emit = defineEmits(["throw"]);
 const route = useRoute();
@@ -21,6 +23,8 @@ const router = useRouter();
 
 const meetingListStore = useMeetingListStore();
 meetingListStore.$reset(); // 이 view로 오면 상태 초기화
+
+const firstLoaded = ref(false);
 
 const state = reactive({
   meetings: [],
@@ -45,6 +49,7 @@ watch(meetingListStore, async () => {
 requestList().then((data) => {
   if (!data || data.length === 0) return;
   addMeetings(data);
+  firstLoaded.value = true;
 });
 
 // 무한 스크롤 -----------------------------------------------------------
@@ -185,11 +190,14 @@ function changeNicknameRegisterStatus(){
       </div>
     </section>
     <div class="loading-wrap">
-      <LoadingRoller :isShow="state.loadingOn" />
+      <PageLoader v-show="state.loadingOn"/>
     </div>
   </div>
   <login-proc v-show="isLoginProcOpened" @close="changeLoginProcStatus" @memberRegisterRequired="changeNicknameRegisterStatus"/>
   <nickname-register v-show="isNicknameRegisterOpened" @close="changeNicknameRegisterStatus"/>
+  <ScrollUpBtn class="scroll-up-btn"/>
+  <register-meeting-btn class="register-meeting-btn"/>
+  <PageLoader v-show="!firstLoaded" :isWholePage="true"/>
 </template>
 
 <style scoped>
@@ -209,4 +217,25 @@ function changeNicknameRegisterStatus(){
   justify-content: center;
   margin: 2rem auto;
 }
+
+.scroll-up-btn{
+  display:none;
+}
+
+@media (min-width:576px) {
+  .scroll-up-btn{
+    display:block;
+  }
+}
+
+@media (min-width:576px) {
+  .register-meeting-btn{
+    display:none;
+  }
+}
+
+.meetings{
+  position:relative;
+}
+
 </style>

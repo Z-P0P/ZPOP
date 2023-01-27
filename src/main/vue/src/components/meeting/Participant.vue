@@ -1,117 +1,66 @@
 <template>
-    <div class="participant__info">
-      <img src="/images/icon/user-profile-grey.svg">
-      <span>{{ props.userDetail.nickname }}</span>
-    </div>
+  <div class="participant" @click="onClickAndEmit">
+    <img
+      class="participant__image"
+      :src="
+        userDetail.profileImagePath
+          ? userDetail.profileImagePath
+          : '/images/icon/user-profile-grey.svg'
+      "
+    />
+    <span>{{ props.userDetail.nickname }}</span>
+  </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps } from "vue";
 
 const props = defineProps({
-  userDetail: Array
-})
+  userDetail: Object,
+});
 
-console.log(props.userDetail);
+const emit = defineEmits(["onClickParticipant"]);
+
+// 참여자 id를 담아 부모에게 emit(전달)
+function onClickAndEmit(e) {
+  emit("onClickParticipant", props.userDetail.participantId);
+}
 </script>
 
-<style >
- 
-.main {
-    margin: 2rem auto 4rem auto;
-    
-    max-width: 792px;
-}
-
-.main > section {
-    margin: 1rem 20px;
-}
-
+<style scoped>
 .participant {
-  display: flex;
-  flex-direction: column;
-  font-size: 16px;
-}
-
-.participant__num {
-  display: flex;
-}
-
-.participant__num > span {
-  margin-right: .5rem;
-  font-weight: bold;
-}
-
-.participant__list {
-  margin-top: 1rem;
-  display: grid;
-  grid-auto-rows: 46px;
-  row-gap: 8px;
-}
-
-.participant__info {
   width: 220px;
   height: 46px;
   border-radius: 1.625rem;
-  display: flex; 
+  display: flex;
   flex-grow: 0;
   cursor: pointer;
   align-items: center;
   padding-left: 6px;
 }
 
-.participant__info:hover{
+@media (min-width: 576px) {
+  .participant {
+    width: 240px;
+    height: 52px;
+  }
+}
+
+.participant:hover {
   background-color: var(--main-color);
   color: var(--white);
 }
 
-.participant__info > img{
+.participant__image {
   width: 36px;
   height: 36px;
   margin-right: 15px;
 }
 
-@media (min-width:576px){
-  .participant__list {
-    display: grid;
-    grid-auto-rows: 52px;
-    grid-template-columns: repeat(2, 240px);
-    row-gap: 16px;
-    column-gap: 10px;
-  }
-
-  .participant {
-    font-size: 18px;
-    font-weight: 500;
-  }
-  
-  .participant__info {
-    width: 240px;
-    height: 52px;
-  }
-  
-  .participant__info > img{
+@media (min-width: 576px) {
+  .participant__image {
     width: 42px;
     height: 42px;
   }
-
-  .participant__num {
-    font-size: 18px;
-  }
-
-  .main{
-        margin: 5rem auto;
-  }
-
-  .main > section {
-        margin: 2rem 20px;
-  }
 }
-
-@media (min-width:792px){
-  .participant__list {
-    grid-template-columns: repeat(3, 240px);
-  }
-}
-
 </style>

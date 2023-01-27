@@ -5,16 +5,17 @@ import com.zpop.web.dto.EvalDto;
 import com.zpop.web.dto.EvalMemberDto;
 import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.dto.ProfileResponse;
-import com.zpop.web.entity.Member;
-import com.zpop.web.entity.MemberEval;
-import com.zpop.web.entity.NicknameLog;
-import com.zpop.web.entity.Participation;
+import com.zpop.web.entity.*;
 import com.zpop.web.entity.member.MyMeetingView;
 import com.zpop.web.utils.TextDateTimeCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -33,6 +34,8 @@ public class DefalutMemberService implements MemberService {
     private MemberEvalDao memberEvalDao;
 
     @Autowired
+    private  ProfileFileDao profileFileDao;
+    @Autowired
     private NicknameLogDao nicknameLogDao;
 
     private final int MAX_NICKNAME_LENGTH = 10;
@@ -41,10 +44,13 @@ public class DefalutMemberService implements MemberService {
     public DefalutMemberService() {
     }
 
-    public DefalutMemberService(MemberDao dao, MeetingDao meetingDao, ParticipationDao participationDao) {
+    public DefalutMemberService(MemberDao dao, MeetingDao meetingDao,
+                                ParticipationDao participationDao,
+                                ProfileFileDao profileFileDao) {
         this.dao = dao;
         this.meetingDao = meetingDao;
         this.participationDao = participationDao;
+        this.profileFileDao = profileFileDao;
     }
 
 
@@ -70,7 +76,7 @@ public class DefalutMemberService implements MemberService {
         List<MyMeetingResponse> list = new ArrayList<>();
 
         for (MyMeetingView m : mmv) {
-            String genderCategory = "누구나";
+            String genderCategory = "남녀 모두";
             switch (m.getGenderCategory()) {
                 case 1:
                     genderCategory = "남자 모임";
@@ -140,7 +146,7 @@ public class DefalutMemberService implements MemberService {
         List<MyMeetingResponse> list = new ArrayList<>();
 
         for (MyMeetingView m : mmv) {
-            String genderCategory = "누구나";
+            String genderCategory = "남녀 모두";
             switch (m.getGenderCategory()) {
                 case 1:
                     genderCategory = "남자 모임";
@@ -300,7 +306,7 @@ public class DefalutMemberService implements MemberService {
      */
 	@Transactional
 	@Override
-	public Member updateNickname(int memberId, String nickname) {
+	public int updateNickname(int memberId, String nickname) {
 
         //멤버의 아이디를 통해 닉네임 로그 중 가장 최근 기록 하나를 불러옵니다.
          NicknameLog nicknameLog = nicknameLogDao.getLatestByMemberId(memberId);
@@ -320,24 +326,53 @@ public class DefalutMemberService implements MemberService {
         //따라서 year를 추가하여 연도도 조건에 추가
         int year = period.getYears();
         int month = period.getMonths();
+        System.out.println(month);
 
+        int result;
          //날짜의 차이가 30일 이내일 경우
-         if (year<0 || month<0){
+         if (year<0 || month==0){
             //변경할 수 없음을 클라이언트에게 알려주기
             System.out.println("30일 이내에는 변경 불가함");
+             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "30일 이내에는 닉네임 변경이 불가합니다.");
          }else {
 
             //닉네임 유효성 확인, 닉네임 중복확인
             System.out.println(nickname+"을 확인하세요");
-            Map<String, Object> result = checkNicknameValid(nickname);
-            if(result.get("result").equals("NICKNAME_VALID"))
-            System.out.println(result+"결과입니다");
+            Map<String, Object> validResult = checkNicknameValid(nickname);
+            if(validResult.get("result").equals("NICKNAME_VALID"))
+            System.out.println(validResult+"결과입니다");
             dao.updateNickname(memberId, nickname);
             System.out.println("닉네임업데이트를 실행합니다");
             nicknameLogDao.insert(new NicknameLog(memberId, nickname));
             System.out.println("닉네임이 업데이트 되었습니다.");
+            result=1;
+        }
+        System.out.println(result+"업데이트 결과");
+		return result;
+	}
+
+    @Override
+    public ProfileFile uploadFile(MultipartFile file, String path) throws IOException {
+        File pathFile = new File(path);
+        if (!pathFile.exists()) {
+            pathFile.mkdirs();
         }
 
-		return null;
-	}
+        String completePath = path + File.separator + file.getOriginalFilename();
+
+        InputStream fis = file.getInputStream();
+        OutputStream fos = new FileOutputStream(completePath);
+
+        byte[] buf = new byte[1024];
+        int size = 0;
+        while ((size = fis.read(buf)) > 0) {
+            fos.write(buf, 0, size);
+        }
+
+        fos.close();
+        fis.close();
+        ProfileFile profileFile = new ProfileFile(file.getOriginalFilename());
+        profileFileDao.insert(profileFile);
+        return profileFile;
+    }
 }

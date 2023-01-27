@@ -7,7 +7,7 @@
         <div @click="onClickUpdate" class="modal-select__contents">수정
             <span class="icon icon-edit"></span>
         </div>
-        <div class="modal-select__contents modal-select__contents--delete">삭제
+        <div @click="onClickDelete" class="modal-select__contents modal-select__contents--delete">삭제
             <span class="icon icon-trash"></span>
         </div>
     </div>
@@ -19,7 +19,7 @@
         <div class="modal-select__contents">참여링크
             <span class="icon icon-link"></span>
         </div>
-        <div class="modal-select__contents modal-select__contents--report">글 신고
+        <div @click.prevent="onClickReport" class="modal-select__contents modal-select__contents--report">글 신고
             <span class="icon icon-siren-red"></span>
         </div>
     </div>
@@ -28,17 +28,20 @@
         <div @click="onClickCopy" class="modal-select__contents">복사 하기
             <span class="icon icon-copy"></span>
         </div>
-        <div class="modal-select__contents modal-select__contents--report">글 신고
+        <div @click.prevent="onClickReport" class="modal-select__contents modal-select__contents--report">글 신고
             <span class="icon icon-siren-red"></span>
         </div>
     </div>
 </template>
 
 <script setup>
+import { ref, reactive, nextTick } from "vue";
 import { useRoute, useRouter } from 'vue-router';
 import { useMemberStore } from "@/stores/memberStore";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import { useLoginModalStore } from "@/stores/loginModalStore"
+import api from "@/api";
+import { ServerException } from "@/utils/ServerException";
 
 const route = useRoute();
 const router = useRouter();
@@ -48,9 +51,11 @@ const meetingDetailStore = useMeetingDetailStore();
 const loginModalStore = useLoginModalStore();
 
 const props = defineProps(['role']);
+const emit = defineEmits(["on-click-delete", "on-click-copy", "on-click-report"]);
 
 function onClickCopy() {
     navigator.clipboard.writeText(window.location.href);
+    emit("on-click-copy");
 }
 
 function onClickUpdate() {
@@ -64,6 +69,13 @@ function onClickUpdate() {
     router.push(`/meeting/update/${route.params.id}`)
 }
 
+function onClickDelete() {
+    emit("on-click-delete");
+}
+
+function onClickReport(){
+    emit("on-click-report")
+}
 </script>
 
 <style scoped>

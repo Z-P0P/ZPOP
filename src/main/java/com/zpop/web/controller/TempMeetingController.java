@@ -35,16 +35,6 @@ public class TempMeetingController {
         return "meeting/list";
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseBody
-    public boolean delete(
-            @PathVariable(name = "id") int id
-    ) {
-        Member testMember = new Member();
-        boolean result = service.delete(id, testMember);
-        return result;
-    }
-
     @DeleteMapping("/{id}/participant/{participantId}")
     @ResponseBody
     public boolean kick(
