@@ -160,7 +160,7 @@ public interface MeetingService {
 	 * @param hostId 주최자 아이디
 	 * @return 성공 여부
 	 */
-	boolean delete(int id, Member member);  //TODO: 시큐리티
+	boolean delete(int id, int memberId);  //TODO: 시큐리티
 
 	RegisterMeetingViewResponse getActiveOptions();
 

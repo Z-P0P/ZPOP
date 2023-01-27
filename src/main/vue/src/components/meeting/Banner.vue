@@ -14,9 +14,12 @@ import bannerHandler from '../../utils/banner'
 export default {
     setup(){
         const bannerImages = 
-        [{ path: 'banner-pc.png' },
-        {  path: 'banner-pc-1.png' },
-        {  path: 'banner-pc-2.png' }];
+        [{ path: 'banner-jpg1.jpg' },
+        { path: 'banner-jpg2.jpg' },
+        { path: 'banner-jpg3.jpg' },
+        //  { path: 'banner-cat.png'},
+        //  { path: 'banner-bread.png'},
+                                  ];
         const firstBanner = bannerImages[0];
         const lastBanner = bannerImages[bannerImages.length - 1];
         bannerImages.push(firstBanner);

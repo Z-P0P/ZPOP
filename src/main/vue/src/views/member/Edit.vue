@@ -4,11 +4,23 @@
 	import api from "@/api";
 	import ProfileEdit from "@/components/member/ProfileEdit.vue";
   import {useMemberStore} from   "@/stores/memberStore"
+import Default from "../../components/modal/Default.vue";
+
+
+
 	// const state = reactive({
   //     myInfo: null,
      
   //   });
-  const memberInfo = useMemberStore();
+  // const memberInfo = useMemberStore();
+  // function showModal() {
+  //   modalOn.value = true;
+  //  }
+
+  //  function closeModal() {
+  //   modalOn.value = false;
+  //  }
+
   // console.log( memberInfo.nickname);
  
   // console.log("memberinfo"+memberInfo);
@@ -34,6 +46,7 @@
 <template>
   <div class="content-wrap">
   <!-- <ProfileEdit :nickname="memberInfo.nickname"/> -->
+  
   <ProfileEdit />
   </div>
 </template>

@@ -29,10 +29,13 @@
 }
 
 .blank-div {
-    height: 60px;
+    height: 66px;
     background-color: white;
     position: relative;
     border-radius: 0 0 5px 5px;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #ebebeb 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%);
+    opacity: 0.8;
     /*	top : 280px;*/
 }
 
@@ -46,11 +49,11 @@
 
 
 .notification__close-btn {
-    height: 32px;
-    width: 32px;
+    height: 24px;
+    width: 24px;
     border: none;
     background: url(/images/icon/x.svg) no-repeat;
-    background-size: 32px;
+    background-size: 24px;
     cursor: pointer;
     margin: 10px 0 0 284px;
 }
@@ -93,7 +96,7 @@
     margin: auto 0;
     padding-top: 5px;
     font-size: 16x;
-    font-weight: normal;
+    font-weight: 500;
 }
 
 .header__notification-on {
@@ -119,7 +122,7 @@
     .readAll-btn {
         width: 131px;
         height: 35px;
-        margin: 10px 0 10px 205px;
+        margin: 10px 0 10px 200px;
     }
 
     .header__notification-on button::before {
