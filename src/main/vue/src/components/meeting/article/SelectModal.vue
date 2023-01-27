@@ -93,11 +93,11 @@ async function onClickCopyContact() {
       router.replace("/403");
       return;
     }
+    emit("on-click-copy");
     const res = await api.meeting.getContact(route.params.id);
     if (!res.ok) throw new ServerException(await res.json());
     const data = await res.json();
     navigator.clipboard.writeText(data.contact);
-    emit("on-click-copy");
   } catch (e) {
     if (e.res.status === 404) router.replace("/404");
     if (e.res.status === 403 && e.res.message === "참여하지 않은 모임입니다")
