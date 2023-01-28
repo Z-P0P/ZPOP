@@ -3,11 +3,15 @@
     import CommentModal from './CommentModal.vue';
     import { useCommentStore } from '@/stores/commentStore.js';
     import CommentReportModal from '../report/ReportComment.vue';
+    import { useMemberStore } from "@/stores/memberStore";
+    import { useLoginModalStore } from "@/stores/loginModalStore";
     
+    const memberStore = useMemberStore();
+    const loginModalStore = useLoginModalStore();
     const cmtStore = useCommentStore();
     const props = defineProps(['isMyComment', 'commentId', 'groupId']);
     const emit = defineEmits(['onEdit']);
-    
+
     // 셀렉트 모달 on/off
     let selectModalOn = ref(true);
     // 댓글 모달 on/off
@@ -43,7 +47,11 @@
     async function onClickReportSelectOption(){
         currentSelectType.value = selectType[2];
         selectModalOn.value = !selectModalOn.value;
-        reportModalOn.value = !reportModalOn.value;
+        if(!memberStore.id){
+            loginModalStore.show();
+            return;
+        } else 
+            reportModalOn.value = !reportModalOn.value;
     }
 
 </script>
