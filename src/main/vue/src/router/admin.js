@@ -1,7 +1,7 @@
 import AdminLayout from "@/views/admin/Layout.vue";
 import AdminHome from "@/views/admin/Home.vue";
 import AdminMeeting from "@/views/admin/meeting/Meeting.vue";
-import AdminNotification from "@/views/admin/notification.vue";
+import AdminBanner from "@/views/admin/banner/Banner.vue";
 import AdminReport from "@/views/admin/report/Report.vue";
 import AdminMemberReport from "@/views/admin/report/Member.vue";
 import AdminMeetingReport from "@/views/admin/report/Meeting.vue";
@@ -16,6 +16,8 @@ import AdminMemberList from "@/views/admin/member/List.vue";
 import AdminEvaluation from "@/views/admin/member/Evaluation.vue";
 import AdminParticipation from "@/views/admin/member/Participation.vue";
 import AdminLogin from "@/views/admin/Login.vue";
+import AdminBannerList from "@/views/admin/banner/list.vue"
+
 import { useMemberStore } from "@/stores/memberStore";
 
 export const adminLogin = {
@@ -29,7 +31,7 @@ export default {
   beforeEnter: async (to, from) => {
     if (!to.path.startsWith("/admin/login")) {
       const memberStore = useMemberStore();
-      if (!(await memberStore.isAdmin())) {
+      if ((await memberStore.isAdmin())) {
         return "/admin/login";
       }
     }
@@ -41,7 +43,7 @@ export default {
       path: "meeting",
       component: AdminMeeting,
       children: [
-        { path: "list", component: AdminMeetingList },
+        { path: "list", component: AdminMeetingList, alias: '/admin/meeting'},
         { path: "category", component: AdminCategory },
         { path: "region", component: AdminRegion },
       ],
@@ -56,10 +58,10 @@ export default {
       ],
     },
     {
-      path: "notification",
-      component: AdminNotification,
+      path: "banner",
+      component: AdminBanner,
       children: [
-        //       { path: "list", component: AdminHome },
+              { path: "list", component: AdminBannerList },
       ],
     },
     {
