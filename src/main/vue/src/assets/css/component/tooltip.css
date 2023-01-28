@@ -176,6 +176,8 @@
 
 .tooltip-solid-top{
     top:calc((100% + var(--triangle-height)) * -1);
+    left:calc(50%);
+    transform: translate(-50%);
 }
 
 .tooltip-solid-bottom::before{
@@ -188,6 +190,8 @@
 
 .tooltip-solid-bottom{
     top:calc(100% + var(--triangle-height));
+    left:calc(50%);
+    transform: translate(-50%);
 }
 
 @keyframes fadein {

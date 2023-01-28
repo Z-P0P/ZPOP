@@ -31,6 +31,9 @@ export default {
 </script>
 
 <style scoped>
+@import url('@/assets/css/form.css');
+
+
 .input__label{
     margin-bottom: 8px;
 }

@@ -250,3 +250,25 @@ input{
 .form-input-container>*:not(span) {
     margin-top: 0.5rem;
 }
+
+.admin-detail-modal .input-text {
+    width: 100%;
+    padding: 0 18px;
+    cursor: pointer;
+    border-bottom: 2px solid var(--admin-grey);
+    max-width: 500px;
+}
+
+.admin-detail-modal .input-text__content {
+    border: none;
+    font-size: 18px;
+}
+
+
+.admin-detail-modal .input__label {
+    font-weight: var(--bold);
+}
+
+.admin-detail-modal .input-text__label {
+    font-weight: var(--bold);
+}
