@@ -2,6 +2,7 @@
     import {ref} from 'vue';
     import CommentModal from './CommentModal.vue';
     import { useCommentStore } from '@/stores/commentStore.js';
+    import CommentReportModal from '../report/ReportComment.vue';
     
     const cmtStore = useCommentStore();
     const props = defineProps(['role', 'commentId', 'groupId']);
@@ -13,11 +14,17 @@
     // 댓글 모달 on/off
     let commentModalOn = ref(false);
 
+    let reportModalOn = ref(false);
+
     const selectType = ["삭제", "수정", "신고"];
     let currentSelectType = ref("");
 
     function closeCommentModal() {
         commentModalOn.value = false;
+    }
+
+    function closeReportModal(){
+        reportModalOn.value = false;
     }
 
     async function onClickDeleteSelectOption() {
@@ -36,7 +43,7 @@
     async function onClickReportSelectOption(){
         currentSelectType.value = selectType[2];
         selectModalOn.value = !selectModalOn.value;
-        commentModalOn.value = !commentModalOn.value;
+        reportModalOn.value = !reportModalOn.value;
     }
 
 </script>
@@ -68,6 +75,13 @@
         :groupId="groupId"
         @closeModal="closeCommentModal"
     ></CommentModal>
+    <CommentReportModal 
+    v-if="reportModalOn"
+    :selectType="currentSelectType"
+    :commentId="commentId"
+    :groupId="groupId"
+    @closeModal="closeReportModal"
+    />
 </template>
 
 <style scoped>
