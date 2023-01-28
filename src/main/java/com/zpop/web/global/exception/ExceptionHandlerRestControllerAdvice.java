@@ -34,6 +34,7 @@ public class ExceptionHandlerRestControllerAdvice {
         ExceptionResponseBody errorResponse = ExceptionResponseBody.builder()
                 .status(reason.getHttpStatus().value())
                 .message(reason.getMessage())
+                .details(e.getDetails())
                 .build();
 
         return ResponseEntity.status(reason.getHttpStatus()).body(errorResponse);
