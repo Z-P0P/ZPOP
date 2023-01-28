@@ -19,12 +19,10 @@
       </div>
 
       <div class="start-datetime-container">
-        <!-- <span class="icon icon-calender16"></span> -->
         <span :class="calenderClass"></span>
         <span>{{ meetingDetailStore.textStartedAt }}</span>
       </div>
       <div class="region-container">
-      <!--   <span class="icon-location16"></span> -->
         <span :class="locationClass"></span>
 
         <span>{{ meetingDetailStore.region }}</span>
@@ -117,21 +115,6 @@ const calenderClass = computed(() => {
     })
 
 
-// const applyReactiveClass = computed(()=> {
-//   let width;
-
-//   if(window.matchMedia("(max-width: 567px)").matches){
-//     width=0;
-//     console.log(width);
-//     console.log("반응형적용");
-//     return width;
-//   }else if(window.matchMedia("(min-width: 568px)").matches) {
-//     width=1;
-//     console.log(width);
-//     return width;
-//   }
-  
-// });
 
 // 셀렉트 모달
 const isSelectModalClosed = ref(true);
