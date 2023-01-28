@@ -14,8 +14,6 @@ const props = defineProps({
 });
 const emit = defineEmits(["closeModal"]);
 
-let isResigned = ref(false);
-
 const state = reactive({
   member: {
     id: 0,
@@ -23,6 +21,7 @@ const state = reactive({
     fame: 0,
     participatedCount: 0,
     profileImg: null,
+    resigned: false,
   },
 });
 
@@ -32,16 +31,23 @@ async function getMemberProfile(id) {
     if (!res.ok) throw new ServerException(await res.json());
     const data = await res.json();
     setMemberProfile(data);
-  } catch (e) {}
+  } catch (e) {
+    if (e.res.status === 404) router.push("/404");
+  }
 }
 
 getMemberProfile(props.memberId);
 
 function setMemberProfile(data) {
-  if (data.resigned) console.log("TODO: 구현");
+  if (data.resigned) {
+    state.member.resigned = true;
+    setKickOn();
+    return;
+  }
   Object.keys(data).forEach((key) => {
     state.member[key] = data[key];
   });
+  // 내보내기, 신고 렌더링 여부 설정
   setKickOn();
   setReportOn();
 }
@@ -71,8 +77,10 @@ let kickOn = false;
 const kickModalOn = ref(false);
 
 function setKickOn() {
-  // 내 모임 AND 나 외의 참여자라면, 내보내기 활성화
+  // 모임이 활성화 되어있고, 내 모임이고, 나 외의 참여자라면
+  // 내보내기 활성화한다
   if (
+    !meetingDetailStore.closed &&
     meetingDetailStore.myMeeting &&
     meetingDetailStore.regMemberId !== state.member.id
   )
@@ -99,33 +107,60 @@ async function onClickKick() {
       </header>
 
       <div class="body column">
-        <div class="profile-container">
+        <!-- resigend profile -->
+        <div v-if="state.member.resigned" class="profile-container">
           <div class="image-wrap">
             <div class="image-bg">
-              <img :src="state.member.profileImg" class="image" alt="" />
+              <img
+                src="/images/no-rusult-ghost.svg"
+                class="image"
+                alt="resigned"
+              />
+            </div>
+          </div>
+          <div class="resigned">
+            <span>탈퇴한 회원이에요</span>
+            <div class="ban__wrap">
+              <span
+                v-show="kickOn"
+                @click="onClickKick"
+                class="btn btn-semiround kick"
+              >
+                <span class="icon icon-door"></span>
+                내보내기
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- nomal profile -->
+        <div v-else="state.member.resigned" class="profile-container">
+          <div class="image-wrap">
+            <div class="image-bg">
+              <img
+                :src="
+                  state.member.profileImg
+                    ? state.member.profileImg
+                    : '/images/icon/user-icon-white.svg'
+                "
+                class="image"
+                alt="member-image"
+              />
             </div>
           </div>
 
           <div class="user__info">
             <div class="user__info-fixed">
               <span>닉네임</span>
-              <span v-if="!isResigned">집합 참여</span>
-              <span v-if="!isResigned">인기도</span>
+              <span v-if="!state.member.resigned">집합 참여</span>
+              <span v-if="!state.member.resigned">인기도</span>
             </div>
-
             <div class="user__info-flexible">
               <span>{{ state.member.nickname }}</span>
-              <span v-if="isResigned" class="resigned-member"
-                >탈퇴한 회원입니다!</span
-              >
-              <span v-if="!isResigned"
-                >{{ state.member.participatedCount }} 회</span
-              >
-              <span v-if="!isResigned">{{ state.member.fame }} 점</span>
+              <span>{{ state.member.participatedCount }} 회</span>
+              <span>{{ state.member.fame }} 점</span>
             </div>
           </div>
-
-          <div v-if="!isResigned" class="ban__wrap">
+          <div class="ban__wrap">
             <span
               v-show="reportOn"
               @click.prevent="onClickReport"
@@ -136,7 +171,6 @@ async function onClickKick() {
               <span class="icon icon-siren-white"></span>
               신고하기
             </span>
-
             <span
               v-show="kickOn"
               @click="onClickKick"
@@ -155,4 +189,10 @@ async function onClickKick() {
 
 <style scoped>
 @import url(../../../../resources/static/css/member/member/profile-modal.css);
+.resigned {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 </style>
