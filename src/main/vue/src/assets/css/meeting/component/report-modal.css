@@ -11,7 +11,7 @@
     background-color: var(--dark-grey2);
     color: var(--white);
     margin:0 15px 0 0;
-    width:60px;
+    width:90px;
 }
 
 .modal-report #report-btn{
@@ -174,7 +174,7 @@
 	}
 
     .modal-report #cancel-btn{
-        width:100px;
+        width:130px;
     }
 
 }

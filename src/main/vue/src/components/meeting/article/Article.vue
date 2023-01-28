@@ -170,7 +170,7 @@ async function onClickCloseBtn() {
 }
 
 function onDelete() {
-  currentControlType.value = controlType[4];
+  currentControlType.value = controlType[3];
   controlModalOn.value = !controlModalOn.value;
 }
 
