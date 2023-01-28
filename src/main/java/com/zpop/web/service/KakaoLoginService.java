@@ -1,7 +1,6 @@
 package com.zpop.web.service;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,14 +11,15 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.zpop.web.dao.MemberDao;
-import com.zpop.web.dao.NotificationDao;
-import com.zpop.web.dao.ParticipationDao;
+import com.zpop.web.dao.ReportedMemberDao;
+import com.zpop.web.dto.BlockedMemberDto;
 import com.zpop.web.entity.Member;
 
 @Service
 public class KakaoLoginService implements LoginService{
 	
-	private MemberDao memberDao;
+	private final MemberDao memberDao;
+	private final ReportedMemberDao reportedMemberDao;
 	
 	private final String DOMAIN_URL="https://kauth.kakao.com";
 	private final String URI = "/oauth/token";
@@ -31,19 +31,14 @@ public class KakaoLoginService implements LoginService{
 	
 	@Autowired
 	public KakaoLoginService(MemberDao memberDao,
+			ReportedMemberDao reportedMemberDao,
 			@Value("${KAKAO_CLIENT_ID}") String CLIENT_ID,
 			@Value("${KAKAO_REDIRECT_URI}") String REDIRECT_URI) {
 		this.memberDao = memberDao;
 		this.CLIENT_ID = CLIENT_ID;
 		this.DIRECT_URI = REDIRECT_URI;
+		this.reportedMemberDao = reportedMemberDao;
 	}
-	
-	@Autowired
-	private NotificationDao notificationDao;
-	
-	@Autowired
-	private ParticipationDao participationDao;
-	
 	
 	public String getAccessToken(String code, String state) throws IOException, InterruptedException {
 
@@ -97,5 +92,10 @@ public class KakaoLoginService implements LoginService{
 	@Override
 	public Member getMemberInfo(String socialId) {
 		return memberDao.getBySocialId(socialId);
+	}
+
+	@Override
+	public BlockedMemberDto getBlockedMemberById(int memberId) {
+		return reportedMemberDao.getBlockedMemberByMemberId(memberId);
 	}
 }

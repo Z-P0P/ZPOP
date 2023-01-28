@@ -26,8 +26,8 @@
 }
 
 .modal__content-container--content1{
-  	transform: translateX(-100vw);
-  }
+  	transform: translateX(-100%);
+}
 
 
 @media (min-width: 576px) {
@@ -63,10 +63,6 @@
     height: 100%;
     background-color: var(--white);
     border-radius: 0 0 10px 10px;
-  }
-    
-  .modal__content-container--content1{
-  	transform: translateX(-480px);
   }
 }
 

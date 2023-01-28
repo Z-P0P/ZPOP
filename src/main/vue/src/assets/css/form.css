@@ -136,3 +136,117 @@ input{
     75% { transform: translateY(-2px) rotate(-10deg) }
     100% { transform: translateY(0) rotate(0) }
 }
+
+.meeting-form-container {
+    padding: 0 20px;
+    max-width: 996px;
+    width: 100%;
+    box-shadow: none;
+}
+
+
+@media (min-width:576px) {
+    .meeting-form-container {
+        padding: 64px 20px;
+        margin-top: 50px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.meeting-form {
+    display: flex;
+    max-width: 790px;
+    row-gap: 24px;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.meeting-form * {
+    font-size: 1rem;
+}
+
+/* error 메세지 출력 라벨 크기가 16px로 적용되는 현상 해결 */
+.meeting-form .input__message {
+    font-size: 14px;
+}
+
+
+@media (min-width:576px) {
+    .meeting-form * {
+        font-size: 1.125rem;
+    }
+
+
+}
+
+
+@media (min-width:576px) {
+    .meeting-form {
+        margin: 0 auto;
+    }
+}
+
+
+.meeting-form__default-info {
+    display: grid;
+    column-gap: 1.5rem;
+    grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width:576px) {
+    .meeting-form__default-info {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.meeting-form__title {
+    display: none;
+}
+
+@media (min-width:576px) {
+    .meeting-form__title {
+        display: block;
+        align-self: center;
+        color: var(--tiffany-blue);
+        font-weight: 600;
+        font-size: 36px;
+    }
+        
+
+}
+
+.meeting-form legend {
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 1rem 0;
+    width: 100%;
+    border-bottom: 2px solid var(--tiffany-blue);
+    margin-bottom: 1.5rem;
+    grid-area: legend;
+    color: var(--dark-grey2);
+}
+
+
+.meeting-form__input {
+    display: flex;
+    flex-direction: column;
+}
+
+.meeting-form__input .ql-container {
+    min-height: 300px;
+}
+
+
+.meeting-form__buttons {
+    align-self: flex-end;
+}
+
+.form-input-container>span {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.form-input-container>*:not(span) {
+    margin-top: 0.5rem;
+}
