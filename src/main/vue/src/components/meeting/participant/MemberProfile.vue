@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref } from "vue";
-import ReportUser from "@/components/member/ReportUser.vue";
+import ReportUser from "@/components/report/ReportUser.vue";
 import DefaultModal from "@/components/modal/Default.vue";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import { useMemberStore } from "@/stores/memberStore";
@@ -69,7 +69,7 @@ function setReportOn() {
 }
 
 function onClickReport() {
-  reportModalOn.value = true;
+    reportModalOn.value = true;
   //emit('closeModal')
 }
 
@@ -91,6 +91,7 @@ function setKickOn() {
 async function onClickKick() {
   kickModalOn.value = true;
 }
+
 </script>
 
 <template>
@@ -170,7 +171,7 @@ async function onClickKick() {
       </div>
     </div>
   </div>
-  <ReportUser @closeModal="closeModal" v-if="reportModalOn" />
+  <ReportUser @closeModal="closeModal" v-if="reportModalOn" :reportedMemberId="props.memberId"/>
   <!-- <default-modal></default-modal> -->
 </template>
 
