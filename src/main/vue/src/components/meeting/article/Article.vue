@@ -11,6 +11,7 @@
           <SelectModal 
             @on-click-delete="onDelete"
             :role="selectModalRole"
+            
             v-if="!isSelectModalClosed"
           />
         </span>
@@ -18,11 +19,13 @@
       </div>
 
       <div class="start-datetime-container">
-        <span class="icon icon-calender16"></span>
+        <!-- <span class="icon icon-calender16"></span> -->
+        <span :class="calenderClass"></span>
         <span>{{ meetingDetailStore.textStartedAt }}</span>
       </div>
       <div class="region-container">
-        <span class="icon-location16"></span>
+      <!--   <span class="icon-location16"></span> -->
+        <span :class="locationClass"></span>
 
         <span>{{ meetingDetailStore.region }}</span>
         <span>{{ meetingDetailStore.regionName }}</span>
@@ -89,9 +92,46 @@ import RoundDisabled from "@/components/button/RoundDisabled.vue";
 import ControlModal from "./ControlModal.vue";
 import SelectModal from "./SelectModal.vue";
 
+
 const memberStore = useMemberStore();
 const loginModalStore = useLoginModalStore();
 const meetingDetailStore = useMeetingDetailStore();
+
+const width = ref(window.innerWidth)
+
+const calenderClass = computed(() => {
+      return {
+        'icon icon-calender16': width.value <= 575,
+        'icon icon-calendar20': width.value > 576
+      }
+    })
+    const locationClass = computed(() => {
+      return {
+        'icon icon-location16': width.value <= 575,
+        'icon icon-location20': width.value > 576
+      }
+    })
+    
+    window.addEventListener("resize", () => {
+      width.value = window.innerWidth
+    })
+
+
+// const applyReactiveClass = computed(()=> {
+//   let width;
+
+//   if(window.matchMedia("(max-width: 567px)").matches){
+//     width=0;
+//     console.log(width);
+//     console.log("반응형적용");
+//     return width;
+//   }else if(window.matchMedia("(min-width: 568px)").matches) {
+//     width=1;
+//     console.log(width);
+//     return width;
+//   }
+  
+// });
 
 // 셀렉트 모달
 const isSelectModalClosed = ref(true);
@@ -157,9 +197,9 @@ function onDelete() {
 }
 </script>
 
-<style>
+<style scoped>
 @import url(@/assets/css/meeting/article.css);
-
+@import url(@/assets/css/icon.css);
 .title-container .kebab{
   position:relative;
 }
@@ -168,4 +208,29 @@ function onDelete() {
   overflow: visible;
   text-indent: 0px;
 }
+.start-datetime-container{
+  color: var(--dark-grey2);
+}
+
+@media (min-width: 576px) {
+  .start-datetime-container{
+  align-items: center;
+}  
+.region-container{
+  color: var(--dark-grey2);
+  align-items: center;
+  display: flex;
+
+}
+
+.region-container > span {
+  margin-right: 4px;
+}
+
+.region-detail-wrap {
+  margin-left: 29px;
+}
+}
+
+
 </style>
