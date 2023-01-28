@@ -2,7 +2,7 @@
 import {defineEmits, reactive, computed, ref, defineProps} from "vue";
 import api from "@/api";
 import SelectBox from '../meeting/SelectBox.vue';
-import ReportCompleteModal from './ReportCompleteModal.vue'
+import ReportCompleteModal from './ReportCompleteModal.vue';
 
 const emit = defineEmits(['closeModal']);
 const props = defineProps({
@@ -11,6 +11,13 @@ const props = defineProps({
 const isMissed = ref(false);
 const isCompleted = ref(false);
 const isDuplicated = ref(false);
+const meetingReportReason = ref("");
+
+// 사용자 신고를 위한 세가지 데이터
+const reportedMeetingId = props.meetingId;
+const meetingReportType = computed(()=>{
+    return selectInput.currentValue;
+})
 
 const selectInput = reactive({
     id : 'reportUser',
@@ -35,13 +42,6 @@ const optionClickhandler = (id,placeholder,dataId) =>{
     selectInput.isOpened = false;
     selectInput.currentValue = dataId;
 }
-
-// 사용자 신고를 위한 세가지 데이터
-const reportedMeetingId = props.meetingId;
-const meetingReportType = computed(()=>{
-    return selectInput.currentValue;
-})
-const meetingReportReason = ref("");
 
 function report(reportedMeetingId,meetingReportType,meetingReportReason){
    if(meetingReportType==0){
