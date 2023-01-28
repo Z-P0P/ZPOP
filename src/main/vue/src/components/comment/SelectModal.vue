@@ -5,10 +5,9 @@
     import CommentReportModal from '../report/ReportComment.vue';
     
     const cmtStore = useCommentStore();
-    const props = defineProps(['role', 'commentId', 'groupId']);
+    const props = defineProps(['isMyComment', 'commentId', 'groupId']);
     const emit = defineEmits(['onEdit']);
     
-    console.log(props.role + " : "+ props.commentId)
     // 셀렉트 모달 on/off
     let selectModalOn = ref(true);
     // 댓글 모달 on/off
@@ -21,16 +20,17 @@
 
     function closeCommentModal() {
         commentModalOn.value = false;
+        cmtStore.selectModalStatus[props.commentId] = true;
     }
 
     function closeReportModal(){
         reportModalOn.value = false;
     }
 
-    async function onClickDeleteSelectOption() {
+     function onClickDeleteSelectOption() {
         currentSelectType.value = selectType[0];
-        commentModalOn.value = !commentModalOn.value;
         selectModalOn.value = !selectModalOn.value;
+        commentModalOn.value = !commentModalOn.value;
     }
 
     async function onClickEditSelectOption(e){
@@ -49,8 +49,7 @@
 </script>
 
 <template>
-    <!-- 댓글 (작성자)-->
-    <div v-if="role === 'writer'" v-show="selectModalOn" class="modal-select select-box__options comment__kebob">
+    <div v-if="isMyComment" v-show="selectModalOn" class="modal-select select-box__options comment__kebob">
         <div class="modal-select__contents" 
                 @click="onClickEditSelectOption">수정
             <span class="icon icon-edit"></span>
@@ -61,15 +60,14 @@
         </div>
     </div>
 
-    <!-- 댓글 (기본유저)-->
-    <div v-if="role === 'member'" v-show="selectModalOn" class="modal-select select-box__options comment__kebob">
+    <div v-if="!isMyComment" v-show="selectModalOn" class="modal-select select-box__options comment__kebob">
         <div class="modal-select__contents modal-select__contents--report"
                 @click="onClickReportSelectOption">댓글 신고
             <span class="icon icon-siren-red"></span>
         </div>
     </div>
     <CommentModal
-        v-if="commentModalOn"
+        v-show="commentModalOn"
         :selectType="currentSelectType"
         :commentId="commentId"
         :groupId="groupId"
