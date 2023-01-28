@@ -10,11 +10,6 @@ const rplyStore = useReplyStore();
 const emit = defineEmits([
   'counterIncreased'
 ]);
-
-
-function increaseCounter(){
-  emit('counterIncreased');
-}
 </script>
 
 <template>
@@ -22,7 +17,7 @@ function increaseCounter(){
     <li v-for="(reply, index) in rplyStore.comments[commentId].replyList" :key="index"> 
       <Reply 
         :reply="reply" 
-        @counterIncreased="increaseCounter"
+        @counterIncreased="emit('counterIncreased')"
       />
     </li>
 </ul>

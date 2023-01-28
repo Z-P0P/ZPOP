@@ -26,10 +26,6 @@
     
     defineExpose({textInputRef});
 
-    function cancelWrite(){
-        emit('cancelClicked');
-    }
-
     function registerReply(){
         const data = {};
         data.meetingId = props.reply.meetingId;
@@ -65,7 +61,7 @@
         placeholder="답글을 입력하세요." ref="textInputRef"></textarea>
         <div class="reply__btn-container">
             <span   class="reply__btn btn btn-round btn-cancel cancel-btn" 
-                @click="cancelWrite"
+                @click="emit('cancelClicked')"
             >취소하기</span>
             <span   v-if="isB2Active"
                 class="reply__btn btn btn-round btn-action" 

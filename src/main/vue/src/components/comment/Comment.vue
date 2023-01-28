@@ -1,10 +1,10 @@
 <script setup>
   import { nextTick, ref } from 'vue';
-  import ReplyList from "./ReplyList.vue";
   import { useMemberStore } from "@/stores/memberStore";
   import { useLoginModalStore } from "@/stores/loginModalStore";
   import { useReplyStore } from '@/stores/replyStore'
   import { useCommentStore } from '@/stores/CommentStore'
+  import ReplyList from "./ReplyList.vue";
   import InputBox from './InputBox.vue';
   import SelectModal from './SelectModal.vue';
 
