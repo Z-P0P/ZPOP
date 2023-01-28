@@ -118,12 +118,11 @@ public interface MeetingService {
 	/**
 	 * 참여자를 내보내기.
 	 * 
-	 * 해당 participantId의 참여자를 주최자가 내보낸다.
+	 * 해당 participantId의 참여자(탈퇴 포함)를 주최자가 내보낸다.
 	 * 만약 존재하지 않는 id의 모임이거나, 모임이 이미 삭제 되었다면, 예외를 던진다.
 	 * {@link Meeting 모임}의 id와 주최자의 id가 일치하지 않는다면, 내보낼 수 없다.
 	 * {@link Participation 참여자}들 중, participantId가 존재하지 않는다면, 예외를 던진다.
 	 * {@link Participation 참여자}가 이미 내보내졌다면, 예외를 던진다.
-	 * {@link Member 참여자}가 만약 탈퇴 회원이라면, 참여 취소 처리후 예외를 던진다.
 	 * 또 자기자신을 내보낼 수 없다.
 	 * 
 	 * @param id 모임 아이디
@@ -131,7 +130,7 @@ public interface MeetingService {
 	 * @param hostId 주최자 아이디  
 	 * @return 성공 여부
 	 */
-	boolean kick(int id, int participantId, Member member); //TODO: 시큐리티
+	boolean kick(int id, int participantId, int hostId);
 
 	/**
 	 * 모임을 마감하기.
