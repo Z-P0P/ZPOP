@@ -23,6 +23,17 @@ async function registerComment(dataJSONStr){
         return await fetch(url,option);
       }
 /*
+댓글 수정
+*/
+async function updateComment(commentId, dataJSONStr){
+        const option = {
+          method: "PATCH",
+          headers: {"Content-Type": "application/json"},
+              body: dataJSONStr,
+        }
+        return await fetch(`/api/comment/${commentId}`,option);
+      }
+/*
 답글 등록
 */
 async function registerReply(dataJSONStr){
@@ -50,6 +61,7 @@ export default {
     getCommentList,
     getReplyList,
     registerComment,
+    updateComment,
+    deleteComment,
     registerReply,
-    deleteComment
 }

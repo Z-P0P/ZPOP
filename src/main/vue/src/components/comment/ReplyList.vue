@@ -20,7 +20,10 @@ function increaseCounter(){
 <template>
   <ul class="reply__list">
     <li v-for="(reply, index) in rplyStore.comments[commentId].replyList" :key="index"> 
-       <Reply :reply="reply" @counterIncreased="increaseCounter"/>
+      <Reply 
+        :reply="reply" 
+        @counterIncreased="increaseCounter"
+      />
     </li>
 </ul>
 </template>

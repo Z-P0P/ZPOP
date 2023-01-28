@@ -49,18 +49,6 @@ export const useCommentStore = defineStore('comment',
             setMeetingId(id){
                 this.meetingId = id;
             },
-            markForEdit(commentId){
-                this.commentList.forEach((c)=>{
-                    if(c.id == commentId)
-                        c['markedForEdit'] = true;
-                });
-            },
-            getMarkedComment(id){
-               this.commentList.forEach((c)=>{
-                if(c.id===id) 
-                    return c;
-               });
-            }
         },
         getters:{
         }
