@@ -1,13 +1,21 @@
 <template>
     <Transition>
-        <Modal v-if="route.query.login" class="loginModal">
+        <Modal v-if="route.query.login" class="login-modal">
             <template #modal-body>
-                <div>
-                    <div class="modal__content-container">
+                <div class="overflow-x-hidden">
+                    <div class="modal__content-container" :class="{'modal__content-container--content1' : isRequesting}">
                         <div class="modal__content">
-                            <loading-roller :isShow="true" />
-                            <div class="register-status__text">
-                                <div class="register-status__message">로그인 중</div>
+                            <div class="icon-cancel"></div>
+                            <div class="login-modal__message">
+                                <div>{{ error.reason }} </div>
+                                <div v-for="(details, index) in error.details" :key="index">{{ details }}</div>
+                            </div>
+                            <router-link :to="{path: '/'}" class="btn btn-round">확인</router-link>
+                        </div>
+                        <div class="modal__content">
+                            <PageLoader class="page-loader"/>
+                            <div class="login-modal__message">
+                                <div>로그인 중</div>
                             </div>
                         </div>
                     </div>
@@ -23,15 +31,21 @@
 import { useRoute, useRouter } from 'vue-router';
 import { useMemberStore } from "@/stores/memberStore";
 import Modal from '@/components/modal/Default.vue';
-import LoadingRoller from '@/components/LoadingRoller.vue'
+import PageLoader from '@/components/PageLoader.vue'
+import {ServerException} from '@/utils/ServerException'
+import { ref,reactive } from 'vue';
 
 const memberStore = useMemberStore();
 
 const route = useRoute();
 const router = useRouter();
+const isRequesting = ref(true);
+const error = reactive({
+    reason : "",
+    details : "",
+})
 
 const emit = defineEmits(['memberRegisterRequired','close']);
-
 const requestOAuth = () => {
     const oauthLoginUrl = `/api/login/oauth/${route.query.login}?code=${route.query.code}&state=${route.query.state}`;
 
@@ -39,6 +53,11 @@ const requestOAuth = () => {
     .then(res => res.json())
     .then(data => {
         console.log("성공 : fetch oauthLoginUrl ");
+
+        if(data.status === 403){
+            console.log(data);
+            throw new ServerException(data);
+        }
 
         if(data.code==="REGISTER_REQUIRED"){
             emit('memberRegisterRequired');
@@ -56,16 +75,20 @@ const requestOAuth = () => {
         const redirectRoute = localStorage.getItem("redirect-route");
         if (redirectRoute) {
             localStorage.removeItem("redirect-route");
+            emit('close');
             router.push(redirectRoute);
         }
         else{
+            emit('close');
             router.push({path: '/'});
         }
     })
     .catch((err) => {
-        console.info("Login.vue err", err)
-        alert("로그인에 오류가 발생했음");
-        router.push({path: '/'});
+        console.log(err);
+        const errInfo = err.res;
+        isRequesting.value = false;
+        error.reason = errInfo.message;
+        error.details = errInfo.details;
     });
 }
 
@@ -77,6 +100,16 @@ if (route.query.login){
 </script>
 
 <style scoped>
+@import url('@/assets/css/component/modal.css');
+
+.overflow-x-hidden{
+    overflow-y:hidden;
+}
+
+.page-loader{
+    margin-top:40px;
+}
+
 .register-status__text{
     margin-top: 60px;
     margin-bottom: 10px;
@@ -94,7 +127,27 @@ if (route.query.login){
   opacity: 0;
 }
 
-.loginModal{
+.login-modal{
     z-index:10000;
+}
+
+.modal__content {
+    display: grid;
+    justify-items: center;
+    row-gap: 20px;
+    flex: 0 0 100%;
+    grid-template-rows: 100px 100px;
+    grid-template-columns: auto;
+}
+
+.login-modal__message{
+    display:flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+
+.modal__content .btn{
+    margin-top: 20px;
 }
 </style>

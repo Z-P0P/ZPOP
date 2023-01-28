@@ -122,4 +122,13 @@
 			</foreach>
 		</where>
 	</select>
+	<select id="getBlockedMemberByMemberId" resultType="BlockedMemberDto">
+		SELECT 
+			reportedId,
+			blockedAt,
+			reportedType,
+			max(releasedAt) AS releasedAt
+		FROM BlockedMember
+		WHERE reportedId = #{memberId}
+	</select>
 </mapper>

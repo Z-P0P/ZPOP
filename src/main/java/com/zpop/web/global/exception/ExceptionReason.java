@@ -19,6 +19,7 @@ public enum ExceptionReason {
     AUTHORIZATION_ERROR(FORBIDDEN, "권한 에러"),
     KICKED_MEMBER(FORBIDDEN, "모임에 참여할 수 없습니다"),
     NOT_JOIN_MEETING(FORBIDDEN, "참여하지 않은 모임입니다"),
+    BLOCKED_MEMBER(FORBIDDEN, "차단된 사용자입니다."),
 
     // 404
     NOT_FOUND_MEETING(NOT_FOUND, "존재하지 않는 모임입니다"),
