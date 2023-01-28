@@ -1,7 +1,10 @@
 package com.zpop.web.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +27,10 @@ import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.NotificationDao;
 import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.dao.SocialTypeDao;
+import com.zpop.web.dto.BlockedMemberDto;
 import com.zpop.web.entity.Member;
+import com.zpop.web.global.exception.CustomException;
+import com.zpop.web.global.exception.ExceptionReason;
 import com.zpop.web.security.UserSecurityService;
 import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.LoginService;
@@ -78,6 +84,25 @@ public class LoginController {
 		String accessToken = (loginService.getAccessToken(code,state));
 		String socialId = loginService.getSocialId(accessToken);
 		Member member = loginService.getMemberInfo(socialId);
+
+
+		/*
+		 * 사용자가 차단된 기록이 있는지 확인
+		 */
+
+		BlockedMemberDto blockedMember= loginService.getBlockedMemberById(member.getId());
+		
+		if (blockedMember != null){
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy 년 MM 월 dd 일 HH 시 mm 분");
+			List<String> details = new ArrayList<>();
+			String blockedAt = dateFormat.format(blockedMember.getBlockedAt());
+			String releasedAt = dateFormat.format(blockedMember.getReleasedAt());
+			details.add("신고사유 : " + blockedMember.getReportedType());
+			details.add("차단기간 : " + blockedAt + " ~ " + releasedAt);
+			throw new CustomException(ExceptionReason.BLOCKED_MEMBER, details);
+		}
+		
+
 
 		/* 
 		 * 소셜id를 받아와도, 기존에 멤버로 되어있지 않으면 지금 단계에서는 member 추가 X

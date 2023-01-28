@@ -2,8 +2,7 @@ package com.zpop.web.service;
 
 import java.io.IOException;
 
-import org.springframework.stereotype.Component;
-
+import com.zpop.web.dto.BlockedMemberDto;
 import com.zpop.web.entity.Member;
 
 
@@ -15,4 +14,5 @@ public interface LoginService {
 
 	Member getMemberInfo(String socialId);
 
+	BlockedMemberDto getBlockedMemberById(int memberId);
 }
