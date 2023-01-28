@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.zpop.web.dto.BlockedMemberDto;
 import com.zpop.web.dto.admin.AdminReportedMemberDto;
 import com.zpop.web.entity.ReportedMember;
 
@@ -20,4 +21,6 @@ public interface ReportedMemberDao {
 	int updateAll(List<Integer> ids, Date releasedAt);
 
     List<ReportedMember> getByIds(List<Integer> ids);
+
+	BlockedMemberDto getBlockedMemberByMemberId(int memberId);
 }
