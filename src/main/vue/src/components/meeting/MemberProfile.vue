@@ -1,8 +1,13 @@
 <script setup>
 import { reactive, ref } from "vue";
 import ReportUser from "../member/ReportUser.vue";
+import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
+import { useMemberStore } from "@/stores/memberStore";
 import api from "@/api";
 import { ServerException } from "@/utils/ServerException";
+
+const meetingDetailStore = useMeetingDetailStore();
+const memberStore = useMemberStore();
 
 const props = defineProps({
   memberId: Number,
@@ -10,7 +15,6 @@ const props = defineProps({
 const emit = defineEmits(["closeModal"]);
 
 let isResigned = ref(false);
-let isReportModalOpened = ref(false);
 
 const state = reactive({
   member: {
@@ -38,15 +42,45 @@ function setMemberProfile(data) {
   Object.keys(data).forEach((key) => {
     state.member[key] = data[key];
   });
-}
-
-function openReportUserModal() {
-  isReportModalOpened.value = true;
-  //emit('closeModal')
+  setKickOn();
+  setReportOn();
 }
 
 function closeModal() {
-  isReportModalOpened.value = false;
+  reportModalOn.value = false;
+}
+
+// 신고 --------------------------------------------------------------------------
+let reportOn = true;
+const reportModalOn = ref(false);
+
+function setReportOn() {
+  // 내 프로필 보기라면, 신고하기 비활성화
+  if (state.member.id === memberStore.id) {
+    reportOn = false;
+  }
+}
+
+function onClickReport() {
+  reportModalOn.value = true;
+  //emit('closeModal')
+}
+
+// 내보내기 ----------------------------------------------------------------------
+let kickOn = false;
+const kickModalOn = ref(false);
+
+function setKickOn() {
+  // 내 모임 AND 나 외의 참여자라면, 내보내기 활성화
+  if (
+    meetingDetailStore.myMeeting &&
+    meetingDetailStore.regMemberId !== state.member.id
+  )
+    kickOn = true;
+}
+
+async function onClickKick() {
+  kickModalOn.value = true;
 }
 </script>
 
@@ -68,7 +102,7 @@ function closeModal() {
         <div class="profile-container">
           <div class="image-wrap">
             <div class="image-bg">
-              <img v-bind:src="state.member.profileImg" class="image" alt="" />
+              <img :src="state.member.profileImg" class="image" alt="" />
             </div>
           </div>
 
@@ -93,7 +127,8 @@ function closeModal() {
 
           <div v-if="!isResigned" class="ban__wrap">
             <span
-              @click.prevent="openReportUserModal"
+              v-show="reportOn"
+              @click.prevent="onClickReport"
               class="btn btn-semiround report modal__on-btn"
               data-id="member-report"
               data-modal="#modal-report-member"
@@ -102,7 +137,11 @@ function closeModal() {
               신고하기
             </span>
 
-            <span class="btn btn-semiround kick">
+            <span
+              v-show="kickOn"
+              @click="onClickKick"
+              class="btn btn-semiround kick"
+            >
               <span class="icon icon-door"></span>
               내보내기
             </span>
@@ -111,8 +150,7 @@ function closeModal() {
       </div>
     </div>
   </div>
-  <!-- end of sheet -->
-  <ReportUser @closeModal="closeModal" v-if="isReportModalOpened" />
+  <ReportUser @closeModal="closeModal" v-if="reportModalOn" />
 </template>
 
 <style scoped>
