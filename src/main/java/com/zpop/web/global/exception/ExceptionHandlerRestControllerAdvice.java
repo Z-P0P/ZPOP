@@ -30,11 +30,12 @@ public class ExceptionHandlerRestControllerAdvice {
     public ResponseEntity<ExceptionResponseBody> handleCustomException(CustomException e) {
 
         ExceptionReason reason = e.getReason();
+        List<String> details = e.getDetails();
 
         ExceptionResponseBody errorResponse = ExceptionResponseBody.builder()
                 .status(reason.getHttpStatus().value())
                 .message(reason.getMessage())
-                .details(e.getDetails())
+                .details(details)
                 .build();
 
         return ResponseEntity.status(reason.getHttpStatus()).body(errorResponse);
