@@ -1,16 +1,28 @@
 <script setup>
-  import { defineProps, defineEmits, reactive, ref, onMounted,onUpdated } from "vue";
+  import { ref } from "vue";
   import api from "@/api";
+  import { useMemberStore } from "@/stores/memberStore";
+  import { useLoginModalStore } from "@/stores/loginModalStore";
   import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
   import { useCommentStore } from '@/stores/commentStore';
   import Comment from "./Comment.vue";
-
+  
+  const memberStore = useMemberStore();
+  const loginModalStore = useLoginModalStore();
   const mtDetailStore = useMeetingDetailStore();
   const cmtStore = useCommentStore();
+  
   var commentId = 0;
 
-  const inputs = { f1: ref() };
-
+  const inputBox = ref();
+  async function checkLoginStatus(){
+    const isLoggedIn = await memberStore.isAuthenticated();
+    if (!isLoggedIn) {
+      inputBox.value.blur();
+      loginModalStore.handleModal();
+      return;
+    }
+  }
   var isB1Active = ref(false)
   var isB2Active = ref(true)
   var isB3Active = ref(false)
@@ -19,29 +31,31 @@
     isB2Active.value = !isB2Active.value;
     isB3Active.value = !isB3Active.value;
   }
-  onMounted(() => {
-    const input = inputs["f1"].value;
-    input.focus();
-  });
-  function registerComment(refId) {
+  async function registerComment() {
+    const isLoggedIn = await memberStore.isAuthenticated();
+    if(!isLoggedIn){
+      loginModalStore.handleModal();
+      return 
+    }
     const data = {};
     data.meetingId = mtDetailStore.id; //미팅 id
-    const input = inputs['f1'].value;
-    data.content = input.value;
+    data.content = inputBox.value.value;
+    if(data.content===""){
+      alert("글을 입력해주세요");
+      return
+    }
     const dataJSONStr = JSON.stringify(data);
     api.comment.registerComment(dataJSONStr).then((res) => {
       if (res.ok) {
         console.log("댓글 등록됨");
         cmtStore.reloadComment(mtDetailStore,mtDetailStore.id)
-        input.value = "";
-        input.focus();
+        inputBox.value.value = "";
       } else alert("시스템 장애로 등록이 안되고 있습니다");
     });
   }
   /*****************댓글 수정 ******************/
   function onEditComment(e){
     commentId = e.targetId;
-    const input = inputs["f1"].value;
     let content = "";
     cmtStore.commentList.forEach(element => {
       if(element.id == commentId){
@@ -49,29 +63,25 @@
         return 0;
       }
     });
-    input.focus();
-    input.value = content + " ";
+    inputBox.value.focus();
+    inputBox.value.value = content + " ";
     setButtonForEdit();
   }
   function cancelEdit(){
-    const input = inputs["f1"].value;
-    input.focus();
-    input.value = "";
+    inputBox.value.value = "";
     setButtonForEdit();
     cmtStore.selectModalStatus[commentId] = true;
   }
   function saveEdit(){
     const data = {};
     data.id = commentId; 
-    const input = inputs['f1'].value;
-    data.content = input.value;
+    data.content = inputBox.value.value;
     const dataJSONStr = JSON.stringify(data);
     api.comment.updateComment(commentId, dataJSONStr).then((res) => {
       if (res.ok) {
         console.log("댓글 수정됨");
         cmtStore.reloadComment(mtDetailStore,mtDetailStore.id)
-        input.value = "";
-        input.focus();
+        inputBox.value.value = "";
       } else alert("시스템 장애로 등록이 안되고 있습니다");
     });
   }
@@ -83,10 +93,9 @@
     <div class="comment__input-container">
       <textarea
         class="comment__input"
-        name="comment-text"
-        id="comment-text"
         placeholder="댓글을 입력하세요."
-        :ref="inputs.f1"
+        ref="inputBox"
+        @focus="checkLoginStatus"
       ></textarea>
       <div class="comment__btn-container">
         <span  v-if="isB1Active"
@@ -96,7 +105,7 @@
         >
         <span  v-if="isB2Active"
           class="comment__btn btn btn-round btn-action"
-          @click="registerComment('f1')"
+          @click="registerComment"
           >등록하기</span
         >
         <span  v-if="isB3Active"

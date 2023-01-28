@@ -1,5 +1,5 @@
 <script setup>
-    import { defineProps, defineEmits, ref, onMounted } from 'vue';
+    import { ref } from 'vue';
     import api from "@/api";
     import { useReplyStore} from '@/stores/replyStore'
     import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
@@ -13,7 +13,8 @@
     });
     const emit = defineEmits([
         'cancelClicked',
-        'registerCompleted'
+        'registerCompleted',
+        'editSaveClicked'
     ]);
     let groupId = 0;
     if(props.reply.groupId == 0)
@@ -21,13 +22,10 @@
     else 
         groupId = props.reply.groupId;
 
-    const inputs = {f1:ref()}
-    onMounted(() => {
-        const input = inputs['f1'].value;
-        input.focus();
-    })
-
+    const textInputRef = ref();
     
+    defineExpose({textInputRef});
+
     function cancelWrite(){
         emit('cancelClicked');
     }
@@ -37,7 +35,11 @@
         data.meetingId = props.reply.meetingId;
         data.parentCommentId = props.reply.id;
         data.groupId = groupId;
-        const inputBox =  inputs['f1'].value;
+        const inputBox =  textInputRef.value;
+        if(inputBox.value===""){
+            alert("글을 입력해주세요")
+            return 0;
+        }
         data.content = inputBox.value;
         const dataJSONStr = JSON.stringify(data);
         api.comment.registerReply(dataJSONStr)
@@ -60,18 +62,18 @@
         id="reply-text"
         class="reply__input"
         name="reply-input"
-        placeholder="답글을 입력하세요." :ref="inputs.f1"></textarea>
+        placeholder="답글을 입력하세요." ref="textInputRef"></textarea>
         <div class="reply__btn-container">
             <span   class="reply__btn btn btn-round btn-cancel cancel-btn" 
                 @click="cancelWrite"
             >취소하기</span>
             <span   v-if="isB2Active"
                 class="reply__btn btn btn-round btn-action" 
-                @click="registerReply('f1')"
+                @click="registerReply"
             >등록하기</span>
             <span   v-if="isB3Active"
                 class="reply__btn btn btn-round btn-action"
-                @click="saveEdit()"
+                @click="emit('editSaveClicked')"
             >저장하기</span
         >
         </div>
