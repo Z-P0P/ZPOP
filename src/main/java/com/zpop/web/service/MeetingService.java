@@ -126,11 +126,11 @@ public interface MeetingService {
 	 * 또 자기자신을 내보낼 수 없다.
 	 * 
 	 * @param id 모임 아이디
+	 * @param hostId 주최자 아이디
 	 * @param participantId 참여자 아이디
-	 * @param hostId 주최자 아이디  
 	 * @return 성공 여부
 	 */
-	boolean kick(int id, int participantId, int hostId);
+	boolean kick(int id, int hostId, int participantId);
 
 	/**
 	 * 모임을 마감하기.

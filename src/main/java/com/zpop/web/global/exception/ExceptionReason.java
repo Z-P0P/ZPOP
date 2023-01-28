@@ -27,6 +27,7 @@ public enum ExceptionReason {
 
     // 409
     SOCIAL_ID_ALREADY_REGISTERED(CONFLICT, "이미 등록된 소셜 계정입니다."),
+    ALREADY_KICKED(CONFLICT, "이미 강퇴된 참여자입니다"),
     ALREADY_PARTICIPATED(CONFLICT, "이미 참여한 모임입니다.");
 
 

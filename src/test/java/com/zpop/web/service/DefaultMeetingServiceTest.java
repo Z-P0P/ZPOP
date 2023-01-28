@@ -291,7 +291,7 @@ class DefaultMeetingServiceTest {
         given(memberDao.getById(anyInt())).willReturn(new Member());
 
         // when
-        boolean result = service.kick(meetingId, participantId, member);
+        boolean result = service.kick(meetingId, participantId, member.getId());
 
         // then
         assertThat(result).isEqualTo(true);
@@ -311,7 +311,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.kick(meetingId, participantId, member));
+            () -> service.kick(meetingId, participantId, member.getId()));
         
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -334,7 +334,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.kick(meetingId, participantId, member));
+            () -> service.kick(meetingId, participantId, member.getId()));
         
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
@@ -362,7 +362,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-            () -> service.kick(meetingId, participantId, member));
+            () -> service.kick(meetingId, participantId, member.getId()));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -392,7 +392,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> service.kick(meetingId, participantId, member));
+                () -> service.kick(meetingId, participantId, member.getId()));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -423,7 +423,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> service.kick(meetingId, participantId, member));
+                () -> service.kick(meetingId, participantId, member.getId()));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
@@ -458,7 +458,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> service.kick(meetingId, participantId, member));
+                () -> service.kick(meetingId, participantId, member.getId()));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -489,7 +489,7 @@ class DefaultMeetingServiceTest {
 
         //when
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> service.kick(meetingId, participantId, member));
+                () -> service.kick(meetingId, participantId, member.getId()));
 
         //then
         assertThat(e.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);

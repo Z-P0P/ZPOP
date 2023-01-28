@@ -332,18 +332,15 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public boolean kick(int id, int participantId, Member member) {
+	public boolean kick(int id, int hostId, int participantId) {
 		Meeting foundMeeting = findById(id);
 
-		int memberId = member.getId();
+		if (foundMeeting.getRegMemberId() != hostId)
+			throw new CustomException(ExceptionReason.AUTHORIZATION_ERROR);
 
-		if (foundMeeting.getRegMemberId() != memberId)
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
-
+		// 모임의 참여자들 중, participantId가 있는지 확인
 		List<Participation> participations = participationDao.getListByMeetingId(id);
-
 		Participation kickTarget = null;
-
 		for (Participation p : participations) {
 			if (p.getParticipantId() == participantId) {
 				kickTarget = p;
@@ -352,25 +349,14 @@ public class DefaultMeetingService implements MeetingService {
 		}
 
 		if (kickTarget == null || kickTarget.getCanceledAt() != null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "모임에 참여하지 않는 회원입니다");
-
+			new CustomException(ExceptionReason.NOT_FOUND_MEMBER);
 		if (kickTarget.getBannedAt() != null)
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 강퇴된 회원입니다");
-
-		// 탈퇴한 회원인지 확인 후
-		// 탈퇴한 회원이라면 참여 취소처리한다.
-		int kickTargetMemberId = kickTarget.getParticipantId();
-		Member kickTargetMember = memberDao.getById(kickTargetMemberId);
-		if (kickTargetMember.getResignedAt() != null) {
-			participationDao.updateCanceledAt(kickTargetMemberId);
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다");
-		}
-
+			new CustomException(ExceptionReason.ALREADY_KICKED);
 		// 자기자신을 강퇴하려 할 때
-		if (kickTargetMemberId == member.getId())
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 내보낼 수 없습니다");
+		if (kickTarget.getParticipantId() == hostId)
+			new CustomException(ExceptionReason.VALIDATION_ERROR);
 
-		participationDao.updateBannedAt(kickTarget.getId());
+		participationDao.updateBannedAt(participantId);
 
 		return true;
 	}
