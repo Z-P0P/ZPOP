@@ -3,6 +3,7 @@ package com.zpop.web.controller;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,15 +92,21 @@ public class LoginController {
 		 */
 
 		BlockedMemberDto blockedMember= loginService.getBlockedMemberById(member.getId());
-		
+
+		// 만약 db에 차단 기록이 있다면
 		if (blockedMember != null){
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy 년 MM 월 dd 일 HH 시 mm 분");
-			List<String> details = new ArrayList<>();
-			String blockedAt = dateFormat.format(blockedMember.getBlockedAt());
-			String releasedAt = dateFormat.format(blockedMember.getReleasedAt());
-			details.add("신고사유 : " + blockedMember.getReportedType());
-			details.add("차단기간 : " + blockedAt + " ~ " + releasedAt);
-			throw new CustomException(ExceptionReason.BLOCKED_MEMBER, details);
+			Date currentDate = new Date();
+			// 차단종료일자(releasedAt) 이 현재 날짜보다 이후라면 예외 처리 (차단된 사용자)
+			if (blockedMember.getReleasedAt().after(currentDate)){
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy 년 MM 월 dd 일 HH 시 mm 분");
+				List<String> details = new ArrayList<>();
+				// 예외에는 사유를 전달 (신고사유, 차단기간)
+				String blockedAt = dateFormat.format(blockedMember.getBlockedAt());
+				String releasedAt = dateFormat.format(blockedMember.getReleasedAt());
+				details.add("신고사유 : " + blockedMember.getReportedType());
+				details.add("차단기간 : " + blockedAt + " ~ " + releasedAt);
+				throw new CustomException(ExceptionReason.BLOCKED_MEMBER, details);
+			}			
 		}
 		
 
