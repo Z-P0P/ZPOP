@@ -90,6 +90,13 @@ function remove(id) {
   });
 }
 
+/**
+ * 연락처 얻기
+ */
+function getContact(id) {
+  return fetch(`/api/meeting/${id}/contact`);
+}
+
 export default {
   getThumbnailList,
   getDetail,
@@ -102,4 +109,5 @@ export default {
   leave,
   close,
   remove,
+  getContact,
 };

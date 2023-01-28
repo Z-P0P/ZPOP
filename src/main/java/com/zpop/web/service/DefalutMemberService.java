@@ -7,6 +7,8 @@ import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.dto.ProfileResponse;
 import com.zpop.web.entity.*;
 import com.zpop.web.entity.member.MyMeetingView;
+import com.zpop.web.global.exception.CustomException;
+import com.zpop.web.global.exception.ExceptionReason;
 import com.zpop.web.utils.TextDateTimeCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -227,48 +229,39 @@ public class DefalutMemberService implements MemberService {
     }
 
     @Override
-    public ProfileResponse getParticipant(int id) {
-        
-        // id 로 해당 사용자를 찾는다
+    public ProfileResponse getProfile(int id) {
+
         Member member = getById(id);
-        // 만약 id에 해당 사용자가 없다면 404 예외를 얻는다
-        // 만약 탈퇴한 회원이라면 바로 응답하여 탈퇴한 회원임을 사용자에게 보여준다.
         if(member==null)
-            System.out.println("탈퇴한 회원입니다");
-        
-        boolean isResigned;
-        if(member.getResignedAt()!=null)
-            isResigned = true;
-        else 
-            isResigned = false;
+            throw new CustomException(ExceptionReason.NOT_FOUND_MEMBER);
 
-        // 찾아온 멤버 객체에서 id, nickname, fame , imgPath 추출한다
+        if(member.getResignedAt() != null) {
+            return new ProfileResponse(
+                    0,
+                    "",
+                    0,
+                    "",
+                    true,
+                    0
+            );
+        }
+        // 해당 사용자의 모임 참여 횟수 조회
+        int participatedCount = 0;
+        List<Participation> participationList = participationDao.getListByParticipantId(id);
 
-        // 참여 Dao 로 해당 사용자의 참여 리스트 모두 가져온다.
-        List<Participation> participationList = participationDao.getListByMeetingId(id);
+        for(Participation p : participationList) {
+            if( p.getBannedAt()==null && p.getCanceledAt()==null )
+                participatedCount++;
+        }
 
-        int participatedMeetingNumber=0;
-        for(Participation p : participationList)
-            if(p.getBannedAt()!=null && p.getCanceledAt()!=null)
-                participatedMeetingNumber++;
-        
-        // 참여한 모임이 0 개인 경우 바로 응답
-        if(participatedMeetingNumber!=0)
-            System.out.println("banned, canceled meetings");
-        // 밴, 취소한 모임은 개수는 제외한다.
-
-       
-
-        ProfileResponse participant = new ProfileResponse(
-            member.getId(),
-            member.getNickname(),
-            member.getFame(),
-            member.getProfileImagePath(),
-            isResigned,
-            participatedMeetingNumber
+        return new ProfileResponse(
+                member.getId(),
+                member.getNickname(),
+                member.getFame(),
+                member.getProfileImagePath(),
+                false,
+                participatedCount
         );
-
-        return participant;
     }
 
 

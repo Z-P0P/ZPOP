@@ -50,12 +50,10 @@
     padding: calc(var(--tooltip-height)/ 2);
     z-index: 10;
     visibility: hidden;
-    transition: visibility 0.5s 0.2s;
-
 }
 
-.tooltip:hover > span{
-    transition: visibility 0.2s 0.5s;
+.tooltip--hover:hover > span{
+    opacity: 1;
     visibility: visible;
 }
 
@@ -67,8 +65,14 @@
     transition: visibility 0.2s 0.5s, opacity 0.2s 0.5s;
 }
 
-.tooltip:hover > span.tooltip-solid{
+.tooltip--hover:hover > span.tooltip-solid{
     opacity: 1;
+}
+
+.tooltip--appear > span.tooltip-solid{
+    animation-name: fadein;
+    animation-duration: 4s;
+    animation-direction: alternate;
 }
 
 /* 대상 hover 시 투명 배경의 툴팁이 나오는 경우
@@ -79,7 +83,7 @@
     animation-delay: 0.5s;
 }
 
-.tooltip:hover > span.tooltip-transparent{
+.tooltip--hover:hover > span.tooltip-transparent{
     animation-name: scroll-out;
     animation-duration: 0.2s;
     animation-delay: 0.5s;
@@ -184,4 +188,21 @@
 
 .tooltip-solid-bottom{
     top:calc(100% + var(--triangle-height));
+}
+
+@keyframes fadein {
+    0%{
+        opacity: 0;
+        visibility: visible;
+    }
+    5%{
+        opacity: 1;
+    }
+    90%{
+        opacity: 1;
+    }
+    to{
+        visibility: hidden;
+    }
+
 }

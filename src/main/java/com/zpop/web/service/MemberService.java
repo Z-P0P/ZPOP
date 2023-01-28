@@ -19,7 +19,7 @@ public interface MemberService {
         List<MyMeetingResponse> getMyGathering(int memberId);
         List<EvalMemberDto> getEvalMember(int meetingId);
         Map<String,Object> getRateData(EvalDto dto);
-        ProfileResponse getParticipant(int id);
+        ProfileResponse getProfile(int id);
 
         Map<String, Object> checkNicknameValid(String nickname);
         int updateNickname(int memberId, String nickname);

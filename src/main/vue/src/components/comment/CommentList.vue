@@ -1,35 +1,80 @@
 <script setup>
-import { defineProps, defineEmits, reactive, ref, onMounted,onUpdated } from "vue";
-import api from "@/api";
-import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
-import { useCommentStore } from '@/stores/commentStore';
-import Comment from "./Comment.vue";
+  import { defineProps, defineEmits, reactive, ref, onMounted,onUpdated } from "vue";
+  import api from "@/api";
+  import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
+  import { useCommentStore } from '@/stores/commentStore';
+  import Comment from "./Comment.vue";
 
-const mtDetailStore = useMeetingDetailStore();
-const cmtStore = useCommentStore();
+  const mtDetailStore = useMeetingDetailStore();
+  const cmtStore = useCommentStore();
+  var commentId = 0;
 
-const inputs = { f1: ref() };
-onMounted(() => {
-  const input = inputs["f1"].value;
-  input.focus();
-});
-const commentList = reactive([]);
-function registerComment(refId) {
-  const data = {};
-  data.meetingId = mtDetailStore.id; //미팅 id
-  const input = inputs[refId].value;
-  data.content = input.value;
-  const dataJSONStr = JSON.stringify(data);
-  api.comment.registerComment(dataJSONStr).then((res) => {
-    if (res.ok) {
-      console.log("댓글 등록됨");
-      cmtStore.reloadComment(mtDetailStore,mtDetailStore.id)
-      input.value = "";
-      input.focus();
-    } else alert("시스템 장애로 등록이 안되고 있습니다");
+  const inputs = { f1: ref() };
+
+  var isB1Active = ref(false)
+  var isB2Active = ref(true)
+  var isB3Active = ref(false)
+  function setButtonForEdit(){
+    isB1Active.value = !isB1Active.value;
+    isB2Active.value = !isB2Active.value;
+    isB3Active.value = !isB3Active.value;
+  }
+  onMounted(() => {
+    const input = inputs["f1"].value;
+    input.focus();
   });
-}
-
+  function registerComment(refId) {
+    const data = {};
+    data.meetingId = mtDetailStore.id; //미팅 id
+    const input = inputs['f1'].value;
+    data.content = input.value;
+    const dataJSONStr = JSON.stringify(data);
+    api.comment.registerComment(dataJSONStr).then((res) => {
+      if (res.ok) {
+        console.log("댓글 등록됨");
+        cmtStore.reloadComment(mtDetailStore,mtDetailStore.id)
+        input.value = "";
+        input.focus();
+      } else alert("시스템 장애로 등록이 안되고 있습니다");
+    });
+  }
+  /*****************댓글 수정 ******************/
+  function onEditComment(e){
+    commentId = e.targetId;
+    const input = inputs["f1"].value;
+    let content = "";
+    cmtStore.commentList.forEach(element => {
+      if(element.id == commentId){
+        content = element.content;
+        return 0;
+      }
+    });
+    input.focus();
+    input.value = content + " ";
+    setButtonForEdit();
+  }
+  function cancelEdit(){
+    const input = inputs["f1"].value;
+    input.focus();
+    input.value = "";
+    setButtonForEdit();
+    cmtStore.selectModalStatus[commentId] = true;
+  }
+  function saveEdit(){
+    const data = {};
+    data.id = commentId; 
+    const input = inputs['f1'].value;
+    data.content = input.value;
+    const dataJSONStr = JSON.stringify(data);
+    api.comment.updateComment(commentId, dataJSONStr).then((res) => {
+      if (res.ok) {
+        console.log("댓글 수정됨");
+        cmtStore.reloadComment(mtDetailStore,mtDetailStore.id)
+        input.value = "";
+        input.focus();
+      } else alert("시스템 장애로 등록이 안되고 있습니다");
+    });
+  }
 </script>
 
 <template>
@@ -44,19 +89,19 @@ function registerComment(refId) {
         :ref="inputs.f1"
       ></textarea>
       <div class="comment__btn-container">
-        <span class="reply__btn btn btn-round btn-cancel cancel-btn hidden"
+        <span  v-if="isB1Active"
+          class="comment__btn btn btn-round btn-cancel cancel-btn"
+          @click = "cancelEdit"
           >취소하기</span
         >
-        <span
-          class="comment__btn btn btn-round btn-action modal__on-btn"
-          id="register-btn"
-          data-modal="#dummy-modal"
+        <span  v-if="isB2Active"
+          class="comment__btn btn btn-round btn-action"
           @click="registerComment('f1')"
           >등록하기</span
         >
-        <span
-          class="hidden comment__btn btn btn-round btn-action"
-          id="edit-save-btn"
+        <span  v-if="isB3Active"
+          class="comment__btn btn btn-round btn-action"
+          @click="saveEdit()"
           >저장하기</span
         >
       </div>
@@ -66,6 +111,7 @@ function registerComment(refId) {
         <Comment
           :comment="comment"
           @counterIncreased="mtDetailStore.increaseCommentCount"
+          @onEdit="onEditComment"
         />
       </li>
     </ul>

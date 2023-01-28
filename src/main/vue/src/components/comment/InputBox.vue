@@ -2,10 +2,14 @@
     import { defineProps, defineEmits, ref, onMounted } from 'vue';
     import api from "@/api";
     import { useReplyStore} from '@/stores/replyStore'
-
+    import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
+    
+    const mtDetailStore = useMeetingDetailStore();
     const rplyStore = useReplyStore();
     const props = defineProps({
-        reply:Object
+        reply:Object,
+        isB2Active: Boolean,
+        isB3Active: Boolean
     });
     const emit = defineEmits([
         'cancelClicked',
@@ -22,6 +26,8 @@
         const input = inputs['f1'].value;
         input.focus();
     })
+
+    
     function cancelWrite(){
         emit('cancelClicked');
     }
@@ -38,12 +44,6 @@
         .then(async res=>{
             if(res.ok){
                 console.log("답글 등록됨");
-                const data = await rplyStore.getReplyList(groupId);
-                rplyStore.comment.id = groupId;
-                rplyStore.comment.replyList.length=0;
-                for(const r of data.resultObject) {
-                    rplyStore.comment.replyList.push(r);
-                }
                 inputBox.value = "";
                 emit('registerCompleted');
             }
@@ -51,6 +51,7 @@
                 alert("시스템 장애로 등록이 안되고 있습니다")
         })
     }
+    
 </script>
 
 <template>
@@ -61,8 +62,18 @@
         name="reply-input"
         placeholder="답글을 입력하세요." :ref="inputs.f1"></textarea>
         <div class="reply__btn-container">
-            <span class="reply__btn btn btn-round btn-cancel cancel-btn" id="reply-cancel" @click="cancelWrite">취소하기</span>
-            <span class="reply__btn btn btn-round btn-action register-btn" @click="registerReply('f1')">등록하기</span>
+            <span   class="reply__btn btn btn-round btn-cancel cancel-btn" 
+                @click="cancelWrite"
+            >취소하기</span>
+            <span   v-if="isB2Active"
+                class="reply__btn btn btn-round btn-action" 
+                @click="registerReply('f1')"
+            >등록하기</span>
+            <span   v-if="isB3Active"
+                class="reply__btn btn btn-round btn-action"
+                @click="saveEdit()"
+            >저장하기</span
+        >
         </div>
         </div> 
     </template>

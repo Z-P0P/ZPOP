@@ -12,6 +12,7 @@ public class CommentView {
 	private int parentCommentId;
 	private int groupId;
 	private Date createdAt;
+	private Date updatedAt;
 	private Date deletedAt;
 	private int parentMemberId;
 	private String parentNickname;
@@ -61,6 +62,10 @@ public class CommentView {
 
 	public Date getCreatedAt() {
 		return createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
 
 	public Date getDeletedAt() {

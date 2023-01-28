@@ -26,7 +26,8 @@ public interface ParticipationDao {
      */
     List<ParticipationInfoView> getParticipantInfoByMeetingId(int meetingId);
 
-    int[] getListByParticipantId(int participantId);
+    List<Participation> getListByParticipantId(int participantId);
+    int[] getIdsUnEvaluatedByParticipantId(int participantId);
 
 	int countBySearch(String keyword, String option);
 

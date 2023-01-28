@@ -6,16 +6,33 @@
       </div>
       <div class="title-container">
         <h2 class="title">{{ meetingDetailStore.title }}</h2>
-        <span @click="closeSelectModal" class="kebab icon icon-kebab">
+        <span
+          @click="closeSelectModal"
+          class="kebab icon icon-kebab tooltip"
+          :class="{ 'tooltip--appear': tooltipCopyShow }"
+        >
+          <span
+            v-show="tooltipCopyShow"
+            class="tooltip-solid tooltip-solid-left"
+          >
+            링크가 복사되었어요!
+          </span>
           <!-- role에 writer를 바인딩하면 작성자 기준 모달, participant를 바인딩하면 참여자 기준 모달, member를 바인딩하면 일반 로그인 사용자 모달이 나온다. -->
-          <SelectModal 
+          <SelectModal
             @on-click-delete="onDelete"
+            @on-click-copy="onClickCopy"
+            @on-click-report="handleMeetingReportModal"
             :role="selectModalRole"
             
             v-if="!isSelectModalClosed"
           />
         </span>
         <img src="" alt="" />
+        <MeetingReportModal
+          @closeModal="handleMeetingReportModal"
+          :meetingId="meetingDetailStore.id"
+          v-if="isMeetingReportModalOpened"
+        />
       </div>
 
       <div class="start-datetime-container">
@@ -89,6 +106,7 @@ import Round from "@/components/button/Round.vue";
 import RoundDisabled from "@/components/button/RoundDisabled.vue";
 import ControlModal from "./ControlModal.vue";
 import SelectModal from "./SelectModal.vue";
+import MeetingReportModal from "../../report/ReportMeeting.vue";
 
 
 const memberStore = useMemberStore();
@@ -116,17 +134,17 @@ const calenderClass = computed(() => {
 
 
 
+const isMeetingReportModalOpened = ref(false);
+
 // 셀렉트 모달
 const isSelectModalClosed = ref(true);
 
 const selectModalRole = computed(() => {
   let role = "member";
-  if(meetingDetailStore.myMeeting)
-    role = "writer";
-  else if(meetingDetailStore.hasParticipated)
-    role = "participant"
+  if (meetingDetailStore.myMeeting) role = "writer";
+  else if (meetingDetailStore.hasParticipated) role = "participant";
   return role;
-})
+});
 
 function closeSelectModal() {
   isSelectModalClosed.value = !isSelectModalClosed.value;
@@ -135,7 +153,7 @@ function closeSelectModal() {
 // 참여, 마감, 참여취소, 링크 모달 on/off
 const controlModalOn = ref(false);
 
-const controlType = ["참여", "참여취소", "마감", "참여링크", "삭제"];
+const controlType = ["참여", "참여취소", "마감", "삭제"];
 const currentControlType = ref("");
 
 function closeControlModal() {
@@ -175,19 +193,32 @@ async function onClickCloseBtn() {
 }
 
 function onDelete() {
-  currentControlType.value = controlType[4];
+  currentControlType.value = controlType[3];
   controlModalOn.value = !controlModalOn.value;
+}
+
+const tooltipCopyShow = ref(false);
+
+function onClickCopy() {
+  tooltipCopyShow.value = true;
+  setTimeout(() => {
+    tooltipCopyShow.value = false;
+  }, 4000);
+}
+
+function handleMeetingReportModal() {
+  isMeetingReportModalOpened.value = !isMeetingReportModalOpened.value;
 }
 </script>
 
 <style scoped>
 @import url(@/assets/css/meeting/article.css);
 @import url(@/assets/css/icon.css);
-.title-container .kebab{
-  position:relative;
+.title-container .kebab {
+  position: relative;
 }
 
-.title-container .icon{
+.title-container .icon {
   overflow: visible;
   text-indent: 0px;
 }

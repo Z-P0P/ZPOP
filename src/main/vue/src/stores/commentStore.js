@@ -48,6 +48,8 @@ export const useCommentStore = defineStore('comment',
             },
             setMeetingId(id){
                 this.meetingId = id;
-            }
+            },
+        },
+        getters:{
         }
     });

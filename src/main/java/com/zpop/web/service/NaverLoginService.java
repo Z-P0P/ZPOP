@@ -11,13 +11,16 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.zpop.web.dao.MemberDao;
+import com.zpop.web.dao.ReportedMemberDao;
+import com.zpop.web.dto.BlockedMemberDto;
 import com.zpop.web.entity.Member;
 
 
 @Service
 public class NaverLoginService implements LoginService{
 	
-	private MemberDao memberDao;
+	private final MemberDao memberDao;
+	private final ReportedMemberDao reportedMemberDao;
 	private final String TOKEN_DOMAIN_URL="https://nid.naver.com";
 	private final String URI = "/oauth2.0/token";
 	private final String GRANT_TYPE = "authorization_code";
@@ -29,11 +32,13 @@ public class NaverLoginService implements LoginService{
 	
 	@Autowired
 	public NaverLoginService(MemberDao memberDao
+			, ReportedMemberDao reportedMemberDao
 			, @Value("${NAVER_CLIENT_ID}") String CLIENT_ID
 			, @Value("${NAVER_CLIENT_SECRET}") String CLIENT_SECRET) {
 		this.memberDao = memberDao;
 		this.CLIENT_ID = CLIENT_ID;
 		this.CLIENT_SECRET = CLIENT_SECRET;
+		this.reportedMemberDao = reportedMemberDao;
 	}
 	
 	public String getAccessToken(String code, String state) throws IOException, InterruptedException {
@@ -88,6 +93,9 @@ public class NaverLoginService implements LoginService{
 		return memberDao.getBySocialId(socialId);
 	}
 	
-	
+	@Override
+	public BlockedMemberDto getBlockedMemberById(int memberId) {
+		return reportedMemberDao.getBlockedMemberByMemberId(memberId);
+	}
 	
 }
