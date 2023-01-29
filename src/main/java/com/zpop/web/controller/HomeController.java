@@ -23,6 +23,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 @Controller
+@RequestMapping("/")
 public class HomeController {
 
     @Autowired
@@ -35,9 +36,9 @@ public class HomeController {
         this.meetingService = meetingService;
     }
 
-    @GetMapping("/")  // 루트 (index.html을 위해) 혹은 web 접근시에 Vue 프로젝트의 view 호출
-    public String viewMapping() {
-        return "forward:/index.html";
+    @RequestMapping  // 루트 (index.html을 위해) 혹은 web 접근시에 Vue 프로젝트의 view 호출
+    public String index() {
+        return "index.html";
     }
 
     @GetMapping("/search/{keyword}")
