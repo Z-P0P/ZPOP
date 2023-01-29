@@ -184,7 +184,12 @@ function onClickCopy() {
 }
 
 function handleMeetingReportModal() {
-  isMeetingReportModalOpened.value = !isMeetingReportModalOpened.value;
+
+  if(!memberStore.id){
+    loginModalStore.show();
+    return;
+  } else
+    isMeetingReportModalOpened.value = !isMeetingReportModalOpened.value;
 }
 </script>
 

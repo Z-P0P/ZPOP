@@ -3,7 +3,11 @@
     import CommentModal from './CommentModal.vue';
     import { useCommentStore } from '@/stores/commentStore.js';
     import CommentReportModal from '../report/ReportComment.vue';
+    import { useMemberStore } from "@/stores/memberStore";
+    import { useLoginModalStore } from "@/stores/loginModalStore";
     
+    const memberStore = useMemberStore();
+    const loginModalStore = useLoginModalStore();
     const cmtStore = useCommentStore();
     const props = defineProps(['isMyComment', 'commentId', 'groupId']);
     const emit = defineEmits(['onEdit']);
@@ -49,7 +53,11 @@
     async function onClickReportSelectOption(){
         currentSelectType.value = selectType[2];
         selectModalOn.value = !selectModalOn.value;
-        reportModalOn.value = !reportModalOn.value;
+        const isLoggedIn = await memberStore.isAuthenticated();
+        if (!isLoggedIn) {
+          loginModalStore.handleModal();
+          return;
+        }
     }
 
 </script>
