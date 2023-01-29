@@ -114,7 +114,7 @@
       <td align="center"><a href="https://github.com/a-ryang"><img src="https://avatars.githubusercontent.com/u/105474635?v=4" width="50" alt=""/><br /><sub><b>김찬우 : 리더</b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/dladnqls222"><img src="https://avatars.githubusercontent.com/u/69413567?v=4" width="50" alt=""/><br /><sub><b>임우빈 : </b></sub></a><br /></td>
      <tr/>
-      <td align="center"><a href="https://github.com/amy-pak)"><img src="https://avatars.githubusercontent.com/u/117254352?v=4" width="50" alt=""/><br /><sub><b>임형미 : </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/amy-pak"><img src="https://avatars.githubusercontent.com/u/117254352?v=4" width="50" alt=""/><br /><sub><b>임형미 : </b></sub></a><br /></td>
     </tr>
   </tbody>
 </table>
