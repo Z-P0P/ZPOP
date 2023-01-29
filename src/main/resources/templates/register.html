@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{inc/layout}">
+<head>
+<script src="/js/member/register.js" defer></script>
+</head>
+<body>
+	<main layout:fragment="content">
+		<div id="modal-register" class="modal-wrapper">
+			<div class="modal">
+				<div class="modal__header">
+					<span class="modal__close-btn icon icon-x"
+						data-modal="#modal-register">닫기</span>
+				</div>
+				<div class="modal__body">
+					<div class="modal__content-container">
+						<div class="modal__content">
+							<div class="logo-img">
+								<img src="/images/logo/logo-modal.svg" alt="" class="src">
+							</div>
+							<div class="modal-register__nickname-form input-text">
+								<label class="input-text__label" for="">집합에서 사용할 닉네임을
+									입력해주세요.</label>
+								<div class="input-text__content-wrapper">
+									<input class="input-text__content" type="text"
+										placeholder="최소 2글자, 최대 10글자까지 입력 가능" maxlength="10" spellcheck="false">
+								</div>
+								<span class="input__message"></span> <span
+									class="btn btn-semiround" id="set-nickname-btn">닉네임 설정</span>
+							</div>
+						</div>
+						<div class="modal__content">
+							<div class="greetings">
+								<p>
+									<img src="/images/logo/logo-only-text.svg"><span>에 오신걸 환영해요!</span>
+								</p>
+								<p>
+									😉 집합에 새로오신 ‘<span class="greetings__nickname">나홀로집에</span>’님!
+								</p>
+							</div>
+							<div class="pros">
+								<div>집합은 이런 점이 좋아요!</div>
+								<ol>
+									<li>1. 간편하게 모임을 만들 수 있어요!</li>
+									<li>2. 다양한 카테고리의 모임이 있어요!</li>
+									<li>3. 전국 어디든 모일 수 있어요!</li>
+								</ol>
+							</div>
+							<div class="go-home">
+								<div>그럼 지금부터,</div>
+								<div>우리만의 교집합을 만들어 볼까요?😆</div>
+								<a class="btn btn-semiround btn-action" href="/">좋아요!</a>
+							</div>
+						</div>
+					</div>
+				</div>
+	</main>
+</body>
+</html>

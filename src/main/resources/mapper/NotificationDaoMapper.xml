@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zpop.web.dao.NotificationDao">
+	 <select id="getListByMemberId" resultType="Notification">
+		SELECT * 
+		FROM notification 
+		WHERE memberId = #{memberId} and readAt IS null;
+	</select>
+	<update id="update">
+		UPDATE notification SET readAt = #{readAt} WHERE id = #{id};
+	</update>
+	<update id="updateByType">
+		UPDATE notification SET readAt = #{readAt} WHERE type = #{type} AND memberId = #{memberId};
+	</update>
+	  <insert id="insertNotification">
+  		INSERT INTO notification
+  				(memberId, url, type)
+  				values(#{memberId},#{url},#{type})
+  	</insert>
+	<update id="updateAllById">
+		UPDATE notification SET readAt = #{readAt} WHERE readAt IS NULL AND memberId = #{memberId};
+	</update>
+
+	<update id="updateAllByType">
+		UPDATE notification SET readAt = #{readAt} WHERE readAt IS NULL AND memberId = #{memberId} AND type = 1;
+	</update>
+</mapper>
