@@ -42,6 +42,7 @@
   height: 3rem;
   flex: 0 0 3rem;
   content: "";
+  z-index: 1;
 }
 
 .add-deco-img-left,
@@ -153,6 +154,10 @@
 
 .deco-img-calendar::before{
   background-image: url(/images/icon/calendar.svg);
+}
+
+.deco-img-lock::before{
+  background-image: url(/images/icon/lock.svg); 
 }
 
 @media (max-width: 576px) {
