@@ -174,9 +174,18 @@ public class MeetingController {
 			@PathVariable(name = "id") int id,
 			@AuthenticationPrincipal ZpopUserDetails userDetails
 	) {
-		System.out.println("id = " + id);
 		int memberId = userDetails.getId();
 		service.delete(id, memberId);
+		return ResponseEntity.noContent().build();
+	}
+
+	@DeleteMapping("/kick")
+	public ResponseEntity<Void> kick(
+			@AuthenticationPrincipal ZpopUserDetails userDetails,
+			@RequestBody KickDto dto
+	) {
+		int memberId = userDetails.getId();
+		service.kick(dto.getMeetingId(), memberId, dto.getParticipantId());
 		return ResponseEntity.noContent().build();
 	}
 }
