@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zpop.web.dto.admin.AdminReportedCommentDto;
-import com.zpop.web.dto.admin.AdminReportedMeetingDto;
-import com.zpop.web.dto.admin.AdminReportedMemberDto;
+import com.zpop.web.dto.admin.report.AdminReportedCommentDto;
+import com.zpop.web.dto.admin.report.AdminReportedMeetingDto;
+import com.zpop.web.dto.admin.report.AdminReportedMemberDto;
 import com.zpop.web.service.admin.AdminReportService;
 
 @RequestMapping("/api/admin/report")

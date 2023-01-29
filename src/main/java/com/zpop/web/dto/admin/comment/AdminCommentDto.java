@@ -1,5 +1,5 @@
 
-package com.zpop.web.dto.admin;
+package com.zpop.web.dto.admin.comment;
 
 import java.util.Date;
 

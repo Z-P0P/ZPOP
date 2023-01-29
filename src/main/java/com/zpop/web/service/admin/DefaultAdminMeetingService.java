@@ -21,10 +21,10 @@ import com.zpop.web.dto.ContactTypeDto;
 import com.zpop.web.dto.RegionDto;
 import com.zpop.web.dto.RegisterMeetingViewResponse;
 import com.zpop.web.dto.admin.AdminCategoryDto;
-import com.zpop.web.dto.admin.AdminMeetingDetailsDto;
-import com.zpop.web.dto.admin.AdminMeetingDetailsResponse;
-import com.zpop.web.dto.admin.AdminMeetingDto;
 import com.zpop.web.dto.admin.AdminRegionDto;
+import com.zpop.web.dto.admin.meeting.AdminMeetingDetailsDto;
+import com.zpop.web.dto.admin.meeting.AdminMeetingDetailsResponse;
+import com.zpop.web.dto.admin.meeting.AdminMeetingDto;
 import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.entity.participation.ParticipationInfoView;
 

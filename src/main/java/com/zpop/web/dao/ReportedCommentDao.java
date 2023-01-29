@@ -6,8 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.zpop.web.entity.ReportedComment;
-import com.zpop.web.dto.admin.AdminReportedCommentDto;
-import com.zpop.web.entity.Notification;
+import com.zpop.web.dto.admin.report.AdminReportedCommentDto;
 
 @Mapper
 public interface ReportedCommentDao {

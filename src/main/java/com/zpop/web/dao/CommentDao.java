@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.zpop.web.dto.admin.AdminCommentDto;
+import com.zpop.web.dto.admin.comment.AdminCommentDto;
 import com.zpop.web.entity.comment.Comment;
 import com.zpop.web.entity.comment.CommentView;
 /*
