@@ -1,3 +1,12 @@
+- [우리의 연결고리, ZPOP 🔗](#우리의-연결고리-zpop-)
+    + [Why,    ZPOP?](#why----zpop)
+  * [🤗 ZPOP을 소개할게요!](#-zpop을-소개할게요)
+    + [1️⃣ 아름다운 메인화면](#1%EF%B8%8F⃣-아름다운-메인화면)
+    + [2️⃣ 모임글 상세 페이지](#2%EF%B8%8F⃣-모임글-상세-페이지)
+    + [3️⃣ 마이 페이지](#3%EF%B8%8F⃣-마이-페이지)
+  * [😇 ZPOP, 이렇게 만들어 졌어요](#-zpop-이렇게-만들어-졌어요)
+
+
 ![banner-mobile](https://user-images.githubusercontent.com/112043767/211700312-f813576c-021c-4f95-bc31-246c9148a476.png)
 # 우리의 연결고리, ZPOP 🔗
 > 전국 어디에서나, 누구나 간편하게 소모임을 할 수 있도록 ✨
@@ -92,3 +101,13 @@
  </br> </br> 
 
  ##  😇 ZPOP, 이렇게 만들어 졌어요
+ 
+ - 집합은 1차 프로젝트, 2차 프로젝트로 나누어서 진행되었습니다. **1차에서는 SSR**을, **2차에서는 CSR**을 경험해보고자 각각 다른 기술을 적용했습니다.
+ - 디자인툴은 <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white"/>를 적극 활용했고, 화면에 필요한 요소들을 컴포넌트화 하여 재사용 하였습니다. 
+ - 🔗 zpop 피그마 컴포넌트: https://www.figma.com/file/Ug16ED7PmEvtBf8teRGQ4H/zpop?node-id=2276%3A11417
+ - 🔗 zpop 피그마 와이어프레임: https://www.figma.com/file/Ug16ED7PmEvtBf8teRGQ4H/zpop?node-id=3042%3A12593 
+ - 🔗 요구사항 정의: https://docs.google.com/spreadsheets/d/1QLnvMP7997wVLx-a5OiTFW89l1vF0pdsxA09jqrmlWc/edit#gid=0
+ - 🔗 역할자: https://www.figma.com/file/oih71So7yI6LtdCeHDFFlf/%EC%97%AD%ED%95%A0%EC%9E%90
+ - 🔗 ERD
+ ![논리야 놀자](https://user-images.githubusercontent.com/112043767/215304946-fdcdaea7-4ec9-4b4f-b1f4-ecafbf9fb491.png)
+
