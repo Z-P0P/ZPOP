@@ -16,7 +16,7 @@
             <ul>
                 <li><span>ID</span>
                     <button @click="reverseOrder">
-                        <img src="/images/icon/up-down.svg" alt="">
+                        <img src="../../../../public/images/icon/up-down.svg" alt="">
                     </button>
                 </li>
                 <li class="admin-tb-2">신고자(id)</li>

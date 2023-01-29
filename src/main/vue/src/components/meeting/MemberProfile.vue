@@ -56,7 +56,7 @@ function closeModal() {
   reportModalOn.value = false;
 }
 
-// 신고 --------------------------------------------------------------------------
+
 let reportOn = true;
 const reportModalOn = ref(false);
 
@@ -112,7 +112,7 @@ async function onClickKick() {
           <div class="image-wrap">
             <div class="image-bg">
               <img
-                src="/images/no-rusult-ghost.svg"
+                src="../../../public/images/no-rusult-ghost.svg"
                 class="image"
                 alt="resigned"
               />
