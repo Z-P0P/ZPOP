@@ -4,7 +4,7 @@
 
 <template>
   <div class="content-wrap">
-    <img src="/images/lock.svg" alt="lock image" />
+    <img src="../../public/images/lock.svg" alt="lock image" />
     <h1>권한이 없어요 !</h1>
     <router-link to="/" class="btn btn-semiround btn-action home">
       홈으로</router-link

@@ -7,7 +7,7 @@
     v-for="(item,index) in selectedRegions" :key="index"
     :data-region-id="item.id">
         <span>{{item.name}}</span>
-        <img @click.stop="cancelRegionHandler($event,index)" class="meeting-active-option" src="/images/icon/x-white.svg" alt="delete-region">
+        <img @click.stop="cancelRegionHandler($event,index)" class="meeting-active-option" src="../../../../public/images/icon/x-white.svg" alt="delete-region">
     </div>
 </template>
 

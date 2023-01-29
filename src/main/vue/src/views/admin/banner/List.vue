@@ -22,14 +22,14 @@
             <ul>
                 <li><span>ID</span>
                     <button @click="reverseOrder">
-                        <img src="/images/icon/up-down.svg" alt="">
+                        <img src="../../../../public/images/icon/up-down.svg" alt="">
                     </button>
                 </li>
                 <li class="admin-tb-2">제목</li>
                 <li class="admin-tb-1 list-content__order">
                     <span>순서</span>
                     <button @click="reverseOrder">
-                        <img src="/images/icon/up-down.svg" alt="">
+                        <img src="../../../../public/images/icon/up-down.svg" alt="">
                     </button>
                 </li>
                 <li class="admin-tb-3">이미지</li>
