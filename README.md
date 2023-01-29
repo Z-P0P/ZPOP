@@ -1,4 +1,13 @@
 
+
+![banner-mobile](https://user-images.githubusercontent.com/112043767/211700312-f813576c-021c-4f95-bc31-246c9148a476.png)
+# 우리의 연결고리, ZPOP 🔗
+> 전국 어디에서나, 누구나 간편하게 소모임을 할 수 있도록 ✨
+
+
+ </br> 
+ 
+ ## Contents
 - [우리의 연결고리, ZPOP 🔗](#우리의-연결고리-zpop-)
     + [🤔 Why,    ZPOP?](#-why----zpop)
   * [🤗 ZPOP을 소개할게요!](#-zpop을-소개할게요)
@@ -6,16 +15,12 @@
     + [2️⃣ 모임글 상세 페이지](#2%EF%B8%8F⃣-모임글-상세-페이지)
     + [3️⃣ 마이 페이지](#3%EF%B8%8F⃣-마이-페이지)
   * [😇 ZPOP, 이렇게 만들어 졌어요](#-zpop-이렇게-만들어-졌어요)
-    + [저희 팀원들을 소개합니다](#저희-팀원들을-소개합니다-)
-    + [ZPOP을 만들기 위한 초석들](#zpop-을-만들기-위한-초석들-)
-    + [이런 기술을 사용했어요](#이런-기술을-사용했어요-)
-
-![banner-mobile](https://user-images.githubusercontent.com/112043767/211700312-f813576c-021c-4f95-bc31-246c9148a476.png)
-# 우리의 연결고리, ZPOP 🔗
-> 전국 어디에서나, 누구나 간편하게 소모임을 할 수 있도록 ✨
-
-
- </br>
+    + [저희 팀원들을 소개합니다](#-저희-팀원들을-소개합니다)
+    + [ZPOP을 만들기 위한 초석들](#-zpop-을-만들기-위한-초석들)
+    + [이런 기술을 사용했어요](#-이런-기술을-사용했어요)
+  * [🙄 What's Next?](#-whats-next)  
+  
+     </br></br> 
 
 ## 🤔 Why,    ZPOP?
 - 기존에 사용하던 당근마켓의 동네모임이나, 소모임 어플은 동네사람들만 모일 수 있거나 어플이 너무 복잡하고 많은 기능을 담고 있다고 생각했습니다.
@@ -44,13 +49,9 @@
  
  </br>
  
- 
- <p align="center"><img src="https://user-images.githubusercontent.com/112043767/215289582-7fbe12d8-274d-4a9a-a72f-b40183af1cf0.png" width="30%" height="60%"></p>
-
-![image](https://user-images.githubusercontent.com/112043767/215288758-f3c2b9ec-b14d-44af-bdca-c9109488b5d2.png)
-
-![메인](https://user-images.githubusercontent.com/112043767/215290919-bd74d3e1-9218-4f27-b2bc-166b0af7d031.gif)
-
+| 모바일 | 데스크탑 | 반응형 |
+| :---: | :---: | :---: |
+| <img src="https://user-images.githubusercontent.com/112043767/215289582-7fbe12d8-274d-4a9a-a72f-b40183af1cf0.png">  | <img src="https://user-images.githubusercontent.com/112043767/215288758-f3c2b9ec-b14d-44af-bdca-c9109488b5d2.png" >| <img src="https://user-images.githubusercontent.com/112043767/215290919-bd74d3e1-9218-4f27-b2bc-166b0af7d031.gif"  >|
 
 
 
@@ -64,12 +65,11 @@
 - 클린한 집합을 위해! 부적절한 게시글, 댓글, 사용자에 대해서는 신고가 가능합니다 🚨
 
 </br> 
-<p align="center"><img src="https://user-images.githubusercontent.com/112043767/215292160-dee58f4d-8c18-4a29-9fa4-e1d70b81951e.png" width="30%" height="60%"></p>
-
-![디테일](https://user-images.githubusercontent.com/112043767/215291171-798763c1-69e1-4ca0-b2f3-7a468e62f6a1.gif)
-![image](https://user-images.githubusercontent.com/112043767/215291189-27a10606-98d4-437a-9819-8ad852f28704.png)
 
 
+| 모바일 | 데스크탑 | 반응형 |
+| :---: | :---: | :---: |
+| <img src="https://user-images.githubusercontent.com/112043767/215292160-dee58f4d-8c18-4a29-9fa4-e1d70b81951e.png">  | <img src="https://user-images.githubusercontent.com/112043767/215291189-27a10606-98d4-437a-9819-8ad852f28704.png" >| <img src="https://user-images.githubusercontent.com/112043767/215291171-798763c1-69e1-4ca0-b2f3-7a468e62f6a1.gif"  >|
 
 
 
@@ -84,28 +84,24 @@
 - 많은 참여 = 많은 인기도 = 당신은 집합 스타 ⭐
 
 
-</br> 
-<p align="center"><img src="https://user-images.githubusercontent.com/112043767/215292791-2f09afc2-0b16-4370-924c-239ecc980b1d.png" width="30%" height="60%">
-<img src="https://user-images.githubusercontent.com/112043767/215292761-e6ae8e44-44e6-4bb4-824b-6907726000d3.png" width="30%" height="60%">
-<img src="https://user-images.githubusercontent.com/112043767/215293148-3a069573-2e2d-477c-968c-113342284b55.png" width="30%" height="60%">
-</p>
+</br>
 
-</br> </br> 
-<p align="center">
+| 모바일: 내 프로필 | 모바일: 내 프로필 수정 | 모바일: 내가 참여한 모임 |
+| :---: | :---: | :---: |
+| <img src="https://user-images.githubusercontent.com/112043767/215292791-2f09afc2-0b16-4370-924c-239ecc980b1d.png">  | <img src="https://user-images.githubusercontent.com/112043767/215292761-e6ae8e44-44e6-4bb4-824b-6907726000d3.png" >| <img src="https://user-images.githubusercontent.com/112043767/215293148-3a069573-2e2d-477c-968c-113342284b55.png"  >|
 
-<img src="https://user-images.githubusercontent.com/112043767/215293580-260a2d87-4650-4ebf-b3a2-c497910d175b.gif" width="30%" height="60%">
-<img src="https://user-images.githubusercontent.com/112043767/215293558-3ad49381-9666-4f78-8f4c-ca8e6ccce587.gif" width="30%" height="60%">
-<img src="https://user-images.githubusercontent.com/112043767/215293582-546300a8-d9ee-4ff6-9fb9-b759ac7e2b99.gif" width="30%" height="60%">
-</p>
-
-<hr>
+| 모바일: 닉네임 변경 | 모바일: 사진 변경 | 모바일: 내가 참여한 모임 - 평가하기 |
+| :---: | :---: | :---: |
+| <img src="https://user-images.githubusercontent.com/112043767/215293580-260a2d87-4650-4ebf-b3a2-c497910d175b.gif">  | <img src="https://user-images.githubusercontent.com/112043767/215293558-3ad49381-9666-4f78-8f4c-ca8e6ccce587.gif" >| <img src="https://user-images.githubusercontent.com/112043767/215293582-546300a8-d9ee-4ff6-9fb9-b759ac7e2b99.gif"  >|
 
 
  </br> </br> 
 
  ##  😇 ZPOP, 이렇게 만들어 졌어요
  
- ### 저희 팀원들을 소개합니다 👨‍💻
+ ### 👨‍💻 저희 팀원들을 소개합니다 
+ 
+ <br />
  <table>
   <tbody>
     <tr>
@@ -121,60 +117,73 @@
 
 - 저희 팀은 5명으로 이루어져 있습니다.
 - 프로젝트는 대면위주로 약 3개월간 진행되었습니다.
-- 깃 커밋 컨벤션과 PR 규칙을 정해서 깃을 적극적으로 활용해보고자 했습니다.
+- 깃 커밋 컨벤션과 PR 규칙을 정해서 깃을 적극적으로 활용해보고자 했습니다!
 - **내용 추가해주세요**
 
- ### ZPOP 을 만들기 위한 초석들 🗿
+<br /><br /> <br />
+
+ ### 🗿 ZPOP 을 만들기 위한 초석들 
  
 
  - 사용자의 요구사항을 엑셀 스프레드시트에 정리하며 확인 하였습니다.
- - 디자인툴은 <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white"/>를 적극 활용했고, 화면에 필요한 요소들을 컴포넌트화 하여 재사용 했습니다.
+ - 디자인툴은 `Figma` 를 적극 활용했고, 화면에 필요한 요소들을 컴포넌트화 하여 재사용 했습니다.
  - 피그마로 사용자화면을 먼저 만들고 ➡ 그 후에 화면에서 필요한 역할자를 도출 ➡ 개념적 , 논리적 , 물리적 설계 순서로 진행 하였습니다.
- - 정규화를 거쳐 최종적으로 만들어진 테이블은 23개 입니다.
- 
-
--  [ 요구사항 정의 바로가기 🔗 ](https://docs.google.com/spreadsheets/d/1QLnvMP7997wVLx-a5OiTFW89l1vF0pdsxA09jqrmlWc/edit#gid=0 )
-
-<p align="center"> <img src="https://user-images.githubusercontent.com/112043767/215306831-d92b81b4-0ced-43ad-a09d-a2cab10b2c35.png"></p>
-
-<br /><br />
+ - 정규화를 거쳐 최종적으로 만들어진 테이블은 23개 입니다. 
  
  
--  [피그마 컴포넌트 바로가기 🔗 ](https://www.figma.com/file/Ug16ED7PmEvtBf8teRGQ4H/zpop?node-id=2276%3A11417)
-<p align="center"> <img src="https://user-images.githubusercontent.com/112043767/215306495-8edd9a62-a8d5-4dfe-8310-ed61a0498271.png"></p>
-
-
-<br /><br />
-
-
--  [피그마 와이어프레임 바로가기 🔗 ](https://www.figma.com/file/Ug16ED7PmEvtBf8teRGQ4H/zpop?node-id=3042%3A12593 )
+  <br /> <br />
  
 
-<p align="center"> <img src="https://user-images.githubusercontent.com/112043767/215306473-42f4e628-8edb-4753-93f2-147d3856d016.png"></p>
- 
-<br /><br />
 
+| [ 요구사항 정의 바로가기 🔗 ](https://docs.google.com/spreadsheets/d/1QLnvMP7997wVLx-a5OiTFW89l1vF0pdsxA09jqrmlWc/edit#gid=0 ) | [ 역할자 바로가기 🔗 ](https://www.figma.com/file/oih71So7yI6LtdCeHDFFlf/%EC%97%AD%ED%95%A0%EC%9E%90 ) |
+| :---: | :---: |
+| <img src="https://user-images.githubusercontent.com/112043767/215306831-d92b81b4-0ced-43ad-a09d-a2cab10b2c35.png">  | <img src="https://user-images.githubusercontent.com/112043767/215318745-6da62d0e-c18c-4e7b-8519-1a1cb7433b79.png" >|
 
+<br /> <br /> 
 
--  [ 역할자 바로가기 🔗 ](https://www.figma.com/file/oih71So7yI6LtdCeHDFFlf/%EC%97%AD%ED%95%A0%EC%9E%90 )
- 
- <p align="center"> <img src="https://user-images.githubusercontent.com/112043767/215306379-57838da1-ee73-4658-81a5-01b43c4e4b51.png"></p>
+| [피그마 컴포넌트 바로가기 🔗 ](https://www.figma.com/file/Ug16ED7PmEvtBf8teRGQ4H/zpop?node-id=2276%3A11417) | [피그마 와이어프레임 바로가기 🔗 ](https://www.figma.com/file/Ug16ED7PmEvtBf8teRGQ4H/zpop?node-id=3042%3A12593 ) |
+| :---: | :---: |
+| <img src="https://user-images.githubusercontent.com/112043767/215319089-9ab4ee53-2589-4f5f-98a6-40259a60f98b.png" width="563">| <img src="https://user-images.githubusercontent.com/112043767/215319183-e42f80e3-6c0d-4e03-9f1b-8f6c0518bfdd.png">|
+
 
 
  
  
 <br /><br /> 
- 
 
- -  [ ERD 바로가기 🔗 ](https://dbdiagram.io/d/63d5f586296d97641d7cc5ee )
- <p align="center"> <img src="https://user-images.githubusercontent.com/112043767/215308952-dc686632-1a9b-47bb-90bb-ac4146348349.png"></p>
+ 
+| [ ERD 바로가기 🔗 ](https://dbdiagram.io/d/63d5f586296d97641d7cc5ee ) |
+| :---: |
+| <img src="https://user-images.githubusercontent.com/112043767/215308952-dc686632-1a9b-47bb-90bb-ac4146348349.png" width="30%" height="40%">   | 
+
 
 
 
  <br /><br />
  
  
-<p align="center"> <img src=""></p>
 
- ### 이런 기술을 사용했어요 🛠
+
+ ### 🛠 이런 기술을 사용했어요 
+ 
+ <p align="center"> <img src="https://user-images.githubusercontent.com/112043767/215320794-e860720c-d730-4525-ad5f-a4bc06ae47f1.png" width=50% height="50%"></p>
+
+
+
  - 집합은 1차 프로젝트, 2차 프로젝트로 나누어서 진행되었습니다. **1차에서는 SSR**을, **2차에서는 CSR**을 경험해보고자 각각 다른 기술을 적용했습니다.
+ - 1차는 `Java`와 `SpringBoot`를 이용해서 **MVC패턴**을 적용하는 프로젝트를 진행했습니다. JS로는 동적인 화면 처리를 하고, DOM과 event를 다뤄보았습니다.
+ - 2차는 서버단에 RestController를 추가하고, `Vue.js`를 적용한 SSR 프로젝트를 진행 중입니다. Vue의 본질에 충실하여 최대한 DOM을 덜어내고 있습니다. (아직 미완성 입니다 😁)
+ 
+ </br>
+ 
+  ### 🙄 What's Next?
+  
+  - 빌드 테스트를 거쳐 배포까지 진행해 볼 예정입니다.
+  - 본 프로젝트는 국비학원 수료생들끼리 진행한 프로젝트로, 02.02일에 수료하며 최종발표가 있을 예정 입니다.
+  - 시연 영상이 유튜브에 업로드될 예정입니다. (많관부 😚)
+  
+  
+  </br>
+  
+  <div align="center">  <h2>지금까지 우리의 연결고리, ZPOP이었습니다! 감사합니다 :) </h2></div>
+
