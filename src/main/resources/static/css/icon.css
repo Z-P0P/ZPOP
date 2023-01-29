@@ -181,3 +181,14 @@
 	background-image:url(/images/icon/cancel-240.png);
 	cursor:default;
 }
+.icon-calendar20{
+  width: 20px;
+  height: 20px;
+  background-image: url(/images/icon/calendar20.svg);
+}
+
+.icon-location20{
+  width: 20px;
+  height: 20px;
+  background-image: url(/images/icon/location20.svg);
+}

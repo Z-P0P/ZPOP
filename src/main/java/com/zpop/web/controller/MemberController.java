@@ -122,7 +122,8 @@ public ResponseEntity<List<EvalMemberDto>> getParticipants(@PathVariable("meetin
  * @return
  */
 @PostMapping("/rate")
-public ResponseEntity<EvalDto> rateMember(EvalDto dto, @AuthenticationPrincipal ZpopUserDetails userDetails) {
+
+public ResponseEntity<EvalDto> rateMember(@RequestBody EvalDto dto, @AuthenticationPrincipal ZpopUserDetails userDetails) {
 	if (userDetails == null){
 		//로그인 요청
 	}
@@ -141,13 +142,15 @@ public ResponseEntity<ProfileResponse> getProfile(@PathVariable("id") int id){
 
 
 @PostMapping("/upload/profile")
-@ResponseBody
+@ResponseBody //ㅠㅠ
 public ResponseEntity<?> uploadFile(@NotNull MultipartFile file
 		, @NotNull @NotEmpty String path
 		, HttpServletRequest request) throws IOException {
 	String realPath = request.getServletContext().getRealPath(path);
+	System.out.println(realPath);
+
 	ProfileFile profileFile = service.uploadFile(file, realPath);
-	System.out.println(profileFile);
+	System.out.println(path);
 	return ResponseEntity.ok(200);
 }
 

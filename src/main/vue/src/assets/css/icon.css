@@ -178,6 +178,11 @@
     width: 16px;
     height: 16px;
   }
+  .icon-calendar20{
+    width: 20px;
+    height: 20px;
+    background-image: url(/images/icon/calendar20.svg);
+  }
 
   .icon-location16{
     background-repeat: no-repeat;
@@ -192,4 +197,11 @@
 
   .icon-x-white{
     background-image: url(../../../public/images/icon/x-white.svg);
+  }
+
+
+  .icon-location20{
+    width: 20px;
+    height: 20px;
+    background-image: url(../../../public/images/icon/location-20.svg);
   }

@@ -131,4 +131,27 @@
 @import url(@/assets/css/component/select.css);
 @import url(@/assets/css/meeting/component/profile-box.css);
 @import url(@/assets/css/meeting/component/comment.css);
+ #register-btn{
+  width: fit-content;
+  height: fit-content;
+  user-select: none;
+  color: var(--white);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 6.5px;
+  padding-bottom: 6.5px;
+ }
+
+ @media  (min-width: 576px){
+  #register-btn {
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 6.9px;
+    padding-bottom: 6.9px;
+ }
+ }
 </style>

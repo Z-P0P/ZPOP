@@ -23,6 +23,7 @@
             @on-click-copy="onClickCopy"
             @on-click-report="handleMeetingReportModal"
             :role="selectModalRole"
+            
             v-if="!isSelectModalClosed"
           />
         </span>
@@ -35,11 +36,11 @@
       </div>
 
       <div class="start-datetime-container">
-        <span class="icon icon-calender16"></span>
+        <span :class="calenderClass"></span>
         <span>{{ meetingDetailStore.textStartedAt }}</span>
       </div>
       <div class="region-container">
-        <span class="icon-location16"></span>
+        <span :class="locationClass"></span>
 
         <span>{{ meetingDetailStore.region }}</span>
         <span>{{ meetingDetailStore.regionName }}</span>
@@ -107,9 +108,31 @@ import ControlModal from "./ControlModal.vue";
 import SelectModal from "./SelectModal.vue";
 import MeetingReportModal from "../../report/ReportMeeting.vue";
 
+
 const memberStore = useMemberStore();
 const loginModalStore = useLoginModalStore();
 const meetingDetailStore = useMeetingDetailStore();
+
+const width = ref(window.innerWidth)
+
+const calenderClass = computed(() => {
+      return {
+        'icon icon-calender16': width.value <= 575,
+        'icon icon-calendar20': width.value > 576
+      }
+    })
+    const locationClass = computed(() => {
+      return {
+        'icon icon-location16': width.value <= 575,
+        'icon icon-location20': width.value > 576
+      }
+    })
+    
+    window.addEventListener("resize", () => {
+      width.value = window.innerWidth
+    })
+
+
 
 const isMeetingReportModalOpened = ref(false);
 
@@ -184,13 +207,18 @@ function onClickCopy() {
 }
 
 function handleMeetingReportModal() {
-  isMeetingReportModalOpened.value = !isMeetingReportModalOpened.value;
+
+  if(!memberStore.id){
+    loginModalStore.show();
+    return;
+  } else
+    isMeetingReportModalOpened.value = !isMeetingReportModalOpened.value;
 }
 </script>
 
-<style>
+<style scoped>
 @import url(@/assets/css/meeting/article.css);
-
+@import url(@/assets/css/icon.css);
 .title-container .kebab {
   position: relative;
 }
@@ -199,4 +227,29 @@ function handleMeetingReportModal() {
   overflow: visible;
   text-indent: 0px;
 }
+.start-datetime-container{
+  color: var(--dark-grey2);
+}
+
+@media (min-width: 576px) {
+  .start-datetime-container{
+  align-items: center;
+}  
+.region-container{
+  color: var(--dark-grey2);
+  align-items: center;
+  display: flex;
+
+}
+
+.region-container > span {
+  margin-right: 4px;
+}
+
+.region-detail-wrap {
+  margin-left: 29px;
+}
+}
+
+
 </style>

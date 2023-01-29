@@ -100,7 +100,6 @@ article{
     width: 100%;
     background-color: white;
     border-top: 1px solid var(--light-grey1);
-    padding: 10px;
     z-index:3;
   } 
    

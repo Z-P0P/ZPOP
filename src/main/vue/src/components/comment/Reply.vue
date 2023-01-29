@@ -96,9 +96,7 @@
   }
   /*****************셀렉트 모달 열고 닫기**********************/
   rplyStore.initSelectModal(groupId);
-  async function toggleSelectModal(){
-    if(await checkLoginStatus())
-        return
+  function toggleSelectModal(){
     if(rplyStore.comments[groupId].selectModalStatus[replyId]){
       rplyStore.openSelectModal(replyId, groupId)
     }

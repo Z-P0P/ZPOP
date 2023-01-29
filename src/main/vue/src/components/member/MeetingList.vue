@@ -1,7 +1,11 @@
 <script setup>
+import { isReactive, reactive } from "vue"
+// const props = defineProps({
+//   meeting: Object,
+// })
 
 const props = defineProps({
-  meeting: Object
+  meeting: reactive(Object)
 })
 const emit = defineEmits([
   'rate'
@@ -12,6 +16,9 @@ function onClick(e) {
   console.log(props.meeting.id);
   emit("rate", props.meeting.meetingId)
 }
+
+ console.log(reactive(props.meeting));
+console.log(reactive(props.meeting.evaluated));
 </script>
 
 <template>
@@ -35,7 +42,8 @@ function onClick(e) {
         </ul>
         <div class="meeting__body-detail">
           <button class="status status__rated" v-if="props.meeting.evaluated">평가완료</button>
-          <button @click.prevent="onClick($event)" class="status status__rate" v-else-if="props.meeting.canRate">평가하기</button>
+          <button @click.prevent="onClick($event)" class="status status__rate"
+           v-else-if="props.meeting.canRate">평가하기</button>
           <div class="status status__on" v-else-if="!props.meeting.closed">모집중</div>
           <div class="status status__off" v-else-if="props.meeting.closed">모집완료</div>
         
@@ -43,7 +51,7 @@ function onClick(e) {
             <div class="meeting__views add-deco-img-left deco-img-eyes">
               {{ props.meeting.viewCount }}
             </div>
-            <div
+            <div 
               class="meeting__comments add-deco-img-left deco-img-speech-bubble"
             >
               {{ props.meeting.commentCount }}

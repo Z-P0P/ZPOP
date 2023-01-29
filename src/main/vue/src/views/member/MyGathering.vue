@@ -43,6 +43,9 @@ getMyGathering();
 </template>
 <style scoped>
 
+.status status__rate {
+  cursor: none;
+}
 
 .meetings > ul {
   display: grid;

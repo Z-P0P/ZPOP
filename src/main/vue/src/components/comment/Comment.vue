@@ -92,9 +92,7 @@
 
   /*****************셀렉트 모달 열고 닫기**********************/
   cmtStore.initSelectModal();
-  async function toggleSelectModal(){
-    if(await checkLoginStatus())
-      return
+  function toggleSelectModal(){
     if(cmtStore.selectModalStatus[commentId]){
       cmtStore.openSelectModal(commentId)
     }

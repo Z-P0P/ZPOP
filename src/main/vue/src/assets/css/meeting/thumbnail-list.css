@@ -1,7 +1,7 @@
 .meetings > ul {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  gap: 24px;
+  gap: 18px;
 }
 
 @media (min-width: 768px) {

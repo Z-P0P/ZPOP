@@ -23,6 +23,8 @@
     font-size: 1.375rem;
     padding-left: 0.625rem;
     padding-bottom: 2.375rem;
+    display: flex;
+    align-self: flex-start;
 }
 
 /* ------------ end!!-------------- */
@@ -35,12 +37,13 @@
     display: inline-flex;
     height: fit-content;
     justify-content: center;
+    width: 8.75rem;
+    height: 8.75rem;
+    align-self: center;
 }
 
 
 
-/* .profile__with-photo
-     javascipt로 class 제어할 수 있다고해서 일단은 만들어 놓았습니다 */
 
 
 .profile__image--no-photo{
@@ -51,7 +54,6 @@
     height: 8.75rem;
     display: flex;
     position: relative;
-    
 }   
 
 /* 이미지 - 카메라 아이콘 달아주기 */

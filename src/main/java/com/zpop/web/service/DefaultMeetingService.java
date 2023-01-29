@@ -1,20 +1,16 @@
 package com.zpop.web.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import com.zpop.web.dao.*;
 import com.zpop.web.dto.*;
 import com.zpop.web.entity.*;
 import com.zpop.web.entity.comment.CommentView;
-
+import com.zpop.web.entity.meeting.Meeting;
+import com.zpop.web.entity.meeting.MeetingThumbnailView;
+import com.zpop.web.entity.participation.ParticipationInfoView;
 import com.zpop.web.global.exception.CustomException;
 import com.zpop.web.global.exception.ExceptionReason;
+import com.zpop.web.utils.ElapsedTimeCalculator;
+import com.zpop.web.utils.TextDateTimeCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,21 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.zpop.web.dao.AgeRangeDao;
-import com.zpop.web.dao.CategoryDao;
-import com.zpop.web.dao.CommentDao;
-import com.zpop.web.dao.ContactTypeDao;
-import com.zpop.web.dao.MeetingDao;
-import com.zpop.web.dao.MeetingFileDao;
-import com.zpop.web.dao.MemberDao;
-import com.zpop.web.dao.NotificationDao;
-import com.zpop.web.dao.ParticipationDao;
-import com.zpop.web.dao.RegionDao;
-import com.zpop.web.entity.meeting.Meeting;
-import com.zpop.web.entity.meeting.MeetingThumbnailView;
-import com.zpop.web.entity.participation.ParticipationInfoView;
-import com.zpop.web.utils.ElapsedTimeCalculator;
-import com.zpop.web.utils.TextDateTimeCalculator;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class DefaultMeetingService implements MeetingService {
@@ -506,7 +491,6 @@ public class DefaultMeetingService implements MeetingService {
 		}
 
 		String completePath = path + File.separator + file.getOriginalFilename();
-		
 		InputStream fis = file.getInputStream();
 		OutputStream fos = new FileOutputStream(completePath);
 
