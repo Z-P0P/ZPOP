@@ -106,8 +106,8 @@
   <tbody>
     <tr>
       <td align="center"><a href="https://github.com//kkh-147-17-3"><img src="https://avatars.githubusercontent.com/u/102606939?v=4" width="50"><br /><sub><b>김경환 : </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/Hell0Stranger"><img src="https://avatars.githubusercontent.com/u/112043767?v=4" width="50" alt=""/><br /><sub><b>김명진 : </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/a-ryang"><img src="https://avatars.githubusercontent.com/u/105474635?v=4" width="50" alt=""/><br /><sub><b>김찬우 : 리더</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/Hell0Stranger"><img src="https://avatars.githubusercontent.com/u/112043767?v=4" width="50" alt=""/><br /><sub><b>김명진<br />:표뇨 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/a-ryang"><img src="https://avatars.githubusercontent.com/u/105474635?v=4" width="50" alt=""/><br /><sub><b>김찬우<br /> : 팀리더</b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/dladnqls222"><img src="https://avatars.githubusercontent.com/u/69413567?v=4" width="50" alt=""/><br /><sub><b>임우빈 : </b></sub></a><br /></td>
      <tr/>
       <td align="center"><a href="https://github.com/amy-pak"><img src="https://avatars.githubusercontent.com/u/117254352?v=4" width="50" alt=""/><br /><sub><b>임형미 : </b></sub></a><br /></td>
@@ -118,8 +118,7 @@
 - 저희 팀은 5명으로 이루어져 있습니다.
 - 프로젝트는 대면위주로 약 3개월간 진행되었습니다.
 - 깃 커밋 컨벤션과 PR 규칙을 정해서 깃을 적극적으로 활용해보고자 했습니다!
-- **내용 추가해주세요**
-
+- 팀원 모두 서로를 존중하는 마음으로 프로젝트에 임했습니다.🙂
 <br /><br /> <br />
 
  ### 🗿 ZPOP 을 만들기 위한 초석들 
@@ -171,7 +170,7 @@
  <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white"/>
 <img src="https://img.shields.io/badge/css3-1572B6?style=flat-square&logo=css3&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat-square&logo=javascript&logoColor=white"/></a> 
-<img src="https://img.shields.io/badge/Vue.js-4FC08D?style=flat-square&logo=Vue.js&logoColor=white"
+<img src="https://img.shields.io/badge/Vue.js-4FC08D?style=flat-square&logo=Vue.js&logoColor=white">
 <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=Spring&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/JAVA-007396?style=flat-square&logo=java&logoColor=white">
 <img src="https://img.shields.io/badge/MariaDB-003545?style=flat-square&logo=MariaDB&logoColor=white"/>
