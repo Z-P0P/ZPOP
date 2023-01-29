@@ -7,6 +7,12 @@
     const cmtStore = useCommentStore();
     const props = defineProps(['isMyComment', 'commentId', 'groupId']);
     const emit = defineEmits(['onEdit']);
+
+    let reportMsg = ref("");
+    if(props.groupId)
+        reportMsg.value = "답글"
+    else 
+        reportMsg.value = "댓글"
     
     // 셀렉트 모달 on/off
     let selectModalOn = ref(true);
@@ -62,7 +68,7 @@
 
     <div v-if="!isMyComment" v-show="selectModalOn" class="modal-select select-box__options comment__kebob">
         <div class="modal-select__contents modal-select__contents--report"
-                @click="onClickReportSelectOption">댓글 신고
+                @click="onClickReportSelectOption">{{ reportMsg }} 신고
             <span class="icon icon-siren-red"></span>
         </div>
     </div>

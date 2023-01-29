@@ -17,7 +17,15 @@ const props = defineProps({
   groupId: Number
 });
 const emit = defineEmits(["closeModal", "commentDeleted"]);
+
 let confirmMsg = ref("");
+let deleteMsg = ref("");
+
+if(props.groupId)
+  deleteMsg.value = "답글"
+else 
+  deleteMsg.value = "댓글"
+
 
 async function onClickYes() {
   switch (props.selectType) {
@@ -25,7 +33,7 @@ async function onClickYes() {
       await deleteComment(props.commentId);
       break;
     case "신고":
-      await alert("신고처리함수동작"); //TODO: 임우빈
+      //신고는 별도 콤포넌트에서 처리
       break;
   }
 }
@@ -61,22 +69,12 @@ function closeModalFooterType() {
     
     <template v-if="props.selectType === '삭제'" #modal-body>
       <div v-if="!confirmMsg">
-        <p class="confirm">댓글을 삭제하시겠어요?</p>
+        <p class="confirm">{{ deleteMsg }}을 삭제하시겠어요?</p>
       </div>
       <div v-else>
         <p class="confirm">{{ confirmMsg }}</p>
       </div>
     </template>
-
-    <template v-if="props.selectType === '신고'" #modal-body>
-      <div v-if="!confirmMsg">
-        <p class="confirm">이 모달은 임시로 띄운 것. 이 자리에 신고모달을 넣음</p>
-      </div>
-      <div v-else>
-        <p class="confirm">{{ confirmMsg }}</p>
-      </div>
-    </template>
-    
 
     <template v-if="modalFooterType === 0" #modal-footer>
       <div @click="emit('closeModal')">아니오</div>
