@@ -105,12 +105,12 @@
  <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com//kkh-147-17-3"><img src="https://avatars.githubusercontent.com/u/102606939?v=4" width="50"><br /><sub><b>김경환 : </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/Hell0Stranger"><img src="https://avatars.githubusercontent.com/u/112043767?v=4" width="50" alt=""/><br /><sub><b>김명진<br />:표뇨 </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/a-ryang"><img src="https://avatars.githubusercontent.com/u/105474635?v=4" width="50" alt=""/><br /><sub><b>김찬우<br /> : 팀리더</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/dladnqls222"><img src="https://avatars.githubusercontent.com/u/69413567?v=4" width="50" alt=""/><br /><sub><b>임우빈 : </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com//kkh-147-17-3"><img src="https://avatars.githubusercontent.com/u/102606939?v=4" width="50"><br /><sub><b>김경환<br />a.k.a 갓경환 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/Hell0Stranger"><img src="https://avatars.githubusercontent.com/u/112043767?v=4" width="50" alt=""/><br /><sub><b>김명진<br />포뇨 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/a-ryang"><img src="https://avatars.githubusercontent.com/u/105474635?v=4" width="50" alt=""/><br /><sub><b>김찬우<br />팀리더</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/dladnqls222"><img src="https://avatars.githubusercontent.com/u/69413567?v=4" width="50" alt=""/><br /><sub><b>임우빈<br />우빈쿤</b></sub></a><br /></td>
      <tr/>
-      <td align="center"><a href="https://github.com/amy-pak"><img src="https://avatars.githubusercontent.com/u/117254352?v=4" width="50" alt=""/><br /><sub><b>임형미 : </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/amy-pak"><img src="https://avatars.githubusercontent.com/u/117254352?v=4" width="50" alt=""/><br /><sub><b>임형미<br />샤대누님</</sub></a><br /></td>
     </tr>
   </tbody>
 </table>
@@ -180,8 +180,8 @@
 
 
  - 집합은 1차 프로젝트, 2차 프로젝트로 나누어서 진행되었습니다. **1차에서는 SSR**을, **2차에서는 CSR**을 경험해보고자 각각 다른 기술을 적용했습니다.
- - '1차는 Spring Boot 및 Spring MVC, Thymeleaf를 이용한 Server-side Rendering (SSR) 를 사용하여 웹사이트를 구축하였습니다.  이와 더불어 Vanilla JS를 이용해 ajax를 포함한 DOM 프로그래밍을 통해 동적인 client 화면을 구성할 수 있었습니다.
- - 2차는 서버단에 RestController를 이용해 백엔드를 restful API방식으로 바꾸고, `Vue.js 3.0`를 적용한 CSR 프로젝트를 진행 중입니다. Vue의 본질에 충실하여 최대한 DOM을 덜어내고 있습니다. (아직 미완성 입니다 😁)
+ - 1차는 Spring Boot 및 Spring MVC, Thymeleaf를 이용한 Server-side Rendering (SSR) 를 사용하여 웹사이트를 구축하였습니다.  이와 더불어 Vanilla JS를 이용해 ajax를 포함한 DOM 프로그래밍을 통해 동적인 client 화면을 구성할 수 있었습니다.
+ - 2차는 RestController를 이용해 백엔드를 restful API방식으로 바꾸고, `Vue.js 3.0`를 적용한 CSR 프로젝트를 진행 중입니다. Vue의 본질에 충실하여 최대한 DOM을 덜어내고 있습니다. (아직 미완성 입니다 😁)
  
  </br>
  
@@ -194,5 +194,5 @@
   
   </br>
   
-  <div align="center">  <h2>지금까지 우리의 연결고리, ZPOP이었습니다! 감사합니다 :) </h2></div>
+  <div align="center">  <h2>지금까지 우리의 연결고리, ZPOP이었습니다! 감사합니다:) </h2></div>
 
