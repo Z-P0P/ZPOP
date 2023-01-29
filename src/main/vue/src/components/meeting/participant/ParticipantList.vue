@@ -63,6 +63,7 @@ function closeProfileModal() {
   </Teleport>
 </template>
 <style scoped>
+
 .participants {
   display: flex;
   flex-direction: column;
