@@ -42,6 +42,9 @@ export default {
 </script>
 
 <style scoped>
+@import url('@/assets/css/form.css');
+
+
 .input-text__content-wrapper{
     margin-top:0;
 }

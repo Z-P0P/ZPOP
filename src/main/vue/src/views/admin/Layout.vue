@@ -10,7 +10,7 @@ const changeHeaderSelected = (menu) => {
     case "home":
     value = 0;
     break;
-    case "notification":
+    case "banner":
     value = 1;
     break;
     case "meeting":

@@ -99,3 +99,7 @@
 .admin-tb-1{
     flex:0 1 100px !important;
 } 
+
+.admin-tb-0{
+    flex:0 1 50px !important;
+} 

@@ -23,6 +23,7 @@ const meetingListStore = useMeetingListStore();
 meetingListStore.$reset(); // 이 view로 오면 상태 초기화
 
 const firstLoaded = ref(false);
+const isBannerLoaded = ref(false);
 
 const state = reactive({
   meetings: [],
@@ -163,10 +164,14 @@ function changeNicknameRegisterStatus(){
   isNicknameRegisterOpened.value = !isNicknameRegisterOpened.value;
 }
 
+function showBanner () {
+  isBannerLoaded.value = true;
+}
+
 </script>
 
 <template>
-  <banner/>
+  <banner @bannerLoaded="showBanner" v-show="isBannerLoaded"/>
   <div class="content-wrap">
     <SearchBar @searchFromSearchBar="search" />
     <ModalDefault

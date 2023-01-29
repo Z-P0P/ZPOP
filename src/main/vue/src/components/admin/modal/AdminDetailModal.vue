@@ -2,7 +2,7 @@
 import { defineEmits} from "vue";
 
 const emit = defineEmits(["closeDetailModal", "action"]);
-const props = defineProps(["modalType"]);
+const props = defineProps(["modalType","title"]);
 
 function closeModal(e) {
   // X버튼 클릭이라면 닫기
@@ -27,7 +27,7 @@ function action(){
   <section class="modal-default-wrap" @click="closeModal">
     <div class="modal-default">
       <div class="modal__header">
-        <slot name="modal-header"></slot>
+        <span class="modal__title">{{ title }}</span>
         <span class="icon icon-x-white pointer modal__close-btn">
         </span>
       </div>
@@ -92,5 +92,10 @@ function action(){
   display:flex;
   justify-content: center;
   column-gap:10px;
+}
+
+.modal__title{
+  color:white;
+  font-weight:var(--bold);
 }
 </style>

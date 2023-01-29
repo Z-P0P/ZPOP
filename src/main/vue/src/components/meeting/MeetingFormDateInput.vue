@@ -45,6 +45,9 @@ const datepickerSubmitHandler = (selectedDate) => {
 </script>
 
 <style scoped>
+@import url('@/assets/css/form.css');
+
+
 .custom-datepicker{
     position:relative;
     /* display:none; */

@@ -32,6 +32,9 @@ export default {
 </script>
 
 <style scoped>
+@import url('@/assets/css/admin/component/select.css');
+
+
 .pseudo-alternative{
     position:absolute;
     border: none;
