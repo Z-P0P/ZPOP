@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.zpop.web.dto.admin.AdminCategoryDto;
-import com.zpop.web.dto.admin.AdminMeetingDetailsResponse;
-import com.zpop.web.dto.admin.AdminMeetingDto;
 import com.zpop.web.dto.admin.AdminRegionDto;
+import com.zpop.web.dto.admin.meeting.AdminMeetingDetailsResponse;
+import com.zpop.web.dto.admin.meeting.AdminMeetingDto;
 
 public interface AdminMeetingService {
 	

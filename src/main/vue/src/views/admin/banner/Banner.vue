@@ -8,7 +8,7 @@ import {ref, watch} from 'vue';
 import Category from '../../../components/admin/Category.vue';
 import { useRoute } from 'vue-router';
 const emit = defineEmits(["menuChanged"]);
-emit("menuChanged", "notification");
+emit("menuChanged", "banner");
 
 const categoryStatus = ref(0);
 const route = useRoute();

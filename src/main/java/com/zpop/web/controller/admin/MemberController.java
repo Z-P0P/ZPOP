@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zpop.web.dto.admin.AdminMemberEvalDto;
 import com.zpop.web.dto.admin.AdminParticipationDto;
+import com.zpop.web.dto.admin.member.AdminMemberEvalDto;
 import com.zpop.web.entity.Member;
 import com.zpop.web.service.admin.AdminMemberService;
 

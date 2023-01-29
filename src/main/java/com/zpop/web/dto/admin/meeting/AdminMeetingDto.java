@@ -1,4 +1,4 @@
-package com.zpop.web.dto.admin;
+package com.zpop.web.dto.admin.meeting;
 
 import java.util.Date;
 

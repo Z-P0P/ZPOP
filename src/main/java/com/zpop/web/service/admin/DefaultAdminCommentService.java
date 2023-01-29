@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zpop.web.dao.CommentDao;
-import com.zpop.web.dto.admin.AdminCommentDto;
+import com.zpop.web.dto.admin.comment.AdminCommentDto;
 
 @Service
 public class DefaultAdminCommentService implements AdminCommentService{

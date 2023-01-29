@@ -34,6 +34,18 @@ async function updateComment(commentId, dataJSONStr){
         return await fetch(`/api/comment/${commentId}`,option);
       }
 /*
+댓글 삭제
+*/
+async function deleteComment(commentId){
+  const option = {
+    method: "DELETE",
+    headers: {"Content-Type": "application/json"},
+        body: "",
+  }
+  return await fetch(`/api/comment/${commentId}`,option);
+}
+
+/*
 답글 등록
 */
 async function registerReply(dataJSONStr){
@@ -46,17 +58,19 @@ async function registerReply(dataJSONStr){
         return await fetch(url,option);
       }
 /*
-댓글 삭제
+답글 수정
 */
-async function deleteComment(commentId){
-        const option = {
-          method: "DELETE",
-          headers: {"Content-Type": "application/json"},
-              body: "",
-        }
-        return await fetch(`/api/comment/${commentId}`,option);
-      }
-
+async function updateReply(replyId, dataJSONStr){
+  const option = {
+    method: "PATCH",
+    headers: {"Content-Type": "application/json"},
+        body: dataJSONStr,
+  }
+  return await fetch(`/api/reply/${replyId}`,option);
+}
+/*
+답글 수정은 댓글 수정을 이용함.
+*/
 export default {
     getCommentList,
     getReplyList,
@@ -64,4 +78,5 @@ export default {
     updateComment,
     deleteComment,
     registerReply,
+    updateReply,
 }

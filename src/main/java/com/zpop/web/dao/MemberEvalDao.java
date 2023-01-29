@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.zpop.web.dto.admin.AdminMemberEvalDto;
+import com.zpop.web.dto.admin.member.AdminMemberEvalDto;
 import com.zpop.web.entity.MemberEval;
 
 @Mapper

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zpop.web.dto.admin.AdminCommentDto;
-import com.zpop.web.dto.admin.AdminCommentListResponse;
+import com.zpop.web.dto.admin.comment.AdminCommentDto;
+import com.zpop.web.dto.admin.comment.AdminCommentListResponse;
 import com.zpop.web.service.admin.AdminCommentService;
 
 @Controller("adminCommentController")

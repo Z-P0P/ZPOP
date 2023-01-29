@@ -1,4 +1,4 @@
-package com.zpop.web.dto.admin;
+package com.zpop.web.dto.admin.report;
 
 import java.util.Date;
 
@@ -17,17 +17,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
-public class AdminReportedMemberDto {
+public class AdminReportedCommentDto {
 	
 	private int id;
 	private String reporterNickname;
 	private int reporterId;
-	private String reportedNickname;
-	private int reportedId;
+	private String original;
+	private String writerNickname;
+	private int writerId;
 	private String reportType;
 	private String reason;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date createdAt;
 	private Date processedAt;
-	
 }

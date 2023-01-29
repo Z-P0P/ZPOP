@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.MemberEvalDao;
 import com.zpop.web.dao.ParticipationDao;
-import com.zpop.web.dto.admin.AdminMemberEvalDto;
 import com.zpop.web.dto.admin.AdminParticipationDto;
+import com.zpop.web.dto.admin.member.AdminMemberEvalDto;
 import com.zpop.web.entity.Member;
 
 @Service
