@@ -102,12 +102,72 @@
 
  ##  😇 ZPOP, 이렇게 만들어 졌어요
  
- - 집합은 1차 프로젝트, 2차 프로젝트로 나누어서 진행되었습니다. **1차에서는 SSR**을, **2차에서는 CSR**을 경험해보고자 각각 다른 기술을 적용했습니다.
- - 디자인툴은 <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white"/>를 적극 활용했고, 화면에 필요한 요소들을 컴포넌트화 하여 재사용 하였습니다. 
- - 🔗 zpop 피그마 컴포넌트: https://www.figma.com/file/Ug16ED7PmEvtBf8teRGQ4H/zpop?node-id=2276%3A11417
- - 🔗 zpop 피그마 와이어프레임: https://www.figma.com/file/Ug16ED7PmEvtBf8teRGQ4H/zpop?node-id=3042%3A12593 
- - 🔗 요구사항 정의: https://docs.google.com/spreadsheets/d/1QLnvMP7997wVLx-a5OiTFW89l1vF0pdsxA09jqrmlWc/edit#gid=0
- - 🔗 역할자: https://www.figma.com/file/oih71So7yI6LtdCeHDFFlf/%EC%97%AD%ED%95%A0%EC%9E%90
- - 🔗 ERD
- ![논리야 놀자](https://user-images.githubusercontent.com/112043767/215304946-fdcdaea7-4ec9-4b4f-b1f4-ecafbf9fb491.png)
+ ### 저희 팀원들을 소개합니다 👨‍💻
+ <table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://github.com//kkh-147-17-3"><img src="https://avatars.githubusercontent.com/u/102606939?v=4" width="50"><br /><sub><b>김경환 : </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/Hell0Stranger"><img src="https://avatars.githubusercontent.com/u/112043767?v=4" width="50" alt=""/><br /><sub><b>김명진 : </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/a-ryang"><img src="https://avatars.githubusercontent.com/u/105474635?v=4" width="50" alt=""/><br /><sub><b>김찬우 : 리더</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/dladnqls222"><img src="https://avatars.githubusercontent.com/u/69413567?v=4" width="50" alt=""/><br /><sub><b>임우빈 : </b></sub></a><br /></td>
+     <tr/>
+      <td align="center"><a href="https://github.com/amy-pak)"><img src="https://avatars.githubusercontent.com/u/117254352?v=4" width="50" alt=""/><br /><sub><b>임형미 : </b></sub></a><br /></td>
+    </tr>
+  </tbody>
+</table>
 
+- 저희 팀은 5명으로 이루어져 있습니다.
+- 프로젝트는 대면위주로 약 3개월간 진행되었습니다.
+- 깃 커밋 컨벤션과 PR 규칙을 정해서 깃을 적극적으로 활용해보고자 했습니다.
+- **내용 추가해주세요**
+
+ ### ZPOP 을 만들기 위한 초석들 🗿
+ 
+ - 디자인툴은 <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white"/>를 적극 활용했고, 화면에 필요한 요소들을 컴포넌트화 하여 재사용 했습니다.
+ - 사용자의 요구사항을 엑셀 스프레드시트에 정리하며 확인 하였습니다.
+ - 화면을 먼저 만들고 ➡ 그 후에 화면에서 필요한 역할자를 도출하고 ➡ 개념적 , 논리적 , 물리적 설계 순서로 진행 하였습니다.
+ - 정규화를 거쳐 최종적으로 만들어진 테이블은 **BLAHBLAH개, 컬럼수는 ~~개** 입니다.
+ 
+ 
+-  [피그마 컴포넌트 바로가기 🔗 ](https://www.figma.com/file/Ug16ED7PmEvtBf8teRGQ4H/zpop?node-id=2276%3A11417)
+
+ ![image](https://user-images.githubusercontent.com/112043767/215306495-8edd9a62-a8d5-4dfe-8310-ed61a0498271.png)
+
+<br /><br />
+
+
+-  [피그마 와이어프레임 바로가기 🔗 ](https://www.figma.com/file/Ug16ED7PmEvtBf8teRGQ4H/zpop?node-id=3042%3A12593 )
+ 
+
+ ![image](https://user-images.githubusercontent.com/112043767/215306473-42f4e628-8edb-4753-93f2-147d3856d016.png)
+ 
+<br /><br />
+
+
+-  [ 요구사항 정의 바로가기 🔗 ](https://docs.google.com/spreadsheets/d/1QLnvMP7997wVLx-a5OiTFW89l1vF0pdsxA09jqrmlWc/edit#gid=0 )
+
+
+![image](https://user-images.githubusercontent.com/112043767/215306831-d92b81b4-0ced-43ad-a09d-a2cab10b2c35.png)
+
+<br /><br />
+
+
+-  [ 역할자 바로가기 🔗 ](https://www.figma.com/file/oih71So7yI6LtdCeHDFFlf/%EC%97%AD%ED%95%A0%EC%9E%90 )
+ 
+ 
+ ![image](https://user-images.githubusercontent.com/112043767/215306379-57838da1-ee73-4658-81a5-01b43c4e4b51.png)
+ 
+ 
+<br /><br /> 
+ 
+
+ -  [ ERD 바로가기 🔗 ]( )
+ 
+ ![논리야 놀자](https://user-images.githubusercontent.com/112043767/215304946-fdcdaea7-4ec9-4b4f-b1f4-ecafbf9fb491.png)
+ 
+ <br /><br />
+ 
+ 
+
+ ### 이런 기술을 사용했어요 🛠
+ - 집합은 1차 프로젝트, 2차 프로젝트로 나누어서 진행되었습니다. **1차에서는 SSR**을, **2차에서는 CSR**을 경험해보고자 각각 다른 기술을 적용했습니다.
