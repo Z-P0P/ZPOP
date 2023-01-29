@@ -16,7 +16,7 @@
             <ul>
                 <li>
                     <span>ID</span>
-                    <button><img src="../../../../public/images/icon/up-down.svg" alt=""></button>
+                    <button><img src="/images/icon/up-down.svg" alt=""></button>
                 </li>
                 <li class="admin-tb-3">모임(id)</li>
                 <li class="admin-tb-2">참여자(id)</li>

@@ -1,6 +1,6 @@
 <template>
     <li class="header__profile select-box">
-        <button><img alt="프로필" src="../../../public/images/icon/user-profile.svg" @click="onProfileClick"></button>
+        <button><img alt="프로필" src="/images/icon/user-profile.svg" @click="onProfileClick"></button>
         <ul class="select-box__options select-box__options--right select-box__options--header" v-show="isOpened">
             <!--li 말고 div 박스 전체로 -->
             <li><router-link to="/my-profile">내 프로필</router-link></li>
@@ -41,7 +41,7 @@ const onLogoutClick = () => {
 </script>
 
 <style scoped>
-@import url(../../assets/css/component/header.css);
+@import '@/assets/css/component/header.css';
 
 .select-box::before{
     display:none;

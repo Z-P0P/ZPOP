@@ -14,7 +14,7 @@ input[type="checkbox"].checkbox:checked {
   width: 1rem;
   height: 1rem;
   content: "";
-  background-image: url(../../../../../public/images/icon/check.svg);
+  background-image: url(/images/icon/check.svg);
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: contain;

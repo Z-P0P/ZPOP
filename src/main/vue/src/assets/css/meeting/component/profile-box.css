@@ -16,7 +16,7 @@
 .profile__image {
   width: 2.25rem;
   height: 2.25rem;
-  background-image: url("../../../../../public/images/icon/user-profile-grey.svg");
+  background-image: url("/images/icon/user-profile-grey.svg");
   background-size: contain;
   display: inline-block;
   grid-area: img;
@@ -37,7 +37,7 @@
 .profile > button {
   width: 1.5rem;
   height: 1.5rem;
-  background-image: url(../../../../../public/images/icon/kebab.svg);
+  background-image: url(/images/icon/kebab.svg);
   background-repeat: no-repeat;
   border: none;
   background-color: var(--white);

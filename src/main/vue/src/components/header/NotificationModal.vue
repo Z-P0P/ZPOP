@@ -103,7 +103,7 @@
 </template>
 
 <style>
-@import url(../../../../resources/static/css/member/component/notification-modal.css);
+@import "@/assets/css/member/notification-modal.css";
 span {
     font-weight: 500;
 

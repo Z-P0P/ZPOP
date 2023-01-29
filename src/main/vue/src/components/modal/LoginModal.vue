@@ -6,7 +6,7 @@
             </div>
             <div class="modal__body">
                 <div class="logo-img">
-                    <img src="../../../public/images/logo/logo-modal.svg" alt="" class="src">
+                    <img src="/images/logo/logo-modal.svg" alt="" class="src">
                 </div>
                 <div class="login-btn-container">
                     <a class="login-btn login-btn--kakao text-hidden" id="kakao-login-btn"

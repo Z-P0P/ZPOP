@@ -39,7 +39,7 @@
   height: 16px;
   display: inline-block;
   content: "";
-  background: url("../../../../public/images/icon/arrow-down.svg");
+  background: url("/images/icon/arrow-down.svg");
   background-size: contain;
   background-repeat: no-repeat;
   transition: transform 0.1s;
