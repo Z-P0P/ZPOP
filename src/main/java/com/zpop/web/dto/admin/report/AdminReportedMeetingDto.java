@@ -1,4 +1,4 @@
-package com.zpop.web.dto.admin;
+package com.zpop.web.dto.admin.report;
 
 import java.util.Date;
 

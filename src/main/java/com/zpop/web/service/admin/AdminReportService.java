@@ -3,9 +3,9 @@ package com.zpop.web.service.admin;
 import java.util.Date;
 import java.util.List;
 
-import com.zpop.web.dto.admin.AdminReportedCommentDto;
-import com.zpop.web.dto.admin.AdminReportedMeetingDto;
-import com.zpop.web.dto.admin.AdminReportedMemberDto;
+import com.zpop.web.dto.admin.report.AdminReportedCommentDto;
+import com.zpop.web.dto.admin.report.AdminReportedMeetingDto;
+import com.zpop.web.dto.admin.report.AdminReportedMemberDto;
 
 public interface AdminReportService {
 

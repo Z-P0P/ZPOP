@@ -3,8 +3,8 @@ package com.zpop.web.service.admin;
 import java.util.Date;
 import java.util.List;
 
-import com.zpop.web.dto.admin.AdminMemberEvalDto;
 import com.zpop.web.dto.admin.AdminParticipationDto;
+import com.zpop.web.dto.admin.member.AdminMemberEvalDto;
 import com.zpop.web.entity.Member;
 
 public interface AdminMemberService {

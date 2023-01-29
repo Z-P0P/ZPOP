@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zpop.web.dto.admin.AdminCategoryDto;
 import com.zpop.web.dto.admin.AdminCategoryResponse;
-import com.zpop.web.dto.admin.AdminMeetingDetailsResponse;
-import com.zpop.web.dto.admin.AdminMeetingDto;
-import com.zpop.web.dto.admin.AdminMeetingListResponse;
 import com.zpop.web.dto.admin.AdminRegionDto;
 import com.zpop.web.dto.admin.AdminRegionResponse;
+import com.zpop.web.dto.admin.meeting.AdminMeetingDetailsResponse;
+import com.zpop.web.dto.admin.meeting.AdminMeetingDto;
+import com.zpop.web.dto.admin.meeting.AdminMeetingListResponse;
 import com.zpop.web.service.admin.AdminMeetingService;
 
 @Controller("adminMeetingController")

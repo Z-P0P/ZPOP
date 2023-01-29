@@ -3,7 +3,7 @@ package com.zpop.web.service.admin;
 import java.util.Date;
 import java.util.List;
 
-import com.zpop.web.dto.admin.AdminCommentDto;
+import com.zpop.web.dto.admin.comment.AdminCommentDto;
 
 public interface AdminCommentService {
 

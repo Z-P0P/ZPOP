@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.zpop.web.dto.BlockedMemberDto;
-import com.zpop.web.dto.admin.AdminReportedMemberDto;
+import com.zpop.web.dto.admin.report.AdminReportedMemberDto;
 import com.zpop.web.entity.ReportedMember;
 
 @Mapper
