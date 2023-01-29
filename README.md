@@ -125,7 +125,7 @@
  ### 🗿 ZPOP 을 만들기 위한 초석들 
  
 
- - 사용자의 요구사항을 엑셀 스프레드시트에 정리하며 확인 하였습니다.
+ - 사용자의 요구사항을 구글 스프레드시트에 정리하며 확인 하였습니다.
  - 디자인툴은 `Figma` 를 적극 활용했고, 화면에 필요한 요소들을 컴포넌트화 하여 재사용 했습니다.
  - 피그마로 사용자화면을 먼저 만들고 ➡ 그 후에 화면에서 필요한 역할자를 도출 ➡ 개념적 , 논리적 , 물리적 설계 순서로 진행 하였습니다.
  - 정규화를 거쳐 최종적으로 만들어진 테이블은 23개 입니다. 
@@ -166,13 +166,23 @@
 
  ### 🛠 이런 기술을 사용했어요 
  
- <p align="center"> <img src="https://user-images.githubusercontent.com/112043767/215320794-e860720c-d730-4525-ad5f-a4bc06ae47f1.png" width=50% height="50%"></p>
+ <p align="center"></br>  
+ <img src="https://img.shields.io/badge/Git-F05032?style=flat-square&logo=Git&logoColor=white"/></a>
+ <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white"/>
+<img src="https://img.shields.io/badge/css3-1572B6?style=flat-square&logo=css3&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat-square&logo=javascript&logoColor=white"/></a> 
+<img src="https://img.shields.io/badge/Vue.js-4FC08D?style=flat-square&logo=Vue.js&logoColor=white"
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=Spring&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/JAVA-007396?style=flat-square&logo=java&logoColor=white">
+<img src="https://img.shields.io/badge/MariaDB-003545?style=flat-square&logo=MariaDB&logoColor=white"/>
+
+ </p>
 
 
 
  - 집합은 1차 프로젝트, 2차 프로젝트로 나누어서 진행되었습니다. **1차에서는 SSR**을, **2차에서는 CSR**을 경험해보고자 각각 다른 기술을 적용했습니다.
- - 1차는 `Java`와 `SpringBoot`를 이용해서 **MVC패턴**을 적용하는 프로젝트를 진행했습니다. JS로는 동적인 화면 처리를 하고, DOM과 event를 다뤄보았습니다.
- - 2차는 서버단에 RestController를 추가하고, `Vue.js`를 적용한 CSR 프로젝트를 진행 중입니다. Vue의 본질에 충실하여 최대한 DOM을 덜어내고 있습니다. (아직 미완성 입니다 😁)
+ - '1차는 Spring Boot 및 Spring MVC, Thymeleaf를 이용한 Server-side Rendering (SSR) 를 사용하여 웹사이트를 구축하였습니다.  이와 더불어 Vanilla JS를 이용해 ajax를 포함한 DOM 프로그래밍을 통해 동적인 client 화면을 구성할 수 있었습니다.
+ - 2차는 서버단에 RestController를 이용해 백엔드를 restful API방식으로 바꾸고, `Vue.js 3.0`를 적용한 CSR 프로젝트를 진행 중입니다. Vue의 본질에 충실하여 최대한 DOM을 덜어내고 있습니다. (아직 미완성 입니다 😁)
  
  </br>
  
