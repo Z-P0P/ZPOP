@@ -205,7 +205,7 @@
         .then(data=>{
             console.log("이미지요청 완료!");
             console.log(data);
-            showimageChangeModal();
+            showimageChangeModal(); //흑
             
 	})
  }
@@ -220,8 +220,16 @@
     const nicknameSave = inputStatus.isNicknameValid;//닉네임저장 (true/false)
     const imageSave = editConfirm.imageConfirm; //이미지저장 (true/false)
 
-    if (imageSave == true) {
+    if(imageSave == true && nicknameSave == true) {
+       //TODO: 이미지업로드 먼저완료시켜서 다 보여주고 -> 닉네임 변경 모달 보여주기 
+        showDefaultModal();
+        uploadImage();
+        return;
+    }
+    
+    if (imageSave == true && !nicknameSave) {
        uploadImage();
+       return;
     }
 
     if(nicknameSave == false){
@@ -232,12 +240,7 @@
         showDefaultModal();
     }
 
-    if(imageSave == true && nicknameSave == true) {
-       //TODO: 이미지업로드 먼저완료시켜서 다 보여주고 -> 닉네임 변경 모달 보여주기 
-       showDefaultModal();
-        uploadImage();
-        
-    }
+   
 
     console.log("nothing happend");
 
@@ -289,6 +292,7 @@
             <div class="profile__image">
                 <input @change="previewImage($event)" type="file" accept="image/*" ref="fileInput" class="file-input">
                 
+                <!-- imgSrc = imagepath로 -->
                 <div v-if="imgSrc" class="profile__image--with-photo">
                     <img  :src="imgSrc" alt="" class="profile__image--img">
                     <div class="icon icon-camera" @click="openFileUpload"></div>

@@ -56,20 +56,24 @@ function handleToggle(e) {
   display: flex;
   align-items: center;
   margin-left: auto;
-  margin-top: 24px;
-  margin-bottom: 24px;
+  margin-top: 18px;
+  margin-bottom: 18px;
 }
 
 .option-control__activate > span {
   margin-right: 1rem;
   font-weight: var(--bold);
-  color: var(--dark-grey2);
+  color: var(--main-color);
 }
 
 @media (min-width: 768px) {
   .option-control__activate > span {
     font-size: 18px;
-    color: var(--dark-grey2);
+    color: var(--grey4);
+  }
+  .option-control__activate {
+    margin-top: 24px;
+    margin-bottom: 24px;
   }
 }
 
@@ -84,7 +88,6 @@ function handleToggle(e) {
 @media (min-width: 1200px) {
   .options-detail {
     justify-content: flex-start;
-    margin: 1rem auto;
   }
 }
 </style>
