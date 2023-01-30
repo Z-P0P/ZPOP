@@ -7,6 +7,7 @@ import com.zpop.web.dto.admin.AdminCategoryDto;
 import com.zpop.web.dto.admin.AdminRegionDto;
 import com.zpop.web.dto.admin.meeting.AdminMeetingDetailsResponse;
 import com.zpop.web.dto.admin.meeting.AdminMeetingDto;
+import com.zpop.web.dto.admin.meeting.CountPerDateDto;
 
 public interface AdminMeetingService {
 	
@@ -31,5 +32,7 @@ public interface AdminMeetingService {
     Date deleteMeeting(int id, boolean getDeleted);
 
     int deleteAllMeeting(List<Integer> ids, boolean getDeleted);
+
+    List<CountPerDateDto> getLatestMeetingCount();
 
 }

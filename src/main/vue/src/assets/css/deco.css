@@ -160,6 +160,10 @@
   background-image: url(/images/icon/lock.svg); 
 }
 
+.deco-img-plus::before{
+  background-image: url(/images/icon/plus.svg); 
+}
+
 @media (max-width: 576px) {
   .hide {
     display: none;

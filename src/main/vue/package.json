@@ -8,9 +8,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "chart.js": "^4.2.0",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "pinia": "^2.0.28",
     "pinia-plugin-persist": "^1.0.0",
     "vue": "^3.2.45",
+    "vue-chartjs": "^5.2.0",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {

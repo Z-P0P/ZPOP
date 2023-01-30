@@ -1,5 +1,5 @@
 import AdminLayout from "@/views/admin/Layout.vue";
-import AdminHome from "@/views/admin/Home.vue";
+import AdminHome from "@/views/admin/home/Home.vue";
 import AdminMeeting from "@/views/admin/meeting/Meeting.vue";
 import AdminBanner from "@/views/admin/banner/Banner.vue";
 import AdminReport from "@/views/admin/report/Report.vue";
@@ -28,6 +28,7 @@ export const adminLogin = {
 export default {
   path: "/admin/",
   component: AdminLayout,
+  redirect: '/admin/home/dashboard',
   beforeEnter: async (to, from) => {
     if (to.path.startsWith("/admin")) {
       const memberStore = useMemberStore();
@@ -37,13 +38,21 @@ export default {
     }
   },
   children: [
-    //   //TODO: 관리자
-    { path: "home", component: AdminHome },
+    //
+    { 
+      path: "home", 
+      component: null,
+      redirect: '/admin/home/dashboard',
+      children: [
+        { path: "dashboard", component: AdminHome},
+      ],
+    },
     {
       path: "meeting",
       component: AdminMeeting,
+      redirect: '/admin/meeting/list',
       children: [
-        { path: "list", component: AdminMeetingList, alias: '/admin/meeting'},
+        { path: "list", component: AdminMeetingList},
         { path: "category", component: AdminCategory },
         { path: "region", component: AdminRegion },
       ],
@@ -51,6 +60,7 @@ export default {
     {
       path: "member",
       component: AdminMember,
+      redirect: '/admin/member/list',
       children: [
         { path: "list", component: AdminMemberList },
         { path: "eval", component: AdminEvaluation },
@@ -60,6 +70,7 @@ export default {
     {
       path: "banner",
       component: AdminBanner,
+      redirect: '/admin/banner/list',
       children: [
               { path: "list", component: AdminBannerList },
       ],
@@ -67,6 +78,7 @@ export default {
     {
       path: "report",
       component: AdminReport,
+      redirect: '/admin/report/member',
       children: [
         { path: "member", component: AdminMemberReport },
         { path: "meeting", component: AdminMeetingReport },
@@ -76,6 +88,7 @@ export default {
     {
       path: "comment",
       component: AdminComment,
+      redirect: '/admin/comment/list',
       children: [{ path: "list", component: AdminCommentList }],
     },
   ],
