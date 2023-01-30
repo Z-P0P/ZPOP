@@ -12,169 +12,169 @@
   
   
   .icon-edit {
-    background-image: url(../../../public/images/icon/edit.svg);
+    background-image: url(/images/icon/edit.svg);
   }
   
   .icon-trash {
-    background-image: url(../../../public/images/icon/trash.svg);
+    background-image: url(/images/icon/trash.svg);
   }
   
   .icon-search {
-    background-image: url(../../../public/images/icon/search.svg);
+    background-image: url(/images/icon/search.svg);
   }
   
   .icon-arrow-left {
-    background-image: url(../../../public/images/icon/arrow-left.svg);
+    background-image: url(/images/icon/arrow-left.svg);
   }
   
   .icon-arrow-right {
-    background-image: url(../../../public/images/icon/arrow-right.svg);
+    background-image: url(/images/icon/arrow-right.svg);
   }
   
   .icon-arrow-down {
-    background-image: url(../../../public/images/icon/arrow-down.svg);
+    background-image: url(/images/icon/arrow-down.svg);
   }
   
   .icon-arrow-up {
-    background-image: url(../../../public/images/icon/arrow-up.svg);
+    background-image: url(/images/icon/arrow-up.svg);
   }
   
   .icon-calendar {
-    background-image: url(../../../public/images/icon/calendar.svg);
+    background-image: url(/images/icon/calendar.svg);
   }
   
   .icon-slide-bar {
-    background-image: url(../../../public/images/icon/slide-bar.svg);
+    background-image: url(/images/icon/slide-bar.svg);
   }
   
   .icon-warning {
-    background-image: url(../../../public/images/icon/warning.svg);
+    background-image: url(/images/icon/warning.svg);
   }
   
   .icon-x {
-    background-image: url(../../../public/images/icon/x.svg);
+    background-image: url(/images/icon/x.svg);
   }
   
   .icon-speech-bubble {
-    background-image: url(../../../public/images/icon/speech-bubble.svg);
+    background-image: url(/images/icon/speech-bubble.svg);
   }
   
   .icon-location {
-    background-image: url(../../../public/images/icon/location.svg);
+    background-image: url(/images/icon/location.svg);
   }
   
   .icon-siren {
-    background-image: url(../../../public/images/icon/siren.svg);
+    background-image: url(/images/icon/siren.svg);
   }
   
   .icon-notification-on {
-    background-image: url(../../../public/images/icon/notification-on.svg);
+    background-image: url(/images/icon/notification-on.svg);
   }
   
   .icon-notification {
-    background-image: url(../../../public/images/icon/notification.svg);
+    background-image: url(/images/icon/notification.svg);
   }
   
   .icon-eyes {
-    background-image: url(../../../public/images/icon/eyes.svg);
+    background-image: url(/images/icon/eyes.svg);
   }
   
   .icon-check-circle {
-    background-image: url(../../../public/images/icon/check-circle.svg);
+    background-image: url(/images/icon/check-circle.svg);
   }
   
   .icon-copy {
-    background-image: url(../../../public/images/icon/copy.svg);
+    background-image: url(/images/icon/copy.svg);
   }
   
   .icon-check {
-    background-image: url(../../../public/images/icon/check.svg);
+    background-image: url(/images/icon/check.svg);
   }
   
   .icon-checked-square {
-    background-image: url(../../../public/images/icon/checked-square.svg);
+    background-image: url(/images/icon/checked-square.svg);
   }
   
   .icon-square {
-    background-image: url(../../../public/images/icon/square.svg);
+    background-image: url(/images/icon/square.svg);
   }
   
   .icon-plus {
-    background-image: url(../../../public/images/icon/plus.svg);
+    background-image: url(/images/icon/plus.svg);
   }
   
   .icon-camera {
     width: 36px;
     height: 36px;
-    background-image: url(../../../public/images/icon/camera-bg.svg);
+    background-image: url(/images/icon/camera-bg.svg);
   }
   
   .icon-star {
     width: 24px;
     height: 24px;
-    background-image: url(../../../public/images/icon/star.svg);
+    background-image: url(/images/icon/star.svg);
   }
   
   .icon-link {
-    background-image: url(../../../public/images/icon/link.svg);
+    background-image: url(/images/icon/link.svg);
   }
   
   .icon-siren-red {
-    background-image: url(../../../public/images/icon/siren-red.svg);
+    background-image: url(/images/icon/siren-red.svg);
   }
   .icon-door{
     width: 20px;
     height: 20px;
     cursor: none;
-    background-image: url(../../../public/images/icon/door.svg);
+    background-image: url(/images/icon/door.svg);
   }
   
   .icon-siren-white{
     width: 20px;
     height: 20px;
     cursor: none;
-    background-image: url(../../../public/images/icon/siren-white-btn.svg);
+    background-image: url(/images/icon/siren-white-btn.svg);
   }
 
   
   .icon-bad {
     width: 46px;
     height: 41px;
-    background-image: url(../../../public/images/icon/bad.svg);
+    background-image: url(/images/icon/bad.svg);
   }
   
   .icon-good {
     width: 46px;
     height: 41px;
-    background-image: url(../../../public/images/icon/good.svg);
+    background-image: url(/images/icon/good.svg);
   }
   
   .icon-excellent {
     width: 46px;
     height: 41px;
-    background-image: url(../../../public/images/icon/excellent.svg);
+    background-image: url(/images/icon/excellent.svg);
   }
   
   .icon-done{
       width:100px;
       height:100px;
       background-size:contain;
-      background-image:url(../../../public/images/icon/done-240.svg);
+      background-image:url(/images/icon/done-240.svg);
   }
   
   .icon-cancel{
       width:100px;
       height:100px;
       background-size:contain;	
-      background-image:url(../../../public/images/icon/cancel-240.png);
+      background-image:url(/images/icon/cancel-240.png);
       cursor:default;
   }
 
   .icon-kebab{
-    background-image: url(../../../public/images/icon/kebab.svg);
+    background-image: url(/images/icon/kebab.svg);
   }
   .icon-calender16{
-    background-image: url(../../../public/images/icon/calendar16.svg);
+    background-image: url(/images/icon/calendar16.svg);
     width: 16px;
     height: 16px;
   }
@@ -192,16 +192,16 @@
     display: inline-block;
     width: 7px;
     height: 12px;
-    background-image: url(../../../public/images/icon/location.svg);
+    background-image: url(/images/icon/location.svg);
   }
 
   .icon-x-white{
-    background-image: url(../../../public/images/icon/x-white.svg);
+    background-image: url(/images/icon/x-white.svg);
   }
 
 
   .icon-location20{
     width: 20px;
     height: 20px;
-    background-image: url(../../../public/images/icon/location-20.svg);
+    background-image: url(/images/icon/location.svg);
   }

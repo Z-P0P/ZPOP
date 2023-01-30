@@ -119,7 +119,7 @@ const detailSubmitHandler = (e) => {
     border: 0;
     border-radius: 0.313rem;
     background-color: var(--light-grey2);
-    background-image: url(../../../public/images/icon/search.svg);
+    background-image: url(/images/icon/search.svg);
     background-repeat: no-repeat;
     background-position: 4% 50%;
     text-align: center;
@@ -140,7 +140,7 @@ const detailSubmitHandler = (e) => {
     outline-color:var(--light-grey2);
     border:none;
     cursor: pointer;
-    background-image: url(../../../public/images/icon/slide-bar.svg);
+    background-image: url(/images/icon/slide-bar.svg);
     height:1.500rem;
     width:1.500rem;
     background-repeat: no-repeat;

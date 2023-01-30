@@ -52,35 +52,35 @@
 }
 
 .table-bar__icon-check::before {
-  background-image: url(../../../../../public/images/icon/check.svg);
+  background-image: url(/images/icon/check.svg);
 }
 
 .table-bar__icon-x::before {
-  background-image: url(../../../../../public/images/icon/x.svg);
+  background-image: url(/images/icon/x.svg);
 }
 
 .table-bar__icon-plus::before {
-  background-image: url(../../../../../public/images/icon/plus.svg);
+  background-image: url(/images/icon/plus.svg);
 }
 
 .table-bar__icon-arrow-left::before {
-  background-image: url(../../../../../public/images/icon/arrow-left.svg);
+  background-image: url(/images/icon/arrow-left.svg);
 }
 
 .table-bar__icon-arrow-right::before {
-  background-image: url(../../../../../public/images/icon/arrow-right.svg);
+  background-image: url(/images/icon/arrow-right.svg);
 }
 
 .table-bar__icon--user-ban::before{
-  background-image: url(../../../../../public/images/icon/user-ban.svg);
+  background-image: url(/images/icon/user-ban.svg);
 }
 
 .table-bar__icon--user-check::before{
-  background-image: url(../../../../../public/images/icon/user-check.svg);
+  background-image: url(/images/icon/user-check.svg);
 }
 
 .table-bar__icon--user-suspend::before{
-  background-image: url(../../../../../public/images/icon/user-suspend.svg);
+  background-image: url(/images/icon/user-suspend.svg);
 }
 
 @media (min-width: 576px) {

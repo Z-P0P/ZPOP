@@ -170,7 +170,7 @@ font-size: 18px;
     .modal__x-icon{
       width: 24px;
       height: 24px;
-      background-image : url(../../../../../public/images/icon/x.svg);
+      background-image : url(/images/icon/x.svg);
       background-repeat :no-repeat;
       background-position: center;
     }

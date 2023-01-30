@@ -112,7 +112,7 @@ async function onClickKick() {
           <div class="image-wrap">
             <div class="image-bg">
               <img
-                src="../../../public/images/no-rusult-ghost.svg"
+                src="/images/no-rusult-ghost.svg"
                 class="image"
                 alt="resigned"
               />
@@ -188,7 +188,7 @@ async function onClickKick() {
 </template>
 
 <style scoped>
-@import url(../../../../resources/static/css/member/member/profile-modal.css);
+@import "@/assets/css/member/profile-modal.css";
 .resigned {
   margin-top: 10px;
   display: flex;

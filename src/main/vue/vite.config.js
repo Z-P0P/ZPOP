@@ -16,12 +16,9 @@ export default defineConfig({
       "/api": {
         target: "http://localhost:8080",
       },
-      '/image':{
-        target: 'http://localhost:8080',
-      },
-      '/logout':{
-        target: 'http://localhost:8080',
-      },
     },
   },
+  build: {
+    outDir: '../resources/static'
+  }
 });

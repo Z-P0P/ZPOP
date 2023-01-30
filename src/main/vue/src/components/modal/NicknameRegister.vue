@@ -9,7 +9,7 @@
                     <Transition name="content1">
                         <div class="modal__content" v-show="!isRegisteredSuccessful">
                             <div class="logo-img">
-                                <img src="../../../public/images/logo/logo-modal.svg" alt="" class="src">
+                                <img src="/images/logo/logo-modal.svg" alt="" class="src">
                             </div>
                             <div class="modal-register__nickname-form input-text">
                                 <label class="input-text__label" for="">집합에서 사용할 닉네임을 입력해주세요.</label>
@@ -28,7 +28,7 @@
                         <div class="modal__content" v-show="isRegisteredSuccessful">
                             <div class="greetings">
                                 <p>
-                                    <img src="../../../public/images/logo/logo-only-text.svg"><span>에 오신걸 환영해요!</span>
+                                    <img src="/images/logo/logo-only-text.svg"><span>에 오신걸 환영해요!</span>
                                 </p>
                                 <p>
                                     😉 집합에 새로오신 ‘<span class="greetings__nickname">나홀로집에</span>’님!
