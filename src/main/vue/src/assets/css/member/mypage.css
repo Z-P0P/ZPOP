@@ -1,0 +1,157 @@
+/* -------마이프로필 공통 컨테이너 ------- */
+
+.my-profile{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 30px;
+}
+
+.my-profile-container{
+    display: inline-flex;
+    flex-direction: column;
+    width: 21.875rem;
+    color:var(--dark-grey2);
+    justify-content: center;
+}
+
+.my-profile-container> h2{
+    color: var(--black);
+    font-weight: bold;
+}
+
+.profile__title{
+    font-size: 1.375rem;
+    padding-left: 0.625rem;
+    padding-bottom: 2.375rem;
+    display: flex;
+    align-self: flex-start;
+}
+
+/* ------------ end!!-------------- */
+
+
+
+/* ---이미지 감싸는 부분 ------  */
+
+.profile__image{
+    display: inline-flex;
+    height: fit-content;
+    justify-content: center;
+    width: 8.75rem;
+    height: 8.75rem;
+    align-self: center;
+}
+
+
+
+
+
+.profile__image--no-photo{
+    align-self: center;
+    background-image: url(../../../../public/images/icon/user-profile-grey.svg);
+    background-size: cover;
+    width: 8.75rem;
+    height: 8.75rem;
+    display: flex;
+    position: relative;
+}   
+
+/* 이미지 - 카메라 아이콘 달아주기 */
+
+.profile__image--no-photo .icon{
+    display: flex;
+    position: absolute;
+    bottom: 4px;
+    right: 3px;
+}
+
+.input-text {
+    margin-top: 49px;
+    margin-bottom: 49px;
+}
+
+.input-text__label{
+    padding-bottom: 9px;
+}
+/* --------------  마이프로필 닉네임 ------------*/
+
+.profile__nickname{
+    padding-top: 0.75rem;
+    display: inline-block;
+    align-self: center;
+    font-weight: var(--bold); 
+    color:var(--dark-grey2);
+    font-size: 1rem;
+   padding-bottom: 6px;
+}
+.input-text-box {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.profile__fame{
+    color: var(--tiffany-blue);
+    font-weight: var(--medium);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom:2.375rem;
+    cursor:none;
+}
+
+/* -----------마이 프로필 버튼 (수정하기, 저장하기) ------ */
+
+.profile__btn{
+    display: inline-block;
+    color:var(--white);
+    font-weight: var(--bold);
+    text-align: center;
+    padding: 13px 0px;
+    margin-bottom: 2.375rem;
+    cursor: pointer;
+    background-color: var(--main-color);
+}
+
+.profile__btn--save{
+    display: flex;
+    align-self: flex-end;
+    width: fit-content;
+    padding: 13.5px 45.5px;
+    color:var(--white);
+    font-weight: var(--bold);
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--main-color);
+}
+
+
+/* --------------마이 프로필 메인 하단------------------ */
+.profile__page-move{
+    height: 2.8125rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.375rem;
+    cursor: pointer;
+}
+
+.profile__page-move:hover{
+    background-color: var(--main-color);
+    opacity: 0.9;
+    color: var(--white);
+    
+}
+
+.profile__page-move a{
+    width: 100%;
+    font-weight: var(--bold);
+    font-size: var(--medium);
+}
+.profile__sign-out{
+    width: fit-content;
+    text-decoration: underline;
+    padding-right: 0.5625rem;
+    align-self: flex-end;
+}
+
+

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/admin/style.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/admin/component/button.css">
+    <link rel="stylesheet" href="/css/admin/component/status.css">
+    <link rel="stylesheet" href="/css/admin/component/header.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-nav.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-search-bar.css">
+    <link rel="stylesheet" href="/css/admin/component/table-bar.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-list.css">
+    <link rel="stylesheet" href="/css/deco.css">
+    <script src="/js/member/modal.js"></script>
+    <script src="/js/admin/admin.js"></script>
+</head>
+<body>
+    <div class="main-wrapper">
+        <main>
+            <nav class="admin-nav">
+                <ul class="admin-nav__lists">
+                    <li class="admin-nav__list" ><a href="./list">모임 조회</a></li>
+                    <li class="admin-nav__list admin-nav__list--selected"><a href="./category">카테고리 관리</a></li>
+                    <li class="admin-nav__list"><a href="./region">지역 관리</a></li>
+                </ul>
+            </nav>
+            <div class="admin-search-bar-div">
+                <div class="admin-search-bar-box">
+                    <input class="admin-search-bar" type="text" placeholder="키워드를 입력하세요">
+                    <button class="admin-search-button"></button>
+                    <div class="filter-box hidden">
+                        <form>
+                            <div><span>검색어</span><input class="keyword-input" type="text"></div>
+                            <div>
+                                <span>카테고리</span>
+                                <select class="category-select">
+                                    <option value = "category" selected></option>
+                                    <option value = "food">밥/카페</option>
+                                    <option value = "sports">운동</option>
+                                    <option value = "study">스터디</option>
+                                    <option value = "room-escape">방탈출</option>
+                                    <option value = "board-game">보드게임</option>
+                                    <option value = "culture">문화</option>
+                                    <option value = "pet">펫</option>
+                                    <option value = "etc">기타</option>
+                                </select>
+                            </div>
+                            <div>
+                                <span>기간</span>
+                                <input class="date-input" type="date">
+                                <span>로 부터</span>
+                                <select class="period-select">
+                                    <option selected>1일</option>
+                                    <option>3일</option>
+                                    <option>1주</option>
+                                    <option>1개월</option>
+                                    <option>3개월</option>
+                                    <option>6개월</option>
+                                    <option>1년</option>
+                                </select>
+                            </div>
+                            <div>
+                                <span>페이지당 결과</span>
+                                <select class="result-amount">
+                                    <option value = "10" selected>10개</option>
+                                    <option value = "20">20개</option>
+                                    <option value = "50">50개</option>
+                                    <option value = "100">100개</option>
+                                </select>
+                            </div>
+                            <div class="search-button"><input type="submit" value="검색" class="filter-button"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="admin-list-container">
+                <div class="table-bar">
+                    <div class="table-bar__left-container">
+                      <input class="checkbox" type="checkbox" name="table-checkbox" />
+                      <span class="table-bar__icon table-bar__icon-check"></span>
+                      <span class="table-bar__icon table-bar__icon-x"></span>
+                    </div>
+              
+                    <div class="table-bar__right-container">
+                    <span class="table-bar__page" 
+                      th:text="|${count}개 중 ${(page-1)*10+1}-${(page-1)*10+#lists.size(categories)}|"> 
+                      9,999개 중 1-10 </span>
+                      <a th:href="${page-1}==0?'#': |?p=${page-1}|"class="table-bar__icon table-bar__icon-arrow-left hide"></a>
+                      <a th:href="${@adminViewUtils.hasNextPage(page,10,#lists.size(categories),count)}?|?p=${page+1}|:'#'" class="table-bar__icon table-bar__icon-arrow-right hide"></a>
+                    </div>
+                  </div>  
+                <ul class="admin-list">
+                    <li class="admin-list__header">
+                        <ul>
+                            <li>
+                                <span>ID</span>
+                                <button><img src="/images/icon/up-down.svg" alt=""></button>
+                            </li>
+                            <li>이름</li>
+                            <li>총 미팅 수</li>
+                            <li>활성 여부</li>
+                        </ul>
+                    </li>
+                    <li class="admin-list__content" th:each="category: ${categories}">
+                        <ul class="list-content">
+                            <li class="list-content__id">
+                                <input type="checkbox" class="checkbox">
+                                <span th:text="${category.id}">1</span>
+                            </li>
+                            <li th:text="${category.name}|">밥/카페</li>
+                            <li th:text="${category.num}">2</li>
+                            <li class="list-content__status">
+                            	<span class="status status--round" th:classappend="${category.deletedAt} == null ? 'status--negative':'status--positive'"
+                            	th:text="${category.deletedAt} != null ? 'TRUE':'FALSE'">False</span>
+                           	</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+        </main>
+    </div>
+    <aside class="left-side-bar">
+        <img src="/images/logo/logo-with-text.svg" alt="로고">
+        <nav>
+            <ul>
+                <li><a class="add-deco-img-left deco-img-home" href="index.html">대시보드</a></li>
+                <li><a class="add-deco-img-left deco-img-notification" href="/admin/banner/list">공지 관리</a></li>
+                <li class="selected"><a class="add-deco-img-left deco-img-meeting-white" href="/admin/meeting/list">모임 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-user" href="/admin/member/list">회원 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-comment" href="/admin/comment/list">댓글 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-report" href="/admin/report/list">신고 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-logout" href="logout.html">로그아웃</a></li>
+            </ul>
+        </nav>
+    </aside>
+</body>
+</html>
