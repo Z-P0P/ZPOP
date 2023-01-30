@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, computed, ref, watch, defineEmits, onUnmounted } from "vue";
+import { reactive, computed, ref, watch, onUnmounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import api from "@/api/";
 import { useMeetingListStore } from "@/stores/meetingListStore";
