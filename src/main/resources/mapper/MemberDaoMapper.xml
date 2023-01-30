@@ -130,5 +130,18 @@
 			separator=",">#{id}</foreach>
 		</where>
 	</update>
-
+	<select id="countCreatedAtPerDay" resultType="CountPerDateDto">
+		SELECT
+			convert(createdAt, date) AS date,
+			count(1) AS count
+		FROM member
+		GROUP BY convert(createdAt, date)
+		HAVING TIMESTAMPDIFF(MONTH, Date, CURRENT_TIMESTAMP) = 0;
+	</select>
+	<select id="countByNotResigned" resultType= "java.lang.Integer">
+		SELECT
+			count(id)
+		FROM member
+		WHERE resignedAt IS NULL;
+	</select>
 </mapper>

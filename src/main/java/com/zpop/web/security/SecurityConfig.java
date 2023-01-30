@@ -38,8 +38,8 @@ public class SecurityConfig {
                             // notification 
                             .requestMatchers("/api/notification/**").hasAnyRole("USER")
                             // admin
-                            .requestMatchers("/api/admin/auth/login").permitAll()
-                            .requestMatchers("/api/admin/**").hasAnyRole("ADMIN")
+                            // .requestMatchers("/api/admin/auth/login").permitAll()
+                            // .requestMatchers("/api/admin/**").hasAnyRole("ADMIN")
                             .anyRequest().permitAll()
             )
             .logout(logout ->

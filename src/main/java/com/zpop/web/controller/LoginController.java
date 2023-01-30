@@ -86,6 +86,14 @@ public class LoginController {
 		String socialId = loginService.getSocialId(accessToken);
 		Member member = loginService.getMemberInfo(socialId);
 
+		Map<String, Object> result = new HashMap<>();
+
+		if (member == null) {
+			session.setAttribute("socialId", socialId);
+			session.setAttribute("loginType", loginType);
+			result.put("code", "REGISTER_REQUIRED");
+			return ResponseEntity.ok(result);
+		}
 
 		/*
 		 * 사용자가 차단된 기록이 있는지 확인
@@ -108,25 +116,13 @@ public class LoginController {
 				throw new CustomException(ExceptionReason.BLOCKED_MEMBER, details);
 			}			
 		}
-		
-
 
 		/* 
 		 * 소셜id를 받아와도, 기존에 멤버로 되어있지 않으면 지금 단계에서는 member 추가 X
 		 * 대신 socialId 와 loginType을 세션에 저장하여 register에서 닉네임을 설정할 때
 		 * member에 추가함
 		 */
-		
-		Map<String, Object> result = new HashMap<>();
-		
-		
-		if (member == null) {
-			session.setAttribute("socialId", socialId);
-			session.setAttribute("loginType", loginType);
-			result.put("code", "REGISTER_REQUIRED");
-			return ResponseEntity.ok(result);
-		}
-		
+				
 		
 		// 로그인시 알림생성
 		try {

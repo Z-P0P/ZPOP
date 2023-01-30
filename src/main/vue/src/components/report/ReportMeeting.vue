@@ -1,5 +1,5 @@
 <script setup>
-import {defineEmits, reactive, computed, ref, defineProps} from "vue";
+import {reactive, computed, ref} from "vue";
 import api from "@/api";
 import SelectBox from '../meeting/SelectBox.vue';
 import ReportCompleteModal from './ReportCompleteModal.vue';

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zpop.web.dto.admin.AdminParticipationDto;
+import com.zpop.web.dto.admin.meeting.CountPerDateDto;
 import com.zpop.web.dto.admin.member.AdminMemberEvalDto;
 import com.zpop.web.entity.Member;
 import com.zpop.web.service.admin.AdminMemberService;
@@ -93,5 +94,12 @@ public class MemberController {
 		result.put("count",count);
 		
 		return result;
+	}
+
+	@GetMapping("count/latest")
+	public List<CountPerDateDto> getLatestCountPerDay() {
+		
+		return adminMemberService.getLatestCountPerDay();
+		
 	}
 }

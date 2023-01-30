@@ -55,7 +55,7 @@ function closeProfileModal() {
     </ul>
   </section>
   <Teleport to="#app">
-    <member-profile
+    <MemberProfile
       v-if="profileModalOn"
       @closeModal="closeProfileModal"
       :memberId="clickedParticipantId"

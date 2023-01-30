@@ -20,7 +20,7 @@ async function onClickLoginBtn() {
     if (!res.ok) throw new ServerException(await res.json());
     const data = await res.json();
     memberStore.setAdmin(data);
-    router.replace("/admin/home");
+    router.push("/admin/home");
   } catch (e) {
     if (e.res.status === 401)
       alert("아이디 또는 비밀번호가 일치하지 않습니다.");
