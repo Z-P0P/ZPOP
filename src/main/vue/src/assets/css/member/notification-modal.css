@@ -52,7 +52,7 @@
     height: 24px;
     width: 24px;
     border: none;
-    background: url(/images/icon/x.svg) no-repeat;
+    background: url(../../../../public/images/icon/x.svg) no-repeat;
     background-size: 24px;
     cursor: pointer;
     margin: 10px 0 0 284px;
@@ -64,7 +64,7 @@
     height: 24px;
     display: inline-block;
     content: "";
-    background: url(/images/icon/notification-on.svg) center/contain no-repeat;
+    background: url(../../../../public/images/icon/notification-on.svg) center/contain no-repeat;
 }
 
 .deactivated-btn{

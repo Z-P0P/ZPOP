@@ -39,7 +39,7 @@
 }
 .btn-totop {
   display: inline-flex;
-  background: url("/images/icon/chevron.svg") no-repeat center;
+  background: url("../../../public/images/icon/chevron.svg") no-repeat center;
   background-color: var(--main-color);
   background-size: 1.875rem;
   width: 3.75rem;
@@ -48,7 +48,7 @@
 }
 .btn-add {
   display: inline-flex;
-  background: url("/images/icon/plus.svg") no-repeat center;
+  background: url("../../../public/images/icon/plus.svg") no-repeat center;
   background-color: var(--main-color);
   width: 46px;
   height: 46px;

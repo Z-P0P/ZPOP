@@ -25,14 +25,16 @@
                 <meeting-form-text-input @textInput="textInputHandler" :input="registerForm.inputs.title" />
                 <div class="meeting-form__input">
                     <label class="input-text__label" for="">내용</label>
-                    <div id="editor">
-                        <p>우리의 모임에 대해 소개해주세요!</p>
-                        <p>
-                            내용이 <strong>자세하면</strong> <u>참여할 확률</u>이 높아져요.
-                        </p>
-                        <p>
-                            <br>
-                        </p>
+                        <div class="register-editor">
+                            <div id="editor">
+                            <p>우리의 모임에 대해 소개해주세요!</p>
+                            <p>
+                                내용이 <strong>자세하면</strong> <u>참여할 확률</u>이 높아져요.
+                            </p>
+                            <p>
+                                <br>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </fieldset>
@@ -140,6 +142,12 @@ export default {
         onUpdated(() => {
             if (!registerForm.editor) {
                 registerForm.setEditor(getQuillEditor());
+                document.querySelector('.ql-editor').addEventListener('focus',function(){
+                    this.parentElement.parentElement.classList.add('register-editor--focused');
+                })
+                document.querySelector('.ql-editor').addEventListener('blur',function(){
+                    this.parentElement.parentElement.classList.remove('register-editor--focused');
+                })
             }
         });
 
@@ -167,108 +175,10 @@ export default {
 .input__label {
     color: var(--dark-grey2);
 }
-.meeting-form-container {
-    padding: 0 20px;
-    max-width: 996px;
-    width: 100%;
-    box-shadow: none;
-}
-
-
-@media (min-width:576px) {
-    .meeting-form-container {
-        padding: 64px 20px;
-        margin-top: 50px;
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
-    }
-}
-
-.meeting-form {
-    display: flex;
-    max-width: 790px;
-    row-gap: 24px;
-    flex-direction: column;
-    z-index: 1;
-}
-
-.meeting-form * {
-    font-size: 1rem;
-}
-
-/* error 메세지 출력 라벨 크기가 16px로 적용되는 현상 해결 */
-.meeting-form .input__message {
-    font-size: 14px;
-}
 
 /* input__label과 폰트크기가 다른 현상 해결 */
 .input-text__label{
     font-size: 1.125rem;
-}
-
-@media (min-width:576px) {
-    .meeting-form * {
-        font-size: 1.125rem;
-    }
-
-
-}
-
-
-@media (min-width:576px) {
-    .meeting-form {
-        margin: 0 auto;
-    }
-}
-
-
-.meeting-form__default-info {
-    display: grid;
-    column-gap: 1.5rem;
-    grid-template-columns: 1fr 1fr;
-}
-
-@media (max-width:576px) {
-    .meeting-form__default-info {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-.meeting-form__title {
-    display: none;
-}
-
-@media (min-width:576px) {
-    .meeting-form__title {
-        display: block;
-        align-self: center;
-        color: var(--tiffany-blue);
-        font-weight: 600;
-        font-size: 36px;
-    }
-        
-
-}
-
-.meeting-form legend {
-    font-size: 1.5rem;
-    font-weight: 700;
-    padding: 1rem 0;
-    width: 100%;
-    border-bottom: 2px solid var(--tiffany-blue);
-    margin-bottom: 1.5rem;
-    grid-area: legend;
-    color: var(--dark-grey2);
-}
-
-
-.meeting-form__input {
-    display: flex;
-    flex-direction: column;
-}
-
-.meeting-form__input .ql-container {
-    min-height: 300px;
 }
 
 .input__label {
@@ -283,17 +193,11 @@ export default {
     height: 32px;
 }
 
-.meeting-form__buttons {
-    align-self: flex-end;
-}
-
-.form-input-container>span {
-    display: inline-block;
-    font-weight: bold;
-}
-
-.form-input-container>*:not(span) {
-    margin-top: 0.5rem;
+.register-editor{
+    border: 0.125rem solid #EBEBEB;
+    margin-top:8px;
+    border-radius: 5px;
+    transition: border 0.3s;
 }
 
 .meeting-form>.meeting-details {
@@ -302,17 +206,17 @@ export default {
     row-gap: 1.5rem;
 }
 
-.meeting-form .ql-toolbar {
-    margin-top: 8px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border: 0.125rem solid #EBEBEB;
+.meeting-form .ql-toolbar,
+.meeting-form .ql-container {
+    border:none;
 }
 
-.meeting-form .ql-container {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border: 0.125rem solid #EBEBEB;
+.meeting-form .ql-toolbar{
+    border-bottom: 0.125rem solid #EBEBEB;
+}
+
+.meeting-form .register-editor--focused{
+    border: 0.125rem solid var(--true-blue);
 }
 
 .register-status__text {

@@ -110,7 +110,7 @@ async function onClickKick() {
         <div v-if="state.member.resigned" class="profile-container">
           <div class="image-wrap">
             <div class="image-bg">
-              <img src="/images/no-rusult-ghost.svg" class="image" alt="resigned" />
+              <img src="../../../public/images/no-rusult-ghost.svg" class="image" alt="resigned" />
             </div>
           </div>
           <div class="resigned">

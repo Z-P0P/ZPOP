@@ -15,7 +15,7 @@
             <ul>
                 <li>
                     <span>ID</span>
-                    <button @click="reverseOrder"><img src="/images/icon/up-down.svg" alt=""></button>
+                    <button @click="reverseOrder"><img src="../../../../public/images/icon/up-down.svg" alt=""></button>
                 </li>
                 <li class="admin-tb-2">평가자(id)</li>
                 <li class="admin-tb-2">피평가자(id)</li>

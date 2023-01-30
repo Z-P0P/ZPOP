@@ -16,7 +16,7 @@
             <ul>
                 <li><span>ID</span>
                     <button @click="reverseOrder">
-                        <img src="/images/icon/up-down.svg" alt="">
+                        <img src="../../../../public/images/icon/up-down.svg" alt="">
                     </button>
                 </li>
                 <li class="admin-tb-3">신고자(id)</li>
@@ -436,15 +436,15 @@ function getCheckedReportedMembers() {
 }
 
 .admin-report-icon--user-ban {
-    background-image: url(/images/icon/user-ban.svg);
+    background-image: url(../../../../public/images/icon/user-ban.svg);
 }
 
 .admin-report-icon--user-check {
-    background-image: url(/images/icon/user-check.svg);
+    background-image: url(../../../../public/images/icon/user-check.svg);
 }
 
 .admin-report-icon--user-suspend {
-    background-image: url(/images/icon/user-suspend.svg);
+    background-image: url(../../../../public/images/icon/user-suspend.svg);
 }
 
 
