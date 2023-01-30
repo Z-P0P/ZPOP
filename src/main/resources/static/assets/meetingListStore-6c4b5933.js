@@ -1,0 +1,1 @@
+import{d as t}from"./index-e04ed277.js";const g=t("meetingList",{state:()=>({isToggleOn:!0,category:0,regions:[]}),actions:{selectCategory(e){this.category=e},setRegions(e){this.regions=e},changeToggle(){this.isToggleOn=!this.isToggleOn}}});export{g as u};
