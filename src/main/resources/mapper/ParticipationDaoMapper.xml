@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zpop.web.dao.ParticipationDao">
+	<insert id="insert" parameterType="int">
+			INSERT INTO participation
+			(meetingId, participantId)
+			VALUES (#{meetingId}, #{memberId})
+	</insert>
+	<update id="updateHasEvaluated">
+		 UPDATE participation SET hasEvaluated = 1
+		 WHERE meetingId = #{meetingId}
+		 AND participantId = #{participantId}
+	</update>
+
+	<select id="get" resultType= "com.zpop.web.entity.Participation">
+			SELECT *
+			FROM participation
+			WHERE id=#{id}
+	</select>
+
+	<select id="getListByMeetingId"
+		resultType="com.zpop.web.entity.Participation">
+		SELECT *
+		FROM participation
+		WHERE meetingId=#{id}
+		AND canceledAt IS NULL
+	</select>
+
+	<select id="getList"
+		resultType="com.zpop.web.entity.Participation">
+		SELECT *
+		FROM participation
+	</select>
+
+	<select id="getAdminViewList" resultType="AdminParticipationDto">
+		SELECT
+			participation.id,
+			meeting.title,
+			meeting.id as meetingId,
+			member.profileImagePath,
+			member.nickname as participantNickname,
+			member.id as participantId,
+			participation.createdAt,
+			participation.canceledAt
+		FROM participation
+		JOIN meeting
+		ON participation.meetingId = meeting.id
+		JOIN member
+		ON participation.participantId = member.id
+		ORDER BY participation.id DESC
+		LIMIT #{offset},#{size}
+	</select>
+
+	<select id="getParticipantInfoByMeetingId" resultType="com.zpop.web.entity.participation.ParticipationInfoView">
+		SELECT *
+		FROM participationInfo
+		WHERE meetingId = #{meetingId}
+		
+	</select>
+    
+	<select id="getListByParticipantId" resultType="com.zpop.web.entity.Participation">
+		SELECT *
+		FROM participation
+		WHERE participantId=#{participantId}
+	</select>
+
+	<select id="getIdsUnEvaluatedByParticipantId" resultType="int">
+		SELECT participantId
+		FROM participation
+		WHERE participantId=#{participantId}
+		AND bannedAt IS NULL
+		AND canceledAt IS NULL
+		AND hasEvaluated = FALSE
+	</select>
+
+	<select id="countByMeetingId" resultType="int">
+		SELECT COUNT(id)
+		FROM participation
+		WHERE meetingId = #{id}
+	</select>
+
+	<select id="countActiveByMeetingId" resultType="int">
+		SELECT COUNT(id)
+		FROM participation
+		WHERE meetingId = #{id}
+		AND canceledAt IS NULL
+		AND bannedAt IS NULL;
+	</select>
+
+	<select id="countBySearch" resultType= "java.lang.Integer">
+		SELECT COUNT(id)
+		FROM participation
+	</select>
+
+	<update id="updateBannedAt">
+		UPDATE participation
+		SET bannedAt = CURRENT_TIMESTAMP()
+		WHERE id=#{id}
+	</update>
+
+	<update id="updateCanceledAt">
+		UPDATE participation
+		SET canceledAt = CURRENT_TIMESTAMP()
+		WHERE id=#{id}
+	</update>
+	
+</mapper>

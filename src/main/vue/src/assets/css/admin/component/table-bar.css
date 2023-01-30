@@ -1,0 +1,90 @@
+.table-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgb(255, 255, 255);
+  border: 1px solid #ebebeb;
+  border-radius: 10px 10px 0 0;
+  min-height: 3rem;
+  padding: 0 30px;
+}
+
+.table-bar__left-container,
+.table-bar__right-container {
+  display: flex;
+  align-items: center;
+}
+
+.table-bar__page {
+  font-weight: 300;
+}
+
+/* 아이콘 */
+.table-bar__left-container > .table-bar__icon,
+.table-bar input.checkbox {
+  margin-right: 1rem;
+}
+
+.table-bar__right-container > .table-bar__icon {
+  margin-left: 1rem;
+}
+
+.table-bar__icon {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.table-bar__icon::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.table-bar__icon:hover {
+  background-color: #ebebeb;
+  border-radius: 50%;
+}
+
+.table-bar__icon-check::before {
+  background-image: url(/images/icon/check.svg);
+}
+
+.table-bar__icon-x::before {
+  background-image: url(/images/icon/x.svg);
+}
+
+.table-bar__icon-plus::before {
+  background-image: url(/images/icon/plus.svg);
+}
+
+.table-bar__icon-arrow-left::before {
+  background-image: url(/images/icon/arrow-left.svg);
+}
+
+.table-bar__icon-arrow-right::before {
+  background-image: url(/images/icon/arrow-right.svg);
+}
+
+.table-bar__icon--user-ban::before{
+  background-image: url(/images/icon/user-ban.svg);
+}
+
+.table-bar__icon--user-check::before{
+  background-image: url(/images/icon/user-check.svg);
+}
+
+.table-bar__icon--user-suspend::before{
+  background-image: url(/images/icon/user-suspend.svg);
+}
+
+@media (min-width: 576px) {
+  .table-bar {
+    min-height: 3.5rem;
+  }
+}

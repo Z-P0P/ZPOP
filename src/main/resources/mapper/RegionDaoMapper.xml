@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zpop.web.dao.RegionDao">
+	<select id="get" resultType="com.zpop.web.entity.Region">
+		select *
+		from region
+		where id=#{id}
+	</select>
+
+	<select id="getList" resultType="com.zpop.web.entity.Region">
+		select *
+		from region
+	</select>
+	<select id="getAdminViewList" resultType="AdminRegionDto">
+		SELECT
+			region.id,
+			region.name,
+			IFNULL(meetingCount.num,0) AS num,
+			region.deletedAt
+		FROM region
+		LEFT OUTER JOIN(
+			SELECT regionId, COUNT(regionId) AS num
+			FROM meeting
+			GROUP BY regionId
+			) AS meetingCount
+		ON region.id = meetingCount.regionId
+		LIMIT #{offset},#{size}
+	</select>
+	<select id="count" resultType="int">
+		SELECT COUNT(id) 
+    	FROM region
+	</select>
+	<select id="getActiveList" resultType="RegionDto">
+		SELECT r.id, r.name
+		FROM region AS r
+		WHERE r.deletedAt IS NULL
+	</select>
+	<update id="updateDeletedAtAll">
+		UPDATE region
+		<if test='ids != null and !ids.isEmpty()'>
+			<if test='!activate'>
+				SET deletedAt=CURRENT_TIMESTAMP
+			</if>
+			<if test='activate'>
+				SET deletedAt=NULL
+			</if> 
+			<foreach collection="ids" item="ids" 
+			open="WHERE id IN(" close=")"
+			index="index" separator=",">
+			#{ids}
+			</foreach> 
+		</if>
+	</update>
+</mapper>
