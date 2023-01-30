@@ -1,6 +1,6 @@
 <template>
   <aside @click="clickHandler" class="left-side-bar" :class="{'expended' : isExpanded}">
-        <router-link to="/"><img src="/images/logo/logo-with-text.svg" alt="로고"></router-link>
+    <router-link to="/"><img src="../../../public/images/logo/logo-with-text.svg" alt="로고"></router-link>
         <nav>
             <ul>
                 <li :class="{'selected':(props.status==0)}">

@@ -36,7 +36,7 @@ public class BannerController {
     @PostMapping()
     public int insert(@RequestPart Banner banner, @RequestPart MultipartFile bannerImg, HttpServletRequest request) throws IOException{
 
-        String realPath = request.getServletContext().getRealPath("/images/banner");
+        String realPath = request.getServletContext().getRealPath("/image/banner");
         int result = service.insert(banner,bannerImg,realPath);
         
         return result;

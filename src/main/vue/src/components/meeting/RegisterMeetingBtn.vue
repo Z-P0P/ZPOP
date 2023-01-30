@@ -18,7 +18,7 @@ const routeToRegisterMeeting = () => {
     position: fixed;
     height: 46px;
     width:46px;
-    background: no-repeat center/contain url(/images/icon/button-plus.svg);
+    background: no-repeat center/contain url(../../../public/images/icon/button-plus.svg);
     left: 50%;
     top: 80%;
     margin-left: -23px; /*half the width*/

@@ -4,7 +4,7 @@ export default {};
 
 <template>
   <div class="content-wrap">
-    <img src="/images/nothing.svg" alt="noting image" />
+    <img src="../../public/images/nothing.svg" alt="noting image" />
     <h1>아무것도 없어요!</h1>
     <router-link to="/" class="btn btn-semiround btn-action home">
       홈으로</router-link

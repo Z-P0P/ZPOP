@@ -57,8 +57,7 @@
 	<select id="getParticipantInfoByMeetingId" resultType="com.zpop.web.entity.participation.ParticipationInfoView">
 		SELECT *
 		FROM participationInfo
-		WHERE meetingId = #{meetingId}
-		
+		WHERE meetingId = #{meetingId} AND canceledAt IS NULL
 	</select>
     
 	<select id="getListByParticipantId" resultType="com.zpop.web.entity.Participation">
