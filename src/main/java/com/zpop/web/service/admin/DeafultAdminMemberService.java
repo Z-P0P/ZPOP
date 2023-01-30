@@ -10,6 +10,7 @@ import com.zpop.web.dao.MemberDao;
 import com.zpop.web.dao.MemberEvalDao;
 import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.dto.admin.AdminParticipationDto;
+import com.zpop.web.dto.admin.meeting.CountPerDateDto;
 import com.zpop.web.dto.admin.member.AdminMemberEvalDto;
 import com.zpop.web.entity.Member;
 
@@ -69,5 +70,12 @@ public class DeafultAdminMemberService implements AdminMemberService{
 		int offset=(page-1)*size;
 		List<AdminParticipationDto> list = participationDao.getAdminViewList(size, offset, keyword, option);
 		return list;
+	}
+
+	@Override
+	public List<CountPerDateDto> getLatestCountPerDay() {
+		
+		return memberDao.countCreatedAtPerDay();
+
 	}
 }

@@ -1,17 +1,21 @@
 package com.zpop.web.dao;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
+
 import com.zpop.web.dto.MeetingDetailDto;
 import com.zpop.web.dto.MeetingThumbnailPagination;
 import com.zpop.web.dto.ParticipantDto;
 import com.zpop.web.dto.UpdateMeetingViewDto;
+import com.zpop.web.dto.admin.OptionCountDto;
 import com.zpop.web.dto.admin.meeting.AdminMeetingDetailsDto;
 import com.zpop.web.dto.admin.meeting.AdminMeetingDto;
+import com.zpop.web.dto.admin.meeting.CountPerDateDto;
 import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.entity.meeting.MeetingThumbnailView;
-import org.apache.ibatis.annotations.Mapper;
-
-import java.util.Date;
-import java.util.List;
 
 @Mapper
 public interface MeetingDao {
@@ -60,6 +64,16 @@ public interface MeetingDao {
     int removeAllDeletedAt(List<Integer> ids);
 
 	List<Meeting> getByIds(List<Integer> ids);
+
+	List<CountPerDateDto> countCreatedAtPerDay();
+
+	List<OptionCountDto> countClosedAndNotClosed();
+
+    List<OptionCountDto> countByGenderCategory();
+
+    List<OptionCountDto> countByActiveAgeRange();
+
+    List<OptionCountDto> countByActiveContactType();
 
 }
 

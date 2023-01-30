@@ -34,7 +34,7 @@
                     to="/admin/report/member">신고 관리</router-link>
                 </li>
                 <li>
-                    <a class="add-deco-img-left deco-img-logout" href="#">로그아웃</a>
+                    <li><a class="add-deco-img-left deco-img-logout" href="#" @click="onLogoutClick">로그아웃</a></li>
                 </li>
             </ul>
         </nav>
@@ -42,10 +42,15 @@
 </template>
 
 <script setup>
-import {ref, reactive} from 'vue';
-
+import { getLogout } from '@/api/login';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useMemberStore } from '../../stores/memberStore';
+const memberStore = useMemberStore();
 const isExpanded = ref(false);
 const props = defineProps(['status']);
+const router = useRouter();
+
 
 const clickHandler = (event) => {
     const target = event.target;
@@ -53,6 +58,15 @@ const clickHandler = (event) => {
         return;
     }
     isExpanded.value = !isExpanded.value;
+}
+
+const onLogoutClick = () => {
+    const request = getLogout();
+    request.then(()=>{
+        memberStore.clearInfo();
+        router.push('/');
+    })
+    .catch(err=>console.log('로그인에 실패했습니다.',err));
 }
 
 </script>

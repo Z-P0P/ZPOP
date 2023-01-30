@@ -308,4 +308,65 @@
 			</where>
 		</if>
 	</update>
+	<select id="countCreatedAtPerDay" resultType="CountPerDateDto">
+		SELECT
+			convert(createdAt, date) AS date,
+			count(1) AS count
+		FROM meeting
+		GROUP BY convert(createdAt, date)
+		HAVING TIMESTAMPDIFF(MONTH, Date, CURRENT_TIMESTAMP) = 0;
+	</select>
+	<select id="countByGenderCategory" resultType="OptionCountDto">
+		select
+			genderCategory AS id,
+			count(genderCategory) as count
+		FROM 
+			meeting
+		GROUP BY genderCategory
+	</select>
+	<select id="countClosedAndNotClosed" resultType="OptionCountDto">
+		SELECT 
+			COUNT(*) AS count,
+			'모집 중' AS name
+		FROM meeting
+		WHERE deletedAt IS NULL AND closedAt IS NULL
+		UNION
+		SELECT 
+			COUNT(*) AS count,
+			'마감' AS name
+		FROM meeting
+		WHERE deletedAt IS NULL AND closedAt IS NOT NULL;
+	</select>
+	<select id="countByActiveAgeRange" resultType="OptionCountDto">
+		SELECT
+			ageRange.id,
+			meetingCount.count,
+			ageRange.type AS name
+		FROM
+			(
+				SELECT
+				ageRangeId,
+				count(ageRangeId) AS count
+				FROM meeting
+				group by ageRangeId
+			) AS meetingCount
+		JOIN ageRange ON meetingCount.ageRangeId = ageRange.id
+		WHERE ageRange.deletedAt IS NULL
+	</select>
+	<select id="countByActiveContactType" resultType="OptionCountDto">
+		SELECT
+		contactType.id,
+		meetingCount.count,
+		contactType.name
+		FROM
+			(
+				SELECT
+				contactTypeId,
+				count(contactTypeId) as count
+				FROM meeting
+				group by contactTypeId
+			) AS meetingCount
+		JOIN contactType ON meetingCount.contactTypeId = contactType.id
+		WHERE contactType.deletedAt IS NULL
+	</select>
 </mapper>
