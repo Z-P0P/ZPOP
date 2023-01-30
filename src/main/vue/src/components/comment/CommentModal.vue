@@ -90,6 +90,7 @@ function closeModalFooterType() {
 <style scoped>
 .yes {
   color: var(--main-color);
+  border-left: 1px solid var(--light-grey1);
 }
 
 :deep(.modal__body p) {

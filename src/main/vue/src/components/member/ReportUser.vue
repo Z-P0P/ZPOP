@@ -1,5 +1,5 @@
 <script setup>
-import {defineEmits, reactive} from "vue";
+import {reactive} from "vue";
 import api from "@/api";
 import SelectBox from '../meeting/SelectBox.vue';
 
