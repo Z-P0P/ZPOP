@@ -1,6 +1,7 @@
 <script setup>
 import { reactive, ref } from "vue";
-import ReportUser from "../member/ReportUser.vue";
+import ReportUser from "@/components/report/ReportUser.vue";
+import DefaultModal from "@/components/modal/Default.vue";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import { useMemberStore } from "@/stores/memberStore";
 import api from "@/api";
@@ -56,7 +57,7 @@ function closeModal() {
   reportModalOn.value = false;
 }
 
-
+// 신고 --------------------------------------------------------------------------
 let reportOn = true;
 const reportModalOn = ref(false);
 
@@ -68,7 +69,7 @@ function setReportOn() {
 }
 
 function onClickReport() {
-  reportModalOn.value = true;
+    reportModalOn.value = true;
   //emit('closeModal')
 }
 
@@ -90,6 +91,7 @@ function setKickOn() {
 async function onClickKick() {
   kickModalOn.value = true;
 }
+
 </script>
 
 <template>
@@ -100,10 +102,7 @@ async function onClickKick() {
         <div class="draggable-area">
           <div class="draggable-thumb"></div>
         </div>
-        <span
-          @click.prevent="$emit('closeModal')"
-          class="close-sheet icon icon-x"
-        ></span>
+        <span @click.prevent="$emit('closeModal')" class="close-sheet icon icon-x"></span>
       </header>
 
       <div class="body column">
@@ -111,21 +110,13 @@ async function onClickKick() {
         <div v-if="state.member.resigned" class="profile-container">
           <div class="image-wrap">
             <div class="image-bg">
-              <img
-                src="/images/no-rusult-ghost.svg"
-                class="image"
-                alt="resigned"
-              />
+              <img src="/images/no-rusult-ghost.svg" class="image" alt="resigned" />
             </div>
           </div>
           <div class="resigned">
             <span>탈퇴한 회원이에요</span>
             <div class="ban__wrap">
-              <span
-                v-show="kickOn"
-                @click="onClickKick"
-                class="btn btn-semiround kick"
-              >
+              <span v-show="kickOn" @click="onClickKick" class="btn btn-semiround kick">
                 <span class="icon icon-door"></span>
                 내보내기
               </span>
@@ -171,11 +162,7 @@ async function onClickKick() {
               <span class="icon icon-siren-white"></span>
               신고하기
             </span>
-            <span
-              v-show="kickOn"
-              @click="onClickKick"
-              class="btn btn-semiround kick"
-            >
+            <span v-show="kickOn" @click="onClickKick" class="btn btn-semiround kick">
               <span class="icon icon-door"></span>
               내보내기
             </span>
@@ -184,11 +171,12 @@ async function onClickKick() {
       </div>
     </div>
   </div>
-  <ReportUser @closeModal="closeModal" v-if="reportModalOn" />
+  <ReportUser @closeModal="closeModal" v-if="reportModalOn" :reportedMemberId="props.memberId"/>
+  <!-- <default-modal></default-modal> -->
 </template>
 
 <style scoped>
-@import "@/assets/css/member/profile-modal.css";
+@import url(@/assets/css/member/profile-modal.css);
 .resigned {
   margin-top: 10px;
   display: flex;

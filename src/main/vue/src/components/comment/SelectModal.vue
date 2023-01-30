@@ -57,6 +57,8 @@
         if (!isLoggedIn) {
           loginModalStore.handleModal();
           return;
+        } else {
+            reportModalOn.value = true;
         }
     }
 
