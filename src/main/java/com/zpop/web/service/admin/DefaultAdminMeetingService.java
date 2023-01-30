@@ -25,6 +25,7 @@ import com.zpop.web.dto.admin.AdminRegionDto;
 import com.zpop.web.dto.admin.meeting.AdminMeetingDetailsDto;
 import com.zpop.web.dto.admin.meeting.AdminMeetingDetailsResponse;
 import com.zpop.web.dto.admin.meeting.AdminMeetingDto;
+import com.zpop.web.dto.admin.meeting.CountPerDateDto;
 import com.zpop.web.entity.meeting.Meeting;
 import com.zpop.web.entity.participation.ParticipationInfoView;
 
@@ -179,5 +180,11 @@ public class DefaultAdminMeetingService implements AdminMeetingService {
          meetingDao.removeAllDeletedAt(ids);
       }
       return 0;
+   }
+
+
+   @Override
+   public List<CountPerDateDto> getLatestMeetingCount() {
+      return meetingDao.countCreatedAtPerDay();
    }
 }

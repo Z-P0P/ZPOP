@@ -1,6 +1,7 @@
 package com.zpop.web.dao;
 
 import com.zpop.web.dto.EvalMemberDto;
+import com.zpop.web.dto.admin.meeting.CountPerDateDto;
 import com.zpop.web.entity.Member;
 import com.zpop.web.entity.MemberEval;
 import com.zpop.web.entity.member.MyMeetingView;
@@ -38,4 +39,10 @@ public interface MemberDao {
     int updateAllIsSuspended(List<Integer> ids, Boolean isSuspended);
 	
 	int updateNickname(int memberId, String nickname);
+
+    List<CountPerDateDto> countCreatedAtPerDay();
+
+	int countNotDeleted();
+
+	int countByNotResigned();
 }
