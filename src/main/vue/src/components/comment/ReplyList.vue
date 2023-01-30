@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps,defineEmits} from 'vue';
 import { useReplyStore} from '@/stores/replyStore'
 import Reply from './Reply.vue'
 

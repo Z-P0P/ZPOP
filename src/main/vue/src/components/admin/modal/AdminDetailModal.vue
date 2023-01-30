@@ -1,6 +1,4 @@
 <script setup>
-import { defineEmits} from "vue";
-
 const emit = defineEmits(["closeDetailModal", "action"]);
 const props = defineProps(["modalType","title"]);
 

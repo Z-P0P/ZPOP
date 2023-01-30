@@ -1,7 +1,7 @@
 <script setup>
     import { useHeaderStore } from '../../stores/headerStore';
     import api from "@/api";
-    import { reactive, ref, defineEmits } from 'vue';
+    import { reactive, ref } from 'vue';
     import { useMemberStore } from '../../stores/memberStore';
     const notificationAbsence = ref(false);
     const emit = defineEmits(['checkNotification']);
