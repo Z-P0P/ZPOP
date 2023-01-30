@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zpop.web.dao.ReportedMemberDao">
+
+	<insert id="insert" parameterType="ReportedMeeting">
+		INSERT INTO reportedMember (reportedId,reporterId,typeId,reason) 
+		VALUES(#{reportedId},#{reporterId},#{typeId},#{reason});
+	</insert>
+
+	<select id="getAdminViewList" resultType="AdminReportedMemberDto">
+		SELECT
+			rm.id,
+			m1.nickname AS reporterNickname,
+			m1.id AS reporterId,
+			m2.nickname as reportedNickname,
+			m2.id as reportedId,
+			mrt.type as reportType,
+			rm.reason,
+			rm.createdAt,
+			rm.processedAt
+		FROM reportedMember as rm
+		JOIN member as m1
+		ON rm.reporterId = m1.id
+		JOIN member as m2
+		ON rm.reportedId = m2.id
+		JOIN memberReportType as mrt
+		ON rm.typeId = mrt.id
+		<where>
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('reporterNickname')">
+						m1.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('reportedNickname')">
+						m2.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('id')">
+						rm.id = #{keyword}
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				AND
+				<![CDATA[
+				DATEDIFF(rm.createdAt, #{minDate}) <=  0
+				AND DATEDIFF(rm.createdAt, #{minDate}) >=  - #{period}
+				]]>
+			</if>
+		</where>
+		<choose>
+			<when test="order.equals('desc')">
+				ORDER BY rm.id DESC
+			</when>
+			<otherwise>
+				ORDER BY rm.id ASC
+			</otherwise>
+		</choose>
+		LIMIT #{offset},#{size};
+	</select>
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(rm.id)
+		FROM reportedMember as rm
+		JOIN member as m1
+		ON rm.reporterId = m1.id
+		JOIN member as m2
+		ON rm.reportedId = m2.id
+		JOIN memberReportType as mrt
+		ON rm.typeId = mrt.id
+		<where>
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('reporterNickname')">
+						m1.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('reportedNickname')">
+						m2.nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('id')">
+						rm.id = #{keyword}
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				AND
+				<![CDATA[
+				DATEDIFF(rm.createdAt, #{minDate}) <=  0
+				AND DATEDIFF(rm.createdAt, #{minDate}) >=  - #{period}
+				]]>
+			</if>
+		</where>
+	</select>
+	<update id="updateAll" parameterType="java.util.List">
+		UPDATE reportedMember
+		<if test="ids!=null and !ids.isEmpty()">
+			SET processedAt=CURRENT_TIMESTAMP
+			<choose>
+				<when test="releasedAt != null">
+					,blockedAt=CURRENT_TIMESTAMP
+					,releasedAt=#{releasedAt}
+				</when>
+				<otherwise>
+					,blockedAt=null
+					,releasedAt=null
+				</otherwise>
+			</choose>
+			<where>
+				ID IN 
+				<foreach item="id" collection="ids" open="(" close=")"
+				separator=",">#{id}</foreach>
+			</where>
+		</if>
+	</update>
+	<select id="getByIds" resultType="ReportedMember">
+		SELECT *
+		FROM reportedMember
+		<where>
+			id IN
+			<foreach collection="ids" item="id" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+		</where>
+	</select>
+	<select id="getBlockedMemberByMemberId" resultType="BlockedMemberDto">
+		SELECT 
+			reportedId,
+			blockedAt,
+			reportedType,
+			max(releasedAt) AS releasedAt
+		FROM BlockedMember
+		WHERE reportedId = #{memberId}
+	</select>
+</mapper>

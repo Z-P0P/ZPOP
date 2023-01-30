@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zpop.web.dao.CommentDao">
+  <select id="getComment" resultType= "com.zpop.web.entity.comment.CommentView">
+	SELECT * 
+	FROM commentView 
+	WHERE 
+		<if test=" query != null">
+			meetingId = #{query}
+		</if>
+		AND parentCommentId IS NULL
+		AND deletedAt IS NULL
+	ORDER BY createdAt
+  </select>
+  <select id="getReply" resultType= "com.zpop.web.entity.comment.CommentView">
+	SELECT * 
+	FROM commentView
+	WHERE
+		<if test=" query != null">
+			groupId = #{query}
+		</if>
+	AND parentCommentId IS NOT NULL
+	AND deletedAt IS NULL
+    ORDER BY createdAt
+  </select>
+  
+  <select id="getCountOfReply" resultType="int">
+  	SELECT count(id) 
+  	FROM comment
+  	WHERE
+		<if test=" query != null">
+			groupId = #{query}
+		</if>
+  	AND deletedAt IS NULL
+  </select>
+  <select id="getCommentById" resultType= "com.zpop.web.entity.comment.Comment">
+  	SELECT * FROM comment
+  	WHERE 
+  	<if test="commentId != null">
+			id = #{commentId}
+	</if>
+  </select>
+  <select id="getByIds" resultType="Comment">
+	SELECT *
+	FROM comment
+	<where>
+		id IN
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</where>
+	</select>
+  <insert id="insertComment" parameterType="com.zpop.web.entity.comment.Comment">
+  	INSERT INTO comment 
+	  	(meetingId, writerId, content)
+	  	VALUES (#{meetingId}, #{writerId}, #{content})
+  </insert>
+  
+  <insert id="insertReply" parameterType="com.zpop.web.entity.comment.Comment">
+  		INSERT INTO comment 
+				(meetingId, parentCommentId, groupId, writerId, content)
+				values (#{meetingId}, #{parentCommentId}, #{groupId}, #{writerId}, #{content})
+  </insert>
+  <update id="updateComment" parameterType="com.zpop.web.entity.comment.Comment">
+  	UPDATE comment
+  	<set>
+      <if test="content != null">
+      	content=#{content},
+      	updatedAt = now()
+      </if>
+    </set>
+  	WHERE id = #{commentId}
+  </update>
+  <update id="deleteComment" parameterType="int">
+  	UPDATE comment
+  	<set>
+      <if test="commentId != null">
+      	deletedAt = now()
+      </if>
+    </set>
+  	WHERE
+  	id = #{commentId}
+  </update>
+  <select id="getAdminList" resultType="AdminCommentDto">
+	SELECT 
+		c1.id,
+		c1.content,
+		c1.writerId,
+		c1.groupId,
+		mem.nickname,
+		m.id AS meetingId,
+		m.title AS meetingTitle,
+		c1.parentCommentId,
+		c2.writerId AS parentCommentWriterId,
+		c2.content AS parentCommentContent,
+		c1.createdAt,
+		c1.updatedAt,
+		c1.deletedAt
+	FROM comment AS c1
+	LEFT JOIN meeting AS m
+	ON c1.meetingId = m.id
+	LEFT JOIN member AS mem
+	ON c1.writerId = mem.id
+	LEFT OUTER JOIN comment AS c2
+	ON c1.parentCommentId = c2.id
+	<where>
+		<if test="keyword!=null and !keyword.equals('')">
+			<choose>
+				<when test="option.equals('title')">
+					m.title LIKE '%${keyword}%'
+				</when>
+				<when test="option.equals('nickname')">
+					mem.nickname LIKE '%${keyword}%'
+				</when>
+				<when test="option.equals('id')">
+					c1.id = #{keyword}
+				</when>
+			</choose>
+		</if>
+		<if test="period!=null and minDate!=null">
+			<![CDATA[
+			DATEDIFF(c1.createdAt, #{minDate}) <= 0
+			AND DATEDIFF(c1.createdAt, #{minDate}) >=  - #{period}
+			]]>
+		</if>
+	</where>
+	<choose>
+		<when test="order.equals('desc')">
+			ORDER BY c1.id DESC
+		</when>
+		<otherwise>
+			ORDER BY c1.id ASC
+		</otherwise>
+	</choose>
+	LIMIT #{offset}, #{size}
+  </select>
+  <select id="countBySearch" resultType= "java.lang.Integer">
+	SELECT COUNT(c1.id) 
+	FROM comment AS c1
+	LEFT JOIN meeting AS m
+	ON c1.meetingId = m.id
+	LEFT JOIN member AS mem
+	ON c1.writerId = mem.id
+	<where>
+		<if test="keyword!=null and !keyword.equals('')">
+			<choose>
+				<when test="option.equals('title')">
+					m.title LIKE '%${keyword}%'
+				</when>
+				<when test="option.equals('nickname')">
+					mem.nickname LIKE '%${keyword}%'
+				</when>
+				<when test="option.equals('id')">
+					c1.id = #{keyword}
+				</when>
+			</choose>
+		</if>
+		<if test="period!=null and minDate!=null">
+			AND
+			<![CDATA[
+			DATEDIFF(c1.createdAt, #{minDate}) <= 0
+			AND DATEDIFF(c1.createdAt, #{minDate}) >=  - #{period}
+			]]>
+		</if>
+	</where>
+</select>
+<update id="removeAllDeletedAt" parameterType="java.util.List">
+	UPDATE comment
+	<if test="ids != null and !ids.isEmpty()">
+		SET deletedAt=null
+		<where>
+			<foreach item="id" index="index" collection="ids"
+			open="id IN (" separator="," close=")">
+			#{id}
+			</foreach>
+		</where>
+	</if>
+</update>
+<update id="updateAllDeletedAt" parameterType="java.util.List">
+	UPDATE comment
+	<if test="ids != null and !ids.isEmpty()">
+		SET deletedAt=CURRENT_TIMESTAMP
+		<where>
+			id IN 
+			<foreach item="id" index="index" collection="ids"
+			open="(" separator="," close=")">
+			#{id}
+			</foreach>
+		</where>
+	</if>
+</update>
+</mapper>

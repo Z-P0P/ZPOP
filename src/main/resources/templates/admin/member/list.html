@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/admin/style.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/admin/component/button.css">
+    <link rel="stylesheet" href="/css/admin/component/status.css">
+    <link rel="stylesheet" href="/css/admin/component/header.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-nav.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-search-bar.css">
+    <link rel="stylesheet" href="/css/admin/component/table-bar.css">
+    <link rel="stylesheet" href="/css/admin/component/admin-list.css">
+    <link rel="stylesheet" href="/css/deco.css">
+    <script src="/js/member/modal.js"></script>
+    <script src="/js/admin/admin.js"></script>
+</head>
+<body>
+    <div class="main-wrapper">
+        <main>
+            <nav class="admin-nav">
+                <ul class="admin-nav__lists">
+                    <li class="admin-nav__list admin-nav__list--selected"><a href="./list">회원 리스트</a></li>
+                    <li class="admin-nav__list"><a href="./eval">회원 평가 기록</a></li>
+                    <li class="admin-nav__list"><a href="./region.html">회원 모임 기록</a></li>
+                </ul>
+            </nav>
+            <div class="admin-search-bar-div">
+                <div class="admin-search-bar-box">
+                    <input class="admin-search-bar" type="text" placeholder="키워드를 입력하세요">
+                </div>
+            </div>
+            <div class="admin-list-container">
+                <div class="table-bar">
+                    <div class="table-bar__left-container">
+                      <input class="checkbox" type="checkbox" name="table-checkbox"/>
+                      <span class="table-bar__icon table-bar__icon--user-suspend"></span>
+                      <span class="table-bar__icon table-bar__icon--user-ban"></span>
+                      <span class="table-bar__icon table-bar__icon--user-check"></span>
+                    </div>
+              
+                    <div class="table-bar__right-container">
+                      <span class="table-bar__page" 
+                      th:text="|${count}개 중 ${(page-1)*10+1}-${#lists.size(members)}|"> 
+                      9,999개 중 1-10 </span>
+                      <a th:href="${page-1}==0?'#': |?p=${page-1}|"class="table-bar__icon table-bar__icon-arrow-left hide"></a>
+                      <a th:href="|?p=${page+1}|" class="table-bar__icon table-bar__icon-arrow-right hide"></a>
+                    </div>
+                  </div>
+                <ul class="admin-list">
+                    <li class="admin-list__header">
+                        <ul>
+                            <li>
+                                <span>ID</span>
+                                <button><img src="/images/icon/up-down.svg" alt=""></button>
+                            </li>
+                            <li>닉네임</li>
+                            <li>인기도</li>
+                            <li>생성 일자</li>
+                            <li>계정 상태</li>
+                        </ul>
+                    </li>
+                    <li class="admin-list__content" th:each="member: ${members}">
+                        <ul class="list-content">
+                            <li class="list-content__id">
+                                <input type="checkbox" class="checkbox">
+                                <span th:text="${member.id}">1</span>
+                            </li>
+                            <li class="list-content__nickname">
+                                <img th:src="${(member.profileImagePath==null?'/images/icon/user-profile.svg':'/images/user/'+ member.profileImagePath)}" alt="">
+                                <span th:text="${member.nickname}">가나다라마바사아자차</span></li>
+                            <li th:text="${member.fame}">0</li>
+                            <li th:text="${member.createdAt}">2022-02-22</li>
+                            <li><span class="status status--round"
+                             th:classappend="${member.resignedAt} != null ? 'status--negative' 
+                             : (${member.isSuspended} ? 'status--neutral' : 'status--positive')"
+                             th:text= "${member.resignedAt} != null ? '탈퇴' 
+                             : (${member.isSuspended} ? '일시정지' : '활성')">
+                             False</span>
+                             </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+        </main>
+    </div>
+    <aside class="left-side-bar">
+        <img src="/images/logo/logo-with-text.svg" alt="로고">
+        <nav>
+            <ul>
+                <li><a class="add-deco-img-left deco-img-home" href="index.html">대시보드</a></li>
+                <li><a class="add-deco-img-left deco-img-notification" href="/admin/banner/list">공지 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-meeting" href="/admin/meeting/list">모임 관리</a></li>
+                <li class="selected"><a class="add-deco-img-left deco-img-user-white" href="/admin/member/list">회원 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-comment" href="/admin/comment/list">댓글 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-report" href="/admin/report/list">신고 관리</a></li>
+                <li><a class="add-deco-img-left deco-img-logout" href="logout.html">로그아웃</a></li>
+            </ul>
+        </nav>
+    </aside>
+</body>
+</html>

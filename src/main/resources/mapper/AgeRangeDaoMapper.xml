@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zpop.web.dao.AgeRangeDao">
+	<select id="get" resultType="com.zpop.web.entity.AgeRange">
+		select *
+		from ageRange
+		where id=#{id}
+	</select>
+
+	<select id="getList" resultType="com.zpop.web.entity.AgeRange">
+		select *
+		from ageRange
+	</select>
+	<select id="getActiveList" resultType="AgeRangeDto">
+		SELECT ar.id, ar.type
+		FROM ageRange AS ar
+		WHERE ar.deletedAt IS NULL
+	</select>
+</mapper>
