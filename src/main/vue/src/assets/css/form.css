@@ -78,7 +78,7 @@ input {
     width:23px;
     height:23px;
     display: inline-block;
-    background-image: url(/images/icon/warning.svg);
+    background-image: url(../../../public/images/icon/warning.svg);
     background-size: contain;
     z-index: 1;
     animation: alert 0.5s;
@@ -113,7 +113,7 @@ input {
     width:23px;
     height:23px;
     display: inline-block;
-    background-image: url(/images/icon/done-240.svg);
+    background-image: url(../../../public/images/icon/done-240.svg);
     background-size: contain;
     z-index: 1;
 }
