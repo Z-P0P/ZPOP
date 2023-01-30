@@ -13,6 +13,7 @@ import LoginProc from "../LoginProc.vue";
 import ScrollUpBtn from "@/components/meeting/ScrollUpBtn.vue";
 import RegisterMeetingBtn from "@/components/meeting/RegisterMeetingBtn.vue";
 import PageLoader from "../../components/PageLoader.vue";
+import NicknameRegister from "@/components/modal/NicknameRegister.vue"
 
 const emit = defineEmits(["throw"]);
 const route = useRoute();
@@ -161,6 +162,7 @@ function changeLoginProcStatus (){
 }
 
 function changeNicknameRegisterStatus(){
+  console.log('열림');
   isNicknameRegisterOpened.value = !isNicknameRegisterOpened.value;
 }
 
@@ -197,7 +199,7 @@ function showBanner () {
     </div>
   </div>
   <LoginProc v-show="isLoginProcOpened" @close="changeLoginProcStatus" @memberRegisterRequired="changeNicknameRegisterStatus"/>
-  <NicknameRegisterVue v-show="isNicknameRegisterOpened" @close="changeNicknameRegisterStatus"/>
+  <NicknameRegister v-show="isNicknameRegisterOpened" @close="changeNicknameRegisterStatus"/>
   <ScrollUpBtn/>
   <RegisterMeetingBtn/>
   <PageLoader v-show="!firstLoaded" :isWholePage="true"/>
