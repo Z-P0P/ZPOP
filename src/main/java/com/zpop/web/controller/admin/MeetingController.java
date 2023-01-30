@@ -27,6 +27,7 @@ import com.zpop.web.dto.admin.AdminRegionResponse;
 import com.zpop.web.dto.admin.meeting.AdminMeetingDetailsResponse;
 import com.zpop.web.dto.admin.meeting.AdminMeetingDto;
 import com.zpop.web.dto.admin.meeting.AdminMeetingListResponse;
+import com.zpop.web.dto.admin.meeting.CountPerDateDto;
 import com.zpop.web.service.admin.AdminMeetingService;
 
 @Controller("adminMeetingController")
@@ -132,5 +133,10 @@ public class MeetingController {
 					@RequestParam boolean getDeleted) {
 		int result = adminMeetingService.deleteAllMeeting(ids, getDeleted);
 		return result;
+	}
+
+	@GetMapping("/count/latest")
+	public List<CountPerDateDto> getLatestMeetingCount(){
+		return adminMeetingService.getLatestMeetingCount();
 	}
 }

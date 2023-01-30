@@ -12,4 +12,3 @@
 		WHERE c.deletedAt IS NULL
 	</select>
 </mapper>
-
