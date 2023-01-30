@@ -15,7 +15,7 @@
             <ul>
                 <li><span>ID</span>
                     <button>
-                        <img src="/images/icon/up-down.svg" alt="">
+                        <img src="../../../../public/images/icon/up-down.svg" alt="">
                     </button>
                 </li>
                 <li class="admin-tb-3">모임글 제목/댓글 내용</li>

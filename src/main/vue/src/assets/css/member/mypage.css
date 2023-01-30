@@ -48,7 +48,7 @@
 
 .profile__image--no-photo{
     align-self: center;
-    background-image: url(/images/icon/user-profile-grey.svg);
+    background-image: url(../../../../public/images/icon/user-profile-grey.svg);
     background-size: cover;
     width: 8.75rem;
     height: 8.75rem;

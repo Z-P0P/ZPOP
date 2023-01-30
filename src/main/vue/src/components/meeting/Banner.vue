@@ -1,7 +1,7 @@
 <template>
     <div class="banner-container">
       	<div @transitionend="transitionendHandler" class="banner" :style="`transition: ${banner.transition}; transform: ${banner.transform}`">
-            <router-link v-for="(banner, index) in bannerList" :to="`${banner.link == null ? '#' : banner.link}`"><img :src="`/images/banner/${banner.imagePath}`" :key="index" :alt="banner.name"></router-link>
+            <router-link v-for="(banner, index) in bannerList" :to="`${banner.link == null ? '#' : banner.link}`"><img :src="`/image/banner/${banner.imagePath}`" :key="index" :alt="banner.name"></router-link>
       	</div>
    		<div @click="onLeftBtnClick" class="banner__btn banner__btn--left icon icon-arrow-left"></div>
     	<div @click="onRightBtnClick" class="banner__btn banner__btn--right icon icon-arrow-right"></div>

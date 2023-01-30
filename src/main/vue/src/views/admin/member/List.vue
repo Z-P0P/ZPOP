@@ -15,7 +15,7 @@
             <ul>
                 <li>
                     <span>ID</span>
-                    <button @click="reverseOrder"><img src="/images/icon/up-down.svg" alt=""></button>
+                    <button @click="reverseOrder"><img src="../../../../public/images/icon/up-down.svg" alt=""></button>
                 </li>
                 <li class="admin-tb-2">닉네임</li>
                 <li class="admin-tb-1">인기도</li>

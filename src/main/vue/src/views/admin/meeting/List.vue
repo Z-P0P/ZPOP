@@ -15,7 +15,7 @@
             <ul>
                 <li><span>ID</span>
                     <button @click="reverseOrder">
-                        <img src="/images/icon/up-down.svg" alt="">
+                        <img src="../../../../public/images/icon/up-down.svg" alt="">
                     </button>
                 </li>
                 <li class="admin-tb-3">제목/방장</li>
@@ -79,7 +79,15 @@
                     </ul>
                 </li>
                 <li class="details__members">
-                    <ParticipantList :detail="meetingDetails"/>
+                    <div class="input__label">참여자</div>
+                    <ul class="participant__list">
+                        <div class="participant__info" v-for="(participant, index) in meetingDetails.participants" :key="index">
+                            <img :src="(participant.profileImagePath == null) ?
+                                '/images/icon/user-profile-grey.svg' : 
+                                `/images/profile/${participant.profileImagePath}`">
+                            <span>{{ participant.nickname }}</span>
+                        </div>
+                    </ul>
                 </li>
                 <li class="details__option-container">
                     <meeting-form-select-input class="details__option"
@@ -345,8 +353,10 @@ const cancelDeleteAllMeeting = () => {
 
 </script>
 
-<style>
-@import url('../../../assets/css/admin/component/select.css');
+<style scoped>
+@import url('../../../assets/css/meeting/component/participant.css');
+@import url('../../../assets/css/form.css');
+
 
 .list-content__title {
     flex-direction: column;
@@ -428,8 +438,6 @@ const cancelDeleteAllMeeting = () => {
 .details__input-text{
 	display:flex;
 	flex-direction:column;
-	row-gap:10px;
-	
 }
 
 .details__input-text > input{
