@@ -36,9 +36,9 @@ public class HomeController {
         this.meetingService = meetingService;
     }
 
-    @RequestMapping  // 루트 (index.html을 위해) 혹은 web 접근시에 Vue 프로젝트의 view 호출
+    @RequestMapping(value = {"/", "/{path:[^\\.]*}"})// 루트 (index.html을 위해) 혹은 web 접근시에 Vue 프로젝트의 view 호출
     public String index() {
-        return "index.html";
+        return "forward:/index.html";
     }
 
     @GetMapping("/search/{keyword}")
