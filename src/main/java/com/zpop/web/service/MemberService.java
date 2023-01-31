@@ -22,7 +22,7 @@ public interface MemberService {
         ProfileResponse getProfile(int id);
 
         Map<String, Object> checkNicknameValid(String nickname);
-        int updateNickname(int memberId, String nickname);
+        void update(int memberId, String nickname, String imageName);
 
         ProfileFile uploadFile(MultipartFile file, String path, int memberId) throws IOException;
 }
