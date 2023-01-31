@@ -205,11 +205,11 @@ const chartMeetingPerDayData = {
             borderWidth: 2, // 라인 넓이
             label: '모임 수', // 데이터 라벨
             backgroundColor: 'rgb(255,255,255, 0)',
-            pointBackgroundColor: '#00b6ff',
+            pointBackgroundColor: '#004c6d',
             fill: true, // 채우기
             tension: 0.3,
-            borderColor: '#00b6ff',
-            pointBorderColor: '#00b6ff',
+            borderColor: '#004c6d',
+            pointBorderColor: '#004c6d',
             pointBorderWidth: 3,
             data: meetingPerDay.nums,
         }
@@ -221,13 +221,13 @@ const chartNewMemberPerDayData = {
     datasets: [
         {
             borderWidth: 2, // 라인 넓이
-            label: '모임 수', // 데이터 라벨
+            label: '회원 수', // 데이터 라벨
             backgroundColor: 'rgb(255,255,255, 0)',
-            pointBackgroundColor: '#00b6ff',
+            pointBackgroundColor: '#00cbff',
             fill: true, // 채우기
             tension: 0.3,
-            borderColor: '#00b6ff',
-            pointBorderColor: '#00b6ff',
+            borderColor: '#00cbff',
+            pointBorderColor: '#00cbff',
             pointBorderWidth: 3,
             data: newMemberPerDay.nums,
         }
