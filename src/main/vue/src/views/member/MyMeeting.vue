@@ -22,8 +22,7 @@ const state = reactive({
 
 const user = useMemberStore();
 const nickname = user.nickname;
-console.log(nickname);
-let hasEvaluated;
+
 // const props = defineProps (
 //   [
 //     'hasEval'
@@ -32,8 +31,7 @@ let hasEvaluated;
 
 const emit = defineEmits(["rate"]);
 const memberStore = useMemberStore();
-console.log(memberStore);
-console.log(memberStore.id);
+
 let modalOn = ref(false);
 let errModalOn = ref(false);
 let participationModalOn = ref(false);
@@ -59,10 +57,8 @@ async function getMyMeeting() {
     const data = await res.json();
     state.meetings = data;
     if (data == null) {
-      console.log("참여한 모임이 없습니다");
       participationModalOn.value = true;
     }
-    console.log(data);
 
     // if(state.userId == null) {
     //   console.log("교집합을 만들어주세요");
@@ -90,7 +86,6 @@ async function getParticipant(meetingId) {
       state.participants.push(p);
       console.log(state.participants);
     }
-    console.log(state.participants);
     // return state.participants;
   } catch (e) {
     console.log(e);
@@ -190,12 +185,8 @@ function rateMeeting(meetingId) {
   })
     .then((response) => response.ok)
     .then((data) => {
-      console.log("data is ", data);
-      console.log("state.meetingId is ", state.meetingId);
-
       state.meetings.map((m) => {
         if (m.meetingId === state.meetingId) {
-          console.log("같다");
           m.evaluated = true;
         }
       });
