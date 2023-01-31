@@ -28,6 +28,8 @@
     font-weight: var(--semi-bold);
 
 }
+
+
 /* ------😚이모티콘 리스트 영역 시작------*/
 .rate__emoji-list{
     display: flex;
@@ -78,10 +80,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 30px;
     font-size: 16px;
     color: var(--dark-grey2);
     column-gap: 10px;
+    font-weight: 500;
 
 }
 
@@ -130,12 +133,7 @@ div.btn.btn-semiround {
 @media (min-width: 410px) {
 
 
-    .rate-container h1{
-        margin-top: 40px;
-        font-size: 19px;
-        margin-bottom: 30px;
-
-    }
+ 
     input[type=range] {
         width: 300px;
     }
@@ -148,6 +146,16 @@ div.btn.btn-semiround {
         margin-bottom: 30px;
     } */
 
+}
+
+@media (min-width: 576px) {
+    .rate-container h1{
+        margin-top: 40px;
+        font-size: 19px;
+        margin-bottom: 30px;
+
+    }
+    
 }
 
 /* todo : min width 주기 상세 마진 적용하기 */

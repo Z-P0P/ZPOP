@@ -348,7 +348,7 @@
     }
 
     .modal-default-wrap{
-        z-index: 1;
+        z-index: 3;
     }
     .yes {
     color: var(--main-color);
