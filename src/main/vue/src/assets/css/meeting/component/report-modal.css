@@ -8,7 +8,7 @@
 }
 
 .modal-report #cancel-btn{
-    background-color: var(--dark-grey2);
+    background-color: var(--grey2);
     color: var(--white);
     margin:0 15px 0 0;
     width:70px;
@@ -25,7 +25,7 @@
 }
 
 .modal-report .report-modal__body{
-	background-color: white;
+	background-color: var(--modal-white);
 	display : flex;
 	flex-direction: column;
 	border-radius: 0 0 10px 10px;
@@ -175,6 +175,10 @@
 
     .modal-report #cancel-btn{
         width:100px;
+    }
+
+    .modal-report .report-modal__body{
+        background-color: white;
     }
 
 }
