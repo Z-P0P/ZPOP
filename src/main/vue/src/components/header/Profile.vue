@@ -3,7 +3,7 @@
         <button><img class="header__profile-img" alt="프로필" 
             :src="profileImagePath ? profileImagePath : '../../../public/images/icon/user-profile.svg'" 
             @click="onProfileClick"></button>
-        <ul class="select-box__options select-box__options--right select-box__options--header" v-show="isOpened">
+        <ul class="select-box__options select-box__options--right select-box__options--header" v-show="isOpened" @click="onProfileClick">
             <!--li 말고 div 박스 전체로 -->
             <li><router-link to="/my-profile">내 프로필</router-link></li>
             <li><router-link to="/my-gathering">내가 모집한 모임</router-link></li>

@@ -31,7 +31,7 @@
                         <span v-text="member.id"></span>
                     </li>
                     <li class="list-content__nickname admin-tb-2">
-                        <img :src="member.profileImagePath==null?'/images/icon/user-profile.svg':'/images/user/'+ member.profileImagePath"
+                        <img :src="member.profileImagePath==null?'/images/icon/user-profile.svg':'/image/user/'+ member.profileImagePath"
                             alt="">
                         <span v-text="member.nickname"></span>
                     </li>
