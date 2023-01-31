@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps } from "vue";
-
 // 부모로부터 checked 여부 설정 가능 함
 const props = defineProps({
   isOn: {

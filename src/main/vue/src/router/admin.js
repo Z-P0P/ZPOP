@@ -32,7 +32,7 @@ export default {
   beforeEnter: async (to, from) => {
     if (to.path.startsWith("/admin")) {
       const memberStore = useMemberStore();
-      if ((await memberStore.isAdmin())) {
+      if (!(await memberStore.isAdmin())) {
         return "/admin/login";
       }
     }

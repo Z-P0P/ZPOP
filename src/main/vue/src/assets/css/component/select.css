@@ -9,6 +9,8 @@
 
 .select-box--input * {
   font-size: 18px;
+  color: var(--grey2);
+  font-weight: 400;
 }
 
 .select-box--input > span {
@@ -16,8 +18,8 @@
   width: 100%;
   padding: 14px 18px;
   cursor: pointer;
-  border-width:  2px;
-  border-style: solid; 
+  border-width: 2px;
+  border-style: solid;
   border-color: var(--light-grey1);
   transition: box-shadow 0.1s, border-color 0.1s;
 }
@@ -39,7 +41,7 @@
   height: 16px;
   display: inline-block;
   content: "";
-  background: url("/images/icon/arrow-down.svg");
+  background: url("../../../../public/images/icon/arrow-down.svg");
   background-size: contain;
   background-repeat: no-repeat;
   transition: transform 0.1s;
@@ -89,10 +91,9 @@
   padding: 0;
 }
 
-.select-box__options--header > li > a{
+.select-box__options--header > li > a {
   padding: 10px 15px;
 }
-
 
 .select-box__options > li:hover {
   background-color: var(--main-color);
@@ -135,7 +136,7 @@
   color: var(--red-theme);
 }
 
-.modal-select__contents--report
-,.modal-select__contents--delete{
-  color:var(--red-theme);
+.modal-select__contents--report,
+.modal-select__contents--delete {
+  color: var(--red-theme);
 }
