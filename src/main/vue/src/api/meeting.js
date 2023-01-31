@@ -97,6 +97,20 @@ function getContact(id) {
   return fetch(`/api/meeting/${id}/contact`);
 }
 
+/**
+ * 참여자 내보내기
+ */
+function kick(meetingId, participantId) {
+  return fetch(`/api/meeting/kick`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      meetingId,
+      participantId,
+    }),
+  });
+}
+
 export default {
   getThumbnailList,
   getDetail,
@@ -110,4 +124,5 @@ export default {
   close,
   remove,
   getContact,
+  kick,
 };

@@ -352,13 +352,15 @@ public class DefaultMeetingService implements MeetingService {
 	}
 
 	@Override
-	public boolean kick(int id, int participantId, Member member) {
+	public boolean kick(int id, int hostId, int participantId) {
 		Meeting foundMeeting = findById(id);
 
-		int memberId = member.getId();
+		if (foundMeeting.getRegMemberId() != hostId)
+			throw new CustomException(ExceptionReason.AUTHORIZATION_ERROR);
 
-		if (foundMeeting.getRegMemberId() != memberId)
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다");
+		// 자기자신을 강퇴하려 할 때
+		if (hostId == participantId)
+			throw new CustomException(ExceptionReason.VALIDATION_ERROR);
 
 		List<Participation> participations = participationDao.getListByMeetingId(id);
 
@@ -370,25 +372,12 @@ public class DefaultMeetingService implements MeetingService {
 				break;
 			}
 		}
-
+		// 내보내기 대상이 없거나, 취소했다면 NOT_JOIN_MEETING
 		if (kickTarget == null || kickTarget.getCanceledAt() != null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "모임에 참여하지 않는 회원입니다");
-
+			throw new CustomException(ExceptionReason.NOT_JOIN_MEETING);
+		// 이미 강퇴한 참여자
 		if (kickTarget.getBannedAt() != null)
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 강퇴된 회원입니다");
-
-		// 탈퇴한 회원인지 확인 후
-		// 탈퇴한 회원이라면 참여 취소처리한다.
-		int kickTargetMemberId = kickTarget.getParticipantId();
-		Member kickTargetMember = memberDao.getById(kickTargetMemberId);
-		if (kickTargetMember.getResignedAt() != null) {
-			participationDao.updateCanceledAt(kickTargetMemberId);
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다");
-		}
-
-		// 자기자신을 강퇴하려 할 때
-		if (kickTargetMemberId == member.getId())
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 내보낼 수 없습니다");
+			throw new CustomException(ExceptionReason.ALREADY_KICKED);
 
 		participationDao.updateBannedAt(kickTarget.getId());
 

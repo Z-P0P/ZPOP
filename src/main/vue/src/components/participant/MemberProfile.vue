@@ -13,7 +13,7 @@ const memberStore = useMemberStore();
 const props = defineProps({
   memberId: Number,
 });
-const emit = defineEmits(["closeModal"]);
+const emit = defineEmits(["closeModal", "onKickModal"]);
 
 const state = reactive({
   member: {
@@ -75,7 +75,6 @@ function onClickReport() {
 
 // 내보내기 ----------------------------------------------------------------------
 let kickOn = false;
-const kickModalOn = ref(false);
 
 function setKickOn() {
   // 모임이 활성화 되어있고, 내 모임이고, 나 외의 참여자라면
@@ -89,7 +88,11 @@ function setKickOn() {
 }
 
 async function onClickKick() {
-  kickModalOn.value = true;
+  emit("onKickModal", {
+    id: state.member.id,
+    nickname: state.member.nickname
+  });
+  emit("closeModal");
 }
 
 </script>
@@ -172,7 +175,6 @@ async function onClickKick() {
     </div>
   </div>
   <ReportUser @closeModal="closeModal" v-if="reportModalOn" :reportedMemberId="props.memberId"/>
-  <!-- <default-modal></default-modal> -->
 </template>
 
 <style scoped>

@@ -1,41 +1,43 @@
 input::-webkit-input-placeholder {
-    color: var(--grey2);
-    font-size: var(--regular);
-  }
-
-input:focus {
-    border-color: var(--light-grey2);
+  color: var(--grey2);
+  font-size: var(--regular);
 }
 
-input{
-    color: var(--dark-grey2);
+input:focus {
+  border-color: var(--light-grey2);
+}
+
+input {
+  color: var(--dark-grey2);
 }
 
 .input-text {
-    display: inline-flex;
-    flex-direction: column;
-    width: 100%;
-    height: fit-content;
+  display: inline-flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
 }
 
-.input-text__label{
-    display: inline-flex;
-    justify-content: flex-start;
-    width: 100%;
-    margin-right: 0;
-    font-weight: var(--bold);
+.input-text__label {
+  display: inline-flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-right: 0;
+  font-weight: var(--bold);
+  color: var(--dark-grey2);
+  font-size: 16px;
 }
 
-.input-text__content{
-    position: relative;
-    display: flex;
-    padding-left: 1.125rem;
-    border-radius: 0.3125rem;
-    height: fit-content;
-    padding: 14px 18px;
-    width:100%;
-    border: 0.125rem solid #EBEBEB;
-    transition:box-shadow 0.1s, border-color 0.1s;
+.input-text__content {
+  position: relative;
+  display: flex;
+  padding-left: 1.125rem;
+  border-radius: 0.3125rem;
+  height: fit-content;
+  padding: 14px 18px;
+  width: 100%;
+  border: 0.125rem solid #ebebeb;
+  transition: box-shadow 0.1s, border-color 0.1s;
 }
 
 .input-text__content:focus{
@@ -43,28 +45,29 @@ input{
 	box-shadow:0px 0px 0.5px var(--main-color); 
 }
 
-@media (min-width:576px) {
-    .input-text__content{
-        padding: 14px 20px;
-    }
+@media (min-width: 576px) {
+  .input-text__content {
+    padding: 14px 20px;
+  }
 }
 
-.input-text__content-wrapper, .input-date__content-wrapper{
-    margin-top: 8px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    width:100%;
+.input-text__content-wrapper,
+.input-date__content-wrapper {
+  margin-top: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
-.input-text__content--date{
-    height: 51.33px;
+.input-text__content--date {
+  height: 51.33px;
 }
 
-@media (min-width:576px) {
-    .input-text__content--date{
-        height: 54px;
-    }
+@media (min-width: 576px) {
+  .input-text__content--date {
+    height: 54px;
+  }
 }
 
 .select-box--error::before,
@@ -81,27 +84,25 @@ input{
     animation: alert 0.5s;
 }
 
-
-
 .select-box.select-box--error > span,
 .input-date__content-wrapper--error .input-text__content,
-.input-text__content-wrapper--error .input-text__content{
-    border-color:var(--error-red);
-    box-shadow:0px 0px 0.2px var(--error-red);
+.input-text__content-wrapper--error .input-text__content {
+  border-color: var(--error-red);
+  box-shadow: 0px 0px 0.2px var(--error-red);
 }
 
-.input__message{
-	display:flex;
-	align-items:center;
-	height:30px;
-	font-size:14px;
-    color:var(--error-red);
-    opacity: 0;
-    transition: opacity 0.1s;
+.input__message {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  font-size: 14px;
+  color: var(--error-red);
+  opacity: 0;
+  transition: opacity 0.1s;
 }
 
-.input__message--appear{
-    opacity: 1;
+.input__message--appear {
+  opacity: 1;
 }
 
 .input-text__content-wrapper--correct::before,
@@ -118,157 +119,166 @@ input{
 }
 
 .input-text__content-wrapper--correct .input-text__content,
-.input-date__content-wrapper--correct .input-text__content{
-    border-color:var(--activate);
+.input-date__content-wrapper--correct .input-text__content {
+  border-color: var(--activate);
 }
 
 .input-text__content-wrapper--correct + .input__message,
-.input-date__content-wrapper--correct + .input__message{
-    color:var(--activate);
+.input-date__content-wrapper--correct + .input__message {
+  color: var(--activate);
 }
 
 @keyframes alert {
-    0% { transform: translateX(0) }
-    25% { transform: translateY(-2px) }
-    35% { transform: translateY(-2px) rotate(10deg) }
-    55% { transform: translateY(-2px) rotate(-10deg) }
-    65% { transform: translateY(-2px) rotate(10deg) }
-    75% { transform: translateY(-2px) rotate(-10deg) }
-    100% { transform: translateY(0) rotate(0) }
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateY(-2px);
+  }
+  35% {
+    transform: translateY(-2px) rotate(10deg);
+  }
+  55% {
+    transform: translateY(-2px) rotate(-10deg);
+  }
+  65% {
+    transform: translateY(-2px) rotate(10deg);
+  }
+  75% {
+    transform: translateY(-2px) rotate(-10deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0);
+  }
 }
 
 .meeting-form-container {
-    padding: 0 20px;
-    max-width: 996px;
-    width: 100%;
-    box-shadow: none;
+  padding: 0 20px;
+  max-width: 996px;
+  width: 100%;
+  box-shadow: none;
 }
 
-
-@media (min-width:576px) {
-    .meeting-form-container {
-        padding: 64px 20px;
-        margin-top: 50px;
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
-    }
+@media (min-width: 576px) {
+  .meeting-form-container {
+    padding: 64px 20px;
+    margin-top: 50px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .meeting-form {
-    display: flex;
-    max-width: 790px;
-    row-gap: 24px;
-    flex-direction: column;
-    z-index: 1;
+  display: flex;
+  max-width: 790px;
+  row-gap: 24px;
+  flex-direction: column;
+  z-index: 1;
 }
 
 .meeting-form * {
-    font-size: 1rem;
+  font-size: 1rem;
+}
+
+.meeting-form__input .input-text__label {
+  font-size: 16px;
 }
 
 /* error 메세지 출력 라벨 크기가 16px로 적용되는 현상 해결 */
 .meeting-form .input__message {
-    font-size: 14px;
+  font-size: 14px;
 }
 
-
-@media (min-width:576px) {
-    .meeting-form * {
-        font-size: 1.125rem;
-    }
-
-
+@media (min-width: 576px) {
+  .meeting-form * {
+    font-size: 1.125rem;
+  }
+  .meeting-form__input .input-text__label {
+    font-size: 18px;
+  }
 }
 
-
-@media (min-width:576px) {
-    .meeting-form {
-        margin: 0 auto;
-    }
+@media (min-width: 576px) {
+  .meeting-form {
+    margin: 0 auto;
+  }
 }
-
 
 .meeting-form__default-info {
-    display: grid;
-    column-gap: 1.5rem;
-    grid-template-columns: 1fr 1fr;
+  display: grid;
+  column-gap: 1.5rem;
+  grid-template-columns: 1fr 1fr;
 }
 
-@media (max-width:576px) {
-    .meeting-form__default-info {
-        grid-template-columns: 1fr;
-    }
+@media (max-width: 576px) {
+  .meeting-form__default-info {
+    grid-template-columns: 1fr;
+  }
 }
-
 
 .meeting-form__title {
-    display: none;
+  display: none;
 }
 
-@media (min-width:576px) {
-    .meeting-form__title {
-        display: block;
-        align-self: center;
-        color: var(--tiffany-blue);
-        font-weight: 600;
-        font-size: 36px;
-    }
-        
-
+@media (min-width: 576px) {
+  .meeting-form__title {
+    display: block;
+    align-self: center;
+    color: var(--tiffany-blue);
+    font-weight: 600;
+    font-size: 36px;
+  }
 }
 
 .meeting-form legend {
-    font-size: 1.5rem;
-    font-weight: 700;
-    padding: 1rem 0;
-    width: 100%;
-    border-bottom: 2px solid var(--tiffany-blue);
-    margin-bottom: 1.5rem;
-    grid-area: legend;
-    color: var(--dark-grey2);
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 1rem 0;
+  width: 100%;
+  border-bottom: 2px solid var(--tiffany-blue);
+  margin-bottom: 1.5rem;
+  grid-area: legend;
+  color: var(--dark-grey2);
 }
 
-
 .meeting-form__input {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .meeting-form__input .ql-container {
-    min-height: 300px;
+  min-height: 300px;
 }
-
 
 .meeting-form__buttons {
-    align-self: flex-end;
+  align-self: flex-end;
 }
 
-.form-input-container>span {
-    display: inline-block;
-    font-weight: bold;
+.form-input-container > span {
+  display: inline-block;
+  font-weight: bold;
 }
 
-.form-input-container>*:not(span) {
-    margin-top: 0.5rem;
+.form-input-container > *:not(span) {
+  margin-top: 0.5rem;
 }
 
 .admin-detail-modal .input-text {
-    width: 100%;
-    padding: 0 18px;
-    cursor: pointer;
-    border-bottom: 2px solid var(--admin-grey);
-    max-width: 500px;
+  width: 100%;
+  padding: 0 18px;
+  cursor: pointer;
+  border-bottom: 2px solid var(--admin-grey);
+  max-width: 500px;
 }
 
 .admin-detail-modal .input-text__content {
-    border: none;
-    font-size: 18px;
+  border: none;
+  font-size: 18px;
 }
 
-
 .admin-detail-modal .input__label {
-    font-weight: var(--bold);
+  font-weight: var(--bold);
 }
 
 .admin-detail-modal .input-text__label {
-    font-weight: var(--bold);
+  font-weight: var(--bold);
 }

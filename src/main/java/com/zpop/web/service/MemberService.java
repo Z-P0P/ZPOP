@@ -24,6 +24,6 @@ public interface MemberService {
         Map<String, Object> checkNicknameValid(String nickname);
         int updateNickname(int memberId, String nickname);
 
-        ProfileFile uploadFile(MultipartFile file, String path) throws IOException;
+        ProfileFile uploadFile(MultipartFile file, String path, int memberId) throws IOException;
 }
 

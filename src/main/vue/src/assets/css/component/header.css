@@ -203,12 +203,14 @@
 .header__profile button > img {
   width: 32px;
   flex: 0 0 32px;
+  border-radius: 16px;
 }
 
 @media (min-width: 576px) {
   .header__profile button > img {
     width: 40px;
     flex: 0 0 40px;
+    border-radius: 20px;
   }
 }
 

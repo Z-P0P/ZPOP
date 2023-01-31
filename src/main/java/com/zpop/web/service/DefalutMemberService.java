@@ -1,15 +1,19 @@
 package com.zpop.web.service;
 
-import com.zpop.web.dao.*;
-import com.zpop.web.dto.EvalDto;
-import com.zpop.web.dto.EvalMemberDto;
-import com.zpop.web.dto.MyMeetingResponse;
-import com.zpop.web.dto.ProfileResponse;
-import com.zpop.web.entity.*;
-import com.zpop.web.entity.member.MyMeetingView;
-import com.zpop.web.global.exception.CustomException;
-import com.zpop.web.global.exception.ExceptionReason;
-import com.zpop.web.utils.TextDateTimeCalculator;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,11 +21,26 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.*;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.*;
-import java.util.regex.Pattern;
+import com.zpop.web.dao.MeetingDao;
+import com.zpop.web.dao.MemberDao;
+import com.zpop.web.dao.MemberEvalDao;
+import com.zpop.web.dao.NicknameLogDao;
+import com.zpop.web.dao.ParticipationDao;
+import com.zpop.web.dao.ProfileFileDao;
+import com.zpop.web.dto.EvalDto;
+import com.zpop.web.dto.EvalMemberDto;
+import com.zpop.web.dto.MyMeetingResponse;
+import com.zpop.web.dto.ProfileResponse;
+import com.zpop.web.entity.Member;
+import com.zpop.web.entity.MemberEval;
+import com.zpop.web.entity.NicknameLog;
+import com.zpop.web.entity.Participation;
+import com.zpop.web.entity.ProfileFile;
+import com.zpop.web.entity.member.MyMeetingView;
+import com.zpop.web.global.exception.CustomException;
+import com.zpop.web.global.exception.ExceptionReason;
+import com.zpop.web.utils.FileNameGenerator;
+import com.zpop.web.utils.TextDateTimeCalculator;
 
 @Service
 public class DefalutMemberService implements MemberService {
@@ -345,16 +364,23 @@ public class DefalutMemberService implements MemberService {
 	}
 
     @Override
-    public ProfileFile uploadFile(MultipartFile file, String path) throws IOException {
+    @Transactional
+    public ProfileFile uploadFile(MultipartFile file, String path, int memberId) throws IOException {
         File pathFile = new File(path);
         if (!pathFile.exists()) {
             pathFile.mkdirs();
         }
 
-        String completePath = path + File.separator + file.getOriginalFilename();
+		String originalFileName = file.getOriginalFilename();
+		String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+		
+		FileNameGenerator fileNameGenerator = new FileNameGenerator("ZPOP_PROFILE", extension);
+		String fileName = fileNameGenerator.getFileNameWithDateTime();
+		
+		String completePath = path + File.separator + fileName;
 
-        InputStream fis = file.getInputStream();
-        OutputStream fos = new FileOutputStream(completePath);
+		InputStream fis = file.getInputStream();
+		OutputStream fos = new FileOutputStream(completePath);
 
         byte[] buf = new byte[1024];
         int size = 0;
@@ -364,8 +390,20 @@ public class DefalutMemberService implements MemberService {
 
         fos.close();
         fis.close();
-        ProfileFile profileFile = new ProfileFile(file.getOriginalFilename());
+        ProfileFile profileFile = ProfileFile.builder()
+                                            .memberId(memberId)
+                                            .name(fileName)
+                                            .build();
+
         profileFileDao.insert(profileFile);
+
+        Member member = Member.builder()
+                            .id(memberId)
+                            .profileImagePath(fileName)
+                            .build();
+
+        dao.updateProfileImagePath(memberId, fileName);
+
         return profileFile;
     }
 }
