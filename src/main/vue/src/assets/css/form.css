@@ -39,8 +39,8 @@ input{
 }
 
 .input-text__content:focus{
-	border-color: var(--true-blue);
-	box-shadow:0px 0px 0.5px var(--true-blue); 
+	border-color: var(--main-color);
+	box-shadow:0px 0px 0.5px var(--main-color); 
 }
 
 @media (min-width:576px) {

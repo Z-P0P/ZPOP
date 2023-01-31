@@ -216,7 +216,7 @@ export default {
 }
 
 .meeting-form .register-editor--focused{
-    border: 0.125rem solid var(--true-blue);
+    border: 0.125rem solid var(--main-color);
 }
 
 .register-status__text {
