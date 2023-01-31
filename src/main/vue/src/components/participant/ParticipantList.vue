@@ -5,6 +5,12 @@ import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import { useMemberStore } from "@/stores/memberStore";
 import { useLoginModalStore } from "@/stores/loginModalStore";
 import { computed, ref } from "vue";
+import { useRoute } from "vue-router";
+import DefaultModal from "../modal/Default.vue";
+import api from "@/api";
+import { ServerException } from "@/utils/ServerException";
+
+const route = useRoute();
 
 const meetingDetailStore = useMeetingDetailStore();
 const memberStore = useMemberStore();
@@ -12,10 +18,7 @@ const loginModalStore = useLoginModalStore();
 
 const participantNum = computed(() => {
   // 데이터에서 불러온 참여자가 없을 시 0을 리턴
-  if (
-    !meetingDetailStore.participants === undefined ||
-    !meetingDetailStore.participants
-  )
+  if (!meetingDetailStore.participants === undefined || !meetingDetailStore.participants)
     return 0;
   return meetingDetailStore.participants.length;
 });
@@ -37,6 +40,41 @@ async function showProfileModal(participantId) {
 function closeProfileModal() {
   profileModalOn.value = false;
 }
+
+// 내보내기 ----------------------------------------------------------------------
+const kickModalOn = ref(false);
+const kickMember = ref({});
+const kickStep = ref(1); // 1: 확인, 2: 결과
+const kickResultMsg = ref("");
+
+function onKickModal(member) {
+  kickStep.value = 1;
+  kickMember.value.id = member.id;
+  kickMember.value.nickname = member.nickname;
+  kickModalOn.value = true;
+}
+
+function closeKickModal() {
+  kickStep.value = 1;
+  kickModalOn.value = false;
+}
+
+async function kick() {
+  try {
+    const res = await api.meeting.kick(route.params.id, kickMember.value.id);
+    if (!res.ok) throw new ServerException(await res.json());
+    kickResultMsg.value = "모임에서 내보냈어요";
+    kickStep.value = 2;
+    meetingDetailStore.removeParticipant(kickMember.value.id);
+  } catch (e) {
+    if (e.res.message === "이미 강퇴한 참여자입니다") kickResultMsg.value = e.res.message;
+    else if (e.res.status === 400) kickResultMsg.value = "잘못된 요청이에요";
+    else if (e.res.message === "참여하지 않은 모임입니다")
+      kickResultMsg.value = "참여하지 않은 사용자에요";
+    else if (e.res.status === 403) kickResultMsg.value = "권한이 없어요";
+    kickStep.value = 2;
+  }
+}
 </script>
 
 <template>
@@ -45,10 +83,7 @@ function closeProfileModal() {
       참가자 {{ participantNum }} / {{ meetingDetailStore.maxMember }}
     </h2>
     <ul class="participant__list">
-      <li
-        v-for="(p, idx) in meetingDetailStore.participants"
-        :key="p.participantId"
-      >
+      <li v-for="(p, idx) in meetingDetailStore.participants" :key="p.participantId">
         <participant :userDetail="p" @onClickParticipant="showProfileModal">
         </participant>
       </li>
@@ -58,8 +93,25 @@ function closeProfileModal() {
     <MemberProfile
       v-if="profileModalOn"
       @closeModal="closeProfileModal"
+      @onKickModal="onKickModal"
       :memberId="clickedParticipantId"
     />
+    <DefaultModal v-if="kickModalOn">
+      <template #modal-body v-if="kickStep === 1">
+        <p>{{ kickMember.nickname }}님을</p>
+        <p>정말로 내보내시겠어요?</p>
+      </template>
+      <template #modal-footer v-if="kickStep === 1">
+        <div @click="closeKickModal">아니오</div>
+        <div @click="kick" class="yes">예</div>
+      </template>
+      <template #modal-body v-if="kickStep === 2">
+        <p>{{ kickResultMsg }}</p>
+      </template>
+      <template #modal-footer v-if="kickStep === 2">
+        <div @click="closeKickModal">닫기</div>
+      </template>
+    </DefaultModal>
   </Teleport>
 </template>
 <style scoped>
@@ -104,5 +156,29 @@ function closeProfileModal() {
   .participant__list {
     grid-template-columns: repeat(3, 240px);
   }
+}
+
+:deep(.modal__body div) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+:deep(.modal__footer) {
+  border-top: 1px solid var(--light-grey1);
+}
+
+:deep(.modal__footer div) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 8px;
+  cursor: pointer;
+}
+
+:deep(.modal__footer div:hover) {
+  background-color: var(--light-grey1);
 }
 </style>
