@@ -50,7 +50,7 @@
                     </li>
                     <li class="admin-tb-1">{{ item.order }}</li>
                     <li class="admin-tb-3 list-content__banner-img">
-                        <img :src="`/images/banner/${item.imagePath}`" alt="item.name">
+                        <img :src="`/image/banner/${item.imagePath}`" alt="item.name">
                     </li>
                     <li class="admin-tb-2">{{ item.link ? item.link : 'N/A' }}</li>
                     <li class="list-content_date admin-tb-2">{{ item.createdAt }}</li>
@@ -349,5 +349,9 @@ const uploadImage = (e) => {
     padding:5px 0;
     display:flex;
 }
+
+.table-bar__icon-plus::before{
+    background-size: 70% 70%;
+} 
 
 </style>
