@@ -1,6 +1,8 @@
 <template>
     <li class="header__profile select-box">
-        <button><img alt="프로필" src="../../../public/images/icon/user-profile.svg" @click="onProfileClick"></button>
+        <button><img class="header__profile-img" alt="프로필" 
+            :src="profileImagePath ? profileImagePath : '../../../public/images/icon/user-profile.svg'" 
+            @click="onProfileClick"></button>
         <ul class="select-box__options select-box__options--right select-box__options--header" v-show="isOpened">
             <!--li 말고 div 박스 전체로 -->
             <li><router-link to="/my-profile">내 프로필</router-link></li>
@@ -22,6 +24,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const headerStore = useHeaderStore();
 const memberStore = useMemberStore();
+
 const isOpened = computed(()=>{
     return headerStore.isProfileOpened;
 })
@@ -29,6 +32,15 @@ const onProfileClick = () => {
     headerStore.closeAllExcept('Profile')
     headerStore.changeProfileState();
 }
+
+const profileImagePath = computed(()=>{
+    if (memberStore.profileImagePath==='' || memberStore.profileImagePath===null){
+        return false;
+    }
+    else{
+        return `/image/profile/${memberStore.profileImagePath}`
+    } 
+})
 
 const onLogoutClick = () => {
     const request = getLogout();

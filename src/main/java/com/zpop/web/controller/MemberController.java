@@ -143,15 +143,17 @@ public ResponseEntity<ProfileResponse> getProfile(@PathVariable("id") int id){
 
 @PostMapping("/upload/profile")
 @ResponseBody //ㅠㅠ
-public ResponseEntity<?> uploadFile(@NotNull MultipartFile file
+public ResponseEntity<ProfileFile> uploadFile(@NotNull MultipartFile file
 		, @NotNull @NotEmpty String path
-		, HttpServletRequest request) throws IOException {
+		, HttpServletRequest request
+		, @AuthenticationPrincipal ZpopUserDetails userDetails) throws IOException {
 	String realPath = request.getServletContext().getRealPath(path);
 	System.out.println(realPath);
 
-	ProfileFile profileFile = service.uploadFile(file, realPath);
-	System.out.println(path);
-	return ResponseEntity.ok(200);
+	int memberId = userDetails.getId();
+	System.out.println(userDetails);
+	ProfileFile profileFile = service.uploadFile(file, realPath, memberId);
+	return ResponseEntity.ok(profileFile);
 }
 
 }

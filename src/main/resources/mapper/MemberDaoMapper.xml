@@ -130,6 +130,11 @@
 			separator=",">#{id}</foreach>
 		</where>
 	</update>
+	<update id="updateProfileImagePath">
+		UPDATE member
+        SET profileImagePath =#{profileImagePath}
+        WHERE id = #{memberId}
+	</update>
 	<select id="countCreatedAtPerDay" resultType="CountPerDateDto">
 		SELECT
 			convert(createdAt, date) AS date,

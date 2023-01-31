@@ -15,7 +15,7 @@ public class FileNameGenerator {
 
     public String getFileNameWithDateTime(){
         Date currentDate = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_ss_SSS"); 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_SSS"); 
         String dateString = simpleDateFormat.format(currentDate);
 
         return String.format("%s_%s.%s",this.prefix,dateString,this.extension);
