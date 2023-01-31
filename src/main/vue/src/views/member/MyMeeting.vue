@@ -1,8 +1,6 @@
-
-
 <script setup>
-import { reactive, computed, ref, onMounted  } from "vue";
-import {useMemberStore} from "@/stores/memberStore"
+import { reactive, computed, ref, onMounted } from "vue";
+import { useMemberStore } from "@/stores/memberStore";
 import api from "@/api";
 import MeetingList from "@/components/member/MeetingList.vue";
 import ModalRate from "@/components/modal/Full.vue";
@@ -18,27 +16,22 @@ const state = reactive({
   meetings: [],
   meetingId: null,
   participants: [],
-  userId : null,
+  userId: null,
   participantsId: [],
-
 });
 
 const user = useMemberStore();
 const nickname = user.nickname;
-console.log(nickname);
-let hasEvaluated;
+
 // const props = defineProps (
 //   [
 //     'hasEval'
 //   ]
 // )
 
-const emit = defineEmits([
-  'rate'
-]);
+const emit = defineEmits(["rate"]);
 const memberStore = useMemberStore();
-console.log(memberStore);
-console.log(memberStore.id);
+
 let modalOn = ref(false);
 let errModalOn = ref(false);
 let participationModalOn = ref(false);
@@ -53,9 +46,7 @@ function closeMyModal() {
 
 function showRateErr() {
   errModalOn.value = true;
-
 }
-
 
 /***
  * 회원이 참여한 모임의 모든 정보를 요청하는 함수
@@ -65,24 +56,19 @@ async function getMyMeeting() {
     const res = await api.member.getMyMeeting();
     const data = await res.json();
     state.meetings = data;
-    if(data == null){
-      console.log("참여한 모임이 없습니다");
-      participationModalOn.value =true;
+    if (data == null) {
+      participationModalOn.value = true;
     }
-    console.log(data);
-    
 
     // if(state.userId == null) {
     //   console.log("교집합을 만들어주세요");
     //   console.log("예외던지기");
     // }
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e);
   }
 }
 getMyMeeting();
-
 
 /***
  * 얻게된 meeetingId를 가지고 서버에 API 정보를 요청하는 함수
@@ -90,24 +76,11 @@ getMyMeeting();
 async function getParticipant(meetingId) {
   try {
     const res = await api.member.getParticipant(state.meetingId);
-    const data = await res.json();
-    for (const p of data) {
-      if(memberStore.id === p.participantId){
-        errModalOn.value = true;
-        continue;
-      }
-      p.rateValue=50;
-      state.participants.push(p);
-      console.log(state.participants);
-    }
-    console.log(state.participants);
-    // return state.participants;
-  }
-  catch (e) {
+    return await res.json();
+  } catch (e) {
     console.log(e);
   }
 }
-
 
 /***
  * 
@@ -124,119 +97,159 @@ async function getParticipant(meetingId) {
  * 
  */
 
-
- /**
-  * 
-  * @param {*} id 
-  * 평가하기 버튼을 누르면, 해당 모임에 참여한 참여자의 정보를 반환해준다.
-  * 평가하기 모달을 띄워준다.
-  */
+/**
+ *
+ * @param {*} id
+ * 평가하기 버튼을 누르면, 해당 모임에 참여한 참여자의 정보를 반환해준다.
+ * 평가하기 모달을 띄워준다.
+ */
 async function rateHandeler(id) {
   state.meetingId = id;
-  await getParticipant(state.meetingId);
-  console.log(state.participants);
-  showModal()
-  return state.participants;
+  const participants = await getParticipant(state.meetingId);
+
+  // 참여자가 없다면, 평가 완료로 바꾼 후 참여자 없음 에러 모달을 띄운다
+  if (isExistsOnlyHost(participants)) {
+    const meeting = findCurrentClickedMeeting();
+    meeting.evaluated = true;
+    errModalOn.value = true;
+    return;
+  }
+
+  // 평가 bar를 위한 세팅
+  for (const p of participants) {
+    if (memberStore.id === p.participantId) {
+      continue;
+    }
+    p.rateValue = 50;
+    state.participants.push(p);
+  }
+
+  showModal();
 }
 
- /***
-  * 사용자의 input값이 바뀌면, 동적으로 input 태그 값이 변경됨과 동시에 배경이 바뀐다.
-  */
+/**
+ * 다른 참여자 없이 host만 존재하는지 확인한다
+ */
+function isExistsOnlyHost(participants) {
+  if (participants.length === 1 && participants[0] === memberStore.id) {
+    return true;
+  }
+  return false;
+}
+
+/***
+ * 사용자의 input값이 바뀌면, 동적으로 input 태그 값이 변경됨과 동시에 배경이 바뀐다.
+ */
 function changeValue(e) {
   let targetIdx = e.target.getAttribute("idx");
   let value = e.target.value;
-  let color ='linear-gradient(90deg, rgb(98, 179, 185)' + value + '% , rgb(235, 235, 235)' + value + '%)';
+  let color =
+    "linear-gradient(90deg, rgb(98, 179, 185)" +
+    value +
+    "% , rgb(235, 235, 235)" +
+    value +
+    "%)";
   e.target.style.background = color;
   state.participants[targetIdx].rateValue = value;
 }
 
 /**
  * meetingId를 받아서 해당 모임에 참여한 회원들의 인기도를 평가한다.
- * @param {*} meetingId 
+ * @param {*} meetingId
  */
-function rateMeeting(meetingId){
-  let id = state.meetingId ;
+function rateMeeting(meetingId) {
+  let id = state.meetingId;
   //사용자가 평가한 값을 담을 배열
   let rateValue = [];
   //평가 대상자가 담길 배열
   let evaluateeId = [];
   //평가한 값과, 대상자가 짝을이뤄 evals에 담기게된다.
-  let evals =[];
-  
-  for(const s of state.participants) {
-     let result = 0;
-                      if (parseInt(s.rateValue) === 0) result = -1;
-                      if (parseInt(s.rateValue) === 50) result = 1;
-                      if (parseInt(s.rateValue) === 100) result = 3;
-                
+  let evals = [];
+
+  for (const s of state.participants) {
+    let result = 0;
+    if (parseInt(s.rateValue) === 0) result = -1;
+    if (parseInt(s.rateValue) === 50) result = 1;
+    if (parseInt(s.rateValue) === 100) result = 3;
+
     rateValue.push(result);
     evaluateeId.push(s.participantId);
-
   }
-  for (let i = 0; i < rateValue.length; i++){
-                      let evaldata = {
-                          evaluateeId : evaluateeId[i],
-                          result : rateValue[i],
-                      }
-                      evals.push(evaldata);
-                  }
+  for (let i = 0; i < rateValue.length; i++) {
+    let evaldata = {
+      evaluateeId: evaluateeId[i],
+      result: rateValue[i],
+    };
+    evals.push(evaldata);
+  }
   let rateList = {
-      "meetingId" : id,
-      "evals" : evals,
+    meetingId: id,
+    evals: evals,
   };
-  console.log(state.meetings);
-  fetch("/api/rate", {
-                        method: 'POST',
-                        mode: 'cors',
-                        cache: 'no-cache',
-                        credentials: 'same-origin',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        redirect: 'follow',
-                        referrer: 'no-referrer',
-                        body: JSON.stringify(rateList)
 
-                    }).then((response) => response.ok)
-                      .then((data) => {
-                        state.meetings.map((m) => {
-                          if(m.id === state.meetingId) {
-                            m.meeting.evaluated = true;
-                          }
-                        })
-                      })
-                      .then(
-                        closeMyModal()
-                        //TODO: 평가가 완료되었어요! 모달띄워주고
-                        //TODO: STATE에 HAS EVALUATED값을 추가
-                      );             
-  
+  fetch("/api/rate", {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    referrer: "no-referrer",
+    body: JSON.stringify(rateList),
+  })
+    .then((response) => response.ok)
+    .then((data) => {
+      const m = findCurrentClickedMeeting();
+      m.evaluated = true;
+    })
+    .then(
+      closeMyModal()
+      //TODO: 평가가 완료되었어요! 모달띄워주고
+      //TODO: STATE에 HAS EVALUATED값을 추가
+    );
+}
+
+/**
+ * state에서 현재 클릭한 미팅을 찾는다
+ */
+function findCurrentClickedMeeting() {
+  return state.meetings.find((m) => m.meetingId === state.meetingId);
 }
 </script>
 
 <template>
+  <ModalChanged v-if="participationModalOn">
+    <template #modal-body>
+      <p>{{ user.nickname }}님 🥰</p>
+      <span class="confirm"
+        >아직 참여한 모임이 없어요. 교집합을 만들러 가볼까요?</span
+      >
+    </template>
+    <template #modal-footer>
+      <div
+        @click="participationModalOn = false"
+        @href=""
+        style="color: var(--main-color)"
+      >
+        좋아요!
+      </div>
+    </template>
+  </ModalChanged>
 
-    <ModalChanged v-if="participationModalOn" >
-        <template #modal-body >
-            <p>{{ user.nickname }}님 🥰</p>
-            <span class="confirm">아직 참여한 모임이 없어요. 교집합을 만들러 가볼까요?</span>
-        </template>
-        <template #modal-footer>
-            <div @click="participationModalOn=false" @href="" style="color:var(--main-color)">좋아요!</div>
-        </template>
-    </ModalChanged>
+  <ModalChanged v-if="errModalOn">
+    <template #modal-body>
+      <p>{{ user.nickname }}님 😖</p>
+      <span class="confirm">주최한 모임에 참여자가 없어 평가할 수 없어요.</span>
+    </template>
+    <template #modal-footer>
+      <div @click="errModalOn = false">닫기</div>
+    </template>
+  </ModalChanged>
 
-  <ModalChanged v-if="errModalOn" >
-        <template #modal-body >
-            <p>{{ user.nickname }}님 😖</p>
-            <span class="confirm">주최한 모임에 참여자가 없어 평가할 수 없어요.</span>
-        </template>
-        <template #modal-footer>
-            <div @click="errModalOn=false">닫기</div>
-        </template>
-    </ModalChanged>
-
-  <ModalRate v-if="modalOn" @closeModal="closeMyModal"><template #modal-body>
+  <ModalRate v-if="modalOn" @closeModal="closeMyModal"
+    ><template #modal-body>
       <div class="rate-container">
         <!--state.participants[0] = null이면 모임에 참여한 유저가 없어서 참여할 수 없어요 -->
         <h1 class="rate__title">{{ state.participants[0].title }}</h1>
@@ -256,25 +269,34 @@ function rateMeeting(meetingId){
             <p>인기도 +3</p>
           </div>
         </div>
-      
+
         <ul>
-        <li v-for="(participant, idx) in state.participants" :key="idx">
-           {{ participant.nickname }}
+          <li v-for="(participant, idx) in state.participants" :key="idx">
+            {{ participant.nickname }}
             <div>
-          <input :idx="idx" type="range" step="50" min="0" max="100" @input.prevent="changeValue">
-        </div>
-        </li>
-      </ul>
+              <input
+                :idx="idx"
+                type="range"
+                step="50"
+                min="0"
+                max="100"
+                @input.prevent="changeValue"
+              />
+            </div>
+          </li>
+        </ul>
       </div>
     </template>
-    <template #modal-footer><div class="btn-box">
+    <template #modal-footer
+      ><div class="btn-box">
         <div class="btn btn-semiround" @click.prevent="rateMeeting">완료</div>
-      </div> </template>
+      </div>
+    </template>
   </ModalRate>
 
   <div class="content-wrap">
     <div class="title-box">
-      <span >🤝🏻</span>
+      <span>🤝🏻</span>
       <span class="title">내가 참여한 모임</span>
     </div>
 
@@ -290,25 +312,25 @@ function rateMeeting(meetingId){
 <style scoped>
 @import url(../../assets/css/member/rate.css);
 
-.rate-container>li{
+.rate-container > li {
   display: flex;
   justify-content: center;
 }
 
-.meetings>ul {
+.meetings > ul {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 0px;
 }
 
 @media (min-width: 768px) {
-  .meetings>ul {
+  .meetings > ul {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (min-width: 1200px) {
-  .meetings>ul {
+  .meetings > ul {
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -329,7 +351,6 @@ function rateMeeting(meetingId){
   padding-bottom: 20px;
 }
 
-
 .title {
   padding-left: 1px;
   font-size: 17px;
@@ -337,15 +358,13 @@ function rateMeeting(meetingId){
 }
 
 @media (min-width: 576px) {
-
   .title-box {
     padding-top: 50px;
   }
-
 }
 
 @media (min-width: 768px) {
-  .meetings>ul {
+  .meetings > ul {
     gap: 24px;
   }
 
@@ -364,10 +383,9 @@ function rateMeeting(meetingId){
   .title {
     font-size: 20px;
   }
-
 }
 
-@media (min-width:1200px) {
+@media (min-width: 1200px) {
   .my-meeting__title {
     padding-top: 74px;
     padding-bottom: 56px;
@@ -388,43 +406,43 @@ function rateMeeting(meetingId){
   }
 }
 
-.modal-default-wrap{
-        z-index: 1;
-    }
-    .yes {
-    color: var(--main-color);
-    border-left: 1px solid var(--light-grey1);
-    }
+.modal-default-wrap {
+  z-index: 1;
+}
+.yes {
+  color: var(--main-color);
+  border-left: 1px solid var(--light-grey1);
+}
 
-    :deep(.modal__body p) {
-    margin: 4px 0;
-    }
-    :deep(.modal__body span.confirm) {
-    margin-top: 10px;
-    display: inline-flex;
-    }
+:deep(.modal__body p) {
+  margin: 4px 0;
+}
+:deep(.modal__body span.confirm) {
+  margin-top: 10px;
+  display: inline-flex;
+}
 
-    :deep(.modal__body div) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    }
+:deep(.modal__body div) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-    :deep(.modal__footer) {
-    border-top: 1px solid var(--light-grey1);
-    }
+:deep(.modal__footer) {
+  border-top: 1px solid var(--light-grey1);
+}
 
-    :deep(.modal__footer div) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 16px 8px;
-    cursor: pointer;
-    }
+:deep(.modal__footer div) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 8px;
+  cursor: pointer;
+}
 
-    :deep(.modal__footer div:hover) {
-    background-color: var(--light-grey1);
-    }
+:deep(.modal__footer div:hover) {
+  background-color: var(--light-grey1);
+}
 </style>

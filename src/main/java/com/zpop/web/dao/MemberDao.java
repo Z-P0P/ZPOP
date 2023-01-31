@@ -24,7 +24,6 @@ public interface MemberDao {
 
 	int insert(Member member);
 
-	int update(Member member);
 	int countBySearch(String keyword, String option, Integer period, Date minDate);
 	int count(int socialTypeId);
 
@@ -45,4 +44,6 @@ public interface MemberDao {
 	int countNotDeleted();
 
 	int countByNotResigned();
+
+	void updateProfileImagePath(int memberId, String profileImagePath);
 }

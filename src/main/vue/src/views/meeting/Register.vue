@@ -39,7 +39,7 @@
                 </div>
             </fieldset>
             <div class="meeting-form__buttons">
-                <router-link class="btn btn-round btn-disabled" :to="{path: '/'}">취소</router-link>
+                <router-link class="btn btn-round btn-cancel" :to="{path: '/'}">취소</router-link>
                 <button id="register-btn" class="btn btn-round btn-action" type="submit">등록하기</button>
             </div>
         </form>
@@ -216,7 +216,7 @@ export default {
 }
 
 .meeting-form .register-editor--focused{
-    border: 0.125rem solid var(--true-blue);
+    border: 0.125rem solid var(--main-color);
 }
 
 .register-status__text {

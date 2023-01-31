@@ -203,8 +203,8 @@
         fetch(uploadUrl, option)
         .then(response => response.json())
         .then(data=>{
-            console.log("이미지요청 완료!");
-            console.log(data);
+            //헤더 프로필 이미지 정보 갱신
+            memberInfo.profileImagePath = data.name;
             showimageChangeModal(); //흑
             
 	})

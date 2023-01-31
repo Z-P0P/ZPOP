@@ -71,22 +71,23 @@ public class LoginController {
 			, @AuthenticationPrincipal ZpopUserDetails userDetails
 	)
 			throws IOException, InterruptedException {
-		System.out.println("인증요청");
-		if (userDetails != null) {
-			System.out.println("이미 로그인한 사용자임");
-			return ResponseEntity.badRequest().body("이미 로그인한 사용자입니다.");
-		}
+		Map<String, Object> result = new HashMap<>();
 
-		if (code == null) {
-			System.out.println("로그인에 실패하였음");
+		//이미 로그인되어 있는 경우 그냥 사용자 정보를 전달
+		if (userDetails != null) {
+			result.put("code", "success");
+			result.put("id", userDetails.getId());
+			result.put("nickname", userDetails.getUsername());
+			result.put("profileImagePath", userDetails.getProfileImagePath());
+			result.put("fame", userDetails.getFame());
+	
+			return ResponseEntity.ok(result);
 		}
 		
 		loginService = loginServiceMap.get(loginType+"LoginService");
 		String accessToken = (loginService.getAccessToken(code,state));
 		String socialId = loginService.getSocialId(accessToken);
 		Member member = loginService.getMemberInfo(socialId);
-
-		Map<String, Object> result = new HashMap<>();
 
 		if (member == null) {
 			session.setAttribute("socialId", socialId);
