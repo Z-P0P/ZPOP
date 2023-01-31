@@ -5,13 +5,7 @@ import api from "@/api";
 import MeetingList from "@/components/member/MeetingList.vue";
 import ModalRate from "@/components/modal/Full.vue";
 import ModalChanged from "@/components/modal/Changed.vue";
-// onMounted(() => {
-//
-// TODO : 평가하기 끝나면, 해당모임을 평가완료로 바꿀 것 -> has evaluated
-// TODO : 데스크탑 평가 모달 창 + 애니메이션
 // TODO : 참여한 모임이 하나도 없을경우 "아직 교집합이 없어요- 멘트 "
-// TODO : 모달창을 클릭할때 state를 비워서 참여자 명단이 두 번 출력되지 않게해야함
-// })
 const state = reactive({
   meetings: [],
   meetingId: null,
@@ -22,13 +16,6 @@ const state = reactive({
 
 const user = useMemberStore();
 const nickname = user.nickname;
-
-// const props = defineProps (
-//   [
-//     'hasEval'
-//   ]
-// )
-
 const emit = defineEmits(["rate"]);
 const memberStore = useMemberStore();
 
@@ -57,12 +44,9 @@ async function getMyMeeting() {
     const data = await res.json();
     state.meetings = data;
     if (data == null) {
-      participationModalOn.value = true;
+      participationModalOn.value = true; //TODO: ?
     }
 
-    // if(state.userId == null) {
-    //   console.log("교집합을 만들어주세요");
-    //   console.log("예외던지기");
     // }
   } catch (e) {
     console.log(e);
@@ -285,12 +269,11 @@ function findCurrentClickedMeeting() {
             </div>
           </li>
         </ul>
-      </div>
-    </template>
-    <template #modal-footer
-      ><div class="btn-box">
+        <div class="btn-box">
         <div class="btn btn-semiround" @click.prevent="rateMeeting">완료</div>
       </div>
+      </div>
+     
     </template>
   </ModalRate>
 
@@ -311,36 +294,30 @@ function findCurrentClickedMeeting() {
 </template>
 <style scoped>
 @import url(../../assets/css/member/rate.css);
-
 .rate-container > li {
   display: flex;
   justify-content: center;
 }
-
 .meetings > ul {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 0px;
 }
-
 @media (min-width: 768px) {
   .meetings > ul {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 @media (min-width: 1200px) {
   .meetings > ul {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
 .content-wrap {
   max-width: 1200px;
   display: flex;
   flex-direction: column;
 }
-
 .title-box {
   padding-top: 25px;
   padding-left: 15px;
@@ -350,28 +327,23 @@ function findCurrentClickedMeeting() {
   justify-content: center;
   padding-bottom: 20px;
 }
-
 .title {
   padding-left: 1px;
   font-size: 17px;
   font-weight: var(--bold);
 }
-
 @media (min-width: 576px) {
   .title-box {
     padding-top: 50px;
   }
 }
-
 @media (min-width: 768px) {
   .meetings > ul {
     gap: 24px;
   }
-
   .content-wrap {
     align-items: center;
   }
-
   .title-box {
     display: flex;
     align-items: center;
@@ -379,70 +351,25 @@ function findCurrentClickedMeeting() {
     padding-bottom: 50px;
     font-size: 20px;
   }
-
   .title {
     font-size: 20px;
   }
 }
-
 @media (min-width: 1200px) {
   .my-meeting__title {
     padding-top: 74px;
     padding-bottom: 56px;
     font-size: 20px;
   }
-
   .content-wrap {
     align-items: flex-start;
   }
-
   .title-box {
     font-size: 24px;
     padding-top: 150px;
   }
-
   .title {
     font-size: 24px;
   }
-}
-
-.modal-default-wrap {
-  z-index: 1;
-}
-.yes {
-  color: var(--main-color);
-  border-left: 1px solid var(--light-grey1);
-}
-
-:deep(.modal__body p) {
-  margin: 4px 0;
-}
-:deep(.modal__body span.confirm) {
-  margin-top: 10px;
-  display: inline-flex;
-}
-
-:deep(.modal__body div) {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-:deep(.modal__footer) {
-  border-top: 1px solid var(--light-grey1);
-}
-
-:deep(.modal__footer div) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 16px 8px;
-  cursor: pointer;
-}
-
-:deep(.modal__footer div:hover) {
-  background-color: var(--light-grey1);
 }
 </style>
