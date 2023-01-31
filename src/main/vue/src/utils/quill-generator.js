@@ -106,6 +106,7 @@ function isImage(filename) {
  let ext = getExtension(filename);
   switch (ext.toLowerCase()) {
     case 'jpg':
+	case 'jpeg':
     case 'gif':
     case 'bmp':
     case 'png':
