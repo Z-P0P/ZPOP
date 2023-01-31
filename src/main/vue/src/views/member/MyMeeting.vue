@@ -76,17 +76,7 @@ getMyMeeting();
 async function getParticipant(meetingId) {
   try {
     const res = await api.member.getParticipant(state.meetingId);
-    const data = await res.json();
-    for (const p of data) {
-      if (memberStore.id === p.participantId) {
-        errModalOn.value = true;
-        continue;
-      }
-      p.rateValue = 50;
-      state.participants.push(p);
-      console.log(state.participants);
-    }
-    // return state.participants;
+    return await res.json();
   } catch (e) {
     console.log(e);
   }
@@ -115,10 +105,36 @@ async function getParticipant(meetingId) {
  */
 async function rateHandeler(id) {
   state.meetingId = id;
-  await getParticipant(state.meetingId);
-  console.log(state.participants);
+  const participants = await getParticipant(state.meetingId);
+
+  // 참여자가 없다면, 평가 완료로 바꾼 후 참여자 없음 에러 모달을 띄운다
+  if (isExistsOnlyHost(participants)) {
+    const meeting = findCurrentClickedMeeting();
+    meeting.evaluated = true;
+    errModalOn.value = true;
+    return;
+  }
+
+  // 평가 bar를 위한 세팅
+  for (const p of participants) {
+    if (memberStore.id === p.participantId) {
+      continue;
+    }
+    p.rateValue = 50;
+    state.participants.push(p);
+  }
+
   showModal();
-  return state.participants;
+}
+
+/**
+ * 다른 참여자 없이 host만 존재하는지 확인한다
+ */
+function isExistsOnlyHost(participants) {
+  if (participants.length === 1 && participants[0] === memberStore.id) {
+    return true;
+  }
+  return false;
 }
 
 /***
@@ -170,7 +186,7 @@ function rateMeeting(meetingId) {
     meetingId: id,
     evals: evals,
   };
-  console.log(state.meetings);
+
   fetch("/api/rate", {
     method: "POST",
     mode: "cors",
@@ -185,17 +201,21 @@ function rateMeeting(meetingId) {
   })
     .then((response) => response.ok)
     .then((data) => {
-      state.meetings.map((m) => {
-        if (m.meetingId === state.meetingId) {
-          m.evaluated = true;
-        }
-      });
+      const m = findCurrentClickedMeeting();
+      m.evaluated = true;
     })
     .then(
       closeMyModal()
       //TODO: 평가가 완료되었어요! 모달띄워주고
       //TODO: STATE에 HAS EVALUATED값을 추가
     );
+}
+
+/**
+ * state에서 현재 클릭한 미팅을 찾는다
+ */
+function findCurrentClickedMeeting() {
+  return state.meetings.find((m) => m.meetingId === state.meetingId);
 }
 </script>
 
