@@ -111,8 +111,7 @@ function isImage(filename) {
     case 'bmp':
     case 'png':
     case 'svg':
-      //etc
-      return true;
+	return true;
   }
   return false;
 }
