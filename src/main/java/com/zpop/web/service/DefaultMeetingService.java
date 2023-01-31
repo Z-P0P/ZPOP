@@ -1,16 +1,15 @@
 package com.zpop.web.service;
 
-import com.zpop.web.dao.*;
-import com.zpop.web.dto.*;
-import com.zpop.web.entity.*;
-import com.zpop.web.entity.comment.CommentView;
-import com.zpop.web.entity.meeting.Meeting;
-import com.zpop.web.entity.meeting.MeetingThumbnailView;
-import com.zpop.web.entity.participation.ParticipationInfoView;
-import com.zpop.web.global.exception.CustomException;
-import com.zpop.web.global.exception.ExceptionReason;
-import com.zpop.web.utils.ElapsedTimeCalculator;
-import com.zpop.web.utils.TextDateTimeCalculator;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,10 +17,46 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.zpop.web.dao.AgeRangeDao;
+import com.zpop.web.dao.CategoryDao;
+import com.zpop.web.dao.CommentDao;
+import com.zpop.web.dao.ContactTypeDao;
+import com.zpop.web.dao.MeetingDao;
+import com.zpop.web.dao.MeetingFileDao;
+import com.zpop.web.dao.MemberDao;
+import com.zpop.web.dao.NotificationDao;
+import com.zpop.web.dao.ParticipationDao;
+import com.zpop.web.dao.RegionDao;
+import com.zpop.web.dto.AgeRangeDto;
+import com.zpop.web.dto.CategoryDto;
+import com.zpop.web.dto.CommentResponse;
+import com.zpop.web.dto.ContactTypeDto;
+import com.zpop.web.dto.MeetingDetailResponse;
+import com.zpop.web.dto.MeetingThumbnailPagination;
+import com.zpop.web.dto.MeetingThumbnailResponse;
+import com.zpop.web.dto.ParticipantResponse;
+import com.zpop.web.dto.ParticipationResponse;
+import com.zpop.web.dto.RegionDto;
+import com.zpop.web.dto.RegisterMeetingRequest;
+import com.zpop.web.dto.RegisterMeetingResponse;
+import com.zpop.web.dto.RegisterMeetingViewResponse;
+import com.zpop.web.dto.UpdateMeetingRequest;
+import com.zpop.web.dto.UpdateMeetingViewDto;
+import com.zpop.web.entity.AgeRange;
+import com.zpop.web.entity.Category;
+import com.zpop.web.entity.MeetingFile;
+import com.zpop.web.entity.Member;
+import com.zpop.web.entity.Participation;
+import com.zpop.web.entity.Region;
+import com.zpop.web.entity.comment.CommentView;
+import com.zpop.web.entity.meeting.Meeting;
+import com.zpop.web.entity.meeting.MeetingThumbnailView;
+import com.zpop.web.entity.participation.ParticipationInfoView;
+import com.zpop.web.global.exception.CustomException;
+import com.zpop.web.global.exception.ExceptionReason;
+import com.zpop.web.utils.ElapsedTimeCalculator;
+import com.zpop.web.utils.FileNameGenerator;
+import com.zpop.web.utils.TextDateTimeCalculator;
 
 @Service
 public class DefaultMeetingService implements MeetingService {
@@ -489,8 +524,16 @@ public class DefaultMeetingService implements MeetingService {
 		if (!pathFile.exists()) {
 			pathFile.mkdirs();
 		}
+		//파일이름을 ZPOP_MEETING_YYYY_MM_DD_HH_MM_SSS 로 변경
 
-		String completePath = path + File.separator + file.getOriginalFilename();
+		String originalFileName = file.getOriginalFilename();
+		String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+		
+		FileNameGenerator fileNameGenerator = new FileNameGenerator("ZPOP_MEETING", extension);
+		String fileName = fileNameGenerator.getFileNameWithDateTime();
+		
+		String completePath = path + File.separator + fileName;
+
 		InputStream fis = file.getInputStream();
 		OutputStream fos = new FileOutputStream(completePath);
 
@@ -502,7 +545,7 @@ public class DefaultMeetingService implements MeetingService {
 
 		fos.close();
 		fis.close();
-		MeetingFile meetingFile = new MeetingFile(file.getOriginalFilename());
+		MeetingFile meetingFile = new MeetingFile(fileName);
 		meetingFileDao.insert(meetingFile);
 		return meetingFile;
 	}
