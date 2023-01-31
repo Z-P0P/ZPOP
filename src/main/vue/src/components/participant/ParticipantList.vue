@@ -1,6 +1,6 @@
 <script setup>
-import MemberProfile from "@/components/meeting/MemberProfile.vue";
-import Participant from "@/components/meeting/Participant.vue";
+import MemberProfile from "@/components/participant/MemberProfile.vue";
+import Participant from "@/components/participant/Participant.vue";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import { useMemberStore } from "@/stores/memberStore";
 import { useLoginModalStore } from "@/stores/loginModalStore";

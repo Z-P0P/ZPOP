@@ -4,7 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
 import api from "@/api"; //index.js
 import Article from "@/components/meeting/article/Article.vue";
-import ParticipantList from "@/components/meeting/ParticipantList.vue";
+import ParticipantList from "@/components/participant/ParticipantList.vue";
 import CommentList from "@/components/comment/CommentList.vue";
 import { ServerException } from "@/utils/ServerException";
 

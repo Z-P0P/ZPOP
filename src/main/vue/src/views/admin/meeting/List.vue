@@ -174,7 +174,7 @@ import MeetingFormTextInput from '@/components/meeting/MeetingFormTextInput.vue'
 import DetailModal from '../../../components/admin/modal/AdminDetailModal.vue';
 import SearchBar from '../../../components/admin/SearchBar.vue';
 import AdminTable from '../../../components/admin/Table.vue';
-import ParticipantList from '../../../components/meeting/ParticipantList.vue';
+import ParticipantList from '../../../components/participant/ParticipantList.vue';
 
 
 const route = useRoute();
