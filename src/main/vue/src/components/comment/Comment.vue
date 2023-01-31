@@ -59,9 +59,9 @@
   }
   const inputTemplate = ref();
   var inputBox = null;
-  var isB2Active = ref(true)
-  var isB3Active = ref(false)
+  rplyStore.initButtons();
   async function toggleInputBox() { //'인풋박스' <-> '답글쓰기' 전환
+    rplyStore.showWriteButton(); //새 답글 등록용 버튼
     if(await checkLoginStatus())
         return
     isExpanded.value = !isExpanded.value;
@@ -141,8 +141,6 @@
       v-show="hasBox" 
       ref="inputTemplate"
       :reply="comment" 
-      :isB2Active="isB2Active"
-      :isB3Active="isB3Active"
       @cancelClicked="toggleInputBox"
       @registerCompleted="registerFinish" />
     <ReplyList  :commentId="commentId" 

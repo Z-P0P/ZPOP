@@ -43,7 +43,7 @@ async function deleteComment(id) {
     const res = await api.comment.deleteComment(id);
     if (!res.ok) throw new ServerException(res);
     const data = await res.json();
-
+    mtDetailStore.commentCount--;
     confirmMsg.value = "삭제됐습니다.";
     closeModalFooterType();
     if(props.groupId>0)
