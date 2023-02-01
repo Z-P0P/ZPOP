@@ -3,8 +3,8 @@
     <img
       class="participant__image"
       :src="
-        userDetail.profileImagePath
-          ? userDetail.profileImagePath
+        (userDetail.profileImagePath != '' && userDetail.profileImagePath != null)
+          ? `/image/profile/${userDetail.profileImagePath}`
           : '/images/icon/user-profile-grey.svg'
       "
     />
@@ -53,12 +53,14 @@ function onClickAndEmit(e) {
   width: 36px;
   height: 36px;
   margin-right: 15px;
+  border-radius: 18px;
 }
 
 @media (min-width: 576px) {
   .participant__image {
     width: 42px;
     height: 42px;
+    border-radius: 21px;
   }
 }
 </style>

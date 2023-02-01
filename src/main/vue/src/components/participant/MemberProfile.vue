@@ -132,8 +132,8 @@ async function onClickKick() {
             <div class="image-bg">
               <img
                 :src="
-                  state.member.profileImg
-                    ? state.member.profileImg
+                  (state.member.profileImg != null && state.member.profileImg != '')
+                    ? `/image/profile/${state.member.profileImg}`
                     : '/images/icon/user-icon-white.svg'
                 "
                 class="image"
