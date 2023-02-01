@@ -265,7 +265,7 @@ function rateMeeting(meetingId) {
         </ul>
 
         <div class="btn-box">
-          <div class="btn btn-semiround" @click.prevent="rateMeeting">완료</div>
+          <div class="btn btn-semiround" @click.prevent="rateMeeting>완료</div>
         </div>
       </div>
     </template>
