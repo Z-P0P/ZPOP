@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -320,7 +321,7 @@ public class DefalutMemberService implements MemberService {
 	@Override
 	public Member update(int memberId, String nickname, String imageName) {
         // 닉네임 변경
-        if(nickname != null) {
+        if(!StringUtils.isBlank(nickname)) {
             changeNickname(memberId, nickname);
         }
 
