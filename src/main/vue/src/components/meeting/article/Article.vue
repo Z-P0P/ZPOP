@@ -251,5 +251,8 @@ function handleMeetingReportModal() {
 }
 }
 
+:deep(.content-container img){
+  max-width:100%;
+}
 
 </style>
