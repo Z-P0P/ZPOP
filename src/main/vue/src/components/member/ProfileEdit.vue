@@ -1,10 +1,12 @@
 <script setup>
 import { reactive, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/memberStore";
 import ModalDefault from "@/components/modal/Default.vue";
 import ModalChanged from "@/components/modal/Changed.vue";
 import api from "@/api";
 
+const router = useRouter();
 const memberInfo = useMemberStore();
 const phNickname = memberInfo.nickname; //placeholder에 표시될 닉네임
 // 닉네임 입력 상태
@@ -35,21 +37,6 @@ const editState = reactive({
   nickname: false,
   image: false,
   imageName: "",
-});
-
-const classSaveObj = reactive({
-  "btn-semiround": true,
-  "profile__btn--disabled": true,
-  "profile__btn--save": false,
-});
-// 이미지가 변경되거나 or 닉네임 입력이 변경날 때의 저장하기 class 관리
-watch(editState, () => {
-  classSaveObj["profile__btn--disabled"] = true;
-  classSaveObj["profile__btn--save"] = false;
-  if ((editState.image || editState.nickname) && inputStatus.isNicknameValid) {
-    classSaveObj["profile__btn--disabled"] = false;
-    classSaveObj["profile__btn--save"] = true;
-  }
 });
 
 // 닉네임 -----------------------------------------------------------------
@@ -212,6 +199,17 @@ function save() {
     finalConfirmModalOn.value = true;
   });
 }
+
+function onClickClose() {
+  api.auth
+    .me()
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      memberInfo.setInfo(data);
+      router.replace("/my-profile");
+    });
+}
 </script>
 
 //TODO : 프로필 이미지 업로드, 삭제, 모바일 화면에서 케밥적용
@@ -231,11 +229,10 @@ function save() {
   <!-- 프로필 수정 최종 확인 모달 -->
   <ModalChanged v-if="finalConfirmModalOn">
     <template #modal-body v-if="true">
-      <p class="confirm">{{ memberInfo.nickname }}님</p>
       <p class="confirm">{{ resultMsg }}</p>
     </template>
     <template #modal-footer>
-      <div @click="finalConfirmModalOn = false">닫기</div>
+      <div @click="onClickClose">닫기</div>
     </template>
   </ModalChanged>
 
@@ -288,7 +285,11 @@ function save() {
           v-bind:textContent="inputStatus.inputMessage"
         ></span>
       </div>
-      <span :class="classSaveObj" @click.prevent="onClickSave">저장하기</span>
+      <span
+        class="btn-semiround profile__btn--save"
+        @click.prevent="onClickSave"
+        >저장하기</span
+      >
     </div>
   </div>
 </template>
