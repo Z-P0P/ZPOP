@@ -115,14 +115,15 @@
           ? `/image/profile/${reply.profileImagePath}` : '/images/icon/user-profile-grey.svg'"></span>
         <span class="profile__nickname profile__nickname">{{ reply.nickname }}</span>
         <span class="profile__time">{{ reply.updatedAt?reply.elapsedTime+' (수정됨)':reply.elapsedTime }}</span>
-        <button @click="toggleSelectModal"></button>
-        <SelectModal 
+        <button @click="toggleSelectModal">
+          <SelectModal 
             v-if="!rplyStore.comments[groupId].selectModalStatus[replyId]" 
             :isMyComment="reply.myComment" 
             :commentId="reply.id" 
             :groupId="groupId"
             @onEdit="onEditReply" 
         />
+        </button>
     </div>
     <div v-show="!isEditing" class="reply-container">
         <span class="reply__to">{{reply.parentNickname?'@'+reply.parentNickname:reply.parentNickname }}</span>
@@ -149,5 +150,9 @@
   @import url(@/assets/css/meeting/component/reply.css);
   .profile.select-box > button{
     margin-left:auto;
+    cursor: pointer;
+  }
+  .profile.select-box > button .select-box__options{
+    right:0;
   }
 </style>
