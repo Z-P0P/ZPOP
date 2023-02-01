@@ -147,5 +147,7 @@
   @import url(@/assets/css/component/select.css);
   @import url(@/assets/css/meeting/component/profile-box.css);
   @import url(@/assets/css/meeting/component/reply.css);
- 
+  .profile.select-box > button{
+    margin-left:auto;
+  }
 </style>
