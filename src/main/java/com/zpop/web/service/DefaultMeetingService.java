@@ -278,7 +278,7 @@ public class DefaultMeetingService implements MeetingService {
 					c.getWriterId(),
 					c.getNickname(),
 					c.getContent(),
-					c.getProfileImgPath(),
+					c.getProfileImagePath(),
 					c.getParentCommentId(),
 					c.getGroupId(),
 					c.getCreatedAt(),

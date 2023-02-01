@@ -16,11 +16,14 @@
 .profile__image {
   width: 2.25rem;
   height: 2.25rem;
-  background-image: url("../../../../../public/images/icon/user-profile-grey.svg");
-  background-size: contain;
   display: inline-block;
   grid-area: img;
   cursor: pointer;
+}
+
+.profile__image > img{
+  width:100%;
+  border-radius: 1.125rem;
 }
 
 .profile__nickname {
@@ -70,5 +73,8 @@
   .profile__image {
     width: 2.5rem;
     height: 2.5rem;
+  }
+  .profile__image > img{
+    border-radius: 1.25rem;
   }
 }
