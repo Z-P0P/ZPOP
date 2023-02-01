@@ -1,6 +1,5 @@
 <script setup>
 const emit = defineEmits(["closeModal"]);
-
 function closeModal(e) {
   // X버튼 클릭이라면 닫기
   if (e.target.classList.contains("modal__close-btn")) {
@@ -9,7 +8,6 @@ function closeModal(e) {
   }
   // 모달 배경 클릭이 아니라면 return
   if (!e.target.classList.contains("modal-default-wrap")) return;
-
   emit("closeModal");
 }
 </script>
@@ -35,7 +33,6 @@ function closeModal(e) {
   position: fixed;
   inset: 0; /*t, l, b, r 0*/
 }
-
 .modal-default {
   position: relative;
   top: 25%;
@@ -51,14 +48,12 @@ function closeModal(e) {
   z-index: 999;
   overflow: hidden;
 }
-
 .modal__header {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   padding: 24px;
 }
-
 .modal__body {
   display: flex;
   justify-content: center;
@@ -67,11 +62,9 @@ function closeModal(e) {
   padding: 0 35px 35px 35px;
   color: var(--dark-grey1);
 }
-
 .modal__footer {
   display: flex;
 }
-
 .modal-default-wrap {
   z-index: 3;
 }
@@ -79,7 +72,6 @@ function closeModal(e) {
   color: var(--main-color);
   border-left: 1px solid var(--light-grey1);
 }
-
 :deep(.modal__body p) {
   margin: 4px 0
 }
@@ -89,18 +81,15 @@ function closeModal(e) {
   flex-direction: column;
   align-items: center;
 }
-
 :deep(.modal__body div) {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-
 :deep(.modal__footer) {
   border-top: 1px solid var(--light-grey1);
 }
-
 :deep(.modal__footer div) {
   display: flex;
   align-items: center;
@@ -109,7 +98,6 @@ function closeModal(e) {
   padding: 16px 8px;
   cursor: pointer;
 }
-
 :deep(.modal__footer div:hover) {
   background-color: var(--light-grey1);
 }

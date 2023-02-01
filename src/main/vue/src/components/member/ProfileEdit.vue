@@ -311,6 +311,13 @@ function save() {
   border-radius: 50%;
 }
 
+.modal-default-wrap {
+  z-index: 3;
+}
+.yes {
+  color: var(--main-color);
+  border-left: 1px solid var(--light-grey1);
+}
 .profile__image .icon {
   position: absolute;
   bottom: 4px;
