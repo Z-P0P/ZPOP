@@ -1,14 +1,12 @@
 <script setup>
-import { reactive, computed } from "vue";
+import { reactive} from "vue";
 import api from "@/api";
 import MeetingList from "@/components/member/MeetingList.vue";
-
+import ModalChanged from "@/components/modal/Changed.vue";
 const state = reactive({
   meetings: [],
-  // isResultNone: computed(() => {
-  //   return state.meetings.length === 0;
-  // }),
 });
+
 
 async function getMyGathering() {
   try {
@@ -16,7 +14,6 @@ async function getMyGathering() {
     const res = await api.member.getMyGathering();
     const data =  await res.json();
     state.meetings = data;
-    console.log(state.meetings);
   }
   catch(e){
             console.log(e);
@@ -43,9 +40,6 @@ getMyGathering();
 </template>
 <style scoped>
 
-.status status__rate {
-  cursor: none;
-}
 
 .meetings > ul {
   display: grid;

@@ -43,7 +43,6 @@
   background-image: url(../../../../../public/images/icon/kebab.svg);
   background-repeat: no-repeat;
   border: none;
-  background-color: var(--white);
   grid-area: button;
   justify-self: flex-end;
   margin-top: 0.438rem;

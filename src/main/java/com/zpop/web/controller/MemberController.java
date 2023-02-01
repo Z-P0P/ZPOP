@@ -159,7 +159,7 @@ public ResponseEntity<ProfileResponse> getProfile(@PathVariable("id") int id){
 
 
 @PostMapping("/upload/profile")
-@ResponseBody //ㅠㅠ
+@ResponseBody
 public ResponseEntity<ProfileFile> uploadFile(@NotNull MultipartFile file
 		, @NotNull @NotEmpty String path
 		, HttpServletRequest request

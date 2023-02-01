@@ -5,7 +5,7 @@ import api from "@/api";
 import MeetingList from "@/components/member/MeetingList.vue";
 import ModalRate from "@/components/modal/Full.vue";
 import ModalChanged from "@/components/modal/Changed.vue";
-// TODO : 참여한 모임이 하나도 없을경우 "아직 교집합이 없어요- 멘트 "
+
 const state = reactive({
   meetings: [],
   meetingId: null,
@@ -19,16 +19,15 @@ const nickname = user.nickname;
 const emit = defineEmits(["rate"]);
 const memberStore = useMemberStore();
 
-let modalOn = ref(false);
+let rateModalOn = ref(false);
 let errModalOn = ref(false);
-let participationModalOn = ref(false);
-function showModal() {
-  modalOn.value = true;
+function showRateModal() {
+  rateModalOn.value = true;
 }
 
-function closeMyModal() {
+function closeRateModal() {
   state.participants = [];
-  modalOn.value = false;
+  rateModalOn.value = false;
 }
 
 function showRateErr() {
@@ -36,7 +35,7 @@ function showRateErr() {
 }
 
 /***
- * 회원이 참여한 모임의 모든 정보를 요청하는 함수
+ * 회원이 참여한 모임의 모든 정보 요청
  */
 async function getMyMeeting() {
   try {
@@ -44,10 +43,8 @@ async function getMyMeeting() {
     const data = await res.json();
     state.meetings = data;
     if (data == null) {
-      participationModalOn.value = true; //TODO: ?
+   // TODO : 참여한 모임이 하나도 없을경우 "아직 교집합이 없어요- 멘트 "
     }
-
-    // }
   } catch (e) {
     console.log(e);
   }
@@ -55,7 +52,7 @@ async function getMyMeeting() {
 getMyMeeting();
 
 /***
- * 얻게된 meeetingId를 가지고 서버에 API 정보를 요청하는 함수
+ * meeetingId를 가지고 해당모임 참여자정보 요청
  */
 async function getParticipant(meetingId) {
   try {
@@ -66,20 +63,12 @@ async function getParticipant(meetingId) {
   }
 }
 
-/***
- * 
-  Given
-  사용자가 내가 참여한 모임에서 평가하기 버튼을 눌렀을 경우
-
-  When
-  서버에서 평가자에 대한 데이터를 가져와서 평가하기 모달창에 뿌려준다. 
-  사용자는 해당 데이터에 대해서 평가를 마친다
-
-  Then
-  모임에 참여한 참여자들의 인기도가 업데이트 된다.
-  평가하기 버튼이 평가완료 버튼으로 닫힌다.
- * 
+/**
+ * state에서 현재 클릭한 미팅을 찾는다
  */
+ function findCurrentClickedMeeting() {
+  return state.meetings.find((m) => m.meetingId === state.meetingId);
+}
 
 /**
  *
@@ -87,7 +76,7 @@ async function getParticipant(meetingId) {
  * 평가하기 버튼을 누르면, 해당 모임에 참여한 참여자의 정보를 반환해준다.
  * 평가하기 모달을 띄워준다.
  */
-async function rateHandeler(id) {
+async function rateHandler(id) {
   state.meetingId = id;
   const participants = await getParticipant(state.meetingId);
 
@@ -96,6 +85,7 @@ async function rateHandeler(id) {
     const meeting = findCurrentClickedMeeting();
     meeting.evaluated = true;
     errModalOn.value = true;
+    /* TODO: 서버 hasEvaluated = true로 변경 */
     return;
   }
 
@@ -108,21 +98,22 @@ async function rateHandeler(id) {
     state.participants.push(p);
   }
 
-  showModal();
+  showRateModal();
 }
 
 /**
  * 다른 참여자 없이 host만 존재하는지 확인한다
  */
 function isExistsOnlyHost(participants) {
-  if (participants.length === 1 && participants[0] === memberStore.id) {
+  if (participants.length === 1 && participants[0].participantId === memberStore.id) { 
     return true;
   }
   return false;
 }
 
 /***
- * 사용자의 input값이 바뀌면, 동적으로 input 태그 값이 변경됨과 동시에 배경이 바뀐다.
+ * 사용자의 평가하기input값이 바뀌면, 
+ * 동적으로 input 태그 값 + 배경색 변경
  */
 function changeValue(e) {
   let targetIdx = e.target.getAttribute("idx");
@@ -189,53 +180,29 @@ function rateMeeting(meetingId) {
       m.evaluated = true;
     })
     .then(
-      closeMyModal()
-      //TODO: 평가가 완료되었어요! 모달띄워주고
-      //TODO: STATE에 HAS EVALUATED값을 추가
+      closeRateModal()
     );
 }
 
-/**
- * state에서 현재 클릭한 미팅을 찾는다
- */
-function findCurrentClickedMeeting() {
-  return state.meetings.find((m) => m.meetingId === state.meetingId);
-}
+
 </script>
 
 <template>
-  <ModalChanged v-if="participationModalOn">
-    <template #modal-body>
-      <p>{{ user.nickname }}님 🥰</p>
-      <span class="confirm"
-        >아직 참여한 모임이 없어요. 교집합을 만들러 가볼까요?</span
-      >
-    </template>
-    <template #modal-footer>
-      <div
-        @click="participationModalOn = false"
-        @href=""
-        style="color: var(--main-color)"
-      >
-        좋아요!
-      </div>
-    </template>
-  </ModalChanged>
-
   <ModalChanged v-if="errModalOn">
     <template #modal-body>
       <p>{{ user.nickname }}님 😖</p>
-      <span class="confirm">주최한 모임에 참여자가 없어 평가할 수 없어요.</span>
+      <span class="confirm"
+        >주최한 모임에 참여자가 없어<span>평가할 수 없어요.</span>
+      </span>
     </template>
     <template #modal-footer>
       <div @click="errModalOn = false">닫기</div>
     </template>
   </ModalChanged>
 
-  <ModalRate v-if="modalOn" @closeModal="closeMyModal"
+  <ModalRate v-if="rateModalOn" @closeModal="closeRateModal"
     ><template #modal-body>
       <div class="rate-container">
-        <!--state.participants[0] = null이면 모임에 참여한 유저가 없어서 참여할 수 없어요 -->
         <h1 class="rate__title">{{ state.participants[0].title }}</h1>
         <div class="rate__emoji-list">
           <div class="rate__emoji">
@@ -286,7 +253,7 @@ function findCurrentClickedMeeting() {
     <section class="meetings">
       <ul>
         <li v-for="(meeting, idx) in state.meetings" :key="idx">
-          <MeetingList @rate="rateHandeler" :meeting="meeting" />
+          <MeetingList @rate="rateHandler" :meeting="meeting" />
         </li>
       </ul>
     </section>
