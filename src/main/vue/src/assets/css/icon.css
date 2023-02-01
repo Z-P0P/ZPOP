@@ -1,0 +1,206 @@
+/* 모든 아이콘이 공통적으로 사용하게될 기본 style 정의 */
+.icon {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-indent: -999px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+
+.icon-edit {
+  background-image: url(../../../public/images/icon/edit.svg);
+}
+
+.icon-trash {
+  background-image: url(../../../public/images/icon/trash.svg);
+}
+
+.icon-search {
+  background-image: url(../../../public/images/icon/search.svg);
+}
+
+.icon-arrow-left {
+  background-image: url(../../../public/images/icon/arrow-left.svg);
+}
+
+.icon-arrow-right {
+  background-image: url(../../../public/images/icon/arrow-right.svg);
+}
+
+.icon-arrow-down {
+  background-image: url(../../../public/images/icon/arrow-down.svg);
+}
+
+.icon-arrow-up {
+  background-image: url(../../../public/images/icon/arrow-up.svg);
+}
+
+.icon-calendar {
+  background-image: url(../../../public/images/icon/calendar.svg);
+}
+
+.icon-slide-bar {
+  background-image: url(../../../public/images/icon/slide-bar.svg);
+}
+
+.icon-warning {
+  background-image: url(../../../public/images/icon/warning.svg);
+}
+
+.icon-x {
+  background-image: url(../../../public/images/icon/x.svg);
+}
+
+.icon-speech-bubble {
+  background-image: url(../../../public/images/icon/speech-bubble.svg);
+}
+
+.icon-location {
+  background-image: url(../../../public/images/icon/location.svg);
+}
+
+.icon-siren {
+  background-image: url(../../../public/images/icon/siren.svg);
+}
+
+.icon-notification-on {
+  background-image: url(../../../public/images/icon/notification-on.svg);
+}
+
+.icon-notification {
+  background-image: url(../../../public/images/icon/notification.svg);
+}
+
+.icon-eyes {
+  background-image: url(../../../public/images/icon/eyes.svg);
+}
+
+.icon-check-circle {
+  background-image: url(../../../public/images/icon/check-circle.svg);
+}
+
+.icon-copy {
+  background-image: url(../../../public/images/icon/copy.svg);
+}
+
+.icon-check {
+  background-image: url(../../../public/images/icon/check.svg);
+}
+
+.icon-checked-square {
+  background-image: url(../../../public/images/icon/checked-square.svg);
+}
+
+.icon-square {
+  background-image: url(../../../public/images/icon/square.svg);
+}
+
+.icon-plus {
+  background-image: url(../../../public/images/icon/plus.svg);
+}
+
+.icon-camera {
+  width: 36px;
+  height: 36px;
+  background-image: url(../../../public/images/icon/camera-bg.svg);
+}
+
+.icon-star {
+  width: 24px;
+  height: 24px;
+  background-image: url(../../../public/images/icon/star.svg);
+}
+
+.icon-link {
+  background-image: url(../../../public/images/icon/link.svg);
+}
+
+.icon-siren-red {
+  background-image: url(../../../public/images/icon/siren-red.svg);
+}
+.icon-door{
+  width: 20px;
+  height: 20px;
+  cursor: none;
+  background-image: url(../../../public/images/icon/door.svg);
+}
+
+.icon-siren-white{
+  width: 20px;
+  height: 20px;
+  cursor: none;
+  background-image: url(../../../public/images/icon/siren-white-btn.svg);
+}
+
+
+.icon-bad {
+  width: 46px;
+  height: 41px;
+  background-image: url(../../../public/images/icon/bad.svg);
+}
+
+.icon-good {
+  width: 46px;
+  height: 41px;
+  background-image: url(../../../public/images/icon/good.svg);
+}
+
+.icon-excellent {
+  width: 46px;
+  height: 41px;
+  background-image: url(../../../public/images/icon/excellent.svg);
+}
+
+.icon-done{
+    width:100px;
+    height:100px;
+    background-size:contain;
+    background-image:url(../../../public/images/icon/done-240.svg);
+}
+
+.icon-cancel{
+    width:100px;
+    height:100px;
+    background-size:contain;	
+    background-image:url(../../../public/images/icon/cancel-240.png);
+    cursor:default;
+}
+
+.icon-kebab{
+  background-image: url(../../../public/images/icon/kebab.svg);
+}
+.icon-calender16{
+  background-image: url(../../../public/images/icon/calendar16.svg);
+  width: 16px;
+  height: 16px;
+}
+.icon-calendar20{
+  width: 20px;
+  height: 20px;
+  background-image: url(../../../public/images/icon/calendar20.svg);
+}
+.icon-location16{
+  background-repeat: no-repeat;
+  background-position: center;
+  text-indent: -999px;
+  overflow: hidden;
+  display: inline-block;
+  width: 7px;
+  height: 12px;
+  background-image: url(../../../public/images/icon/location.svg);
+}
+
+.icon-x-white{
+  background-image: url(../../../public/images/icon/x-white.svg);
+}
+
+
+.icon-location20{
+  width: 20px;
+  height: 20px;
+  background-image: url(../../../public/images/icon/location.svg);
+}

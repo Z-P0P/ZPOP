@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zpop.web.dao.MemberDao">
+    <insert id="insert" parameterType="Member" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO member(socialTypeId, socialId, nickname)
+        VALUES (#{socialTypeId}, #{socialId}, #{nickname}) </insert>
+    <select id="getById" resultType="Member">
+        SELECT * FROM member
+        WHERE id=#{id} </select>
+    <select id="getBySocialId" resultType="Member">
+        SELECT * FROM member
+        WHERE socialId=#{socialId} </select>
+    <select id="getByNickname" resultType="Member">
+        SELECT * FROM member
+        WHERE nickname=#{nickname} </select>
+    <select id="getMyMeeting" parameterType="com.zpop.web.entity.Member"
+            resultType="com.zpop.web.entity.member.MyMeetingView">
+        SELECT * FROM myMeetingView
+        WHERE participantId = #{id} </select>
+    <select id="getMyGathering" parameterType="com.zpop.web.entity.Member"
+            resultType="com.zpop.web.entity.member.MyMeetingView">
+        SELECT * FROM myMeetingView
+        WHERE regMemberId = #{id}
+		AND   participantId = #{id}</select>
+    <select id="getList" resultType= "Member">
+    	SELECT *
+    	FROM member
+    	LIMIT #{offset},#{size};
+    </select>
+	<select id="getEvalMember" resultType="com.zpop.web.dto.EvalMemberDto">
+		SELECT   p.id as id, mt.title,
+		         mt.id as meetingId, p.participantId, mem.nickname, mt.regMemberId
+		FROM         participation as p
+		LEFT JOIN meeting as mt on p.meetingId = mt.id
+		LEFT JOIN ageRange as a on a.id = mt.ageRangeId
+		LEFT JOIN member as mem on mem.id = p.participantId
+		WHERE      p.bannedAt IS NULL
+		AND        p.canceledAt IS NULL
+		AND        mt.deletedAt IS NULL
+		AND        mt.closedAt IS NOT NULL
+		AND        mt.id = #{id}
+		ORDER BY p.createdAt DESC;
+	</select>
+    
+    <!-- 검색어 옵션 뭐가될지 잘 몰라서 우선 닉네임만 함 -->
+    <select id="countBySearch" resultType= "java.lang.Integer">
+      	SELECT COUNT(id) 
+      	FROM member
+		<where>
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('nickname')">
+						nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('id')">
+						id = #{keyword}
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				AND
+				<![CDATA[
+				DATEDIFF(createdAt, #{minDate}) <= 0
+				AND DATEDIFF(createdAt, #{minDate}) >=  - #{period}
+				]]>
+			</if>
+		</where>
+    </select>
+    <select id="getListBySearch" resultType="Member">
+    	SELECT 
+    		id,
+    		profileImagePath,
+    		nickname,
+    		fame,
+    		isSuspended,
+    		createdAt,
+    		resignedAt
+   		FROM
+   			member
+   		<where>
+			<if test="keyword!=null and !keyword.equals('')">
+				<choose>
+					<when test="option.equals('nickname')">
+						nickname LIKE '%${keyword}%'
+					</when>
+					<when test="option.equals('id')">
+						id = #{keyword}
+					</when>
+				</choose>
+			</if>
+			<if test="period!=null and minDate!=null">
+				<![CDATA[
+				DATEDIFF(createdAt, #{minDate}) <= 0
+				AND DATEDIFF(createdAt, #{minDate}) >=  - #{period}
+				]]>
+			</if>
+		</where>
+		<choose>
+			<when test="order.equals('desc')">
+				ORDER BY id DESC
+			</when>
+			<otherwise>
+				ORDER BY id ASC
+			</otherwise>
+		</choose>
+		LIMIT #{offset},#{size};
+    </select>
+	<update id="updateFameAll" parameterType="java.util.List">
+		<foreach item="item" index="index" collection="list"
+				 separator=";">
+			UPDATE member
+			SET fame=fame+#{item.result}
+			WHERE id=#{item.evaluateeId}
+		</foreach>
+	</update>
+	<update id="updateNickname">
+		UPDATE member
+        SET nickname =#{nickname}
+        WHERE id = #{memberId}
+	</update>
+
+	<update id="updateAllIsSuspended" parameterType="java.util.List">
+		UPDATE member
+		<if test="ids != null and !ids.isEmpty()">
+			SET isSuspended=#{isSuspended}
+		</if>
+		<where>
+			ID IN 
+			<foreach item="id" collection="ids" open="(" close=")"
+			separator=",">#{id}</foreach>
+		</where>
+	</update>
+	<update id="updateProfileImagePath">
+		UPDATE member
+        SET profileImagePath =#{profileImagePath}
+        WHERE id = #{memberId}
+	</update>
+	<select id="countCreatedAtPerDay" resultType="CountPerDateDto">
+		SELECT
+			convert(createdAt, date) AS date,
+			count(1) AS count
+		FROM member
+		GROUP BY convert(createdAt, date)
+		HAVING TIMESTAMPDIFF(MONTH, Date, CURRENT_TIMESTAMP) = 0;
+	</select>
+	<select id="countByNotResigned" resultType= "java.lang.Integer">
+		SELECT
+			count(id)
+		FROM member
+		WHERE resignedAt IS NULL;
+	</select>
+</mapper>
