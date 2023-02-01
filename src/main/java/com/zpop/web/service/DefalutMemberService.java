@@ -351,7 +351,7 @@ public class DefalutMemberService implements MemberService {
         System.out.println(month);
 
         //날짜의 차이가 30일 이내일 경우
-        if (year<0 || month==0){
+        if (year<0 || month<0){
             //변경할 수 없음을 클라이언트에게 알려주기
             System.out.println("30일 이내에는 변경 불가함");
             throw new CustomException(ExceptionReason.NICKNAME_RULE_ERROR);
