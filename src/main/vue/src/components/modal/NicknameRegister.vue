@@ -7,7 +7,7 @@
             <div class="modal__body">
                 <div class="modal__contents">
                     <Transition name="content1">
-                        <div class="modal__content" v-show="!isRegisteredSuccessful">
+                        <div class="modal__content" v-show="(memberStore.nickname == '' || memberStore.nickname == null)">
                             <div class="logo-img">
                                 <img src="../../../public/images/logo/logo-modal.svg" alt="" class="src">
                             </div>
@@ -25,13 +25,13 @@
                         </div>
                     </Transition>
                     <Transition name="content2">
-                        <div class="modal__content" v-show="isRegisteredSuccessful">
+                        <div class="modal__content" v-show="(memberStore.nickname != '' && memberStore.nickname != null)">
                             <div class="greetings">
                                 <p>
                                     <img src="../../../public/images/logo/logo-only-text.svg"><span>에 오신걸 환영해요!</span>
                                 </p>
                                 <p>
-                                    😉 집합에 새로오신 ‘<span class="greetings__nickname">나홀로집에</span>’님!
+                                    😉 집합에 새로오신 ‘<span class="greetings__nickname">{{memberStore.nickname}}</span>’님!
                                 </p>
                             </div>
                             <div class="pros">
