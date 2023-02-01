@@ -65,7 +65,7 @@
                             <div class="icon-done"></div>
                             <div class="register-status__text">
                                 <div class="register-status__message">게시글을 등록했어요!</div>
-                                <a class="register-status__btn btn btn-semiround btn-action" :href="registerForm.meetingUrl">모임글로 이동</a>
+                                <a class="register-status__btn btn btn-semiround btn-action" @click.prevent="onClickMoveMeeting">모임글로 이동</a>
                             </div>
                         </div>
                     </div>
@@ -81,6 +81,7 @@
 
 <script>
 import { onUpdated, reactive, ref } from '@vue/runtime-core';
+import { useRouter } from "vue-router";
 import LoadingRoller from '../../components/LoadingRoller.vue';
 import MeetingFormDateInput from '../../components/meeting/MeetingFormDateInput.vue';
 import MeetingFormSelectInput from '../../components/meeting/MeetingFormSelectInput.vue';
@@ -93,7 +94,7 @@ import PageLoader from '../../components/PageLoader.vue';
 export default {
     components: { Modal, MeetingFormSelectInput, MeetingFormTextInput, MeetingFormDateInput, MeetingFormSelectTextInput, LoadingRoller, PageLoader },
     setup() {
-        
+        const router = useRouter();
         const registerForm = reactive(new RegisterForm());
         registerForm.addDefaultInputs();
         registerForm.requestInputOptions();
@@ -150,6 +151,10 @@ export default {
                 })
             }
         });
+        
+        function onClickMoveMeeting() {
+            router.replace(registerForm.meetingUrl);
+        }
 
         return {
             registerForm,
@@ -161,6 +166,7 @@ export default {
             textInputHandler,
             clickHandler,
             closeModalHandler,
+            onClickMoveMeeting
         }
     }
 }
