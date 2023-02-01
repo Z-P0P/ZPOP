@@ -36,6 +36,7 @@ function closeModal(e) {
   background-color: rgba(0, 0, 0, 0.15);
   position: fixed;
   inset: 0; /*t, l, b, r 0*/
+  z-index:998;
 }
 
 .modal-default {
