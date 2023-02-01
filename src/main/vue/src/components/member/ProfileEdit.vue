@@ -16,6 +16,7 @@ const inputStatus = reactive({
   inputNickname: "",
 });
 
+// 닉네임 입력 값이 없을 때마다, inputStatus 초기화
 watch(
   () => inputStatus.inputNickname,
   () => {
@@ -39,15 +40,28 @@ const editState = reactive({
   imageName: "",
 });
 
+// 이미지가 변경되거나 or 닉네임 입력이 변경날 때의 '저장하기' 버튼 class 관리
+watch(editState, () => {
+  classSaveObj["profile__btn--disabled"] = true;
+  classSaveObj["profile__btn--save"] = false;
+  if (
+    (editState.image || editState.nickname) &&
+    (inputStatus.isNicknameValid || inputStatus.isNicknameValid === null)
+  ) {
+    classSaveObj["profile__btn--disabled"] = false;
+    classSaveObj["profile__btn--save"] = true;
+  }
+});
+
 // 닉네임 -----------------------------------------------------------------
 /**
  * 닉네임 유효성 검사를 위한 nicknameChangeHandler 와
  * validateNickname()함수 추가
  */
-function nicknameChangeHandler() {
+function nicknameChangeHandler(e) {
   let timer;
   const delay = 300;
-
+  inputStatus.inputNickname = e.target.value;
   if (timer) {
     clearTimeout(timer);
   }
@@ -148,9 +162,19 @@ function uploadImage() {
 }
 
 // 프로필 수정 저장하기 -----------------------------------------------------------------
-const resultMsg = ref("");
+const classSaveObj = reactive({
+  "btn-semiround": true,
+  "profile__btn--disabled": true,
+  "profile__btn--save": false,
+});
+
+const saveResultMsg = ref("");
 
 function onClickSave() {
+  // 저장하기 비활성(회색)이라면 리턴
+  if (classSaveObj["profile__btn--disabled"]) {
+    return;
+  }
   // 닉네임 유효성 에러.
   if (inputStatus.isNicknameValid === false) {
     inputStatus.inputMessage = "유효하지 않은 닉네임으로 변경할 수 없어요!";
@@ -190,12 +214,12 @@ function save() {
   };
   fetch(url, options).then((res) => {
     if (!res.ok) {
-      resultMsg.value = "닉네임 변경은30일에 한 번만 가능해요.";
+      saveResultMsg.value = "닉네임 변경은30일에 한 번만 가능해요.";
       finalConfirmModalOn.value = true;
       return;
     }
     api.auth.me();
-    resultMsg.value = "프로필 수정이 완료되었어요! 🥰";
+    saveResultMsg.value = "프로필 수정이 완료되었어요! 🥰";
     finalConfirmModalOn.value = true;
   });
 }
@@ -229,7 +253,7 @@ function onClickClose() {
   <!-- 프로필 수정 최종 확인 모달 -->
   <ModalChanged v-if="finalConfirmModalOn">
     <template #modal-body v-if="true">
-      <p class="confirm">{{ resultMsg }}</p>
+      <p class="confirm">{{ saveResultMsg }}</p>
     </template>
     <template #modal-footer>
       <div @click="onClickClose">닫기</div>
@@ -290,8 +314,7 @@ function onClickClose() {
             maxlength="10"
             spellcheck="false"
             v-bind:placeholder="phNickname"
-            v-model="inputStatus.inputNickname"
-            @input="nicknameChangeHandler()"
+            @input="nicknameChangeHandler"
           />
         </div>
         <span
@@ -300,11 +323,7 @@ function onClickClose() {
           v-bind:textContent="inputStatus.inputMessage"
         ></span>
       </div>
-      <span
-        class="btn-semiround profile__btn--save"
-        @click.prevent="onClickSave"
-        >저장하기</span
-      >
+      <span :class="classSaveObj" @click.prevent="onClickSave">저장하기</span>
     </div>
   </div>
 </template>
