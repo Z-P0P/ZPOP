@@ -33,14 +33,16 @@
     function closeCommentModal() {
         commentModalOn.value = false;
         cmtStore.selectModalStatus[props.commentId] = true; //셀렉트가 선택된후 잠기는 것 방지
-        rplyStore.comments[props.groupId].selectModalStatus[props.commentId] = true;
+        if(props.groupId)
+            rplyStore.comments[props.groupId].selectModalStatus[props.commentId] = true;
     }
 
     function closeReportModal(){
         reportModalOn.value = false;
         console.log("여기")
         cmtStore.selectModalStatus[props.commentId] = true;
-        rplyStore.comments[props.groupId].selectModalStatus[props.commentId] = true;
+        if(props.groupId)
+            rplyStore.comments[props.groupId].selectModalStatus[props.commentId] = true;
     }
 
      function onClickDeleteSelectOption() {
@@ -54,7 +56,8 @@
         currentSelectType.value = selectType[1];
         selectModalOn.value = !selectModalOn.value;
         cmtStore.selectModalStatus[props.commentId] = true;
-        rplyStore.comments[props.groupId].selectModalStatus[props.commentId] = true;
+        if(props.groupId)
+            rplyStore.comments[props.groupId].selectModalStatus[props.commentId] = true;
         emit('onEdit',e);
     }
     
