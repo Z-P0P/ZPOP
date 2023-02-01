@@ -220,7 +220,7 @@ public class DefalutMemberService implements MemberService {
     }
 
     /***
-     * TODO : 주최자 혼자인채로 모임이 마감된 경우, 평가하기 비활성화
+     * TODO : 주최자 혼자인채로 모임이 마감된 경우, 평가하기 비활성화 (프론트 완료)
      * 평가하기 클릭시, 해당 모임에 참여한 회원을 불러옵니다.
      * @param meetingId
      * @return
@@ -311,7 +311,7 @@ public class DefalutMemberService implements MemberService {
 	}
 
     /**
-     * 닉네임 변경 -- TODO : 변경할 수 없을 경우 클라이언트에게 응답 해주어야함
+     * 닉네임 변경 
      * @param memberId
      * @param nickname
      * @return
@@ -350,7 +350,7 @@ public class DefalutMemberService implements MemberService {
         //따라서 year를 추가하여 연도도 조건에 추가
         int year = period.getYears();
         int month = period.getMonths();
-        System.out.println(month);
+
 
         //날짜의 차이가 30일 이내일 경우
         if (year<0 || month<0){
@@ -360,14 +360,10 @@ public class DefalutMemberService implements MemberService {
         }
 
         //닉네임 유효성 확인, 닉네임 중복확인
-        System.out.println(nickname+"을 확인하세요");
         Map<String, Object> validResult = checkNicknameValid(nickname);
         if(validResult.get("result").equals("NICKNAME_VALID"))
-            System.out.println(validResult+"결과입니다");
         dao.updateNickname(memberId, nickname);
-        System.out.println("닉네임업데이트를 실행합니다");
         nicknameLogDao.insert(new NicknameLog(memberId, nickname));
-        System.out.println("닉네임이 업데이트 되었습니다.");
     }
 
     @Override
