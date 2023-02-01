@@ -50,9 +50,19 @@
   position: relative;
 }
 
+.profile__image--photo {
+  align-self: center;
+  width: 8.75rem;
+  height: 8.75rem;
+  display: flex;
+  position: relative;
+  border-radius: 50%;
+}
+
 /* 이미지 - 카메라 아이콘 달아주기 */
 
-.profile__image--no-photo .icon {
+.profile__image--no-photo .icon,
+.profile__image--photo .icon {
   display: flex;
   position: absolute;
   bottom: 4px;
