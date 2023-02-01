@@ -1,5 +1,5 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref,nextTick } from 'vue';
     import api from "@/api";
     import { useReplyStore} from '@/stores/replyStore'
     import { useMeetingDetailStore } from "@/stores/meetingDetailStore";
@@ -8,8 +8,6 @@
     const rplyStore = useReplyStore();
     const props = defineProps({
         reply:Object,
-        isB2Active: Boolean,
-        isB3Active: Boolean
     });
     const emit = defineEmits([
         'cancelClicked',
@@ -49,7 +47,7 @@
                 alert("시스템 장애로 등록이 안되고 있습니다")
         })
     }
-    
+   
 </script>
 
 <template>
@@ -60,14 +58,15 @@
         name="reply-input"
         placeholder="답글을 입력하세요." ref="textInputRef"></textarea>
         <div class="reply__btn-container">
-            <span   class="reply__btn btn btn-round btn-cancel cancel-btn" 
+            <span   v-if="rplyStore.buttons.isB1Active"
+                class="reply__btn btn btn-round btn-cancel cancel-btn" 
                 @click="emit('cancelClicked')"
             >취소하기</span>
-            <span   v-if="isB2Active"
+            <span   v-if="rplyStore.buttons.isB2Active"
                 class="reply__btn btn btn-round btn-action" 
                 @click="registerReply"
             >등록하기</span>
-            <span   v-if="isB3Active"
+            <span   v-if="rplyStore.buttons.isB3Active"
                 class="reply__btn btn btn-round btn-action"
                 @click="emit('editSaveClicked')"
             >저장하기</span

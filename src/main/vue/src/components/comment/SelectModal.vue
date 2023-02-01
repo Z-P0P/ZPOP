@@ -1,14 +1,16 @@
 <script setup>
     import {ref} from 'vue';
     import CommentModal from './CommentModal.vue';
-    import { useCommentStore } from '@/stores/commentStore.js';
     import CommentReportModal from '../report/ReportComment.vue';
+    import { useCommentStore } from '@/stores/commentStore.js';
+    import { useReplyStore } from '@/stores/ReplyStore'
     import { useMemberStore } from "@/stores/memberStore";
     import { useLoginModalStore } from "@/stores/loginModalStore";
     
     const memberStore = useMemberStore();
     const loginModalStore = useLoginModalStore();
     const cmtStore = useCommentStore();
+    const rplyStore = useReplyStore();
     const props = defineProps(['isMyComment', 'commentId', 'groupId']);
     const emit = defineEmits(['onEdit']);
 
@@ -30,16 +32,20 @@
 
     function closeCommentModal() {
         commentModalOn.value = false;
-        cmtStore.selectModalStatus[props.commentId] = true;
+        cmtStore.selectModalStatus[props.commentId] = true; //셀렉트가 선택된후 잠기는 것 방지
+        rplyStore.comments[props.groupId].selectModalStatus[props.commentId] = true;
     }
 
     function closeReportModal(){
         reportModalOn.value = false;
+        console.log("여기")
+        cmtStore.selectModalStatus[props.commentId] = true;
+        rplyStore.comments[props.groupId].selectModalStatus[props.commentId] = true;
     }
 
      function onClickDeleteSelectOption() {
-        currentSelectType.value = selectType[0];
-        selectModalOn.value = !selectModalOn.value;
+         currentSelectType.value = selectType[0];
+         selectModalOn.value = !selectModalOn.value;
         commentModalOn.value = !commentModalOn.value;
     }
 
@@ -47,6 +53,8 @@
         e.targetId = props.commentId
         currentSelectType.value = selectType[1];
         selectModalOn.value = !selectModalOn.value;
+        cmtStore.selectModalStatus[props.commentId] = true;
+        rplyStore.comments[props.groupId].selectModalStatus[props.commentId] = true;
         emit('onEdit',e);
     }
     

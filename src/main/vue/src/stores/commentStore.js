@@ -6,7 +6,8 @@ export const useCommentStore = defineStore('comment',
         state: () => ({
             commentList: [],
             selectModalStatus:{}, //closed 가 true
-            meetingId:0
+            meetingId:0,
+            buttons:{}
         }),
         actions: {
             getCommentList(meetingId) {
@@ -49,6 +50,25 @@ export const useCommentStore = defineStore('comment',
             setMeetingId(id){
                 this.meetingId = id;
             },
+            initButtons(){
+                this.buttons = {};
+                for(var i=0;i<3;i++){
+                    const btnName = 'isB'+ ++i + 'Active';
+                    this.buttons[btnName] = false;
+                }
+            },
+            showWriteButton(){
+                this.buttons = {};
+                this.buttons['isB1Active'] = true;
+                this.buttons['isB2Active'] = true;
+                this.buttons['isB3Active'] = false;
+            },
+            showEditButton(){
+                this.buttons = {};
+                this.buttons['isB1Active'] = true;
+                this.buttons['isB2Active'] = false;
+                this.buttons['isB3Active'] = true;
+            }
         },
         getters:{
         }
