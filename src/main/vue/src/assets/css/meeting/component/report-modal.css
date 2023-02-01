@@ -61,6 +61,7 @@
     height:260px;
     font-size: 18px;
     resize: none;
+    color: var(--grey2);
 }
 
 .modal-report .btn-wrapper{
