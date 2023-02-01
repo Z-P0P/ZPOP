@@ -1,10 +1,12 @@
 <script setup>
 import { reactive, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/memberStore";
 import ModalDefault from "@/components/modal/Default.vue";
 import ModalChanged from "@/components/modal/Changed.vue";
 import api from "@/api";
 
+const router = useRouter();
 const memberInfo = useMemberStore();
 const phNickname = memberInfo.nickname; //placeholder에 표시될 닉네임
 // 닉네임 입력 상태
@@ -197,6 +199,17 @@ function save() {
     finalConfirmModalOn.value = true;
   });
 }
+
+function onClickClose() {
+  api.auth
+    .me()
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      memberInfo.setInfo(data);
+      router.replace("/my-profile");
+    });
+}
 </script>
 
 //TODO : 프로필 이미지 업로드, 삭제, 모바일 화면에서 케밥적용
@@ -216,11 +229,10 @@ function save() {
   <!-- 프로필 수정 최종 확인 모달 -->
   <ModalChanged v-if="finalConfirmModalOn">
     <template #modal-body v-if="true">
-      <p class="confirm">{{ memberInfo.nickname }}님</p>
       <p class="confirm">{{ resultMsg }}</p>
     </template>
     <template #modal-footer>
-      <div @click="finalConfirmModalOn = false">닫기</div>
+      <div @click="onClickClose">닫기</div>
     </template>
   </ModalChanged>
 

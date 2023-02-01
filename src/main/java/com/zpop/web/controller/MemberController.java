@@ -6,15 +6,23 @@ import com.zpop.web.dto.MyMeetingResponse;
 import com.zpop.web.dto.ProfileResponse;
 import com.zpop.web.entity.Member;
 import com.zpop.web.entity.ProfileFile;
+import com.zpop.web.security.UserSecurityService;
 import com.zpop.web.security.ZpopUserDetails;
 import com.zpop.web.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,8 +35,10 @@ import java.util.Map;
 @RequestMapping("/api")
 public class MemberController {
 
-@Autowired
-private MemberService service;
+	@Autowired
+	private MemberService service;
+	@Autowired
+	private UserSecurityService userSecurityService;
 
 
 
@@ -56,11 +66,17 @@ public ResponseEntity<Member> getMyPage(@AuthenticationPrincipal ZpopUserDetails
  *  				                      ->중복이 아니면, 멤버 닉네임 업데이트 쿼리 실행
  */
 @PostMapping("/me/edit")
-public ResponseEntity<?> setNickname(@AuthenticationPrincipal ZpopUserDetails userDetails,
+public ResponseEntity<?> update(@AuthenticationPrincipal ZpopUserDetails userDetails,
 									 String nickname,
-									 String imageName){
+									 String imageName,
+									 HttpSession session){
 		int memberId = userDetails.getId();
-		service.update(memberId, nickname, imageName);
+		Member updatedMember = service.update(memberId, nickname, imageName);
+		UserDetails user = userSecurityService.loadUserByUsername(updatedMember.getNickname());
+		Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		securityContext.setAuthentication(auth);
+		session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 		return ResponseEntity.ok(200);
 	}
 

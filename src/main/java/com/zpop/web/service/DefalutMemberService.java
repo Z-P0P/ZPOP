@@ -318,7 +318,7 @@ public class DefalutMemberService implements MemberService {
      */
 	@Transactional
 	@Override
-	public void update(int memberId, String nickname, String imageName) {
+	public Member update(int memberId, String nickname, String imageName) {
         // 닉네임 변경
         if(nickname != null) {
             changeNickname(memberId, nickname);
@@ -327,6 +327,8 @@ public class DefalutMemberService implements MemberService {
         if(imageName != null) {
             dao.updateProfileImagePath(memberId, imageName);
         }
+
+        return getById(memberId);
 	}
 
     private void changeNickname(int memberId, String nickname) {
