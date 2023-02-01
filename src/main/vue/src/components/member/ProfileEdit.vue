@@ -7,8 +7,8 @@ import ModalChanged from "@/components/modal/Changed.vue";
 import api from "@/api";
 
 const router = useRouter();
-const memberInfo = useMemberStore();
-const phNickname = memberInfo.nickname; //placeholder에 표시될 닉네임
+const memberStore = useMemberStore();
+const phNickname = memberStore.nickname; //placeholder에 표시될 닉네임
 // 닉네임 입력 상태
 const inputStatus = reactive({
   inputMessage: "",
@@ -101,7 +101,7 @@ function validateNickname(nickname) {
 // 프로필 이미지 -----------------------------------------------------------------
 let file;
 const fileInput = ref(null);
-const imgSrc = ref("");
+const uploadedImgSrc = ref("");
 /**
  * 파일 선택 창을 띄움
  * fileInput = ref, 원본 값 value로 참조
@@ -122,7 +122,7 @@ function handleImageUpload(e) {
   uploadImage();
   // priview 업데이트
   reader.onload = function (e) {
-    imgSrc.value = e.target.result;
+    uploadedImgSrc.value = e.target.result;
   };
 }
 
@@ -206,7 +206,7 @@ function onClickClose() {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-      memberInfo.setInfo(data);
+      memberStore.setInfo(data);
       router.replace("/my-profile");
     });
 }
@@ -248,12 +248,27 @@ function onClickClose() {
           class="file-input"
         />
 
-        <!-- imgSrc = imagepath로 -->
-        <div v-if="imgSrc" class="profile__image--with-photo">
-          <img :src="imgSrc" alt="" class="profile__image--img" />
+        <!-- uploadedImgSrc = imagepath로 -->
+        <div v-if="uploadedImgSrc" class="profile__image--with-photo">
+          <img
+            :src="uploadedImgSrc"
+            alt="profile-image"
+            class="profile__image--img"
+          />
           <div class="icon icon-camera" @click="openFileUpload"></div>
         </div>
-        <div v-else="imgSrc" class="profile__image--no-photo">
+        <div
+          v-else-if="memberStore.profileImagePath"
+          class="profile__image--with-photo"
+        >
+          <img
+            :src="'/image/profile/' + memberStore.profileImagePath"
+            alt="profile-image"
+            class="profile__image--img"
+          />
+          <div class="icon icon-camera" @click="openFileUpload"></div>
+        </div>
+        <div v-else="uploadedImgSrc" class="profile__image--no-photo">
           <div class="icon icon-camera" @click="openFileUpload"></div>
         </div>
       </div>
