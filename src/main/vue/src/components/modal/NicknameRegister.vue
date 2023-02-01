@@ -124,8 +124,9 @@ const nicknameChangeHandler = (event) => {
 
 const validateNickname = () => {
     
-    if (nickname.value.length === 0) return;
-
+    if (nickname.value.length === 0) {
+        throw new Error('닉네임은 공백이 될 수 없어요!');
+    }
     if (nickname.value.length > maxNicknameLength){
         throw new Error('닉네임은 10글자 이하로 입력해주세요!');
     }
