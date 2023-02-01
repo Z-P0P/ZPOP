@@ -38,7 +38,9 @@ const closeDatepicker = () => {
 
 const datepickerSubmitHandler = (selectedDate) => {
     let date = selectedDate.dateInfo;
-    datepickerDate.value = `${date.year} 년 ${date.month} 월 ${date.day} 일 ${date.hour} 시 ${date.minute} 분`;
+    let hourStr = (date.hour < 10) ? `0${date.hour}` : date.hour;
+    let minuteStr = (date.minute < 10) ? `0${date.minute}` : date.minute;
+    datepickerDate.value = `${date.year} 년 ${date.month} 월 ${date.day} 일 ${hourStr} 시 ${minuteStr} 분`;
     emit('dateChange',input.parameterName,selectedDate.formattedDate);
 }
 
