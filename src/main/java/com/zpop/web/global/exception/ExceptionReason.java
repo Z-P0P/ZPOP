@@ -11,6 +11,8 @@ public enum ExceptionReason {
     VALIDATION_ERROR(BAD_REQUEST, "잘못된 입력이 있습니다."),
     CLOSED_MEETING(BAD_REQUEST, "마감된 모임입니다."),
     PARTICIPANTS_EXISTS(BAD_REQUEST, "참가자가 있어 모임을 삭제할 수 없습니다"),
+    NICKNAME_RULE_ERROR(BAD_REQUEST, "30일 이내에는 닉네임 변경이 불가합니다."),
+
 
     // 401
     AUTHENTICATION_ERROR(UNAUTHORIZED, "인증 에러"),

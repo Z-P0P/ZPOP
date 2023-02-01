@@ -318,12 +318,22 @@ public class DefalutMemberService implements MemberService {
      */
 	@Transactional
 	@Override
-	public int updateNickname(int memberId, String nickname) {
+	public void update(int memberId, String nickname, String imageName) {
+        // 닉네임 변경
+        if(nickname != null) {
+            changeNickname(memberId, nickname);
+        }
 
+        if(imageName != null) {
+            dao.updateProfileImagePath(memberId, imageName);
+        }
+	}
+
+    private void changeNickname(int memberId, String nickname) {
         //멤버의 아이디를 통해 닉네임 로그 중 가장 최근 기록 하나를 불러옵니다.
-         NicknameLog nicknameLog = nicknameLogDao.getLatestByMemberId(memberId);
-       
-         //해당 기록의 날짜를 얻습니다.
+        NicknameLog nicknameLog = nicknameLogDao.getLatestByMemberId(memberId);
+
+        //해당 기록의 날짜를 얻습니다.
         Date date = nicknameLog.getCreatedAt();
 
         //해당 기록의 날짜와 현재날짜의 차이를 비교합니다.
@@ -340,28 +350,23 @@ public class DefalutMemberService implements MemberService {
         int month = period.getMonths();
         System.out.println(month);
 
-        int result;
-         //날짜의 차이가 30일 이내일 경우
-         if (year<0 || month==0){
+        //날짜의 차이가 30일 이내일 경우
+        if (year<0 || month==0){
             //변경할 수 없음을 클라이언트에게 알려주기
             System.out.println("30일 이내에는 변경 불가함");
-             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "30일 이내에는 닉네임 변경이 불가합니다.");
-         }else {
-
-            //닉네임 유효성 확인, 닉네임 중복확인
-            System.out.println(nickname+"을 확인하세요");
-            Map<String, Object> validResult = checkNicknameValid(nickname);
-            if(validResult.get("result").equals("NICKNAME_VALID"))
-            System.out.println(validResult+"결과입니다");
-            dao.updateNickname(memberId, nickname);
-            System.out.println("닉네임업데이트를 실행합니다");
-            nicknameLogDao.insert(new NicknameLog(memberId, nickname));
-            System.out.println("닉네임이 업데이트 되었습니다.");
-            result=1;
+            throw new CustomException(ExceptionReason.NICKNAME_RULE_ERROR);
         }
-        System.out.println(result+"업데이트 결과");
-		return result;
-	}
+
+        //닉네임 유효성 확인, 닉네임 중복확인
+        System.out.println(nickname+"을 확인하세요");
+        Map<String, Object> validResult = checkNicknameValid(nickname);
+        if(validResult.get("result").equals("NICKNAME_VALID"))
+            System.out.println(validResult+"결과입니다");
+        dao.updateNickname(memberId, nickname);
+        System.out.println("닉네임업데이트를 실행합니다");
+        nicknameLogDao.insert(new NicknameLog(memberId, nickname));
+        System.out.println("닉네임이 업데이트 되었습니다.");
+    }
 
     @Override
     @Transactional
