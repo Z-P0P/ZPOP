@@ -33,8 +33,9 @@ public class ReplyController {
 			memberId = userDetails.getId();
 		if(memberId != 0)
 			replies = service.getReplyWithWriter(memberId, groupId);
-		else
+		else{
 			replies = service.getReply(groupId);
+		}
 		int countOfReply = service.getCountOfReply(groupId);
 
 		Map<String,Object> dto = new HashMap<>();

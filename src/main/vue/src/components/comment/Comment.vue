@@ -107,7 +107,8 @@
 
 <template>
   <div class="profile select-box">
-    <span class="profile__image"></span>
+    <span class="profile__image"><img :src="(comment.profileImagePath != '' && comment.profileImagePath != null)
+          ? `/image/profile/${comment.profileImagePath}` : '/images/icon/user-profile-grey.svg'"></span>
     <span class="profile__nickname">{{ comment.nickname }}</span>
     <span class="profile__time">{{ comment.updatedAt?comment.elapsedTime+' (수정됨)':comment.elapsedTime }}</span>
     <button @click="toggleSelectModal"></button>
