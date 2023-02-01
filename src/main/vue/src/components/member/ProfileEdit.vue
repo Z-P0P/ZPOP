@@ -37,21 +37,6 @@ const editState = reactive({
   imageName: "",
 });
 
-const classSaveObj = reactive({
-  "btn-semiround": true,
-  "profile__btn--disabled": true,
-  "profile__btn--save": false,
-});
-// 이미지가 변경되거나 or 닉네임 입력이 변경날 때의 저장하기 class 관리
-watch(editState, () => {
-  classSaveObj["profile__btn--disabled"] = true;
-  classSaveObj["profile__btn--save"] = false;
-  if ((editState.image || editState.nickname) && inputStatus.isNicknameValid) {
-    classSaveObj["profile__btn--disabled"] = false;
-    classSaveObj["profile__btn--save"] = true;
-  }
-});
-
 // 닉네임 -----------------------------------------------------------------
 /**
  * 닉네임 유효성 검사를 위한 nicknameChangeHandler 와
@@ -288,7 +273,11 @@ function save() {
           v-bind:textContent="inputStatus.inputMessage"
         ></span>
       </div>
-      <span :class="classSaveObj" @click.prevent="onClickSave">저장하기</span>
+      <span
+        class="btn-semiround profile__btn--save"
+        @click.prevent="onClickSave"
+        >저장하기</span
+      >
     </div>
   </div>
 </template>
