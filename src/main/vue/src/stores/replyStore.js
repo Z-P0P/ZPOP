@@ -5,6 +5,7 @@ export const useReplyStore = defineStore('reply',
     {
         state:()=>({
                 comments:{}, 
+                buttons:{}
         }),
         actions:{
             getReplyList (commentId){
@@ -49,6 +50,25 @@ export const useReplyStore = defineStore('reply',
             reloadReply(commentId){
                 this.comments[commentId].replyList.length = 0;
                 this.fillRepliesToComment(commentId);
+            },
+            initButtons(){
+                this.buttons = {};
+                for(var i=0;i<3;i++){
+                    const btnName = 'isB'+ ++i + 'Active';
+                    this.buttons[btnName] = false;
+                }
+            },
+            showWriteButton(){
+                this.buttons = {};
+                this.buttons['isB1Active'] = true;
+                this.buttons['isB2Active'] = true;
+                this.buttons['isB3Active'] = false;
+            },
+            showEditButton(){
+                this.buttons = {};
+                this.buttons['isB1Active'] = true;
+                this.buttons['isB2Active'] = false;
+                this.buttons['isB3Active'] = true;
             }
         }
     });

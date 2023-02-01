@@ -56,11 +56,12 @@ public ResponseEntity<Member> getMyPage(@AuthenticationPrincipal ZpopUserDetails
  *  				                      ->중복이 아니면, 멤버 닉네임 업데이트 쿼리 실행
  */
 @PostMapping("/me/edit")
-public ResponseEntity<?> setNickname(@AuthenticationPrincipal ZpopUserDetails userDetails, String nickname ){
+public ResponseEntity<?> setNickname(@AuthenticationPrincipal ZpopUserDetails userDetails,
+									 String nickname,
+									 String imageName){
 		int memberId = userDetails.getId();
-		service.updateNickname(memberId, nickname);
+		service.update(memberId, nickname, imageName);
 		return ResponseEntity.ok(200);
-		
 	}
 
 /**

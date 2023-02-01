@@ -29,20 +29,29 @@
 
   var hasBox = ref(false);
   var replyWrite = ref(true)
-  const inputTemplate = ref();
-  var inputBox = null;
-  async function inputBoxToggle() { //'인풋박스' <-> '답글쓰기' 전환
-    if(await checkLoginStatus())
-        return
+  const inputTemplate = ref(null);
+  var inputBox = null;//답글창 초기화
+  rplyStore.initButtons();//버튼 초기화
+
+  function hideLinks(){
     replyWrite.value= !replyWrite.value;
     hasBox.value = !hasBox.value;
+  }
+  async function initInputBox(){
     if(!inputBox){
       inputBox = inputTemplate.value.textInputRef;//자식컴포넌트에서 객체받아옴
       await nextTick();
       inputBox.focus();
+     rplyStore.showWriteButton();
     }
     else 
       inputBox = null;
+  }
+  async function inputBoxToggle() { //'인풋박스' <-> '답글쓰기' 전환
+    if(await checkLoginStatus())
+        return
+    hideLinks();
+    initInputBox();
   }
   //답글 등록버튼에서 올라오는 이벤트 처리기
   function registerFinish(){
@@ -51,18 +60,11 @@
     emit('counterIncreased');
   }
   /*****************답글 수정 ******************/
-  const isEdited = ref(false);
+  const isEditing = ref(false);
 
-  var isB2Active = ref(true)
-  var isB3Active = ref(false)
-  function setButtonForEdit(){
-        isB2Active.value = !isB2Active.value;
-        isB3Active.value = !isB3Active.value;
-    }
   async function onEditReply(){
-    isEdited.value = true;
-    inputBoxToggle()
-    setButtonForEdit();
+    isEditing.value = true;
+    hideLinks()
     let content = "";
     rplyStore.comments[groupId].replyList.forEach(element => {
       if(element.id == replyId){
@@ -70,14 +72,15 @@
         return 0;
       }
     });
+    initInputBox();
     inputBox.value = content + " ";
-  
+    rplyStore.showEditButton();
+    
   }
   function cancelEdit(){
-    inputBox.value = "";
-    if(isB3Active)
-      setButtonForEdit();
-    isEdited.value = false;
+    inputBox = inputTemplate.value.textInputRef;
+    inputBox.value = null;
+    isEditing.value = false;
     rplyStore.comments[groupId].selectModalStatus[replyId] = true;
     inputBoxToggle();
   }
@@ -120,7 +123,7 @@
             @onEdit="onEditReply" 
         />
     </div>
-    <div v-show="!isEdited" class="reply-container">
+    <div v-show="!isEditing" class="reply-container">
         <span class="reply__to">{{reply.parentNickname?'@'+reply.parentNickname:reply.parentNickname }}</span>
         <span class="reply__content">{{reply.content}}</span>
     </div>
@@ -134,8 +137,6 @@
       v-show="hasBox" 
       ref="inputTemplate"  
       :reply="props.reply" 
-      :isB2Active="isB2Active"
-      :isB3Active="isB3Active"
       @cancelClicked="cancelEdit" 
       @registerCompleted="registerFinish" 
       @editSaveClicked="saveEdit"
