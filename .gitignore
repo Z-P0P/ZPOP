@@ -3,8 +3,10 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-.env.properties
+.env.*
 .api.properties
+application-dev.properties
+application-pro.properties
 static
 
 ### STS ###
