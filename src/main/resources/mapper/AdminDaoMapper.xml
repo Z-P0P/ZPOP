@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zpop.web.dao.AdminDao">
+    <select id="getByName" resultType="Admin">
+        select *
+        from admin
+        where name=#{name}
+    </select>
+
+    <insert id="insert" parameterType="com.zpop.web.entity.Admin">
+        INSERT INTO admin
+        (name, pwd, createdAt)
+        VALUES (#{name}, #{pwd}, #{createdAt})
+    </insert>
+</mapper>
+

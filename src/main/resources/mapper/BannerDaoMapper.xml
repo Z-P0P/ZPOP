@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zpop.web.dao.BannerDao">
+    <select id="getActiveList" resultType="BannerDto">
+        SELECT name, link, imagePath, `order`
+        FROM banner
+        WHERE isActivated = true AND deletedAt IS NULL
+        ORDER BY `order` ASC;
+    </select>
+    
+    <select id="getList" resultType="Banner">
+        SELECT *
+        FROM banner
+        <choose>
+            <when test="order.equals('desc')">
+                ORDER BY id DESC
+            </when>
+            <otherwise>
+                ORDER BY id ASC
+            </otherwise>
+        </choose>
+        LIMIT #{offset}, #{size}
+    </select>
+    <insert id="insert" parameterType="com.zpop.web.entity.Banner" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO banner
+        (name, link, isActivated, imagePath, `order`)
+        VALUES (#{name}, #{link}, #{isActivated}, #{imagePath}, #{order})
+    </insert>
+    <update id="upadte" parameterType="com.zpop.web.entity.Banner">
+        UPATE banner
+        <set>
+            <if test="name != null and name.equals('')">
+                name = #{name}
+            </if>
+            <if test="link != null and link.equals('')">
+                link = #{link}
+            </if>
+            <if test="isActivated != null">
+                isActivated = #{isActivated},
+            </if>
+            <if test="imagePath != null and imagePath.equals('')">
+                imagePath = #{imagePath},
+            </if>
+            <if test="order != 0">
+                `order` = #{order},
+            </if>
+        </set>
+        SET (name, link, isActivated, imagePath, `order`)
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <update id="delete">
+        UPDATE banner
+        SET deletedAt = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+    </update>
+</mapper>

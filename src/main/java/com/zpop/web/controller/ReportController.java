@@ -1,0 +1,113 @@
+package com.zpop.web.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.zpop.web.dao.MeetingDao;
+import com.zpop.web.dto.RequestCommentReportDto;
+import com.zpop.web.dto.RequestMeetingReportDto;
+import com.zpop.web.dto.RequestMemberReportDto;
+import com.zpop.web.entity.ReportedComment;
+import com.zpop.web.entity.ReportedMeeting;
+import com.zpop.web.entity.ReportedMember;
+import com.zpop.web.entity.comment.Comment;
+import com.zpop.web.entity.meeting.Meeting;
+import com.zpop.web.security.ZpopUserDetails;
+import com.zpop.web.service.CommentService;
+import com.zpop.web.service.ReportService;
+
+@Controller
+@RequestMapping("/api/report")
+public class ReportController {
+	
+	@Autowired
+	private ReportService reportService;
+	
+	@Autowired
+	private CommentService commentService;
+	
+	@Autowired
+	MeetingDao meetingDao;
+	
+	//모임신고
+	@PostMapping("/meeting/{reportedMeetingId}")
+	@ResponseBody
+	public boolean meeting(
+			@PathVariable("reportedMeetingId") int id,
+			@RequestBody RequestMeetingReportDto dto,
+			@AuthenticationPrincipal ZpopUserDetails userDetails
+			) {
+		boolean result;
+		
+		int[] list = reportService.getReportedMeetingId(id, userDetails.getId());
+		if(list.length==0) {
+			int reportTypeId = dto.getReportType();
+			String reportReason = dto.getReportReason();
+			Meeting meeting = meetingDao.get(id);
+			
+			ReportedMeeting rp = new ReportedMeeting(
+					id, // meetingId
+					userDetails.getId(), // reporterId
+					reportTypeId, // reportTypeId
+					reportReason, // reportReason
+					meeting.getTitle(), // originalTitle
+					meeting.getContent() // original
+					);
+			reportService.createMeetingReport(rp);
+			result = true;
+		}
+		else {
+			result = false;
+		}
+		return result;
+	}
+	
+	//댓글 신고 AJAX endpoint
+	@PostMapping("/comment/{reportedCommentId}")
+	@ResponseBody
+	public boolean reportComment(@PathVariable("reportedCommentId") int id, 
+			@RequestBody RequestCommentReportDto dto,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		boolean result;
+		Comment comment = commentService.getCommentById(id);
+		
+		// 중복 신고 
+		int[] reportedComments = reportService.getReportedCommentId(id,userDetails.getId());
+
+		ReportedComment rc = new ReportedComment(id, userDetails.getId(), dto.getReportType(), dto.getReportReason(), comment.getContent());
+		
+		if(reportedComments.length == 0) {
+			reportService.createCommentReport(rc);
+			result = true;
+		}
+		else {
+			result = false;
+		}
+		
+		return result; //JSON
+	}
+	
+	// 사용자 신고
+	@PostMapping("/member/{memberId}")
+	@ResponseBody
+	public boolean member(
+			@PathVariable("memberId") int memberId,
+			@RequestBody RequestMemberReportDto dto,
+			@AuthenticationPrincipal ZpopUserDetails userDetails) {
+		boolean result;
+		
+		// 피신고자, 신고자, 유형, 사유
+		ReportedMember rm = new ReportedMember(
+			memberId, userDetails.getId(), dto.getReportType(), dto.getReportReason());
+		reportService.createMemberReport(rm);
+		result = true;
+
+		return result;
+	}
+}

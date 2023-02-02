@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <!--💛글상세보기, 참여자-->
+    <div class="modal-select meeting__kebob z-idx-1 hidden" id="meeting-kebob"  th:fragment="member-participant">
+        <div class="modal-select__contents">복사하기
+            <span class="icon icon-copy"></span>
+        </div>
+        <div class="modal-select__contents">참여링크
+            <span class="icon icon-link"></span>
+        </div>
+        <div class="modal-select__contents modal__on-btn" data-modal="#modal-report-meeting">글 신고
+            <span class="icon icon-siren-red"></span>
+        </div>
+    </div>
+    <!--💛글상세보기, 주최자-->
+
+
+    <div class="modal-select meeting__kebob z-idx-1 hidden" id="meeting-kebob" th:fragment="member-host">
+        <div class="modal-select__contents">복사 하기
+            <span class="icon icon-copy"></span>
+        </div>
+        <div class="modal-select__contents">수정
+            <span class="icon icon-edit"></span>
+        </div>
+        <div class="modal-select__contents">삭제
+            <span class="icon icon-trash"></span>
+        </div>
+    </div>
+
+    <!--💛글상세보기, 기본유저-->
+    <div class="modal-select meeting__kebob z-idx-1 hidden" id="meeting-kebob" th:fragment="member">
+        <div class="modal-select__contents">복사 하기
+            <span class="icon icon-copy"></span>
+        </div>
+        <div class="modal-select__contents modal__on-btn" data-modal="#modal-report-meeting">글 신고
+            <span class="icon icon-siren-red"></span>
+        </div>
+    </div>
+
+
+    <!-- 💚 댓글 (작성자)-->
+    <div class="modal-select z-idx-1 select-box__options comment__kebob" th:fragment="writer">
+        <div class="modal-select__contents modal__on-btn" data-id="comment-edit" data-modal="#dummy-modal">수정
+            <span class="icon icon-edit"></span>
+        </div>
+        <div class="modal-select__contents modal__on-btn" data-id="comment-delete" data-modal="#modal-delete-comment">삭제
+            <span class="icon icon-trash"></span>
+        </div>
+    </div>
+
+    <!-- 💚 댓글 (기본유저)-->
+    <div class="modal-select z-idx-1 select-box__options comment__kebob" th:fragment="reader">
+
+        <div class="modal-select__contents modal__on-btn " data-id="comment-report" data-modal="#modal-report-comment">댓글 신고
+            <span class="icon icon-siren-red"></span>
+        </div>
+    </div>
+    <!--------------------------  케밥 모달 추가 --------------------------->
+</html>

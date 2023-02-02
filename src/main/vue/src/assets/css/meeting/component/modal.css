@@ -1,0 +1,259 @@
+.modal-wrapper {
+  position: fixed;
+  inset: 0; /*t, l, b, r 0*/
+  z-index: 10000;
+}
+.modal {
+  width: 100%;
+  height: 100%;
+  background-color: var(--modal-white);
+  animation-name: modal-mobile;
+  animation-duration: 0.3s;
+}
+
+.modal__header {
+  display: flex;
+  padding: 1rem;
+}
+
+.modal__close-btn {
+  margin-left: auto;
+}
+
+.modal__content-container{
+	display:flex;
+	transition:transform 0.3s;
+}
+
+.modal__content-container--content1{
+  	transform: translateX(-100%);
+}
+
+
+@media (min-width: 576px) {
+  .modal-wrapper {
+    justify-content: center;
+    animation-name: modal-bg;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+  }
+
+  .modal {
+    position: relative;
+    max-width: 30rem;
+    height: fit-content;
+    background-color: transparent;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+    animation-name: modal-desktop;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    margin: 0 auto;
+  }
+
+  .modal__header {
+    align-items: center;
+    padding: 0 20px;
+    min-height: 3rem;
+    background-color: var(--main-color);
+    border-radius: 10px 10px 0 0;
+  }
+
+  .modal__body {
+    min-height: 5rem;
+    height: 100%;
+    background-color: var(--white);
+    border-radius: 0 0 10px 10px;
+  }
+}
+
+/* modal animation */
+@keyframes modal-desktop {
+  from {
+    top: 0;
+    opacity: 0;
+  }
+
+  to {
+    top: 20%;
+    opacity: 1;
+  }
+}
+
+@keyframes modal-mobile {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes modal-bg {
+  from {
+    background: rgba(0, 0, 0, 0);
+  }
+
+  to {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* 알림 모달 */
+@media (min-width: 576px) {
+  .modal-notification {
+    inset: auto;
+    position: absolute;
+    top: 80px;
+    right: -12px;
+    width: 400px;
+    min-width: 400px;
+    min-height: fit-content;
+    animation-name: none;
+    border-radius: 0 0 10px 10px;
+  }
+}
+
+#modal-login .modal__body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+@media (min-width: 576px) {
+  #modal-login .modal{
+    max-width:none;
+    width:588px;
+    height:557px;
+  }
+}
+
+/* 모바일 검색 모달*/
+#modal-search > .modal__header {
+  align-items: center;
+}
+
+.modal__search-bar {
+  width: 100%;
+  height: 36px;
+  padding-left: 1rem;
+  margin-right: 1rem;
+  border: none;
+  border-radius: 5px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color: var(--grey4);
+  background-color: var(--light-grey1);
+}
+
+#modal-search > .modal__body {
+  width: 100%;
+  padding: 0 1rem;
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#modal-register .modal__body{
+	display:flex;
+	overflow-x:hidden;
+}
+
+.modal-register__nickname-form{
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	padding: 20px 50px;
+	transform: translateY(-40px);
+}
+
+#modal-register .modal__content{
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	flex:0 0 100vw;
+	width:100vw;
+}
+
+#modal-register .modal__content:not(:first-child){
+	row-gap:100px;
+}	
+
+@media (min-width: 576px) {
+	#modal-register .modal__content{
+		flex: 0 0 480px;
+		width:480px;
+	}
+}
+
+#modal-register .input-text__label{
+	justify-content:center;
+}
+
+#modal-register .greetings {
+	margin-top:100px;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	row-gap:10px;
+}
+@media (min-width: 576px){
+	#modal-register .greetings{
+		margin-top:50px;	
+	}	
+}
+
+#modal-register .greetings > p:first-child{
+	font-size:24px;
+	color:var(--main-color);
+	font-weight:var(--extra-bold);
+	display:flex;
+	align-items:center;
+}
+
+#modal-register .greetings > p:first-child > span {
+	margin-left:5px;
+}
+
+#modal-register .greetings__nickname{
+	font-weight:var(--bold);
+}
+
+#modal-register .pros > div, #modal-register .pros li{
+	display:flex;
+	justify-content:center;
+}
+
+#modal-register .pros > div{
+	padding: 10px 0;
+}
+
+#modal-register .pros li{
+	padding: 5px 0;
+}
+
+#modal-register .pros > div{
+	font-size:18px;
+	font-weight:var(--semi-bold);
+}
+
+#modal-register .go-home {
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+}
+
+
+#modal-register .go-home > div{
+	font-weight:var(--semi-bold);
+	color:var(--main-color);
+}
+
+#modal-register .go-home .btn{
+	margin-top: 10px;
+	padding: 10px 50px;
+}
+
