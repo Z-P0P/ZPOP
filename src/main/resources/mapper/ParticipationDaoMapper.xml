@@ -66,13 +66,20 @@
 		WHERE participantId=#{participantId}
 	</select>
 
-	<select id="getIdsUnEvaluatedByParticipantId" resultType="int">
-		SELECT participantId
-		FROM participation
-		WHERE participantId=#{participantId}
-		AND bannedAt IS NULL
-		AND canceledAt IS NULL
-		AND hasEvaluated = FALSE
+	<select id="getUnevaluatedListByParticipantId" resultType="com.zpop.web.entity.Participation">
+			SELECT participation.*
+				FROM participation
+				JOIN meeting
+				ON  meeting.id = participation.meetingId
+			WHERE participation.participantId=#{participantId}
+			AND participation.bannedAt IS NULL
+			AND participation.canceledAt IS NULL
+			AND participation.hasEvaluated = FALSE
+			AND meeting.deletedAt IS NULL
+			AND meeting.closedAt IS NOT NULL
+			<![CDATA[
+			AND DATEDIFF(meeting.startedAt, now()) <= -1
+			]]>
 	</select>
 
 	<select id="countByMeetingId" resultType="int">
