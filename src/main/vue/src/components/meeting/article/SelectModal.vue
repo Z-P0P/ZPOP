@@ -1,6 +1,6 @@
 <template>
   <!-- 작성자 -->
-  <div class="modal-select select-box__options comment__kebob" v-if="role === 'writer'">
+  <div class="modal-select select-box__options" v-if="role === 'writer'">
     <div @click="onClickCopy" class="modal-select__contents">
       복사 하기
       <span class="icon icon-copy"></span>
@@ -19,7 +19,7 @@
   </div>
   <!-- 참여자 -->
   <div
-    class="modal-select select-box__options comment__kebob"
+    class="modal-select select-box__options"
     v-if="role === 'participant'"
     id="meeting__article-tool"
   >
@@ -41,7 +41,7 @@
   </div>
   <!-- 기본 유저 -->
   <div
-    class="modal-select select-box__options comment__kebob"
+    class="modal-select select-box__options"
     v-if="role === 'member'"
     id="meeting__article-tool"
   >
@@ -130,12 +130,5 @@ function onClickReport() {
 <style scoped>
 .modal-select {
   right: 20px;
-}
-.comment__kebob{
-	position:absolute;
-	top:0%;
-	grid-area:button;
-	justify-self: flex-end;
-	margin-right:30px;
 }
 </style>
