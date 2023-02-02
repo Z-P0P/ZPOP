@@ -2,6 +2,19 @@ package com.zpop.web.entity;
 
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
 public class Participation {
     private int id;
     private int meetingId;
@@ -9,54 +22,13 @@ public class Participation {
     private Date createdAt;
     private Date bannedAt;
     private Date canceledAt;
+    private boolean hasEvaluated;
 
-    public Participation() {
-    }
 
     public Participation(int meetingId, int participantId) {
         this.meetingId = meetingId;
         this.participantId = participantId;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    @Override
-	public String toString() {
-		return "Participation [id=" + id + ", meetingId=" + meetingId + ", participantId=" + participantId
-				+ ", createdAt=" + createdAt + ", bannedAt=" + bannedAt + ", canceledAt=" + canceledAt + "]";
-	}
-
-	public int getMeetingId() {
-        return meetingId;
-    }
-
-    public int getParticipantId() {
-        return participantId;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public Date getBannedAt() {
-        return bannedAt;
-    }
-
-    public Date getCanceledAt() {
-        return canceledAt;
-    }
-
-    public void setParticipantId(int participantId) {
-        this.participantId = participantId;
-    }
-
-    public void setCanceledAt(Date canceledAt) {
-        this.canceledAt = canceledAt;
-    }
-
-    public void setBannedAt(Date bannedAt) {
-        this.bannedAt = bannedAt;
-    }
 }

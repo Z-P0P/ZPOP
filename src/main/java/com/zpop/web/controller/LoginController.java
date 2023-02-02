@@ -30,6 +30,7 @@ import com.zpop.web.dao.ParticipationDao;
 import com.zpop.web.dao.SocialTypeDao;
 import com.zpop.web.dto.BlockedMemberDto;
 import com.zpop.web.entity.Member;
+import com.zpop.web.entity.Participation;
 import com.zpop.web.global.exception.CustomException;
 import com.zpop.web.global.exception.ExceptionReason;
 import com.zpop.web.security.UserSecurityService;
@@ -128,11 +129,12 @@ public class LoginController {
 		// 로그인시 알림생성
 		try {
 			int participantId = member.getId();
-			int[] participantIds = participationDao.getIdsUnEvaluatedByParticipantId(participantId);
+			List<Participation> unevaluatedList = participationDao.getUnevaluatedListByParticipantId(participantId);
+			
 			// 용도가 평가하지않은 모임 찾기
-			if(participantIds!=null)
-				// for(int p : participantIds)
-					createNotification(participantIds[0],"/my-meeting",1);
+			if(unevaluatedList!=null && !unevaluatedList.isEmpty()){
+				createNotification(participantId,"/my-meeting",1);
+			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 		    System.err.println("Error: the array is empty!");
 		}
