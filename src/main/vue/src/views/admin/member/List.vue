@@ -31,7 +31,7 @@
                         <span v-text="member.id"></span>
                     </li>
                     <li class="list-content__nickname admin-tb-2">
-                        <img :src="member.profileImagePath==null?'/images/icon/user-profile.svg':'/image/user/'+ member.profileImagePath"
+                        <img :src="member.profileImagePath==null?'../../../images/icon/user-profile.svg':'/image/profile/'+ member.profileImagePath"
                             alt="">
                         <span v-text="member.nickname"></span>
                     </li>
@@ -179,5 +179,10 @@ requestData();
 </script>
 
 <style>
-
+.list-content__nickname > img{
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 12px;
+}
 </style>

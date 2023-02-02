@@ -5,7 +5,7 @@
       :src="
         (userDetail.profileImagePath != '' && userDetail.profileImagePath != null)
           ? `/image/profile/${userDetail.profileImagePath}`
-          : '/images/icon/user-profile-grey.svg'
+          : '../../../images/icon/user-profile-grey.svg'
       "
     />
     <span>{{ props.userDetail.nickname }}</span>

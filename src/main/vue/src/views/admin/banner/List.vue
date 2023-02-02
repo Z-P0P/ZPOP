@@ -73,7 +73,7 @@
             <label for="">순서 : </label><input type="number" v-model="bannerDetails.order">
             <label for="">활성여부 : </label><input type="checkbox" class="checkbox" v-model="bannerDetails.activated">
             <label>베너 이미지</label>
-            <img :src="`/images/banner/${bannerDetails.imagePath}`" :alt="bannerDetails.name">
+            <img :src="`/image/banner/${bannerDetails.imagePath}`" :alt="bannerDetails.name">
             <span>배너 변경</span>            
             <button class="icon icon-camera"></button>
         </template>

@@ -132,7 +132,7 @@ public class LoginController {
 			// 용도가 평가하지않은 모임 찾기
 			if(participantIds!=null)
 				// for(int p : participantIds)
-					createNotification(participantIds[0],"my-meeting",1);
+					createNotification(participantIds[0],"/my-meeting",1);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		    System.err.println("Error: the array is empty!");
 		}

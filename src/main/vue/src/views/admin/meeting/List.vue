@@ -72,8 +72,8 @@
                     <ul class="participant__list" id="reg-member">
                         <div class="participant__info">
                             <img :src="(meetingDetails.regMemberProfile == null) ?
-                                '/images/icon/user-profile-grey.svg' : 
-                                `/images/profile/${meetingDetails.regMemberProfile}`">
+                                '../../../../images/icon/user-profile-grey.svg' : 
+                                `/image/profile/${meetingDetails.regMemberProfile}`">
                             <span>{{ meetingDetails.regMemberNickname }}</span>
                         </div>
                     </ul>
@@ -83,8 +83,8 @@
                     <ul class="participant__list">
                         <div class="participant__info" v-for="(participant, index) in meetingDetails.participants" :key="index">
                             <img :src="(participant.profileImagePath == null) ?
-                                '/images/icon/user-profile-grey.svg' : 
-                                `/images/profile/${participant.profileImagePath}`">
+                                '../../../../images/icon/user-profile-grey.svg' : 
+                                `/image/profile/${participant.profileImagePath}`">
                             <span>{{ participant.nickname }}</span>
                         </div>
                     </ul>
@@ -175,7 +175,6 @@ import DetailModal from '../../../components/admin/modal/AdminDetailModal.vue';
 import SearchBar from '../../../components/admin/SearchBar.vue';
 import AdminTable from '../../../components/admin/Table.vue';
 import ParticipantList from '../../../components/participant/ParticipantList.vue';
-
 
 const route = useRoute();
 
@@ -466,6 +465,13 @@ const cancelDeleteAllMeeting = () => {
 
 .details__members :deep(.participant__info:hover){
     background-color:var(--true-blue);
+}
+
+.participant__info > img{
+    width:42px;
+    height:42px;
+    object-fit: cover;
+    border-radius: 21px;
 }
 
 </style>
