@@ -10,12 +10,12 @@
         store.changeNotificationState();
     }
     const state = reactive({
-        notification:{
+        notification:[{
             memberId:0,
             url:"",
             type:0,
             elapsedTime:""
-        }
+        }]
     })
 
     const memberStore = useMemberStore();
@@ -23,7 +23,14 @@
 
     function getMemberNotification(id){
         api.notification.getNotification(id)
-        .then((response)=>response.json())
+        .then((response)=>{
+            if(response.ok){
+                return response.json();
+            }
+            else{
+                throw new Error(response.body)
+            }
+        })
         .then((data)=>{
             state.notification = data;
              // 받은 알림이 없는 경우 알림 모달 창에 알림 없음 처리하기
@@ -31,6 +38,9 @@
                 emit('checkNotification');
                 notificationAbsence.value=true;
             }
+        })
+        .catch(err=>{
+            alert(err.message);
         })
     }
 

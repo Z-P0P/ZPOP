@@ -68,9 +68,17 @@
 
 	<select id="getUnevaluatedListByParticipantId" resultType="com.zpop.web.entity.Participation">
 			SELECT participation.*
-				FROM participation
-				JOIN meeting
-				ON  meeting.id = participation.meetingId
+			FROM participation
+			JOIN meeting
+			ON  meeting.id = participation.meetingId
+			JOIN (select
+					meetingId,
+					count(meetingId) as count
+				from participation
+				where bannedAt is null and canceledAt is null
+				group by meetingId
+				having count(meetingId) != 1) as selectCount
+			ON meeting.id = selectCount.meetingId
 			WHERE participation.participantId=#{participantId}
 			AND participation.bannedAt IS NULL
 			AND participation.canceledAt IS NULL
@@ -80,6 +88,7 @@
 			<![CDATA[
 			AND DATEDIFF(meeting.startedAt, now()) <= -1
 			]]>
+			AND selectCount.count != 1;
 	</select>
 
 	<select id="countByMeetingId" resultType="int">
